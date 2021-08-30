@@ -1,0 +1,1154 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Wed May  5 01:41:22 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@controller ~]$ ls -l
+total 4
+drwxrwxr-x 6 ec2-user ec2-user 4096 May  5 03:37 myansible
+[ec2-user@controller ~]$ cd myansible/
+[ec2-user@controller myansible]$ ls -l
+total 88
+-rw-rw-r-- 1 ec2-user ec2-user  237 May  3 02:18 1
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  3 02:27 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user  833 May  5 02:19 cond.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   64 May  5 02:24 final.yaml
+drwxrwxr-x 2 ec2-user ec2-user   23 May  4 01:44 group_vars
+drwxrwxr-x 2 ec2-user ec2-user   26 May  3 03:24 host_vars
+-rw-rw-r-- 1 ec2-user ec2-user   63 May  5 02:46 index.html
+-rw-rw-r-- 1 ec2-user ec2-user   67 May  5 03:37 main.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   76 May  5 03:06 myansiblehosts
+-rw-rw-r-- 1 ec2-user ec2-user  907 May  5 03:02 myapache.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   49 May  3 02:41 mycode.py
+-rw------- 1 ec2-user ec2-user  549 May  5 01:43 mydbsecrets.yaml
+-rw-rw-r-- 1 ec2-user ec2-user    8 May  5 02:02 myfailedservers
+drwxrwxr-x 2 ec2-user ec2-user    6 May  5 03:20 myhttpd
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  750 May  4 02:53 myloop.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  305 May  3 03:01 mymodules.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+-rw------- 1 ec2-user ec2-user  549 May  5 01:54 mysecret.yaml
+-rw------- 1 ec2-user ec2-user  484 May  5 01:51 mytest.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  204 May  4 01:49 myvars.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  202 May  5 01:59 myvault.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   13 May  4 02:21 prashanth
+drwxrwxr-x 3 ec2-user ec2-user   22 May  5 03:21 roles
+-rw-rw-r-- 1 ec2-user ec2-user  220 May  4 03:29 specialcases.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   35 May  3 03:10 variables.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ mkdir mywordpress
+[ec2-user@controller myansible]$ cd mywordpress/
+[ec2-user@controller mywordpress]$ ls -l
+total 0
+[ec2-user@controller mywordpress]$ pwd
+/home/ec2-user/myansible/mywordpress
+[ec2-user@controller mywordpress]$ cp ../ansible.cfg .
+[ec2-user@controller mywordpress]$ ls -l
+total 4
+-rw-rw-r-- 1 ec2-user ec2-user 203 May  6 01:57 ansible.cfg
+[ec2-user@controller mywordpress]$ cp ../myansiblehosts .
+[ec2-user@controller mywordpress]$ ls -l
+total 8
+-rw-rw-r-- 1 ec2-user ec2-user 203 May  6 01:57 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user  76 May  6 01:58 myansiblehosts
+[ec2-user@controller mywordpress]$ cp ../mykey.pem .
+[ec2-user@controller mywordpress]$ ll
+total 12
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  6 01:57 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user   76 May  6 01:58 myansiblehosts
+-rw------- 1 ec2-user ec2-user 1675 May  6 01:58 mykey.pem
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ ls -l
+total 12
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  6 01:57 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user   76 May  6 01:58 myansiblehosts
+-rw------- 1 ec2-user ec2-user 1675 May  6 01:58 mykey.pem
+[ec2-user@controller mywordpress]$ mkdir roles
+[ec2-user@controller mywordpress]$ ls -ld roles/
+drwxrwxr-x 2 ec2-user ec2-user 6 May  6 02:00 roles/
+[ec2-user@controller mywordpress]$ mkdir roles/app
+[ec2-user@controller mywordpress]$ mkdir roles/db
+[ec2-user@controller mywordpress]$ tree .
+.
+├── ansible.cfg
+├── myansiblehosts
+├── mykey.pem
+└── roles
+    ├── app
+    └── db
+
+3 directories, 3 files
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ sudo yum install mysql -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+219 packages excluded due to repository priority protections
+Resolving Dependencies
+--> Running transaction check
+---> Package mariadb.x86_64 1:5.5.68-1.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                   Arch                     Version                            Repository                    Size
+==========================================================================================================================
+Installing:
+ mariadb                   x86_64                   1:5.5.68-1.amzn2                   amzn2-core                   8.8 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 8.8 M
+Installed size: 49 M
+Downloading packages:
+mariadb-5.5.68-1.amzn2.x86_64.rpm                                                                  | 8.8 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:mariadb-5.5.68-1.amzn2.x86_64                                                                        1/1
+  Verifying  : 1:mariadb-5.5.68-1.amzn2.x86_64                                                                        1/1
+
+Installed:
+  mariadb.x86_64 1:5.5.68-1.amzn2
+
+Complete!
+[ec2-user@controller mywordpress]$ mysql -h 172.31.17.147 -u admin -p'admin123' -P 3306
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 5.5.68-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| dvsdevops          |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+MariaDB [(none)]> Bye
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ ls -ld roles/db/
+drwxrwxr-x 2 ec2-user ec2-user 6 May  6 02:00 roles/db/
+[ec2-user@controller mywordpress]$ ls -l roles/db/
+total 0
+[ec2-user@controller mywordpress]$ mkdir roles/db/tasks
+[ec2-user@controller mywordpress]$ vi roles/db/tasks/main.yaml
+[ec2-user@controller mywordpress]$ tree roles/
+roles/
+├── app
+└── db
+    └── tasks
+        └── main.yaml
+
+3 directories, 1 file
+[ec2-user@controller mywordpress]$ tree roles/
+roles/
+├── app
+└── db
+    └── tasks
+        └── main.yaml
+
+3 directories, 1 file
+[ec2-user@controller mywordpress]$ mkdir roles/app/tasks
+[ec2-user@controller mywordpress]$ vim roles/app/tasks/main.yaml
+[ec2-user@controller mywordpress]$ ls -l roles/app/templates
+ls: cannot access roles/app/templates: No such file or directory
+[ec2-user@controller mywordpress]$ mkdir roles/app/templates
+[ec2-user@controller mywordpress]$ vim roles/app/templates/wp-config.php
+[ec2-user@controller mywordpress]$ vi roles/app/tasks/main.yaml
+[ec2-user@controller mywordpress]$ cat roles/app/tasks/main.yaml
+---
+- name: Installing dependencies
+  command: amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+
+- name: Installing apache
+  yum:
+    name: httpd
+    state: present
+
+- name: enable apache
+  systemd:
+    name: httpd
+    enabled: yes
+
+- name: restart apache
+  systemd:
+    name: httpd
+    state: restarted
+
+- name: Downloading wordpress
+  #  get_url: url=https://wordpress.org/latest.tar.gz dest=/tmp/wordpress.tar.gz force=yes
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/wordpress.tar.gz
+    force: yes
+
+- name: Alligning the configuration
+  shell: |
+    cd /tmp
+    tar -xzf wordpress.tar.gz
+    cp -r wordpress/* /var/www/html/
+
+- name: Copying wp-config.php configure
+  template:
+    src: wp-config.php
+    dest: /var/www/html
+
+- name: Setting the permissions
+  file: path=/var/www state=directory recurse=yes owner=apache group=apache mode="0755"
+
+- name: restart apache
+  systemd:
+    name: httpd
+    state: restarted
+
+[ec2-user@controller mywordpress]$  tree roles/
+roles/
+├── app
+│   ├── tasks
+│   │   └── main.yaml
+│   └── templates
+│       └── wp-config.php
+└── db
+    └── tasks
+        └── main.yaml
+
+5 directories, 3 files
+[ec2-user@controller mywordpress]$ mkdir roles/app/handlers
+[ec2-user@controller mywordpress]$ vi roles/app/handlers/main.yaml
+[ec2-user@controller mywordpress]$ cat roles/app/handlers/main.yaml
+---
+- name: apache restart
+  systemd:
+    name: httpd
+    state: restarted
+[ec2-user@controller mywordpress]$ vi roles/app/tasks/main.yaml
+[ec2-user@controller mywordpress]$ tree .
+.
+├── ansible.cfg
+├── myansiblehosts
+├── mykey.pem
+└── roles
+    ├── app
+    │   ├── handlers
+    │   │   └── main.yaml
+    │   ├── tasks
+    │   │   └── main.yaml
+    │   └── templates
+    │       └── wp-config.php
+    └── db
+        └── tasks
+            └── main.yaml
+
+7 directories, 7 files
+[ec2-user@controller mywordpress]$ cat roles/db/tasks/main.yaml
+---
+- name: Installing mysql server
+  yum:
+    name: mariadb-server
+    state: present
+
+
+- name: enabling mysql software
+  systemd:
+    name: mariadb
+    enabled: yes
+
+- name: restart mysql/mariadb service
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: Creating the User admin
+  mysql_user:
+    name: "admin"
+    password: "admin123"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+- name: Creating the database
+  mysql_db:
+    name: "dvsdevops"
+    state: present
+
+[ec2-user@controller mywordpress]$ cat roles/app/templates/wp-config.php
+<?php
+/**
+ * The base configuration for WordPress
+ *
+ * The wp-config.php creation script uses this file during the
+ * installation. You don't have to use the web site, you can
+ * copy this file to "wp-config.php" and fill in the values.
+ *
+ * This file contains the following configurations:
+ *
+ * * MySQL settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://wordpress.org/support/article/editing-wp-config-php/
+ *
+ * @package WordPress
+ */
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'dvsdevops' );
+
+/** MySQL database username */
+define( 'DB_USER', 'admin' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', 'admin123' );
+
+/** MySQL hostname */
+define( 'DB_HOST', '172.31.17.147' );
+
+/** Database Charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The Database Collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+
+/**#@+
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
+
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://wordpress.org/support/article/debugging-in-wordpress/
+ */
+define( 'WP_DEBUG', false );
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';
+
+[ec2-user@controller mywordpress]$ mkdir vars
+[ec2-user@controller mywordpress]$ vi vars/myvars.yaml
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+---
+db_name: "dvsdevops"
+db_user: "admin"
+db_password: "admin123"
+db_server: ""
+[ec2-user@controller mywordpress]$ vi roles/db/tasks/main.yaml
+[ec2-user@controller mywordpress]$ cat roles/db/tasks/main.yaml
+---
+- name: Installing mysql server
+  yum:
+    name: mariadb-server
+    state: present
+
+
+- name: enabling mysql software
+  systemd:
+    name: mariadb
+    enabled: yes
+
+- name: restart mysql/mariadb service
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: Creating the User admin
+  mysql_user:
+    name: "{{db_user}}"
+    password: "{{db_password}}"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+- name: Creating the database
+  mysql_db:
+    name: "{{db_name}}"
+    state: present
+
+[ec2-user@controller mywordpress]$ vi roles/app/templates/wp-config.php
+[ec2-user@controller mywordpress]$ cat roles/app/templates/wp-config.php
+<?php
+/**
+ * The base configuration for WordPress
+ *
+ * The wp-config.php creation script uses this file during the
+ * installation. You don't have to use the web site, you can
+ * copy this file to "wp-config.php" and fill in the values.
+ *
+ * This file contains the following configurations:
+ *
+ * * MySQL settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://wordpress.org/support/article/editing-wp-config-php/
+ *
+ * @package WordPress
+ */
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', '{{db_name}}' );
+
+/** MySQL database username */
+define( 'DB_USER', '{{db_user}}' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '{{db_password}}' );
+
+/** MySQL hostname */
+define( 'DB_HOST', '{{db_server}}' );
+
+/** Database Charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The Database Collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+
+/**#@+
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
+
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://wordpress.org/support/article/debugging-in-wordpress/
+ */
+define( 'WP_DEBUG', false );
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';
+
+[ec2-user@controller mywordpress]$ tree .
+.
+├── ansible.cfg
+├── myansiblehosts
+├── mykey.pem
+├── roles
+│   ├── app
+│   │   ├── handlers
+│   │   │   └── main.yaml
+│   │   ├── tasks
+│   │   │   └── main.yaml
+│   │   └── templates
+│   │       └── wp-config.php
+│   └── db
+│       └── tasks
+│           └── main.yaml
+└── vars
+    └── myvars.yaml
+
+8 directories, 8 files
+[ec2-user@controller mywordpress]$ vi myansiblehosts
+[ec2-user@controller mywordpress]$ vi ansible.cfg
+[ec2-user@controller mywordpress]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+host_key_checking = False
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ vi myansiblehosts
+[ec2-user@controller mywordpress]$ cat myansiblehosts
+[app]
+172.31.29.143
+[db]
+172.31.28.27
+[ec2-user@controller mywordpress]$ vi vars/myvars.yaml
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+---
+db_name: "dvsdevops"
+db_user: "admin"
+db_password: "admin123"
+db_server: "172.31.28.27"
+[ec2-user@controller mywordpress]$ tree .
+.
+├── ansible.cfg
+├── myansiblehosts
+├── mykey.pem
+├── roles
+│   ├── app
+│   │   ├── handlers
+│   │   │   └── main.yaml
+│   │   ├── tasks
+│   │   │   └── main.yaml
+│   │   └── templates
+│   │       └── wp-config.php
+│   └── db
+│       └── tasks
+│           └── main.yaml
+└── vars
+    └── myvars.yaml
+
+8 directories, 8 files
+[ec2-user@controller mywordpress]$ vi main.yaml
+[ec2-user@controller mywordpress]$ cat main.yaml
+---
+- name: wordpress application installation
+  hosts: app
+  roles:
+    - app
+
+
+- name: mariadb installation
+  hosts: db
+  roles:
+    - db
+[ec2-user@controller mywordpress]$ ls -l rle
+ls: cannot access rle: No such file or directory
+[ec2-user@controller mywordpress]$ ls -l roles/
+total 0
+drwxrwxr-x 5 ec2-user ec2-user 52 May  6 02:52 app
+drwxrwxr-x 3 ec2-user ec2-user 19 May  6 02:15 db
+[ec2-user@controller mywordpress]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+host_key_checking = False
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+[ec2-user@controller mywordpress]$ ansible-playbook main.yaml
+
+PLAY [wordpress application installation] ********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Installing dependencies] *************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Installing apache] *******************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : enable apache] ***********************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Downloading wordpress] ***************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Alligning the configuration] *********************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Copying wp-config.php configure] *****************************************************************************
+fatal: [172.31.29.143]: FAILED! => {"changed": false, "msg": "AnsibleUndefinedVariable: 'db_name' is undefined"}
+
+PLAY RECAP ***************************************************************************************************************
+172.31.29.143              : ok=6    changed=5    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+---
+db_name: "dvsdevops"
+db_user: "admin"
+db_password: "admin123"
+db_server: "172.31.28.27"
+[ec2-user@controller mywordpress]$ vi wp-config.php
+[ec2-user@controller mywordpress]$ vi roles/app/templates/wp-config.php
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ cat main.yaml
+---
+- name: wordpress application installation
+  hosts: app
+  roles:
+    - app
+
+
+- name: mariadb installation
+  hosts: db
+  roles:
+    - db
+[ec2-user@controller mywordpress]$ ls -l vars/
+total 4
+-rw-rw-r-- 1 ec2-user ec2-user 92 May  6 03:03 myvars.yaml
+[ec2-user@controller mywordpress]$ vi main.yaml
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ cat main.yaml
+---
+- name: wordpress application installation
+  hosts: app
+  vars_files:
+    - ./vars/myvars.yaml
+  roles:
+    - app
+
+
+- name: mariadb installation
+  hosts: db
+  vars_files:
+    - ./vars/myvars.yaml
+  roles:
+    - db
+[ec2-user@controller mywordpress]$ ansible-playbook main.yaml
+
+PLAY [wordpress application installation] ********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Installing dependencies] *************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Installing apache] *******************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : enable apache] ***********************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Downloading wordpress] ***************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Alligning the configuration] *********************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Copying wp-config.php configure] *****************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Setting the permissions] *************************************************************************************
+changed: [172.31.29.143]
+
+RUNNING HANDLER [app : apache restart] ***********************************************************************************
+changed: [172.31.29.143]
+
+PLAY [mariadb installation] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.28.27]
+
+TASK [db : Installing mysql server] **************************************************************************************
+changed: [172.31.28.27]
+
+TASK [db : enabling mysql software] **************************************************************************************
+changed: [172.31.28.27]
+
+TASK [restart mysql/mariadb service] *************************************************************************************
+changed: [172.31.28.27]
+
+TASK [db : Creating the User admin] **************************************************************************************
+[WARNING]: Module did not set no_log for update_password
+fatal: [172.31.28.27]: FAILED! => {"changed": false, "msg": "The PyMySQL (Python 2.7 and Python 3.X) or MySQL-python (Python 2.X) module is required."}
+
+PLAY RECAP ***************************************************************************************************************
+172.31.28.27               : ok=4    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+172.31.29.143              : ok=9    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller mywordpress]$ vi roles/db/tasks/main.yaml
+[ec2-user@controller mywordpress]$ cat roles/db/tasks/main.yaml
+---
+- name: Installing mysql server
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - MySQL-python
+    - mariadb-server
+
+
+- name: enabling mysql software
+  systemd:
+    name: mariadb
+    enabled: yes
+
+- name: restart mysql/mariadb service
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: Creating the User admin
+  mysql_user:
+    name: "{{db_user}}"
+    password: "{{db_password}}"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+- name: Creating the database
+  mysql_db:
+    name: "{{db_name}}"
+    state: present
+
+[ec2-user@controller mywordpress]$ ansible-playbook main.yaml
+
+PLAY [wordpress application installation] ********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Installing dependencies] *************************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Installing apache] *******************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : enable apache] ***********************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Downloading wordpress] ***************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Alligning the configuration] *********************************************************************************
+changed: [172.31.29.143]
+
+TASK [app : Copying wp-config.php configure] *****************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Setting the permissions] *************************************************************************************
+ok: [172.31.29.143]
+
+PLAY [mariadb installation] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.28.27]
+
+TASK [db : Installing mysql server] **************************************************************************************
+changed: [172.31.28.27] => (item=MySQL-python)
+ok: [172.31.28.27] => (item=mariadb-server)
+
+TASK [db : enabling mysql software] **************************************************************************************
+ok: [172.31.28.27]
+
+TASK [restart mysql/mariadb service] *************************************************************************************
+changed: [172.31.28.27]
+
+TASK [db : Creating the User admin] **************************************************************************************
+[WARNING]: Module did not set no_log for update_password
+changed: [172.31.28.27]
+
+TASK [db : Creating the database] ****************************************************************************************
+changed: [172.31.28.27]
+
+PLAY RECAP ***************************************************************************************************************
+172.31.28.27               : ok=6    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+172.31.29.143              : ok=8    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller mywordpress]$ mysql -h 172.31.28.27 -u admin -p'admin123' -P 3306
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 4
+Server version: 5.5.68-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| dvsdevops          |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+MariaDB [(none)]> Bye
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ ansible-vault encrypt vars/myvars.yaml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[ec2-user@controller mywordpress]$ ansible-playbook --ask-vault-pass main.yaml
+Vault password:
+
+PLAY [wordpress application installation] ********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [172.31.29.143]
+
+TASK [app : Installing dependencies] *************************************************************************************
+^C [ERROR]: User interrupted execution
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+$ANSIBLE_VAULT;1.1;AES256
+30343635613532653337353631383833653132663034353537333562656362323461636133636234
+3738373262313966343830656463303963626438363936300a373931363063356462316531366562
+64383734666530653164633834356562333833646136653830643563633530613834663666373766
+6634333066633432620a646131323631376139393164323937353735623661306639353861626239
+30626531353463613932633439393831366362626132623866373432663634396239333861626262
+66656365353264666666353466316565313132326338633535336433666236353566353133656365
+65663033353137316237343365626665323938393632303465356364663664643631393937636537
+64396332393335613130333130353466306363663465363765336638353061303663633537626265
+3364
+[ec2-user@controller mywordpress]$ ansible-vault decrypt vars/myvars.yaml
+Vault password:
+Decryption successful
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+---
+db_name: "dvsdevops"
+db_user: "admin"
+db_password: "admin123"
+db_server: "172.31.28.27"
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ ansible-playbook -h|grep -i roll
+[ec2-user@controller mywordpress]$ ########################## Final Code#########################
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$
+[ec2-user@controller mywordpress]$ tree .
+.
+├── ansible.cfg
+├── main.yaml
+├── myansiblehosts
+├── mykey.pem
+├── roles
+│   ├── app
+│   │   ├── handlers
+│   │   │   └── main.yaml
+│   │   ├── tasks
+│   │   │   └── main.yaml
+│   │   └── templates
+│   │       └── wp-config.php
+│   └── db
+│       └── tasks
+│           └── main.yaml
+└── vars
+    └── myvars.yaml
+
+8 directories, 9 files
+[ec2-user@controller mywordpress]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+host_key_checking = False
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+[ec2-user@controller mywordpress]$ cat main.yaml
+---
+- name: wordpress application installation
+  hosts: app
+  vars_files:
+    - ./vars/myvars.yaml
+  roles:
+    - app
+
+
+- name: mariadb installation
+  hosts: db
+  vars_files:
+    - ./vars/myvars.yaml
+  roles:
+    - db
+[ec2-user@controller mywordpress]$ cat myansiblehosts
+[app]
+172.31.29.143
+[db]
+172.31.28.27
+[ec2-user@controller mywordpress]$ cat mykey.pem
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAmdBWA43Fns7NH/Abzvbk3GcKiU65D/BqFEBrkKpyqe8P4mW8
+vn1nrj54T7g6f0jhOn3xGBOJkdjzuKSHdCLGdz6WrxIcCHYJYAfayTpYSQ5XUIiM
+yGC1AQswzb1Cw66bNfH4VdWfpul+iRJKP9xTw0+Xg7nZmALHQ+Vf6pptkej6/y6n
+RhMWnB55qXy2kMGJjc6ptx8k+jIKgNDXMR71y9Qxre7A9KWgEB2dWmuo/fcHSsFM
+uqI2DHPs/noSNUe9Vlj0oUHwk42btnqC9FU4zGi6JeXpSeEWLRP0UDCrsxbbw0Gv
+U9vbFLiaAQ3FiNeMhPM81eV0PWWjZCHe7Msk/wIDAQABAoIBAG1Bp1du5OkhTGNb
+UuV4SqikKL/Pw3Sm+TLZb46bBEfhIA9Y5PEKcxM6HIvD+Qlg41uBCjhn6FhJGxYV
+CIJeEUuykaZZ3r/D2HT2H1rAruV14l+6HwZWazwKjugVf88vv+BZuGSAEZ+mS9Nh
+wowKHRWm+6D96qonjxOTYsZqW1pAYHFj+LkcPYbJB/zyyu7Vdt9kapZzDS24WVmE
+ogExe02eqfT3CIJdATjzgvgcIQVf/9jLgB7v+ZbsNfDNkafkqX4e9FbmwSqSUhDl
+RHNi0PrV0LN0ble2nmmhg4JCfwjsszdtZGZke6k81LXn4vT8VZjT52m72WHcZjHS
+xIClroECgYEA24SH8bUvvAVW9UwhGxNz0tOBlourBLAyj5KJ8YHj1wKTfG24v7Pd
+iY44y5nGNblvIHPpppDU4nXSvJyY8dk7Y1c6CVUXAh8u74NtjElmiOFspHKpMgwQ
+LAuHozO+vS0K0xwValvU5xzCy3b/MzSMgsSHnLKkpYvYdF1HrGWK1qcCgYEAs2Bo
+GCwSK7gL7yYWGQnzGWEQQ7kgbhDdFQfkdrM3F5N7RB9uHGO58jlHKv79kEubttZt
+kzBExE597FcgJ/DBr7mm7zmKktom/rbQ1q48ZnYOR1y3lKO48sChUU9x4XBLJGPy
+cMQQy9vYbiJAD1U4i+akjV2G6pklqnux0fyz4ekCgYAoVptQnFXwPB71po6y1glD
+paA7lODRVLuFzIzSt2ax3QRTKip398pu+5aOO2zD9JZqJUK7XAPytWoLRM+KKbwT
+DjVY/6zhs+9BDiq0S8yuvJXlRji3PKZAIcJECD81rjA+CPwadlOSQKO/FdfhhfeI
+FCtDbUR6M0+MWpPQJzyzIwKBgGRKSKkLKvWqp3GEl+JT/8l2zYMv5IPlhdaWXRRI
+y0qxOMAz2nqg/3wArlvJybd9roghh4499JTVVe5oICB0qbY4VK94OpQ0yIytZkJB
+lJ+s7frUSggfKe7/6LHvezqScFDeWNTXqpRwTKf3Gl34Re9ieypW2nIcQkT5d8hy
+Q5jRAoGAZvfWMYva+M7XghgpPgx1/ocPfkEMVRIL8hxZcN0GToyN3gosrfRD0UZL
+C0OMZg6pkA8VpUJ8cnL7fTVXowHdhrw8CtUYdOGpZweHdIN4wt6Py1S4/ZfM/pBQ
+hkSNJ1pcgAMhdf5+PWrRXpXl6BDwINV9f27nM5jftQcn3yQTeMg=
+-----END RSA PRIVATE KEY-----
+[ec2-user@controller mywordpress]$ cat roles/db/tasks/main.yaml
+---
+- name: Installing mysql server
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - MySQL-python
+    - mariadb-server
+
+
+- name: enabling mysql software
+  systemd:
+    name: mariadb
+    enabled: yes
+
+- name: restart mysql/mariadb service
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: Creating the User admin
+  mysql_user:
+    name: "{{db_user}}"
+    password: "{{db_password}}"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+- name: Creating the database
+  mysql_db:
+    name: "{{db_name}}"
+    state: present
+
+[ec2-user@controller mywordpress]$ cat roles/app/tasks/main.yaml
+---
+- name: Installing dependencies
+  command: amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+
+- name: Installing apache
+  yum:
+    name: httpd
+    state: present
+
+- name: enable apache
+  systemd:
+    name: httpd
+    enabled: yes
+
+- name: Downloading wordpress
+  #  get_url: url=https://wordpress.org/latest.tar.gz dest=/tmp/wordpress.tar.gz force=yes
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/wordpress.tar.gz
+    force: yes
+
+- name: Alligning the configuration
+  shell: |
+    cd /tmp
+    tar -xzf wordpress.tar.gz
+    cp -r wordpress/* /var/www/html/
+
+- name: Copying wp-config.php configure
+  template:
+    src: wp-config.php
+    dest: /var/www/html
+  notify: apache restart
+
+- name: Setting the permissions
+  file: path=/var/www state=directory recurse=yes owner=apache group=apache mode="0755"
+  notify: apache restart
+
+[ec2-user@controller mywordpress]$ cat roles/app/handlers/main.yaml
+---
+- name: apache restart
+  systemd:
+    name: httpd
+    state: restarted
+[ec2-user@controller mywordpress]$ cat roles/app/templates/wp-config.php
+<?php
+/**
+ * The base configuration for WordPress
+ *
+ * The wp-config.php creation script uses this file during the
+ * installation. You don't have to use the web site, you can
+ * copy this file to "wp-config.php" and fill in the values.
+ *
+ * This file contains the following configurations:
+ *
+ * * MySQL settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://wordpress.org/support/article/editing-wp-config-php/
+ *
+ * @package WordPress
+ */
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', '{{db_name}}' );
+
+/** MySQL database username */
+define( 'DB_USER', '{{db_user}}' );
+
+/** MySQL database password */
+define( 'DB_PASSWORD', '{{db_password}}' );
+
+/** MySQL hostname */
+define( 'DB_HOST', '{{db_server}}' );
+
+/** Database Charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The Database Collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+
+/**#@+
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
+
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://wordpress.org/support/article/debugging-in-wordpress/
+ */
+define( 'WP_DEBUG', false );
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';
+
+[ec2-user@controller mywordpress]$ cat roles/app/
+handlers/  tasks/     templates/
+[ec2-user@controller mywordpress]$ cat roles/app/
+handlers/  tasks/     templates/
+[ec2-user@controller mywordpress]$ cat vars/myvars.yaml
+---
+db_name: "dvsdevops"
+db_user: "admin"
+db_password: "admin123"
+db_server: "172.31.28.27"
+[ec2-user@controller mywordpress]$

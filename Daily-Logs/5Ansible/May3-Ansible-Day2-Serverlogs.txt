@@ -1,0 +1,961 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Sat May  1 05:19:43 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@controller ~]$
+[ec2-user@controller ~]$ ls -l
+total 0
+drwxrwxr-x 2 ec2-user ec2-user 64 May  1 05:40 myansible
+[ec2-user@controller ~]$ cd myansible/
+[ec2-user@controller myansible]$ ls -l
+total 12
+-rw-rw-r-- 1 ec2-user ec2-user  131 May  1 05:32 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user   37 May  1 05:40 myansiblehosts
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+[ec2-user@controller myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vim myplay.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vim myplay.txt
+[ec2-user@controller myansible]$ mkdir -p ~/.vim/autoload ~/.vim/bundle
+[ec2-user@controller myansible]$ curl -LSso ~/.vim/autoload/pathogen.vim https://protect-eu.mimecast.com/s/WnjQC2xmRcpygplnc2nVUs?domain=tpo.pe
+[ec2-user@controller myansible]$ vim ~/.vimrc
+[ec2-user@controller myansible]$ source ~/.vimrc
+-bash: /home/ec2-user/.vimrc: line 1: syntax error near unexpected token `('
+-bash: /home/ec2-user/.vimrc: line 1: `execute pathogen#infect()'
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myplay.yaml
+[ec2-user@controller myansible]$ hostname -i
+fe80::461:f3ff:fe1f:2737%eth0 172.31.57.41
+[ec2-user@controller myansible]$ cat myplay.yaml
+---
+- name: working with ansible
+  hosts: all
+  tasks:
+    - name: get server ipaddress
+      command: hostname -i
+[ec2-user@controller myansible]$ ansible-playbook myplay.yaml
+
+PLAY [working with ansible] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [get server ipaddress] **********************************************************************************************
+changed: [server2]
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myplay.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with ansible] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [get server ipaddress] **********************************************************************************************
+changed: [server2] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038359", "end": "2021-05-03 01:57:37.098899", "rc": 0, "start": "2021-05-03 01:57:37.060540", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.255", "stdout_lines": ["172.31.62.255"]}
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.039329", "end": "2021-05-03 01:57:37.106515", "rc": 0, "start": "2021-05-03 01:57:37.067186", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myplay.yaml -vvv
+ansible-playbook 2.9.18
+  config file = /home/ec2-user/myansible/ansible.cfg
+  configured module search path = [u'/home/ec2-user/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible-playbook
+  python version = 2.7.18 (default, Feb 18 2021, 06:07:59) [GCC 7.3.1 20180712 (Red Hat 7.3.1-12)]
+Using /home/ec2-user/myansible/ansible.cfg as config file
+host_list declined parsing /home/ec2-user/myansible/myansiblehosts as it did not pass its verify_file() method
+script declined parsing /home/ec2-user/myansible/myansiblehosts as it did not pass its verify_file() method
+auto declined parsing /home/ec2-user/myansible/myansiblehosts as it did not pass its verify_file() method
+Parsed /home/ec2-user/myansible/myansiblehosts inventory source with ini plugin
+Skipping callback 'actionable', as we already have a stdout callback.
+Skipping callback 'counter_enabled', as we already have a stdout callback.
+Skipping callback 'debug', as we already have a stdout callback.
+Skipping callback 'dense', as we already have a stdout callback.
+Skipping callback 'dense', as we already have a stdout callback.
+Skipping callback 'full_skip', as we already have a stdout callback.
+Skipping callback 'json', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'null', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+Skipping callback 'selective', as we already have a stdout callback.
+Skipping callback 'skippy', as we already have a stdout callback.
+Skipping callback 'stderr', as we already have a stdout callback.
+Skipping callback 'unixy', as we already have a stdout callback.
+Skipping callback 'yaml', as we already have a stdout callback.
+
+PLAYBOOK: myplay.yaml ****************************************************************************************************
+1 plays in myplay.yaml
+
+PLAY [working with ansible] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+task path: /home/ec2-user/myansible/myplay.yaml:2
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'echo ~ec2-user && sleep 0'"'"''
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'echo ~ec2-user && sleep 0'"'"''
+<server2> (0, '/home/ec2-user\n', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /home/ec2-user/.ansible/tmp `"&& mkdir "` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046 `" && echo ansible-tmp-1620007124.4-3385-280657874999046="` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046 `" ) && sleep 0'"'"''
+<server1> (0, '/home/ec2-user\n', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /home/ec2-user/.ansible/tmp `"&& mkdir "` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564 `" && echo ansible-tmp-1620007124.41-3386-106326568354564="` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564 `" ) && sleep 0'"'"''
+<server2> (0, 'ansible-tmp-1620007124.4-3385-280657874999046=/home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046\n', '')
+<server1> (0, 'ansible-tmp-1620007124.41-3386-106326568354564=/home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564\n', '')
+Using module file /usr/lib/python2.7/site-packages/ansible/modules/system/setup.py
+<server1> PUT /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpE8bdbl TO /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/AnsiballZ_setup.py
+<server1> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe '[server1]'
+Using module file /usr/lib/python2.7/site-packages/ansible/modules/system/setup.py
+<server2> PUT /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpqYGEqZ TO /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/AnsiballZ_setup.py
+<server2> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 '[server2]'
+<server1> (0, 'sftp> put /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpE8bdbl /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/AnsiballZ_setup.py\n', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'chmod u+x /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/ /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/AnsiballZ_setup.py && sleep 0'"'"''
+<server2> (0, 'sftp> put /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpqYGEqZ /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/AnsiballZ_setup.py\n', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'chmod u+x /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/ /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/AnsiballZ_setup.py && sleep 0'"'"''
+<server2> (0, '', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 -tt server2 '/bin/sh -c '"'"'/usr/bin/python /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/AnsiballZ_setup.py && sleep 0'"'"''
+<server1> (0, '', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe -tt server1 '/bin/sh -c '"'"'/usr/bin/python /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/AnsiballZ_setup.py && sleep 0'"'"''
+<server2> (0, '\r\n{"invocation": {"module_args": {"filter": "*", "gather_subset": ["all"], "fact_path": "/etc/ansible/facts.d", "gather_timeout": 10}}, "ansible_facts": {"ansible_fibre_channel_wwn": [], "module_setup": true, "ansible_distribution_version": "2", "ansible_distribution_file_variety": "Amazon", "ansible_env": {"LANG": "en_US.UTF-8", "TERM": "xterm", "SHELL": "/bin/bash", "XDG_RUNTIME_DIR": "/run/user/1000", "SHLVL": "2", "SSH_TTY": "/dev/pts/0", "PWD": "/home/ec2-user", "LESSOPEN": "||/usr/bin/lesspipe.sh %s", "XDG_SESSION_ID": "5", "SSH_CLIENT": "172.31.57.41 38980 22", "LOGNAME": "ec2-user", "USER": "ec2-user", "MAIL": "/var/mail/ec2-user", "PATH": "/usr/local/bin:/usr/bin", "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:", "HOME": "/home/ec2-user", "_": "/usr/bin/python", "SSH_CONNECTION": "172.31.57.41 38980 172.31.62.255 22"}, "ansible_userspace_bits": "64", "ansible_architecture": "x86_64", "ansible_default_ipv4": {"macaddress": "06:b2:36:a2:54:d9", "network": "172.31.48.0", "mtu": 9001, "broadcast": "172.31.63.255", "alias": "eth0", "netmask": "255.255.240.0", "address": "172.31.62.255", "interface": "eth0", "type": "ether", "gateway": "172.31.48.1"}, "ansible_swapfree_mb": 0, "ansible_default_ipv6": {}, "ansible_cmdline": {"console": "ttyS0,115200n8", "rd.emergency": "poweroff", "net.ifnames": "0", "biosdevname": "0", "rd.shell": "0", "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64", "ro": true, "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55", "nvme_core.io_timeout": "4294967295"}, "ansible_machine_id": "ec21c666732bae56d044984babbf58d8", "ansible_userspace_architecture": "x86_64", "ansible_product_uuid": "NA", "ansible_pkg_mgr": "yum", "ansible_distribution": "Amazon", "ansible_iscsi_iqn": "", "ansible_all_ipv6_addresses": ["fe80::4b2:36ff:fea2:54d9"], "ansible_uptime_seconds": 1272, "ansible_kernel": "4.14.231-173.360.amzn2.x86_64", "ansible_system_capabilities_enforced": "True", "ansible_python": {"executable": "/usr/bin/python", "version": {"micro": 18, "major": 2, "releaselevel": "final", "serial": 0, "minor": 7}, "type": "CPython", "has_sslcontext": true, "version_info": [2, 7, 18, "final", 0]}, "ansible_is_chroot": true, "ansible_hostnqn": "", "ansible_user_shell": "/bin/bash", "ansible_product_serial": "NA", "ansible_form_factor": "Other", "ansible_distribution_file_parsed": true, "ansible_fips": false, "ansible_user_id": "ec2-user", "ansible_selinux_python_present": false, "ansible_kernel_version": "#1 SMP Mon Apr 19 23:20:22 UTC 2021", "ansible_local": {}, "ansible_processor_vcpus": 1, "ansible_processor": ["0", "GenuineIntel", "Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz"], "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF2icZcA1SgfT1TJ3GLJDSiMUsh6pvahceg4T1/eoChD6QeV5jNcec8qvWSA43W30NiEJDa5J3dXTfgT494lliQ=", "ansible_user_gid": 1000, "ansible_system_vendor": "Xen", "ansible_swaptotal_mb": 0, "ansible_distribution_major_version": "2", "ansible_real_group_id": 1000, "ansible_lsb": {}, "ansible_machine": "x86_64", "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDMRVvMWx6hRkaJ/2mXYfZU2worh8jZBMdEbxdCDvqch9h6Q6KrNCFgcut4LtzSaftZjzpN/jn4dkLXXe5dICYdmjfy639S4xo1p/jcxFafh1v4tIfSnRe3E+KkgLqEP92c+vE8NJVbgI0GhF2kgr5ueJoFXTSNOK5NoR6dUtOGBY0VsiZQKqsZTk7nppfrjCnWiRPT58avOnAJ/y24SwOEuMx+FufCIY+YoSjDtfTCoe0n7aaZBTrv2Jd/OuMIubRkmPyYbIM5TMtnaH7Gh6Fnc3a0LjQ0rrgjXBC+sHTOne6fFWp3SQf78jlWORTJkM65TZS0E80LvF90b6GQ7Yrp", "ansible_user_gecos": "EC2 Default User", "ansible_processor_threads_per_core": 1, "ansible_eth0": {"macaddress": "06:b2:36:a2:54:d9", "features": {"tx_checksum_ipv4": "on [fixed]", "generic_receive_offload": "on", "tx_checksum_ipv6": "on", "tx_scatter_gather_fraglist": "off [fixed]", "rx_all": "off [fixed]", "highdma": "off [fixed]", "rx_fcs": "off [fixed]", "tx_lockless": "off [fixed]", "tx_tcp_ecn_segmentation": "off [fixed]", "rx_udp_tunnel_port_offload": "off [fixed]", "esp_hw_offload": "off [fixed]", "tx_gso_robust": "on [fixed]", "tx_tcp_mangleid_segmentation": "off", "tx_ipxip4_segmentation": "off [fixed]", "tx_checksumming": "on", "vlan_challenged": "off [fixed]", "loopback": "off [fixed]", "tx_ipxip6_segmentation": "off [fixed]", "fcoe_mtu": "off [fixed]", "scatter_gather": "on", "tx_checksum_sctp": "off [fixed]", "tx_vlan_stag_hw_insert": "off [fixed]", "rx_vlan_stag_hw_parse": "off [fixed]", "tx_gso_partial": "off [fixed]", "rx_vlan_stag_filter": "off [fixed]", "large_receive_offload": "off [fixed]", "tx_scatter_gather": "on", "rx_checksumming": "on [fixed]", "tx_tcp_segmentation": "on", "netns_local": "off [fixed]", "tx_esp_segmentation": "off [fixed]", "generic_segmentation_offload": "on", "tx_udp_tnl_segmentation": "off [fixed]", "tcp_segmentation_offload": "on", "l2_fwd_offload": "off [fixed]", "rx_vlan_offload": "off [fixed]", "ntuple_filters": "off [fixed]", "tx_gre_csum_segmentation": "off [fixed]", "esp_tx_csum_hw_offload": "off [fixed]", "tx_tcp6_segmentation": "on", "tx_udp_tnl_csum_segmentation": "off [fixed]", "udp_fragmentation_offload": "off", "tx_sctp_segmentation": "off [fixed]", "tx_checksum_fcoe_crc": "off [fixed]", "hw_tc_offload": "off [fixed]", "tx_checksum_ip_generic": "off [fixed]", "tx_fcoe_segmentation": "off [fixed]", "tx_nocache_copy": "off", "rx_vlan_filter": "off [fixed]", "tx_vlan_offload": "off [fixed]", "receive_hashing": "off [fixed]", "tx_gre_segmentation": "off [fixed]"}, "pciid": "vif-0", "module": "xen_netfront", "mtu": 9001, "device": "eth0", "promisc": false, "timestamping": ["rx_software", "software"], "ipv4": {"broadcast": "172.31.63.255", "netmask": "255.255.240.0", "network": "172.31.48.0", "address": "172.31.62.255"}, "ipv6": [{"scope": "link", "prefix": "64", "address": "fe80::4b2:36ff:fea2:54d9"}], "active": true, "type": "ether", "hw_timestamp_filters": []}, "ansible_product_name": "HVM domU", "ansible_all_ipv4_addresses": ["172.31.62.255"], "ansible_python_version": "2.7.18", "ansible_product_version": "4.2.amazon", "ansible_service_mgr": "systemd", "ansible_memory_mb": {"real": {"total": 983, "used": 277, "free": 706}, "swap": {"cached": 0, "total": 0, "free": 0, "used": 0}, "nocache": {"used": 111, "free": 872}}, "ansible_user_dir": "/home/ec2-user", "gather_subset": ["all"], "ansible_real_user_id": 1000, "ansible_virtualization_role": "guest", "ansible_dns": {"nameservers": ["172.31.0.2"], "search": ["ec2.internal"], "options": {"attempts": "5", "timeout": "2"}}, "ansible_effective_group_id": 1000, "ansible_lo": {"features": {"tx_checksum_ipv4": "off [fixed]", "generic_receive_offload": "on", "tx_checksum_ipv6": "off [fixed]", "tx_scatter_gather_fraglist": "on [fixed]", "rx_all": "off [fixed]", "highdma": "on [fixed]", "rx_fcs": "off [fixed]", "tx_lockless": "on [fixed]", "tx_tcp_ecn_segmentation": "on", "rx_udp_tunnel_port_offload": "off [fixed]", "esp_hw_offload": "off [fixed]", "tx_gso_robust": "off [fixed]", "tx_tcp_mangleid_segmentation": "on", "tx_ipxip4_segmentation": "off [fixed]", "tx_checksumming": "on", "vlan_challenged": "on [fixed]", "loopback": "on [fixed]", "tx_ipxip6_segmentation": "off [fixed]", "fcoe_mtu": "off [fixed]", "scatter_gather": "on", "tx_checksum_sctp": "on [fixed]", "tx_vlan_stag_hw_insert": "off [fixed]", "rx_vlan_stag_hw_parse": "off [fixed]", "tx_gso_partial": "off [fixed]", "rx_vlan_stag_filter": "off [fixed]", "large_receive_offload": "off [fixed]", "tx_scatter_gather": "on [fixed]", "rx_checksumming": "on [fixed]", "tx_tcp_segmentation": "on", "netns_local": "on [fixed]", "tx_esp_segmentation": "off [fixed]", "generic_segmentation_offload": "on", "tx_udp_tnl_segmentation": "off [fixed]", "tcp_segmentation_offload": "on", "l2_fwd_offload": "off [fixed]", "rx_vlan_offload": "off [fixed]", "ntuple_filters": "off [fixed]", "tx_gre_csum_segmentation": "off [fixed]", "esp_tx_csum_hw_offload": "off [fixed]", "tx_tcp6_segmentation": "on", "tx_udp_tnl_csum_segmentation": "off [fixed]", "udp_fragmentation_offload": "off", "tx_sctp_segmentation": "on", "tx_checksum_fcoe_crc": "off [fixed]", "hw_tc_offload": "off [fixed]", "tx_checksum_ip_generic": "on [fixed]", "tx_fcoe_segmentation": "off [fixed]", "tx_nocache_copy": "off [fixed]", "rx_vlan_filter": "off [fixed]", "tx_vlan_offload": "off [fixed]", "receive_hashing": "off [fixed]", "tx_gre_segmentation": "off [fixed]"}, "hw_timestamp_filters": [], "mtu": 65536, "device": "lo", "promisc": false, "timestamping": ["tx_software", "rx_software", "software"], "ipv4": {"broadcast": "", "netmask": "255.0.0.0", "network": "127.0.0.0", "address": "127.0.0.1"}, "ipv6": [{"scope": "host", "prefix": "128", "address": "::1"}], "active": true, "type": "loopback"}, "ansible_memtotal_mb": 983, "ansible_device_links": {"masters": {}, "labels": {"xvda1": ["\\\\x2f"]}, "ids": {}, "uuids": {"xvda1": ["2753b570-611a-44cb-8bd2-888283108b55"]}}, "ansible_apparmor": {"status": "disabled"}, "ansible_proc_cmdline": {"console": ["tty0", "ttyS0,115200n8"], "rd.emergency": "poweroff", "net.ifnames": "0", "biosdevname": "0", "rd.shell": "0", "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64", "ro": true, "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55", "nvme_core.io_timeout": "4294967295"}, "ansible_memfree_mb": 706, "ansible_processor_count": 1, "ansible_hostname": "ip-172-31-62-255", "ansible_interfaces": ["lo", "eth0"], "ansible_selinux": {"status": "Missing selinux Python library"}, "ansible_fqdn": "ip-172-31-62-255.ec2.internal", "ansible_mounts": [{"block_used": 373656, "uuid": "2753b570-611a-44cb-8bd2-888283108b55", "size_total": 8577331200, "block_total": 2094075, "mount": "/", "block_available": 1720419, "size_available": 7046836224, "fstype": "xfs", "inode_total": 4193216, "options": "rw,noatime,attr2,inode64,noquota", "device": "/dev/xvda1", "inode_used": 47239, "block_size": 4096, "inode_available": 4145977}], "ansible_nodename": "ip-172-31-62-255.ec2.internal", "ansible_domain": "ec2.internal", "ansible_distribution_file_path": "/etc/system-release", "ansible_virtualization_type": "xen", "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIOILAxvlEwHhgg3+NFynUTYwf1Q9OG7kQ/isKSTAoBP7", "ansible_processor_cores": 1, "ansible_bios_version": "4.2.amazon", "ansible_date_time": {"weekday_number": "1", "iso8601_basic_short": "20210503T015845", "tz": "UTC", "weeknumber": "18", "hour": "01", "year": "2021", "minute": "58", "tz_offset": "+0000", "month": "05", "epoch": "1620007125", "iso8601_micro": "2021-05-03T01:58:45.959137Z", "weekday": "Monday", "time": "01:58:45", "date": "2021-05-03", "iso8601": "2021-05-03T01:58:45Z", "day": "03", "iso8601_basic": "20210503T015845959137", "second": "45"}, "ansible_distribution_release": "NA", "ansible_os_family": "RedHat", "ansible_effective_user_id": 1000, "ansible_system": "Linux", "ansible_devices": {"xvda": {"scheduler_mode": "noop", "rotational": "0", "vendor": null, "sectors": "16777216", "links": {"masters": [], "labels": [], "ids": [], "uuids": []}, "sas_device_handle": null, "sas_address": null, "virtual": 1, "host": "", "sectorsize": "512", "removable": "0", "support_discard": "0", "model": null, "partitions": {"xvda1": {"sectorsize": 512, "uuid": "2753b570-611a-44cb-8bd2-888283108b55", "links": {"masters": [], "labels": ["\\\\x2f"], "ids": [], "uuids": ["2753b570-611a-44cb-8bd2-888283108b55"]}, "sectors": "16773087", "start": "4096", "holders": [], "size": "8.00 GB"}}, "holders": [], "size": "8.00 GB"}}, "ansible_user_uid": 1000, "ansible_bios_date": "08/24/2006", "ansible_system_capabilities": [""]}}\r\n', 'Shared connection to server2 closed.\r\n')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'rm -f -r /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.4-3385-280657874999046/ > /dev/null 2>&1 && sleep 0'"'"''
+<server2> (0, '', '')
+<server1> (0, '\r\n{"invocation": {"module_args": {"filter": "*", "gather_subset": ["all"], "fact_path": "/etc/ansible/facts.d", "gather_timeout": 10}}, "ansible_facts": {"ansible_fibre_channel_wwn": [], "module_setup": true, "ansible_distribution_version": "2", "ansible_distribution_file_variety": "Amazon", "ansible_env": {"LANG": "en_US.UTF-8", "TERM": "xterm", "SHELL": "/bin/bash", "XDG_RUNTIME_DIR": "/run/user/1000", "SHLVL": "2", "SSH_TTY": "/dev/pts/0", "PWD": "/home/ec2-user", "LESSOPEN": "||/usr/bin/lesspipe.sh %s", "XDG_SESSION_ID": "5", "SSH_CLIENT": "172.31.57.41 54452 22", "LOGNAME": "ec2-user", "USER": "ec2-user", "MAIL": "/var/mail/ec2-user", "PATH": "/usr/local/bin:/usr/bin", "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:", "HOME": "/home/ec2-user", "_": "/usr/bin/python", "SSH_CONNECTION": "172.31.57.41 54452 172.31.62.207 22"}, "ansible_userspace_bits": "64", "ansible_architecture": "x86_64", "ansible_default_ipv4": {"macaddress": "06:1b:56:18:ec:13", "network": "172.31.48.0", "mtu": 9001, "broadcast": "172.31.63.255", "alias": "eth0", "netmask": "255.255.240.0", "address": "172.31.62.207", "interface": "eth0", "type": "ether", "gateway": "172.31.48.1"}, "ansible_swapfree_mb": 0, "ansible_default_ipv6": {}, "ansible_cmdline": {"console": "ttyS0,115200n8", "rd.emergency": "poweroff", "net.ifnames": "0", "biosdevname": "0", "rd.shell": "0", "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64", "ro": true, "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55", "nvme_core.io_timeout": "4294967295"}, "ansible_machine_id": "ec21c666732bae56d044984babbf58d8", "ansible_userspace_architecture": "x86_64", "ansible_product_uuid": "NA", "ansible_pkg_mgr": "yum", "ansible_distribution": "Amazon", "ansible_iscsi_iqn": "", "ansible_all_ipv6_addresses": ["fe80::41b:56ff:fe18:ec13"], "ansible_uptime_seconds": 1266, "ansible_kernel": "4.14.231-173.360.amzn2.x86_64", "ansible_system_capabilities_enforced": "True", "ansible_python": {"executable": "/usr/bin/python", "version": {"micro": 18, "major": 2, "releaselevel": "final", "serial": 0, "minor": 7}, "type": "CPython", "has_sslcontext": true, "version_info": [2, 7, 18, "final", 0]}, "ansible_is_chroot": true, "ansible_hostnqn": "", "ansible_user_shell": "/bin/bash", "ansible_product_serial": "NA", "ansible_form_factor": "Other", "ansible_distribution_file_parsed": true, "ansible_fips": false, "ansible_user_id": "ec2-user", "ansible_selinux_python_present": false, "ansible_kernel_version": "#1 SMP Mon Apr 19 23:20:22 UTC 2021", "ansible_local": {}, "ansible_processor_vcpus": 1, "ansible_processor": ["0", "GenuineIntel", "Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz"], "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEKLkoexPudzDekmVV6JS106BMji87tPuQrpoPmttEoP25mGWK3TEKOwZIPdf26xbxHR91KQ7cK2UIalbzud7gU=", "ansible_user_gid": 1000, "ansible_system_vendor": "Xen", "ansible_swaptotal_mb": 0, "ansible_distribution_major_version": "2", "ansible_real_group_id": 1000, "ansible_lsb": {}, "ansible_machine": "x86_64", "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQCmkf+x6GUO/Mc7hoyiV4jnTc/94y6EX7Ge3j2IxfDJJWuUa/KZWs3GDN7YdoVEAN9qVrNQ0K+24fWNueIJuGGQGeF+NimYkd+tAv3AJjjsq+GKberEQY70I4fvuXYdX3WEnc8udxSOBgySQ0eOEodDejGwf+Yva9330TcMc8nn8ZMjyc36AuQ4A69IaaCOksME0YfmxjMk427vDWkBH3h2iDXzmVu6Q/yI2d373uuPTy6GG8kE1lBb59PI8BpuYR6pDhuuzlIGBpFyWOOg8aD38gopdHjOaokw9mZZECP2wk6CXJ0zHZVsteJHvqaQ9UkBO9WigvCFUuCoNdbhcuVT", "ansible_user_gecos": "EC2 Default User", "ansible_processor_threads_per_core": 1, "ansible_eth0": {"macaddress": "06:1b:56:18:ec:13", "features": {"tx_checksum_ipv4": "on [fixed]", "generic_receive_offload": "on", "tx_checksum_ipv6": "on", "tx_scatter_gather_fraglist": "off [fixed]", "rx_all": "off [fixed]", "highdma": "off [fixed]", "rx_fcs": "off [fixed]", "tx_lockless": "off [fixed]", "tx_tcp_ecn_segmentation": "off [fixed]", "rx_udp_tunnel_port_offload": "off [fixed]", "esp_hw_offload": "off [fixed]", "tx_gso_robust": "on [fixed]", "tx_tcp_mangleid_segmentation": "off", "tx_ipxip4_segmentation": "off [fixed]", "tx_checksumming": "on", "vlan_challenged": "off [fixed]", "loopback": "off [fixed]", "tx_ipxip6_segmentation": "off [fixed]", "fcoe_mtu": "off [fixed]", "scatter_gather": "on", "tx_checksum_sctp": "off [fixed]", "tx_vlan_stag_hw_insert": "off [fixed]", "rx_vlan_stag_hw_parse": "off [fixed]", "tx_gso_partial": "off [fixed]", "rx_vlan_stag_filter": "off [fixed]", "large_receive_offload": "off [fixed]", "tx_scatter_gather": "on", "rx_checksumming": "on [fixed]", "tx_tcp_segmentation": "on", "netns_local": "off [fixed]", "tx_esp_segmentation": "off [fixed]", "generic_segmentation_offload": "on", "tx_udp_tnl_segmentation": "off [fixed]", "tcp_segmentation_offload": "on", "l2_fwd_offload": "off [fixed]", "rx_vlan_offload": "off [fixed]", "ntuple_filters": "off [fixed]", "tx_gre_csum_segmentation": "off [fixed]", "esp_tx_csum_hw_offload": "off [fixed]", "tx_tcp6_segmentation": "on", "tx_udp_tnl_csum_segmentation": "off [fixed]", "udp_fragmentation_offload": "off", "tx_sctp_segmentation": "off [fixed]", "tx_checksum_fcoe_crc": "off [fixed]", "hw_tc_offload": "off [fixed]", "tx_checksum_ip_generic": "off [fixed]", "tx_fcoe_segmentation": "off [fixed]", "tx_nocache_copy": "off", "rx_vlan_filter": "off [fixed]", "tx_vlan_offload": "off [fixed]", "receive_hashing": "off [fixed]", "tx_gre_segmentation": "off [fixed]"}, "pciid": "vif-0", "module": "xen_netfront", "mtu": 9001, "device": "eth0", "promisc": false, "timestamping": ["rx_software", "software"], "ipv4": {"broadcast": "172.31.63.255", "netmask": "255.255.240.0", "network": "172.31.48.0", "address": "172.31.62.207"}, "ipv6": [{"scope": "link", "prefix": "64", "address": "fe80::41b:56ff:fe18:ec13"}], "active": true, "type": "ether", "hw_timestamp_filters": []}, "ansible_product_name": "HVM domU", "ansible_all_ipv4_addresses": ["172.31.62.207"], "ansible_python_version": "2.7.18", "ansible_product_version": "4.2.amazon", "ansible_service_mgr": "systemd", "ansible_memory_mb": {"real": {"total": 983, "used": 277, "free": 706}, "swap": {"cached": 0, "total": 0, "free": 0, "used": 0}, "nocache": {"used": 111, "free": 872}}, "ansible_user_dir": "/home/ec2-user", "gather_subset": ["all"], "ansible_real_user_id": 1000, "ansible_virtualization_role": "guest", "ansible_dns": {"nameservers": ["172.31.0.2"], "search": ["ec2.internal"], "options": {"attempts": "5", "timeout": "2"}}, "ansible_effective_group_id": 1000, "ansible_lo": {"features": {"tx_checksum_ipv4": "off [fixed]", "generic_receive_offload": "on", "tx_checksum_ipv6": "off [fixed]", "tx_scatter_gather_fraglist": "on [fixed]", "rx_all": "off [fixed]", "highdma": "on [fixed]", "rx_fcs": "off [fixed]", "tx_lockless": "on [fixed]", "tx_tcp_ecn_segmentation": "on", "rx_udp_tunnel_port_offload": "off [fixed]", "esp_hw_offload": "off [fixed]", "tx_gso_robust": "off [fixed]", "tx_tcp_mangleid_segmentation": "on", "tx_ipxip4_segmentation": "off [fixed]", "tx_checksumming": "on", "vlan_challenged": "on [fixed]", "loopback": "on [fixed]", "tx_ipxip6_segmentation": "off [fixed]", "fcoe_mtu": "off [fixed]", "scatter_gather": "on", "tx_checksum_sctp": "on [fixed]", "tx_vlan_stag_hw_insert": "off [fixed]", "rx_vlan_stag_hw_parse": "off [fixed]", "tx_gso_partial": "off [fixed]", "rx_vlan_stag_filter": "off [fixed]", "large_receive_offload": "off [fixed]", "tx_scatter_gather": "on [fixed]", "rx_checksumming": "on [fixed]", "tx_tcp_segmentation": "on", "netns_local": "on [fixed]", "tx_esp_segmentation": "off [fixed]", "generic_segmentation_offload": "on", "tx_udp_tnl_segmentation": "off [fixed]", "tcp_segmentation_offload": "on", "l2_fwd_offload": "off [fixed]", "rx_vlan_offload": "off [fixed]", "ntuple_filters": "off [fixed]", "tx_gre_csum_segmentation": "off [fixed]", "esp_tx_csum_hw_offload": "off [fixed]", "tx_tcp6_segmentation": "on", "tx_udp_tnl_csum_segmentation": "off [fixed]", "udp_fragmentation_offload": "off", "tx_sctp_segmentation": "on", "tx_checksum_fcoe_crc": "off [fixed]", "hw_tc_offload": "off [fixed]", "tx_checksum_ip_generic": "on [fixed]", "tx_fcoe_segmentation": "off [fixed]", "tx_nocache_copy": "off [fixed]", "rx_vlan_filter": "off [fixed]", "tx_vlan_offload": "off [fixed]", "receive_hashing": "off [fixed]", "tx_gre_segmentation": "off [fixed]"}, "hw_timestamp_filters": [], "mtu": 65536, "device": "lo", "promisc": false, "timestamping": ["tx_software", "rx_software", "software"], "ipv4": {"broadcast": "", "netmask": "255.0.0.0", "network": "127.0.0.0", "address": "127.0.0.1"}, "ipv6": [{"scope": "host", "prefix": "128", "address": "::1"}], "active": true, "type": "loopback"}, "ansible_memtotal_mb": 983, "ansible_device_links": {"masters": {}, "labels": {"xvda1": ["\\\\x2f"]}, "ids": {}, "uuids": {"xvda1": ["2753b570-611a-44cb-8bd2-888283108b55"]}}, "ansible_apparmor": {"status": "disabled"}, "ansible_proc_cmdline": {"console": ["tty0", "ttyS0,115200n8"], "rd.emergency": "poweroff", "net.ifnames": "0", "biosdevname": "0", "rd.shell": "0", "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64", "ro": true, "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55", "nvme_core.io_timeout": "4294967295"}, "ansible_memfree_mb": 706, "ansible_processor_count": 1, "ansible_hostname": "ip-172-31-62-207", "ansible_interfaces": ["lo", "eth0"], "ansible_selinux": {"status": "Missing selinux Python library"}, "ansible_fqdn": "ip-172-31-62-207.ec2.internal", "ansible_mounts": [{"block_used": 373045, "uuid": "2753b570-611a-44cb-8bd2-888283108b55", "size_total": 8577331200, "block_total": 2094075, "mount": "/", "block_available": 1721030, "size_available": 7049338880, "fstype": "xfs", "inode_total": 4193216, "options": "rw,noatime,attr2,inode64,noquota", "device": "/dev/xvda1", "inode_used": 47099, "block_size": 4096, "inode_available": 4146117}], "ansible_nodename": "ip-172-31-62-207.ec2.internal", "ansible_domain": "ec2.internal", "ansible_distribution_file_path": "/etc/system-release", "ansible_virtualization_type": "xen", "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIEO3m7pN8qV2kzD8MUaZAQZz0otsj8lzISa+StyjT15V", "ansible_processor_cores": 1, "ansible_bios_version": "4.2.amazon", "ansible_date_time": {"weekday_number": "1", "iso8601_basic_short": "20210503T015845", "tz": "UTC", "weeknumber": "18", "hour": "01", "year": "2021", "minute": "58", "tz_offset": "+0000", "month": "05", "epoch": "1620007125", "iso8601_micro": "2021-05-03T01:58:45.993447Z", "weekday": "Monday", "time": "01:58:45", "date": "2021-05-03", "iso8601": "2021-05-03T01:58:45Z", "day": "03", "iso8601_basic": "20210503T015845993447", "second": "45"}, "ansible_distribution_release": "NA", "ansible_os_family": "RedHat", "ansible_effective_user_id": 1000, "ansible_system": "Linux", "ansible_devices": {"xvda": {"scheduler_mode": "noop", "rotational": "0", "vendor": null, "sectors": "16777216", "links": {"masters": [], "labels": [], "ids": [], "uuids": []}, "sas_device_handle": null, "sas_address": null, "virtual": 1, "host": "", "sectorsize": "512", "removable": "0", "support_discard": "0", "model": null, "partitions": {"xvda1": {"sectorsize": 512, "uuid": "2753b570-611a-44cb-8bd2-888283108b55", "links": {"masters": [], "labels": ["\\\\x2f"], "ids": [], "uuids": ["2753b570-611a-44cb-8bd2-888283108b55"]}, "sectors": "16773087", "start": "4096", "holders": [], "size": "8.00 GB"}}, "holders": [], "size": "8.00 GB"}}, "ansible_user_uid": 1000, "ansible_bios_date": "08/24/2006", "ansible_system_capabilities": [""]}}\r\n', 'Shared connection to server1 closed.\r\n')
+ok: [server2]
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'rm -f -r /home/ec2-user/.ansible/tmp/ansible-tmp-1620007124.41-3386-106326568354564/ > /dev/null 2>&1 && sleep 0'"'"''
+<server1> (0, '', '')
+ok: [server1]
+META: ran handlers
+
+TASK [get server ipaddress] **********************************************************************************************
+task path: /home/ec2-user/myansible/myplay.yaml:5
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'echo ~ec2-user && sleep 0'"'"''
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'echo ~ec2-user && sleep 0'"'"''
+<server2> (0, '/home/ec2-user\n', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /home/ec2-user/.ansible/tmp `"&& mkdir "` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793 `" && echo ansible-tmp-1620007126.3-3409-36685462073793="` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793 `" ) && sleep 0'"'"''
+<server1> (0, '/home/ec2-user\n', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'( umask 77 && mkdir -p "` echo /home/ec2-user/.ansible/tmp `"&& mkdir "` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783 `" && echo ansible-tmp-1620007126.31-3410-156407337984783="` echo /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783 `" ) && sleep 0'"'"''
+<server2> (0, 'ansible-tmp-1620007126.3-3409-36685462073793=/home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793\n', '')
+<server1> (0, 'ansible-tmp-1620007126.31-3410-156407337984783=/home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783\n', '')
+Using module file /usr/lib/python2.7/site-packages/ansible/modules/commands/command.py
+<server1> PUT /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmppg96QP TO /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/AnsiballZ_command.py
+<server1> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe '[server1]'
+Using module file /usr/lib/python2.7/site-packages/ansible/modules/commands/command.py
+<server2> PUT /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpXS7dJe TO /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/AnsiballZ_command.py
+<server2> SSH: EXEC sftp -b - -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 '[server2]'
+<server1> (0, 'sftp> put /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmppg96QP /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/AnsiballZ_command.py\n', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'chmod u+x /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/ /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/AnsiballZ_command.py && sleep 0'"'"''
+<server2> (0, 'sftp> put /home/ec2-user/.ansible/tmp/ansible-local-3379PNsZPc/tmpXS7dJe /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/AnsiballZ_command.py\n', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'chmod u+x /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/ /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/AnsiballZ_command.py && sleep 0'"'"''
+<server2> (0, '', '')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 -tt server2 '/bin/sh -c '"'"'/usr/bin/python /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/AnsiballZ_command.py && sleep 0'"'"''
+<server1> (0, '', '')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe -tt server1 '/bin/sh -c '"'"'/usr/bin/python /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/AnsiballZ_command.py && sleep 0'"'"''
+<server2> (0, '\r\n{"changed": true, "end": "2021-05-03 01:58:46.863829", "stdout": "172.31.62.255", "cmd": ["hostname", "-i"], "rc": 0, "start": "2021-05-03 01:58:46.825461", "stderr": "", "delta": "0:00:00.038368", "invocation": {"module_args": {"creates": null, "executable": null, "_uses_shell": false, "strip_empty_ends": true, "_raw_params": "hostname -i", "removes": null, "argv": null, "warn": true, "chdir": null, "stdin_add_newline": true, "stdin": null}}}\r\n', 'Shared connection to server2 closed.\r\n')
+<server2> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server2> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/f4c57c9a93 server2 '/bin/sh -c '"'"'rm -f -r /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.3-3409-36685462073793/ > /dev/null 2>&1 && sleep 0'"'"''
+<server1> (0, '\r\n{"changed": true, "end": "2021-05-03 01:58:46.871208", "stdout": "172.31.62.207", "cmd": ["hostname", "-i"], "rc": 0, "start": "2021-05-03 01:58:46.831632", "stderr": "", "delta": "0:00:00.039576", "invocation": {"module_args": {"creates": null, "executable": null, "_uses_shell": false, "strip_empty_ends": true, "_raw_params": "hostname -i", "removes": null, "argv": null, "warn": true, "chdir": null, "stdin_add_newline": true, "stdin": null}}}\r\n', 'Shared connection to server1 closed.\r\n')
+<server1> ESTABLISH SSH CONNECTION FOR USER: ec2-user
+<server1> SSH: EXEC ssh -C -o ControlMaster=auto -o ControlPersist=60s -o 'IdentityFile="/home/ec2-user/myansible/mykey.pem"' -o KbdInteractiveAuthentication=no -o PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey -o PasswordAuthentication=no -o 'User="ec2-user"' -o ConnectTimeout=10 -o ControlPath=/home/ec2-user/.ansible/cp/4bec48fcbe server1 '/bin/sh -c '"'"'rm -f -r /home/ec2-user/.ansible/tmp/ansible-tmp-1620007126.31-3410-156407337984783/ > /dev/null 2>&1 && sleep 0'"'"''
+<server2> (0, '', '')
+changed: [server2] => {
+    "changed": true,
+    "cmd": [
+        "hostname",
+        "-i"
+    ],
+    "delta": "0:00:00.038368",
+    "end": "2021-05-03 01:58:46.863829",
+    "invocation": {
+        "module_args": {
+            "_raw_params": "hostname -i",
+            "_uses_shell": false,
+            "argv": null,
+            "chdir": null,
+            "creates": null,
+            "executable": null,
+            "removes": null,
+            "stdin": null,
+            "stdin_add_newline": true,
+            "strip_empty_ends": true,
+            "warn": true
+        }
+    },
+    "rc": 0,
+    "start": "2021-05-03 01:58:46.825461",
+    "stderr": "",
+    "stderr_lines": [],
+    "stdout": "172.31.62.255",
+    "stdout_lines": [
+        "172.31.62.255"
+    ]
+}
+<server1> (0, '', '')
+changed: [server1] => {
+    "changed": true,
+    "cmd": [
+        "hostname",
+        "-i"
+    ],
+    "delta": "0:00:00.039576",
+    "end": "2021-05-03 01:58:46.871208",
+    "invocation": {
+        "module_args": {
+            "_raw_params": "hostname -i",
+            "_uses_shell": false,
+            "argv": null,
+            "chdir": null,
+            "creates": null,
+            "executable": null,
+            "removes": null,
+            "stdin": null,
+            "stdin_add_newline": true,
+            "strip_empty_ends": true,
+            "warn": true
+        }
+    },
+    "rc": 0,
+    "start": "2021-05-03 01:58:46.831632",
+    "stderr": "",
+    "stderr_lines": [],
+    "stdout": "172.31.62.207",
+    "stdout_lines": [
+        "172.31.62.207"
+    ]
+}
+META: ran handlers
+META: ran handlers
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myplay.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with ansible] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [get server ipaddress] **********************************************************************************************
+changed: [server2] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038252", "end": "2021-05-03 01:59:43.718139", "rc": 0, "start": "2021-05-03 01:59:43.679887", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.255", "stdout_lines": ["172.31.62.255"]}
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.039427", "end": "2021-05-03 01:59:43.722860", "rc": 0, "start": "2021-05-03 01:59:43.683433", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ll
+total 16
+-rw-rw-r-- 1 ec2-user ec2-user  131 May  1 05:32 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user   37 May  1 05:40 myansiblehosts
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ #ansible-playbook myplay.yaml -vv
+[ec2-user@controller myansible]$ cat my
+cat: my: No such file or directory
+[ec2-user@controller myansible]$ cat myplay.yaml
+---
+- name: working with ansible
+  hosts: all
+  tasks:
+    - name: get server ipaddress
+      command: hostname -i
+[ec2-user@controller myansible]$ ansible-playbook myplay.yaml
+
+PLAY [working with ansible] **********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [get server ipaddress] **********************************************************************************************
+changed: [server2]
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+[ec2-user@controller myansible]$ vi myansiblehosts
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+                - name: Create a dvsbatch1.txt file in all servers
+                  file:
+                    path: /tmp/dvsbatch1.txt
+                    owner: ec2-user
+                    group: ec2-user
+                    mode: '0644'
+                                state: touch
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: No JSON object could be decoded
+
+Syntax Error while loading YAML.
+  found character that cannot start any token
+
+The error appears to be in '/home/ec2-user/myansible/mymodules.yaml': line 5, column 1, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+                - name: Create a dvsbatch1.txt file in all servers
+^ here
+There appears to be a tab character at the start of the line.
+
+YAML does not use tabs for formatting. Tabs should be replaced with spaces.
+
+For example:
+    - name: update tooling
+      vars:
+        version: 1.2.3
+#    ^--- there is a tab there.
+
+Should be written as:
+    - name: update tooling
+      vars:
+        version: 1.2.3
+# ^--- all spaces here.
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ >mymodules.yaml
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+    - name: Create a dvsbatch1.txt file in all servers
+      file:
+        path: /tmp/dvsbatch1.txt
+        owner: ec2-user
+        group: ec2-user
+        mode: '0644'
+        state: touch
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [Create a dvsbatch1.txt file in all servers] ************************************************************************
+changed: [server2]
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+172.31.62.207   server1
+172.31.62.255   server2
+[ec2-user@controller myansible]$ ls -l /etc/hosts
+-rw-r--r-- 1 root root 170 May  1 05:20 /etc/hosts
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+    - name: Create a dvsbatch1.txt file in all servers
+      file:
+        path: /tmp/dvsbatch1.txt
+        owner: ec2-user
+        group: ec2-user
+        mode: '0644'
+        state: touch
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+    - copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [copy] **************************************************************************************************************
+fatal: [server1]: FAILED! => {"changed": false, "checksum": "82b96d7bb2affebf3204df8a75f8f6a2fc12be9b", "msg": "Destination /etc not writable"}
+fatal: [server2]: FAILED! => {"changed": false, "checksum": "82b96d7bb2affebf3204df8a75f8f6a2fc12be9b", "msg": "Destination /etc not writable"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi ansible.cfg
+[ec2-user@controller myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [copy] **************************************************************************************************************
+changed: [server2]
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [copy] **************************************************************************************************************
+ok: [server1]
+changed: [server2]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+    - copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: all
+  tasks:
+    - name: working with script module
+      script: ./mycode.py
+[ec2-user@controller myansible]$ vi mycode.py
+[ec2-user@controller myansible]$ cat mycode.py
+#!/usr/bin/python
+for i in range(5):
+    print i
+[ec2-user@controller myansible]$ python mycode.py
+0
+1
+2
+3
+4
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: working with script module
+      script: ./mycode.py
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with script module] ****************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with script module] ****************************************************************************************
+changed: [server1] => {"changed": true, "rc": 0, "stderr": "Shared connection to server1 closed.\r\n", "stderr_lines": ["Shared connection to server1 closed."], "stdout": "0\r\n1\r\n2\r\n3\r\n4\r\n", "stdout_lines": ["0", "1", "2", "3", "4"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: working with script module
+      script: ./mycode.py
+      register: myoutput
+
+    - name: debug output
+      debug: msg="{{ myoutput }}"
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with script module] ****************************************************************************************
+changed: [server1]
+
+TASK [debug output] ******************************************************************************************************
+ok: [server1] => {
+    "msg": {
+        "changed": true,
+        "failed": false,
+        "rc": 0,
+        "stderr": "Shared connection to server1 closed.\r\n",
+        "stderr_lines": [
+            "Shared connection to server1 closed."
+        ],
+        "stdout": "0\r\n1\r\n2\r\n3\r\n4\r\n",
+        "stdout_lines": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+        ]
+    }
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: working with script module
+      script: ./mycode.py
+      register: myoutput
+
+    - name: debug output
+      debug: msg="{{ myoutput.stdout_lines }}"
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with script module] ****************************************************************************************
+changed: [server1]
+
+TASK [debug output] ******************************************************************************************************
+ok: [server1] => {
+    "msg": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+    ]
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: working with script module
+      script: ./mycode.py
+      register: myoutput
+
+    - name: debug output
+      debug: msg="{{ myoutput.stdout_lines[2] }}"
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with script module] ****************************************************************************************
+changed: [server1]
+
+TASK [debug output] ******************************************************************************************************
+ok: [server1] => {
+    "msg": "2"
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: gather server ip
+      command: hostname -i
+      register: myip
+
+
+    - name: debug myip
+      debug: msg="{{ myip }}"
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [gather server ip] **************************************************************************************************
+changed: [server1]
+
+TASK [debug myip] ********************************************************************************************************
+ok: [server1] => {
+    "msg": {
+        "changed": true,
+        "cmd": [
+            "hostname",
+            "-i"
+        ],
+        "delta": "0:00:00.038447",
+        "end": "2021-05-03 02:58:36.099246",
+        "failed": false,
+        "rc": 0,
+        "start": "2021-05-03 02:58:36.060799",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "172.31.62.207",
+        "stdout_lines": [
+            "172.31.62.207"
+        ]
+    }
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [gather server ip] **************************************************************************************************
+changed: [server1]
+
+TASK [debug myip] ********************************************************************************************************
+ok: [server1] => {
+    "msg": [
+        "172.31.62.207"
+    ]
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [gather server ip] **************************************************************************************************
+changed: [server1]
+
+TASK [debug myip] ********************************************************************************************************
+ok: [server1] => {
+    "msg": "172.31.62.207"
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi mymodules.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat mymodules.yaml
+---
+- name: working with ansible moduels
+  hosts: server1
+  tasks:
+    - name: gather server ip
+      command: hostname -i
+      register: myip
+
+
+    - name: debug myip
+      debug: msg="{{myip.stdout_lines[0]}}"
+
+    - name: assign value to a variable
+      set_fact: myprivip="{{myip.stdout_lines[0]}}"
+[ec2-user@controller myansible]$ ansible-playbook mymodules.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with ansible moduels] **************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [gather server ip] **************************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038768", "end": "2021-05-03 03:01:55.157435", "rc": 0, "start": "2021-05-03 03:01:55.118667", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+
+TASK [debug myip] ********************************************************************************************************
+ok: [server1] => {
+    "msg": "172.31.62.207"
+}
+
+TASK [assign value to a variable] ****************************************************************************************
+ok: [server1] => {"ansible_facts": {"myprivip": "172.31.62.207"}, "changed": false}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  vars:
+    - myval1: 20
+    - myval2: 40
+    - myval3: 50
+  tasks:
+    - name: printing variable value
+      command: echo "hi my value is {{ myval1 }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "hi my value is 20"], "delta": "0:00:00.038195", "end": "2021-05-03 03:08:37.096900", "rc": 0, "start": "2021-05-03 03:08:37.058705", "stderr": "", "stderr_lines": [], "stdout": "hi my value is 20", "stdout_lines": ["hi my value is 20"]}
+changed: [server2] => {"changed": true, "cmd": ["echo", "hi my value is 20"], "delta": "0:00:00.038070", "end": "2021-05-03 03:08:37.093797", "rc": 0, "start": "2021-05-03 03:08:37.055727", "stderr": "", "stderr_lines": [], "stdout": "hi my value is 20", "stdout_lines": ["hi my value is 20"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi variables.yaml
+[ec2-user@controller myansible]$ cat variables.yaml
+---
+mysubj: "ansible"
+mybatch: "1"
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  vars:
+    - myval1: 20
+    - myval2: 40
+    - myval3: 50
+  vars_files:
+    - variables.yaml
+  tasks:
+    - name: printing variable value
+      command: echo "hi my value is {{ myval1 }},mysub is {{ mysub }},mybatch no is {{ mybatch }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing variable value] *******************************************************************************************
+fatal: [server2]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'mysub' is undefined\n\nThe error appears to be in '/home/ec2-user/myansible/myvars.yaml': line 11, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: printing variable value\n      ^ here\n"}
+fatal: [server1]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'mysub' is undefined\n\nThe error appears to be in '/home/ec2-user/myansible/myvars.yaml': line 11, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: printing variable value\n      ^ here\n"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat variables.yaml
+---
+mysubj: "ansible"
+mybatch: "1"
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  vars:
+    - myval1: 20
+    - myval2: 40
+    - myval3: 50
+  vars_files:
+    - variables.yaml
+  tasks:
+    - name: printing variable value
+      command: echo "hi my value is {{ myval1 }},mysub is {{ mysubj }},mybatch no is {{ mybatch }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "hi my value is 20,mysub is ansible,mybatch no is 1"], "delta": "0:00:00.038680", "end": "2021-05-03 03:13:30.547994", "rc": 0, "start": "2021-05-03 03:13:30.509314", "stderr": "", "stderr_lines": [], "stdout": "hi my value is 20,mysub is ansible,mybatch no is 1", "stdout_lines": ["hi my value is 20,mysub is ansible,mybatch no is 1"]}
+changed: [server2] => {"changed": true, "cmd": ["echo", "hi my value is 20,mysub is ansible,mybatch no is 1"], "delta": "0:00:00.038095", "end": "2021-05-03 03:13:30.548426", "rc": 0, "start": "2021-05-03 03:13:30.510331", "stderr": "", "stderr_lines": [], "stdout": "hi my value is 20,mysub is ansible,mybatch no is 1", "stdout_lines": ["hi my value is 20,mysub is ansible,mybatch no is 1"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ls -l
+total 36
+-rw-rw-r-- 1 ec2-user ec2-user  237 May  3 02:18 1
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  3 02:27 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user   37 May  1 05:40 myansiblehosts
+-rw-rw-r-- 1 ec2-user ec2-user   49 May  3 02:41 mycode.py
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  305 May  3 03:01 mymodules.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  287 May  3 03:13 myvars.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   35 May  3 03:10 variables.yaml
+[ec2-user@controller myansible]$ mkdir host_vars
+[ec2-user@controller myansible]$ vi host_vars/server1.yaml
+[ec2-user@controller myansible]$ cat host_vars/server1.yaml
+---
+apacheversion: "3.0"
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  tasks:
+    - name: printing variable value
+      command: echo "my apache version is {{ apacheversion }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+fatal: [server2]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'apacheversion' is undefined\n\nThe error appears to be in '/home/ec2-user/myansible/myvars.yaml': line 5, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: printing variable value\n      ^ here\n"}
+changed: [server1] => {"changed": true, "cmd": ["echo", "my apache version is 3.0"], "delta": "0:00:00.038352", "end": "2021-05-03 03:26:02.623777", "rc": 0, "start": "2021-05-03 03:26:02.585425", "stderr": "", "stderr_lines": [], "stdout": "my apache version is 3.0", "stdout_lines": ["my apache version is 3.0"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$

@@ -1,0 +1,833 @@
+Using username "ubuntu".
+Authenticating with public key "imported-openssh-key" from agent
+Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-45-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-76-12:~$
+ubuntu@ip-172-31-76-12:~$ sudo su -
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# apt-add-repository ppa:ansible/ansible
+ Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications— automate in a language that approaches plain English, using SSH, with no agents to install on remote systems.
+
+http://ansible.com/
+ More info: https://launchpad.net/~ansible/+archive/ubuntu/ansible
+Press [ENTER] to continue or ctrl-c to cancel adding it
+
+gpg: keyring `/tmp/tmpi1d1r7bt/secring.gpg' created
+gpg: keyring `/tmp/tmpi1d1r7bt/pubring.gpg' created
+gpg: requesting key 7BB9C367 from hkp server keyserver.ubuntu.com
+gpg: /tmp/tmpi1d1r7bt/trustdb.gpg: trustdb created
+gpg: key 7BB9C367: public key "Launchpad PPA for Ansible, Inc." imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+OK
+root@ip-172-31-76-12:~# apt-get update
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates InRelease [109 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports InRelease [107 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main Sources [868 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/restricted Sources [4,808 B]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/universe Sources [7,728 kB]
+Get:7 http://security.ubuntu.com/ubuntu xenial-security InRelease [109 kB]
+Get:8 http://ppa.launchpad.net/ansible/ansible/ubuntu xenial InRelease [18.0 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/multiverse Sources [179 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main Sources [537 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/restricted Sources [3,608 B]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe Sources [444 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse Sources [12.3 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 Packages [2,049 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main Translation-en [482 kB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/restricted amd64 Packages [10.2 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/restricted Translation-en [2,272 B]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe amd64 Packages [1,219 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/universe Translation-en [358 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse amd64 Packages [22.6 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/multiverse Translation-en [8,476 B]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/main Sources [6,720 B]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe Sources [11.0 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/main amd64 Packages [9,812 B]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/main Translation-en [4,456 B]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe amd64 Packages [11.3 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports/universe Translation-en [4,476 B]
+Get:28 http://security.ubuntu.com/ubuntu xenial-security/main Sources [252 kB]
+Get:29 http://security.ubuntu.com/ubuntu xenial-security/restricted Sources [2,976 B]
+Get:30 http://security.ubuntu.com/ubuntu xenial-security/universe Sources [211 kB]
+Get:31 http://security.ubuntu.com/ubuntu xenial-security/multiverse Sources [4,636 B]
+Get:32 http://security.ubuntu.com/ubuntu xenial-security/main amd64 Packages [1,648 kB]
+Get:33 http://security.ubuntu.com/ubuntu xenial-security/main Translation-en [380 kB]
+Get:34 http://security.ubuntu.com/ubuntu xenial-security/restricted amd64 Packages [9,824 B]
+Get:35 http://security.ubuntu.com/ubuntu xenial-security/restricted Translation-en [2,152 B]
+Get:36 http://security.ubuntu.com/ubuntu xenial-security/universe amd64 Packages [785 kB]
+Get:37 http://ppa.launchpad.net/ansible/ansible/ubuntu xenial/main amd64 Packages [692 B]
+Get:38 http://security.ubuntu.com/ubuntu xenial-security/universe Translation-en [225 kB]
+Get:39 http://security.ubuntu.com/ubuntu xenial-security/multiverse amd64 Packages [7,864 B]
+Get:40 http://security.ubuntu.com/ubuntu xenial-security/multiverse Translation-en [2,672 B]
+Get:41 http://ppa.launchpad.net/ansible/ansible/ubuntu xenial/main Translation-en [472 B]
+Fetched 17.9 MB in 3s (5,855 kB/s)
+Reading package lists... Done
+root@ip-172-31-76-12:~# apt-get  install ansible -y
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  libpython-stdlib libpython2.7-minimal libpython2.7-stdlib python python-cffi-backend python-crypto python-cryptography
+  python-ecdsa python-enum34 python-httplib2 python-idna python-ipaddress python-jinja2 python-markupsafe python-minimal
+  python-paramiko python-pkg-resources python-pyasn1 python-setuptools python-six python-yaml python2.7
+  python2.7-minimal sshpass
+Suggested packages:
+  python-doc python-tk python-crypto-dbg python-crypto-doc python-cryptography-doc python-cryptography-vectors
+  python-enum34-doc python-jinja2-doc doc-base python-setuptools-doc python2.7-doc binutils binfmt-support
+The following NEW packages will be installed:
+  ansible libpython-stdlib libpython2.7-minimal libpython2.7-stdlib python python-cffi-backend python-crypto
+  python-cryptography python-ecdsa python-enum34 python-httplib2 python-idna python-ipaddress python-jinja2
+  python-markupsafe python-minimal python-paramiko python-pkg-resources python-pyasn1 python-setuptools python-six
+  python-yaml python2.7 python2.7-minimal sshpass
+0 upgraded, 25 newly installed, 0 to remove and 261 not upgraded.
+Need to get 11.0 MB of archives.
+After this operation, 82.1 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-minimal amd64 2.7.12-1ubuntu0~16.04.18 [338 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-minimal amd64 2.7.12-1ubuntu0~16.04.18 [1,260 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-minimal amd64 2.7.12-1~16.04 [28.1 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-stdlib amd64 2.7.12-1ubuntu0~16.04.18 [1,883 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7 amd64 2.7.12-1ubuntu0~16.04.18 [224 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython-stdlib amd64 2.7.12-1~16.04 [7,768 B]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python amd64 2.7.12-1~16.04 [137 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-markupsafe amd64 0.23-2build2 [15.5 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-jinja2 all 2.8-1ubuntu0.1 [106 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-yaml amd64 3.11-3build1 [105 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-crypto amd64 2.6.1-6ubuntu0.16.04.3 [246 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-six all 1.10.0-3 [10.9 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-ecdsa all 0.13-2ubuntu0.16.04.1 [36.2 kB]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-paramiko all 1.16.0-1ubuntu0.2 [110 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-httplib2 all 0.9.1+dfsg-1 [34.2 kB]
+Get:16 http://ppa.launchpad.net/ansible/ansible/ubuntu xenial/main amd64 ansible all 2.9.21-1ppa~xenial [5,793 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-pkg-resources all 20.7.0-1 [108 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-setuptools all 20.7.0-1 [169 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/universe amd64 sshpass amd64 1.05-1 [10.5 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-cffi-backend amd64 1.5.2-1ubuntu1 [58.1 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-enum34 all 1.1.2-1 [35.8 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-idna all 2.0-3 [35.1 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-ipaddress all 1.0.16-1 [18.0 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial/main amd64 python-pyasn1 all 0.1.9-1 [45.1 kB]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates/main amd64 python-cryptography amd64 1.2.3-1ubuntu0.3 [200 kB]
+Fetched 11.0 MB in 0s (12.4 MB/s)
+Selecting previously unselected package libpython2.7-minimal:amd64.
+(Reading database ... 53664 files and directories currently installed.)
+Preparing to unpack .../libpython2.7-minimal_2.7.12-1ubuntu0~16.04.18_amd64.deb ...
+Unpacking libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.18) ...
+Selecting previously unselected package python2.7-minimal.
+Preparing to unpack .../python2.7-minimal_2.7.12-1ubuntu0~16.04.18_amd64.deb ...
+Unpacking python2.7-minimal (2.7.12-1ubuntu0~16.04.18) ...
+Selecting previously unselected package python-minimal.
+Preparing to unpack .../python-minimal_2.7.12-1~16.04_amd64.deb ...
+Unpacking python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package libpython2.7-stdlib:amd64.
+Preparing to unpack .../libpython2.7-stdlib_2.7.12-1ubuntu0~16.04.18_amd64.deb ...
+Unpacking libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.18) ...
+Selecting previously unselected package python2.7.
+Preparing to unpack .../python2.7_2.7.12-1ubuntu0~16.04.18_amd64.deb ...
+Unpacking python2.7 (2.7.12-1ubuntu0~16.04.18) ...
+Selecting previously unselected package libpython-stdlib:amd64.
+Preparing to unpack .../libpython-stdlib_2.7.12-1~16.04_amd64.deb ...
+Unpacking libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for mime-support (3.59ubuntu1) ...
+Setting up libpython2.7-minimal:amd64 (2.7.12-1ubuntu0~16.04.18) ...
+Setting up python2.7-minimal (2.7.12-1ubuntu0~16.04.18) ...
+Linking and byte-compiling packages for runtime python2.7...
+Setting up python-minimal (2.7.12-1~16.04) ...
+Selecting previously unselected package python.
+(Reading database ... 54410 files and directories currently installed.)
+Preparing to unpack .../python_2.7.12-1~16.04_amd64.deb ...
+Unpacking python (2.7.12-1~16.04) ...
+Selecting previously unselected package python-markupsafe.
+Preparing to unpack .../python-markupsafe_0.23-2build2_amd64.deb ...
+Unpacking python-markupsafe (0.23-2build2) ...
+Selecting previously unselected package python-jinja2.
+Preparing to unpack .../python-jinja2_2.8-1ubuntu0.1_all.deb ...
+Unpacking python-jinja2 (2.8-1ubuntu0.1) ...
+Selecting previously unselected package python-yaml.
+Preparing to unpack .../python-yaml_3.11-3build1_amd64.deb ...
+Unpacking python-yaml (3.11-3build1) ...
+Selecting previously unselected package python-crypto.
+Preparing to unpack .../python-crypto_2.6.1-6ubuntu0.16.04.3_amd64.deb ...
+Unpacking python-crypto (2.6.1-6ubuntu0.16.04.3) ...
+Selecting previously unselected package python-six.
+Preparing to unpack .../python-six_1.10.0-3_all.deb ...
+Unpacking python-six (1.10.0-3) ...
+Selecting previously unselected package python-ecdsa.
+Preparing to unpack .../python-ecdsa_0.13-2ubuntu0.16.04.1_all.deb ...
+Unpacking python-ecdsa (0.13-2ubuntu0.16.04.1) ...
+Selecting previously unselected package python-paramiko.
+Preparing to unpack .../python-paramiko_1.16.0-1ubuntu0.2_all.deb ...
+Unpacking python-paramiko (1.16.0-1ubuntu0.2) ...
+Selecting previously unselected package python-httplib2.
+Preparing to unpack .../python-httplib2_0.9.1+dfsg-1_all.deb ...
+Unpacking python-httplib2 (0.9.1+dfsg-1) ...
+Selecting previously unselected package python-pkg-resources.
+Preparing to unpack .../python-pkg-resources_20.7.0-1_all.deb ...
+Unpacking python-pkg-resources (20.7.0-1) ...
+Selecting previously unselected package python-setuptools.
+Preparing to unpack .../python-setuptools_20.7.0-1_all.deb ...
+Unpacking python-setuptools (20.7.0-1) ...
+Selecting previously unselected package sshpass.
+Preparing to unpack .../sshpass_1.05-1_amd64.deb ...
+Unpacking sshpass (1.05-1) ...
+Selecting previously unselected package python-cffi-backend.
+Preparing to unpack .../python-cffi-backend_1.5.2-1ubuntu1_amd64.deb ...
+Unpacking python-cffi-backend (1.5.2-1ubuntu1) ...
+Selecting previously unselected package python-enum34.
+Preparing to unpack .../python-enum34_1.1.2-1_all.deb ...
+Unpacking python-enum34 (1.1.2-1) ...
+Selecting previously unselected package python-idna.
+Preparing to unpack .../python-idna_2.0-3_all.deb ...
+Unpacking python-idna (2.0-3) ...
+Selecting previously unselected package python-ipaddress.
+Preparing to unpack .../python-ipaddress_1.0.16-1_all.deb ...
+Unpacking python-ipaddress (1.0.16-1) ...
+Selecting previously unselected package python-pyasn1.
+Preparing to unpack .../python-pyasn1_0.1.9-1_all.deb ...
+Unpacking python-pyasn1 (0.1.9-1) ...
+Selecting previously unselected package python-cryptography.
+Preparing to unpack .../python-cryptography_1.2.3-1ubuntu0.3_amd64.deb ...
+Unpacking python-cryptography (1.2.3-1ubuntu0.3) ...
+Selecting previously unselected package ansible.
+Preparing to unpack .../ansible_2.9.21-1ppa~xenial_all.deb ...
+Unpacking ansible (2.9.21-1ppa~xenial) ...
+Processing triggers for man-db (2.7.5-1) ...
+Setting up libpython2.7-stdlib:amd64 (2.7.12-1ubuntu0~16.04.18) ...
+Setting up python2.7 (2.7.12-1ubuntu0~16.04.18) ...
+Setting up libpython-stdlib:amd64 (2.7.12-1~16.04) ...
+Setting up python (2.7.12-1~16.04) ...
+Setting up python-markupsafe (0.23-2build2) ...
+Setting up python-jinja2 (2.8-1ubuntu0.1) ...
+Setting up python-yaml (3.11-3build1) ...
+Setting up python-crypto (2.6.1-6ubuntu0.16.04.3) ...
+Setting up python-six (1.10.0-3) ...
+Setting up python-ecdsa (0.13-2ubuntu0.16.04.1) ...
+Setting up python-paramiko (1.16.0-1ubuntu0.2) ...
+Setting up python-httplib2 (0.9.1+dfsg-1) ...
+Setting up python-pkg-resources (20.7.0-1) ...
+Setting up python-setuptools (20.7.0-1) ...
+Setting up sshpass (1.05-1) ...
+Setting up python-cffi-backend (1.5.2-1ubuntu1) ...
+Setting up python-enum34 (1.1.2-1) ...
+Setting up python-idna (2.0-3) ...
+Setting up python-ipaddress (1.0.16-1) ...
+Setting up python-pyasn1 (0.1.9-1) ...
+Setting up python-cryptography (1.2.3-1ubuntu0.3) ...
+Setting up ansible (2.9.21-1ppa~xenial) ...
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# #git clone https://github.com/shan5a6/kubernetes-installation.git
+root@ip-172-31-76-12:~# git clone https://github.com/shan5a6/kubernetes-installation.git
+Cloning into 'kubernetes-installation'...
+remote: Enumerating objects: 146, done.
+remote: Counting objects: 100% (96/96), done.
+remote: Compressing objects: 100% (75/75), done.
+remote: Total 146 (delta 44), reused 62 (delta 18), pack-reused 50
+Receiving objects: 100% (146/146), 34.66 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (69/69), done.
+Checking connectivity... done.
+root@ip-172-31-76-12:~# cd kubernetes-installation/
+root@ip-172-31-76-12:~/kubernetes-installation# ls -l
+total 36
+-rw-r--r-- 1 root root  508 May 20 02:25 ansible.cfg
+-rw-r--r-- 1 root root   55 May 20 02:25 clear_k8s_setup.yml
+drwxr-xr-x 4 root root 4096 May 20 02:25 content-kubernetes-prometheus-env
+-rw-r--r-- 1 root root  187 May 20 02:25 hosts
+-rw-r--r-- 1 root root  111 May 20 02:25 join_kubernetes_workers_nodes.yml
+-rw-r--r-- 1 root root 1675 May 20 02:25 mykey.pem
+drwxr-xr-x 3 root root 4096 May 20 02:25 playbooks
+-rw-r--r-- 1 root root  738 May 20 02:25 README.md
+-rw-r--r-- 1 root root  623 May 20 02:25 settingup_kubernetes_cluster.yml
+root@ip-172-31-76-12:~/kubernetes-installation# vi mykey.pem
+root@ip-172-31-76-12:~/kubernetes-installation# cat mykey.pem
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAmdBWA43Fns7NH/Abzvbk3GcKiU65D/BqFEBrkKpyqe8P4mW8
+vn1nrj54T7g6f0jhOn3xGBOJkdjzuKSHdCLGdz6WrxIcCHYJYAfayTpYSQ5XUIiM
+yGC1AQswzb1Cw66bNfH4VdWfpul+iRJKP9xTw0+Xg7nZmALHQ+Vf6pptkej6/y6n
+RhMWnB55qXy2kMGJjc6ptx8k+jIKgNDXMR71y9Qxre7A9KWgEB2dWmuo/fcHSsFM
+uqI2DHPs/noSNUe9Vlj0oUHwk42btnqC9FU4zGi6JeXpSeEWLRP0UDCrsxbbw0Gv
+U9vbFLiaAQ3FiNeMhPM81eV0PWWjZCHe7Msk/wIDAQABAoIBAG1Bp1du5OkhTGNb
+UuV4SqikKL/Pw3Sm+TLZb46bBEfhIA9Y5PEKcxM6HIvD+Qlg41uBCjhn6FhJGxYV
+CIJeEUuykaZZ3r/D2HT2H1rAruV14l+6HwZWazwKjugVf88vv+BZuGSAEZ+mS9Nh
+wowKHRWm+6D96qonjxOTYsZqW1pAYHFj+LkcPYbJB/zyyu7Vdt9kapZzDS24WVmE
+ogExe02eqfT3CIJdATjzgvgcIQVf/9jLgB7v+ZbsNfDNkafkqX4e9FbmwSqSUhDl
+RHNi0PrV0LN0ble2nmmhg4JCfwjsszdtZGZke6k81LXn4vT8VZjT52m72WHcZjHS
+xIClroECgYEA24SH8bUvvAVW9UwhGxNz0tOBlourBLAyj5KJ8YHj1wKTfG24v7Pd
+iY44y5nGNblvIHPpppDU4nXSvJyY8dk7Y1c6CVUXAh8u74NtjElmiOFspHKpMgwQ
+LAuHozO+vS0K0xwValvU5xzCy3b/MzSMgsSHnLKkpYvYdF1HrGWK1qcCgYEAs2Bo
+GCwSK7gL7yYWGQnzGWEQQ7kgbhDdFQfkdrM3F5N7RB9uHGO58jlHKv79kEubttZt
+kzBExE597FcgJ/DBr7mm7zmKktom/rbQ1q48ZnYOR1y3lKO48sChUU9x4XBLJGPy
+cMQQy9vYbiJAD1U4i+akjV2G6pklqnux0fyz4ekCgYAoVptQnFXwPB71po6y1glD
+paA7lODRVLuFzIzSt2ax3QRTKip398pu+5aOO2zD9JZqJUK7XAPytWoLRM+KKbwT
+DjVY/6zhs+9BDiq0S8yuvJXlRji3PKZAIcJECD81rjA+CPwadlOSQKO/FdfhhfeI
+FCtDbUR6M0+MWpPQJzyzIwKBgGRKSKkLKvWqp3GEl+JT/8l2zYMv5IPlhdaWXRRI
+y0qxOMAz2nqg/3wArlvJybd9roghh4499JTVVe5oICB0qbY4VK94OpQ0yIytZkJB
+lJ+s7frUSggfKe7/6LHvezqScFDeWNTXqpRwTKf3Gl34Re9ieypW2nIcQkT5d8hy
+Q5jRAoGAZvfWMYva+M7XghgpPgx1/ocPfkEMVRIL8hxZcN0GToyN3gosrfRD0UZL
+C0OMZg6pkA8VpUJ8cnL7fTVXowHdhrw8CtUYdOGpZweHdIN4wt6Py1S4/ZfM/pBQ
+hkSNJ1pcgAMhdf5+PWrRXpXl6BDwINV9f27nM5jftQcn3yQTeMg=
+-----END RSA PRIVATE KEY-----
+root@ip-172-31-76-12:~/kubernetes-installation# chmod 600 mykey.pem
+root@ip-172-31-76-12:~/kubernetes-installation# ls -l
+total 36
+-rw-r--r-- 1 root root  508 May 20 02:25 ansible.cfg
+-rw-r--r-- 1 root root   55 May 20 02:25 clear_k8s_setup.yml
+drwxr-xr-x 4 root root 4096 May 20 02:25 content-kubernetes-prometheus-env
+-rw-r--r-- 1 root root  187 May 20 02:25 hosts
+-rw-r--r-- 1 root root  111 May 20 02:25 join_kubernetes_workers_nodes.yml
+-rw------- 1 root root 1675 May 20 02:26 mykey.pem
+drwxr-xr-x 3 root root 4096 May 20 02:25 playbooks
+-rw-r--r-- 1 root root  738 May 20 02:25 README.md
+-rw-r--r-- 1 root root  623 May 20 02:25 settingup_kubernetes_cluster.yml
+root@ip-172-31-76-12:~/kubernetes-installation# vi hosts
+root@ip-172-31-76-12:~/kubernetes-installation# cat hosts
+[kubernetes-master-nodes]
+ip-172-31-76-12.ec2.internal ansible_user=ubuntu os_type="Ubuntu"
+
+[kubernetes-worker-nodes]
+ip-172-31-16-62.ec2.internal ansible_user=ubuntu  os_type="Ubuntu"
+ip-172-31-22-35.ec2.internal ansible_user=ubuntu  os_type="Ubuntu"
+root@ip-172-31-76-12:~/kubernetes-installation# ansible-playbook settingup_kubernetes_cluster.yml
+[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+PLAY [all] ***************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [ip-172-31-76-12.ec2.internal]
+ok: [ip-172-31-16-62.ec2.internal]
+ok: [ip-172-31-22-35.ec2.internal]
+
+TASK [Disabling Swap on all nodes] ***************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+
+TASK [Commenting Swap entries in /etc/fstab] *****************************************************************************
+ok: [ip-172-31-76-12.ec2.internal]
+ok: [ip-172-31-22-35.ec2.internal]
+ok: [ip-172-31-16-62.ec2.internal]
+
+TASK [Changing iptables] *************************************************************************************************
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Sync the sysctl configuration] *************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+
+TASK [Sync hosts file] ***************************************************************************************************
+ok: [ip-172-31-76-12.ec2.internal]
+ok: [ip-172-31-16-62.ec2.internal]
+ok: [ip-172-31-22-35.ec2.internal]
+
+PLAY [all] ***************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [ip-172-31-76-12.ec2.internal]
+ok: [ip-172-31-16-62.ec2.internal]
+ok: [ip-172-31-22-35.ec2.internal]
+
+TASK [Creating a repository file for Kubernetes] *************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+
+TASK [Download repo key] *************************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+[WARNING]: Module remote_tmp /root/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues
+when running as another user. To avoid this, create the remote_tmp dir with the correct permissions manually
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+
+TASK [Adding the repo keys] **********************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+
+TASK [Adding repository details in Kubernetes repo file.] ****************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+
+TASK [updating cache] ****************************************************************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python-apt
+ok: [ip-172-31-76-12.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+changed: [ip-172-31-22-35.ec2.internal]
+
+TASK [Installing required packages] **************************************************************************************
+changed: [ip-172-31-16-62.ec2.internal] => (item=[u'docker.io', u'kubeadm', u'kubectl'])
+changed: [ip-172-31-22-35.ec2.internal] => (item=[u'docker.io', u'kubeadm', u'kubectl'])
+changed: [ip-172-31-76-12.ec2.internal] => (item=[u'docker.io', u'kubeadm', u'kubectl'])
+
+TASK [Starting and Enabling the required services] ***********************************************************************
+ok: [ip-172-31-76-12.ec2.internal] => (item=docker)
+ok: [ip-172-31-76-12.ec2.internal] => (item=kubelet)
+ok: [ip-172-31-16-62.ec2.internal] => (item=docker)
+ok: [ip-172-31-22-35.ec2.internal] => (item=docker)
+ok: [ip-172-31-16-62.ec2.internal] => (item=kubelet)
+ok: [ip-172-31-22-35.ec2.internal] => (item=kubelet)
+
+PLAY [kubernetes-master-nodes] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [ip-172-31-76-12.ec2.internal]
+
+TASK [Pulling images required for setting up a Kubernetes cluster] *******************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Initializing Kubernetes cluster] ***********************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Storing Logs and Generated token for future purpose.] **************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Copying required files] ********************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Install Network Add-on] ********************************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+TASK [Configuring kubectl for "ubuntu"] **********************************************************************************
+changed: [ip-172-31-76-12.ec2.internal]
+
+PLAY [all] ***************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Disabling Swap on all nodes] ***************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Commenting Swap entries in /etc/fstab] *****************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Changing Selinux] **************************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Sync hosts file] ***************************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Changing iptables] *************************************************************************************************
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Sync the sysctl configuration] *************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+PLAY [all] ***************************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Creating a repository file for Kubernetes] *************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Adding repository details in Kubernetes repo file.] ****************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+
+TASK [Installing required packages] **************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal] => (item=[])
+skipping: [ip-172-31-76-12.ec2.internal] => (item=[])
+skipping: [ip-172-31-22-35.ec2.internal] => (item=[])
+
+TASK [Starting and Enabling the required services] ***********************************************************************
+skipping: [ip-172-31-16-62.ec2.internal] => (item=docker)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=kubelet)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=firewalld)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=docker)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=kubelet)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=firewalld)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=docker)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=kubelet)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=firewalld)
+
+TASK [Allow Network Ports in Firewalld] **********************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal] => (item=6443/tcp)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=10250/tcp)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=2379-2380/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=6443/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=10250/tcp)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=10251/tcp)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=10252/tcp)
+skipping: [ip-172-31-16-62.ec2.internal] => (item=10255/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=2379-2380/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=10251/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=10252/tcp)
+skipping: [ip-172-31-22-35.ec2.internal] => (item=10255/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=6443/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=10250/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=2379-2380/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=10251/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=10252/tcp)
+skipping: [ip-172-31-76-12.ec2.internal] => (item=10255/tcp)
+
+TASK [Enabling Bridge Firewall Rule] *************************************************************************************
+skipping: [ip-172-31-16-62.ec2.internal]
+skipping: [ip-172-31-76-12.ec2.internal]
+skipping: [ip-172-31-22-35.ec2.internal]
+
+PLAY [kubernetes-master-nodes] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Pulling images required for setting up a Kubernetes cluster] *******************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Initializing Kubernetes cluster] ***********************************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Storing Logs and Generated token for future purpose.] **************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Copying required files] ********************************************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Install Network Add-on] ********************************************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+TASK [Configuring kubectl for "ubuntu"] **********************************************************************************
+skipping: [ip-172-31-76-12.ec2.internal]
+
+PLAY RECAP ***************************************************************************************************************
+ip-172-31-16-62.ec2.internal : ok=14   changed=9    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+ip-172-31-22-35.ec2.internal : ok=14   changed=9    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+ip-172-31-76-12.ec2.internal : ok=21   changed=14   unreachable=0    failed=0    skipped=21   rescued=0    ignored=0
+
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get node
+NAME              STATUS   ROLES                  AGE   VERSION
+ip-172-31-76-12   Ready    control-plane,master   26s   v1.21.1
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get nodes
+NAME              STATUS   ROLES                  AGE   VERSION
+ip-172-31-76-12   Ready    control-plane,master   28s   v1.21.1
+root@ip-172-31-76-12:~/kubernetes-installation# ansible-playbook join_kubernetes_workers_nodes.yml
+[WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+PLAY [kubernetes-worker-nodes] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [ip-172-31-16-62.ec2.internal]
+ok: [ip-172-31-22-35.ec2.internal]
+
+TASK [Copying token to worker nodes] *************************************************************************************
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+
+TASK [Joining worker nodes with kubernetes master] ***********************************************************************
+changed: [ip-172-31-22-35.ec2.internal]
+changed: [ip-172-31-16-62.ec2.internal]
+
+PLAY RECAP ***************************************************************************************************************
+ip-172-31-16-62.ec2.internal : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ip-172-31-22-35.ec2.internal : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get nodes
+NAME              STATUS     ROLES                  AGE   VERSION
+ip-172-31-16-62   NotReady   <none>                 12s   v1.21.1
+ip-172-31-22-35   Ready      <none>                 12s   v1.21.1
+ip-172-31-76-12   Ready      control-plane,master   62s   v1.21.1
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get nodes
+NAME              STATUS   ROLES                  AGE   VERSION
+ip-172-31-16-62   Ready    <none>                 37s   v1.21.1
+ip-172-31-22-35   Ready    <none>                 37s   v1.21.1
+ip-172-31-76-12   Ready    control-plane,master   87s   v1.21.1
+root@ip-172-31-76-12:~/kubernetes-installation#
+root@ip-172-31-76-12:~/kubernetes-installation# vi pod.yaml
+root@ip-172-31-76-12:~/kubernetes-installation# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-name
+spec:
+  containers:
+    - name: mycontainer-name
+      image: nginx
+root@ip-172-31-76-12:~/kubernetes-installation# #kubectl create/apply
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl create -f pod.yaml
+pod/mypod-name created
+root@ip-172-31-76-12:~/kubernetes-installation# #kubectl get pod/deployment/secret/pv/pvc/configmap/svc
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+mypod-name   1/1     Running   0          78s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get po
+NAME         READY   STATUS    RESTARTS   AGE
+mypod-name   1/1     Running   0          81s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get nodes
+NAME              STATUS   ROLES                  AGE   VERSION
+ip-172-31-16-62   Ready    <none>                 20m   v1.21.1
+ip-172-31-22-35   Ready    <none>                 20m   v1.21.1
+ip-172-31-76-12   Ready    control-plane,master   21m   v1.21.1
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -o wide
+NAME         READY   STATUS    RESTARTS   AGE     IP          NODE              NOMINATED NODE   READINESS GATES
+mypod-name   1/1     Running   0          2m10s   10.36.0.1   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get containers
+error: the server doesn't have a resource type "containers"
+root@ip-172-31-76-12:~/kubernetes-installation# ###kubectl describe pod/deployment/secret/pv/pvc/configmap/svc name
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl describe pod mypod-name|more
+Name:         mypod-name
+Namespace:    default
+Priority:     0
+Node:         ip-172-31-22-35/172.31.22.35
+Start Time:   Thu, 20 May 2021 02:50:06 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.36.0.1
+IPs:
+  IP:  10.36.0.1
+Containers:
+  mycontainer-name:
+    Container ID:   docker://1708a521e03a56dfd6de62a91cea13c6629aa4a8a553c9ecbf4ed6d8de8f1841
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:df13abe416e37eb3db4722840dd479b00ba193ac6606e7902331dcea50f4f1f2
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Thu, 20 May 2021 02:50:12 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-t5nss (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-t5nss:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  5m13s  default-scheduler  Successfully assigned default/mypod-name to ip-172-31-22-35
+  Normal  Pulling    5m13s  kubelet            Pulling image "nginx"
+  Normal  Pulled     5m8s   kubelet            Successfully pulled image "nginx" in 5.043861655s
+  Normal  Created    5m8s   kubelet            Created container mycontainer-name
+  Normal  Started    5m7s   kubelet            Started container mycontainer-name
+root@ip-172-31-76-12:~/kubernetes-installation# #kubectl describe pod mypod-name|more
+root@ip-172-31-76-12:~/kubernetes-installation# #ip-172-31-22-35
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -o wide
+NAME         READY   STATUS    RESTARTS   AGE     IP          NODE              NOMINATED NODE   READINESS GATES
+mypod-name   1/1     Running   0          6m30s   10.36.0.1   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~/kubernetes-installation# grep ubun /etc/passwd
+ubuntu:x:1000:1000:Ubuntu:/home/ubuntu:/bin/bash
+root@ip-172-31-76-12:~/kubernetes-installation# ssh -i /home/ubuntu/
+admin.conf                 .bashrc                    .profile
+.ansible/                  .cache/                    .ssh/
+.bash_logout               .kube/                     .sudo_as_admin_successful
+root@ip-172-31-76-12:~/kubernetes-installation# ls -l
+total 40
+-rw-r--r-- 1 root root  508 May 20 02:25 ansible.cfg
+-rw-r--r-- 1 root root   55 May 20 02:25 clear_k8s_setup.yml
+drwxr-xr-x 4 root root 4096 May 20 02:25 content-kubernetes-prometheus-env
+-rw-r--r-- 1 root root  253 May 20 02:28 hosts
+-rw-r--r-- 1 root root  111 May 20 02:25 join_kubernetes_workers_nodes.yml
+-rw------- 1 root root 1675 May 20 02:26 mykey.pem
+drwxr-xr-x 3 root root 4096 May 20 02:30 playbooks
+-rw-r--r-- 1 root root  122 May 20 02:42 pod.yaml
+-rw-r--r-- 1 root root  738 May 20 02:25 README.md
+-rw-r--r-- 1 root root  623 May 20 02:25 settingup_kubernetes_cluster.yml
+root@ip-172-31-76-12:~/kubernetes-installation# ssh -i mykey.pem ubuntu@ip-172-31-22-35
+The authenticity of host 'ip-172-31-22-35 (172.31.22.35)' can't be established.
+ECDSA key fingerprint is SHA256:5OQ5YcMZewUQOsCMA4MSnMsTiAETbArfRqDZJ05/cFw.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'ip-172-31-22-35' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-45-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+273 packages can be updated.
+189 updates are security updates.
+
+New release '18.04.5 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+ubuntu@ip-172-31-22-35:~$ sudo su -
+root@ip-172-31-22-35:~# docker ps|grep -i pod
+1708a521e03a        nginx                    "/docker-entrypoint.…"   8 minutes ago       Up 8 minutes                            k8s_mycontainer-name_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_0
+6c11f24ae679        k8s.gcr.io/pause:3.4.1   "/pause"                 8 minutes ago       Up 8 minutes                            k8s_POD_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_0
+9f4cc976d83e        k8s.gcr.io/pause:3.4.1   "/pause"                 26 minutes ago      Up 26 minutes                           k8s_POD_kube-proxy-dwf7c_kube-system_46daa374-82fc-4ad5-a7a8-4af7817c5dcd_0
+a62f0cef9e8c        k8s.gcr.io/pause:3.4.1   "/pause"                 26 minutes ago      Up 26 minutes                           k8s_POD_weave-net-9jwkp_kube-system_b8232783-3523-4d92-a05c-164f810cf435_0
+root@ip-172-31-22-35:~# docker rm -f 1708a521e03a
+1708a521e03a
+root@ip-172-31-22-35:~# docker ps|grep -i pod
+131d2204b86c        nginx                    "/docker-entrypoint.…"   3 seconds ago       Up 2 seconds                            k8s_mycontainer-name_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_0
+6c11f24ae679        k8s.gcr.io/pause:3.4.1   "/pause"                 9 minutes ago       Up 9 minutes                            k8s_POD_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_0
+9f4cc976d83e        k8s.gcr.io/pause:3.4.1   "/pause"                 28 minutes ago      Up 28 minutes                           k8s_POD_kube-proxy-dwf7c_kube-system_46daa374-82fc-4ad5-a7a8-4af7817c5dcd_0
+a62f0cef9e8c        k8s.gcr.io/pause:3.4.1   "/pause"                 28 minutes ago      Up 28 minutes                           k8s_POD_weave-net-9jwkp_kube-system_b8232783-3523-4d92-a05c-164f810cf435_0
+root@ip-172-31-22-35:~# docker rm -f 6c11f24ae679
+6c11f24ae679
+root@ip-172-31-22-35:~# docker ps|grep -i pod
+2113a2ef556e        nginx                    "/docker-entrypoint.…"   1 second ago        Up Less than a second                       k8s_mycontainer-name_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_1
+b7f5f91087c8        k8s.gcr.io/pause:3.4.1   "/pause"                 1 second ago        Up Less than a second                       k8s_POD_mypod-name_default_d734aa55-ecb2-4a30-8a0d-2b95bbfb837c_0
+9f4cc976d83e        k8s.gcr.io/pause:3.4.1   "/pause"                 28 minutes ago      Up 28 minutes                               k8s_POD_kube-proxy-dwf7c_kube-system_46daa374-82fc-4ad5-a7a8-4af7817c5dcd_0
+a62f0cef9e8c        k8s.gcr.io/pause:3.4.1   "/pause"                 28 minutes ago      Up 28 minutes                               k8s_POD_weave-net-9jwkp_kube-system_b8232783-3523-4d92-a05c-164f810cf435_0
+root@ip-172-31-22-35:~# logout
+ubuntu@ip-172-31-22-35:~$ logout
+Connection to ip-172-31-22-35 closed.
+root@ip-172-31-76-12:~/kubernetes-installation# #kubectl delete -f pod.yaml
+root@ip-172-31-76-12:~/kubernetes-installation#
+root@ip-172-31-76-12:~/kubernetes-installation#
+root@ip-172-31-76-12:~/kubernetes-installation#
+root@ip-172-31-76-12:~/kubernetes-installation# vi deploy.yaml
+root@ip-172-31-76-12:~/kubernetes-installation# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: deploylabelname
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      podlabel: mypodlabel
+  template:
+    metadata:
+      labels:
+        app: nginx
+        podlabel: mypodlabel
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl apply -f deploy.yaml
+deployment.apps/nginx-deployment created
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   1/1     1            1           11s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get deployment -o wide
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         SELECTOR
+nginx-deployment   1/1     1            1           17s   nginx        nginx:1.14.2   app=nginx,podlabel=mypodlabel
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+mypod-name                          1/1     Running   1          38m   10.36.0.2   ip-172-31-22-35   <none>           <none>
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          53s   10.44.0.1   ip-172-31-16-62   <none>           <none>
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -l app=nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          72s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -l podlabel=mypodlabel
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          92s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -l podlabel=mypodlabel -o wide
+NAME                                READY   STATUS    RESTARTS   AGE    IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          108s   10.44.0.1   ip-172-31-16-62   <none>           <none>
+root@ip-172-31-76-12:~/kubernetes-installation# vi deploy.yaml
+root@ip-172-31-76-12:~/kubernetes-installation# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: deploylabelname
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+      podlabel: mypodlabel
+  template:
+    metadata:
+      labels:
+        app: nginx
+        podlabel: mypodlabel
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl apply -f deploy.yaml
+deployment.apps/nginx-deployment configured
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get deploy
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/3     3            2           2m55s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get deploy
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           3m
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -l app=nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-5f4fd5f487-d4qnq   1/1     Running   0          20s
+nginx-deployment-5f4fd5f487-fxwv6   1/1     Running   0          20s
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          3m10s
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl get pods -l app=nginx -o wide
+NAME                                READY   STATUS    RESTARTS   AGE     IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-deployment-5f4fd5f487-d4qnq   1/1     Running   0          29s     10.44.0.2   ip-172-31-16-62   <none>           <none>
+nginx-deployment-5f4fd5f487-fxwv6   1/1     Running   0          29s     10.36.0.3   ip-172-31-22-35   <none>           <none>
+nginx-deployment-5f4fd5f487-kvxmv   1/1     Running   0          3m19s   10.44.0.1   ip-172-31-16-62   <none>           <none>
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl delete -f deploy.yaml
+deployment.apps "nginx-deployment" deleted
+root@ip-172-31-76-12:~/kubernetes-installation# kubectl delete -f pod.yaml
+pod "mypod-name" deleted
+root@ip-172-31-76-12:~/kubernetes-installation#

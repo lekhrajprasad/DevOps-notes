@@ -1,0 +1,733 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Sat Apr 17 04:22:48 2021 from 2.50.226.167
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@shellscripting ~]$ sudo su -
+Last login: Sat Apr 17 04:22:51 UTC 2021 on pts/1
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# uname -a
+Linux shellscripting 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+[root@shellscripting ~]# dvsbatch1
+-bash: dvsbatch1: command not found
+[root@shellscripting ~]# echo $?
+127
+[root@shellscripting ~]# date
+Mon Apr 19 01:47:49 UTC 2021
+[root@shellscripting ~]# echo $?
+0
+[root@shellscripting ~]# myscript.sh
+-bash: myscript.sh: command not found
+[root@shellscripting ~]# echo $?
+127
+[root@shellscripting ~]# mkdir day2
+[root@shellscripting ~]# cd day2
+[root@shellscripting day2]# vi mycase.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# cat mycase.sh
+#!/bin/bash
+read -p "enter a value:" a
+read -p "enter b value:" b
+read -p "enter operator:" opr
+
+case $opr in
+"+") echo "add of $a & $b is $((a+b))";;
+"-") echo "sub of $a & $b is $((a-b))";;
+"/") echo "div of $a & $b is $((a/b))";;
+"*") echo "mul of $a & $b is $((a*b))";;
+"%") echo "mod of $a & $b is $((a%b))";;
+*) echo -e "Please make sure that you are choosing any one of the below\n[+,-,/,*,%]";;
+esac
+
+[root@shellscripting day2]# bash mycase.sh
+enter a value:10
+enter b value:20
+enter operator:+
+add of 10 & 20 is 30
+[root@shellscripting day2]# bash mycase.sh
+enter a value:20
+enter b value:10
+enter operator:-
+sub of 20 & 10 is 10
+[root@shellscripting day2]# bash mycase.sh
+enter a value:20
+enter b value:10
+enter operator:&
+Please make sure that you are choosing any one of the below
+[+,-,/,*,%]
+[root@shellscripting day2]# man echo
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in patching package useradmin fsmanagement
+do
+  echo $i
+done
+[root@shellscripting day2]# bash myselect.sh
+1) patching
+2) package
+3) useradmin
+4) fsmanagement
+#? 1
+patching
+#? 2
+package
+#? 3
+useradmin
+#? 4
+fsmanagement
+#? ^C
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in + - / % *
+do
+  echo $i
+done
+[root@shellscripting day2]# bash myselect.sh
+1) +            3) /            5) mycase.sh
+2) -            4) %            6) myselect.sh
+#? ^C
+[root@shellscripting day2]# ls -l
+total 8
+-rw-r--r-- 1 root root 409 Apr 19 01:53 mycase.sh
+-rw-r--r-- 1 root root  53 Apr 19 02:02 myselect.sh
+[root@shellscripting day2]# vi my
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in + - / % \*
+do
+  echo $i
+done
+[root@shellscripting day2]# bash myselect.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? ^C
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in + - / % \*
+do
+  read -p "please enter a value:" a
+  read -p "please enter b value:" b
+  case $i in
+  "+") echo "add of $a & $b is $((a+b))";;
+  "-") echo "add of $a & $b is $((a-b))";;
+  "/") echo "add of $a & $b is $((a/b))";;
+  "%") echo "add of $a & $b is $((a%b))";;
+  "*") echo "add of $a & $b is $((a*b))";;
+  *) echo -e "please make sure that you are choosing any of below\n[+,-,/,*,%]";;
+done
+[root@shellscripting day2]# bash myselect.sh
+myselect.sh: line 14: syntax error near unexpected token `newline'
+myselect.sh: line 14: `done'
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in + - / % \*
+do
+  read -p "please enter a value:" a
+  read -p "please enter b value:" b
+  case $i in
+  "+") echo "add of $a & $b is $((a+b))";;
+  "-") echo "add of $a & $b is $((a-b))";;
+  "/") echo "add of $a & $b is $((a/b))";;
+  "%") echo "add of $a & $b is $((a%b))";;
+  "*") echo "add of $a & $b is $((a*b))";;
+  *) echo -e "please make sure that you are choosing any of below\n[+,-,/,*,%]";;
+  esac
+done
+[root@shellscripting day2]# bash myselect.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? 2
+please enter a value:20
+please enter b value:10
+add of 20 & 10 is 10
+#? ^C
+[root@shellscripting day2]# vi myselect.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# cat my
+cat: my: No such file or directory
+[root@shellscripting day2]# cat myselect.sh
+#!/bin/bash
+
+select i in + - / % \*
+do
+  read -p "please enter a value:" a
+  read -p "please enter b value:" b
+  case $i in
+  "+") echo "add of $a & $b is $((a+b))";;
+  "-") echo "sub of $a & $b is $((a-b))";;
+  "/") echo "div of $a & $b is $((a/b))";;
+  "%") echo "mod of $a & $b is $((a%b))";;
+  "*") echo "mul of $a & $b is $((a*b))";;
+  *) echo -e "please make sure that you are choosing any of below\n[+,-,/,*,%]";;
+  esac
+done
+[root@shellscripting day2]# bash myselect.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? 1
+please enter a value:10
+please enter b value:20
+add of 10 & 20 is 30
+#? 3
+please enter a value:100
+please enter b value:10
+div of 100 & 10 is 10
+#? &
+please enter a value:10
+please enter b value:20
+please make sure that you are choosing any of below
+[+,-,/,*,%]
+#? ^C
+[root@shellscripting day2]# bash myselect.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? 1
+please enter a value:10.1
+please enter b value:20.2
+myselect.sh: line 8: 10.1: syntax error: invalid arithmetic operator (error token is ".1")
+[root@shellscripting day2]# bash myselect.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? 1
+please enter a value:"10.1"
+please enter b value:"20.1"
+myselect.sh: line 8: "10.1": syntax error: operand expected (error token is ""10.1"")
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]# while true
+> do
+> echo hello
+> done^C
+[root@shellscripting day2]# while true
+> do
+> uptime
+> sleep 10
+> done
+ 02:14:33 up 31 min,  1 user,  load average: 0.00, 0.00, 0.00
+ 02:14:43 up 32 min,  1 user,  load average: 0.00, 0.00, 0.00
+ 02:14:53 up 32 min,  1 user,  load average: 0.00, 0.00, 0.00
+ 02:15:03 up 32 min,  1 user,  load average: 0.00, 0.00, 0.00
+ 02:15:13 up 32 min,  1 user,  load average: 0.00, 0.00, 0.00
+ 02:15:23 up 32 min,  1 user,  load average: 0.00, 0.00, 0.00
+^C
+[root@shellscripting day2]#
+[root@shellscripting day2]# vi mysleep.sh
+[root@shellscripting day2]# cat mysleep.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  echo $i
+done
+[root@shellscripting day2]# bash mys
+bash: mys: No such file or directory
+[root@shellscripting day2]# bash mysleep.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+[root@shellscripting day2]# vi mysleep.sh
+[root@shellscripting day2]# cat mysleep.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  echo $i
+  sleep 10
+done
+[root@shellscripting day2]# bash mysleep.sh
+1
+2
+3
+4
+^C
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if [[ i == 5 ]]
+  then
+    break
+  fi
+  echo $i
+done
+
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    break
+  fi
+  echo $i
+done
+
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    exit
+  fi
+  echo $i
+done
+
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+[root@shellscripting day2]#
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    break
+  fi
+  echo $i
+done
+
+
+echo "My second loop"
+for j in a b c d e f
+do
+  echo $j
+done
+
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+My second loop
+a
+b
+c
+d
+e
+f
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    exit
+  fi
+  echo $i
+done
+
+
+echo "My second loop"
+for j in a b c d e f
+do
+  echo $j
+done
+
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+[root@shellscripting day2]#
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+[root@shellscripting day2]# echo $?
+0
+[root@shellscripting day2]# vi mybreak.sh
+[root@shellscripting day2]# bash mybreak.sh
+1
+2
+3
+4
+[root@shellscripting day2]# echo $?
+120
+[root@shellscripting day2]# cat mybreak.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    exit 120
+  fi
+  echo $i
+done
+
+
+echo "My second loop"
+for j in a b c d e f
+do
+  echo $j
+done
+
+[root@shellscripting day2]#
+[root@shellscripting day2]# prashanth
+-bash: prashanth: command not found
+[root@shellscripting day2]# echo $?
+127
+[root@shellscripting day2]# vi mycontinue.sh
+[root@shellscripting day2]# myoutput=$(prashanth)
+-bash: prashanth: command not found
+[root@shellscripting day2]# myoutput=$(prashanth) 2>/dev/null
+-bash: prashanth: command not found
+[root@shellscripting day2]# myoutput=$(prashanth) >/dev/null
+-bash: prashanth: command not found
+[root@shellscripting day2]# myoutput=$(prashanth) 1>&2 /dev/null
+-bash: prashanth: command not found
+-bash: /dev/null: Permission denied
+[root@shellscripting day2]# prashanth 2 > /dev/null
+-bash: prashanth: command not found
+[root@shellscripting day2]# > 2 prashanth
+-bash: prashanth: command not found
+[root@shellscripting day2]# prashanth || exit 120
+-bash: prashanth: command not found
+logout
+[ec2-user@shellscripting ~]$ sudo su -
+Last login: Mon Apr 19 01:45:26 UTC 2021 on pts/0
+[root@shellscripting ~]# data=$(prashanth || exit 120)
+-bash: prashanth: command not found
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# prashanth || exit 120
+-bash: prashanth: command not found
+logout
+[ec2-user@shellscripting ~]$ sudo su -
+Last login: Mon Apr 19 02:41:31 UTC 2021 on pts/0
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# cd day2/
+[root@shellscripting day2]# ls -l
+total 20
+-rw-r--r-- 1 root root   0 Apr 19 02:40 2
+-rw-r--r-- 1 root root 155 Apr 19 02:33 mybreak.sh
+-rw-r--r-- 1 root root 409 Apr 19 01:53 mycase.sh
+-rw-r--r-- 1 root root  81 Apr 19 02:38 mycontinue.sh
+-rw-r--r-- 1 root root 434 Apr 19 02:09 myselect.sh
+-rw-r--r-- 1 root root  59 Apr 19 02:16 mysleep.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]# ls -l
+total 20
+-rw-r--r-- 1 root root   0 Apr 19 02:40 2
+-rw-r--r-- 1 root root 155 Apr 19 02:33 mybreak.sh
+-rw-r--r-- 1 root root 409 Apr 19 01:53 mycase.sh
+-rw-r--r-- 1 root root  81 Apr 19 02:38 mycontinue.sh
+-rw-r--r-- 1 root root 434 Apr 19 02:09 myselect.sh
+-rw-r--r-- 1 root root  59 Apr 19 02:16 mysleep.sh
+[root@shellscripting day2]# rm -f 2
+[root@shellscripting day2]# vi mycontinue.sh
+[root@shellscripting day2]# cat mycontinue.sh
+#!/bin/bash
+
+for i in {1..10}
+do
+  if (( i == 5 ))
+  then
+    continue
+  fi
+  echo $i
+done
+[root@shellscripting day2]# bash mycontinue.sh
+1
+2
+3
+4
+6
+7
+8
+9
+10
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]# vi myargs.sh
+[root@shellscripting day2]# cat myargs.sh
+#!/bin/bash
+
+echo "Hi my scriptname is $0"
+echo "Hi my 1st arg is $1"
+echo "Hi my 2nd arg is $2"
+echo "Total no of args are $#"
+echo "Total args are $*"
+[root@shellscripting day2]# bash myargs.sh
+Hi my scriptname is myargs.sh
+Hi my 1st arg is
+Hi my 2nd arg is
+Total no of args are 0
+Total args are
+[root@shellscripting day2]# bash myargs.sh 10 20 30 40
+Hi my scriptname is myargs.sh
+Hi my 1st arg is 10
+Hi my 2nd arg is 20
+Total no of args are 4
+Total args are 10 20 30 40
+[root@shellscripting day2]# vi myargval.sh
+[root@shellscripting day2]# cat myargval.sh
+#!/bin/bash
+
+if [[ $# != 2 ]]
+then
+  echo "Please make sure that you are giving two arguments"
+  exit 120
+fi
+
+
+echo "your first arg is $1"
+echo "your second arg is $2"
+[root@shellscripting day2]# bash myargval.sh
+Please make sure that you are giving two arguments
+[root@shellscripting day2]# bash myargval.sh 10
+Please make sure that you are giving two arguments
+[root@shellscripting day2]# bash myargval.sh 10 20
+your first arg is 10
+your second arg is 20
+[root@shellscripting day2]# bash myargval.sh 10 20 30
+Please make sure that you are giving two arguments
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]# vi debug.sh
+[root@shellscripting day2]# cat debug.sh
+#!/bin/bash
+
+i=1
+while (( i <= 5 ))
+do
+  echo $i
+  (( i = i +1 ))
+done
+[root@shellscripting day2]# bash debug.sh
+1
+2
+3
+4
+5
+[root@shellscripting day2]# bash -x debug.sh
++ i=1
++ ((  i <= 5  ))
++ echo 1
+1
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 2
+2
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 3
+3
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 4
+4
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 5
+5
++ ((  i = i +1  ))
++ ((  i <= 5  ))
+[root@shellscripting day2]# vi debug.sh
+[root@shellscripting day2]# cat debug.sh
+#!/bin/bash
+set -x
+i=1
+while (( i <= 5 ))
+do
+  echo $i
+  (( i = i +1 ))
+done
+[root@shellscripting day2]# bash debug.sh
++ i=1
++ ((  i <= 5  ))
++ echo 1
+1
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 2
+2
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 3
+3
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 4
+4
++ ((  i = i +1  ))
++ ((  i <= 5  ))
++ echo 5
+5
++ ((  i = i +1  ))
++ ((  i <= 5  ))
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]#
+[root@shellscripting day2]# mkdir examples
+[root@shellscripting day2]# cd examples/
+[root@shellscripting examples]# ls -l
+total 0
+[root@shellscripting examples]# vi ex1.psh
+[root@shellscripting examples]# vi ex1.sh
+[root@shellscripting examples]# cat ex1.sh
+#!/bin/bash
+
+if [[ $# != 3 ]]
+then
+  echo -e "Please make sure that you are giving 3 arguments\nex: $0 10 20 +"
+  exit 100
+fi
+
+a=$1
+b=$2
+opr=$3
+
+case $opr in
+"+") echo "add of $a & $b is $((a+b))";;
+"-") echo "sub of $a & $b is $((a-b))";;
+"/") echo "div of $a & $b is $((a/b))";;
+"%") echo "mod of $a & $b is $((a%b))";;
+"*") echo "mul of $a & $b is $((a*b))";;
+*) echo -e "Please make sure that you are choosing below\n[+,-,/,%,*]";;
+   exit 100
+esac
+[root@shellscripting examples]# bash ex1.sh
+Please make sure that you are giving 3 arguments
+ex: ex1.sh 10 20 +
+[root@shellscripting examples]# bash ex1.sh 10 20 +
+ex1.sh: line 20: syntax error near unexpected token `100'
+ex1.sh: line 20: `   exit 100'
+[root@shellscripting examples]# vi ex1.sh
+[root@shellscripting examples]#
+[root@shellscripting examples]# cat ex1.sh
+#!/bin/bash
+
+if [[ $# != 3 ]]
+then
+  echo -e "Please make sure that you are giving 3 arguments\nex: $0 10 20 +"
+  exit 100
+fi
+
+a=$1
+b=$2
+opr=$3
+
+case $opr in
+"+") echo "add of $a & $b is $((a+b))";;
+"-") echo "sub of $a & $b is $((a-b))";;
+"/") echo "div of $a & $b is $((a/b))";;
+"%") echo "mod of $a & $b is $((a%b))";;
+"*") echo "mul of $a & $b is $((a*b))";;
+*) echo -e "Please make sure that you are choosing below\n[+,-,/,%,*]";
+   exit 100;;
+esac
+[root@shellscripting examples]# bash ex1.sh 10 20 +
+add of 10 & 20 is 30
+[root@shellscripting examples]# bash ex1.sh 10 20 -
+sub of 10 & 20 is -10
+[root@shellscripting examples]# bash ex1.sh 10 20 ,
+Please make sure that you are choosing below
+[+,-,/,%,*]
+[root@shellscripting examples]# bash ex1.sh 10 20 -
+sub of 10 & 20 is -10
+[root@shellscripting examples]# bash ex1.sh 10 20 /
+div of 10 & 20 is 0
+[root@shellscripting examples]# bash ex1.sh 100000 200000 -
+sub of 100000 & 200000 is -100000
+[root@shellscripting examples]# cd ..
+[root@shellscripting day2]# ls -l
+total 32
+-rw-r--r-- 1 root root  77 Apr 19 03:01 debug.sh
+drwxr-xr-x 2 root root  20 Apr 19 03:12 examples
+-rw-r--r-- 1 root root 153 Apr 19 02:51 myargs.sh
+-rw-r--r-- 1 root root 168 Apr 19 02:54 myargval.sh
+-rw-r--r-- 1 root root 155 Apr 19 02:33 mybreak.sh
+-rw-r--r-- 1 root root 409 Apr 19 01:53 mycase.sh
+-rw-r--r-- 1 root root  91 Apr 19 02:43 mycontinue.sh
+-rw-r--r-- 1 root root 434 Apr 19 02:09 myselect.sh
+-rw-r--r-- 1 root root  59 Apr 19 02:16 mysleep.sh
+[root@shellscripting day2]#
+[root@shellscripting day2]#

@@ -1,0 +1,314 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Mon May 17 02:20:29 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@jenkinspac ~]$ sudo su -
+Last login: Mon May 17 02:20:31 UTC 2021 on pts/0
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# ls -l /tmp/dvsbatch1.txt
+ls: cannot access /tmp/dvsbatch1.txt: No such file or directory
+[root@jenkinspac ~]# ls -l /tmp/dvsbatch1.txt
+-rw-r--r-- 1 jenkins jenkins 22 May 18 02:26 /tmp/dvsbatch1.txt
+[root@jenkinspac ~]# cat /tmp/dvsbatch1.txt
+Hi Team welcome to Dvs[root@jenkinspac ~]# vi /tmp/dvsbatch1.txt
+[root@jenkinspac ~]# cat /tmp/dvsbatch1.txt
+Hi line1
+Line2
+Line3
+Line4
+Line5
+[root@jenkinspac ~]# vi /tmp/dvsbatch1.txt
+[root@jenkinspac ~]# cat /tmp/dvsbatch1.txt
+Line1
+Line2
+Line3
+Line4
+Line5
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# ls -l /tmp/batch1.txt
+ls: cannot access /tmp/batch1.txt: No such file or directory
+[root@jenkinspac ~]# ls -l /tmp/batch1.txt
+-rw-r--r-- 1 jenkins jenkins 15 May 18 02:38 /tmp/batch1.txt
+[root@jenkinspac ~]# cat /tmp/batch1.txt
+Hi I am Line2+
+[root@jenkinspac ~]# cat /tmp/batch1.txt
+Hi I am Line1Hi I am Line2[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# yum install docker -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package docker.x86_64 0:20.10.4-1.amzn2 will be installed
+--> Processing Dependency: runc >= 1.0.0 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: libcgroup >= 0.40.rc1-5.15 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: containerd >= 1.3.2 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: pigz for package: docker-20.10.4-1.amzn2.x86_64
+--> Running transaction check
+---> Package containerd.x86_64 0:1.4.4-1.amzn2 will be installed
+---> Package libcgroup.x86_64 0:0.41-21.amzn2 will be installed
+---> Package pigz.x86_64 0:2.3.4-1.amzn2.0.1 will be installed
+---> Package runc.x86_64 0:1.0.0-0.1.20210225.git12644e6.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package              Arch             Version                                          Repository                   Size
+==========================================================================================================================
+Installing:
+ docker               x86_64           20.10.4-1.amzn2                                  amzn2extra-docker            32 M
+Installing for dependencies:
+ containerd           x86_64           1.4.4-1.amzn2                                    amzn2extra-docker            24 M
+ libcgroup            x86_64           0.41-21.amzn2                                    amzn2-core                   66 k
+ pigz                 x86_64           2.3.4-1.amzn2.0.1                                amzn2-core                   81 k
+ runc                 x86_64           1.0.0-0.1.20210225.git12644e6.amzn2              amzn2extra-docker           3.2 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+4 Dependent packages)
+
+Total download size: 59 M
+Installed size: 243 M
+Downloading packages:
+(1/5): libcgroup-0.41-21.amzn2.x86_64.rpm                                                          |  66 kB  00:00:00
+(2/5): pigz-2.3.4-1.amzn2.0.1.x86_64.rpm                                                           |  81 kB  00:00:00
+(3/5): containerd-1.4.4-1.amzn2.x86_64.rpm                                                         |  24 MB  00:00:00
+(4/5): docker-20.10.4-1.amzn2.x86_64.rpm                                                           |  32 MB  00:00:00
+(5/5): runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64.rpm                                         | 3.2 MB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      72 MB/s |  59 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64                                                        1/5
+  Installing : containerd-1.4.4-1.amzn2.x86_64                                                                        2/5
+  Installing : libcgroup-0.41-21.amzn2.x86_64                                                                         3/5
+  Installing : pigz-2.3.4-1.amzn2.0.1.x86_64                                                                          4/5
+  Installing : docker-20.10.4-1.amzn2.x86_64                                                                          5/5
+  Verifying  : containerd-1.4.4-1.amzn2.x86_64                                                                        1/5
+  Verifying  : docker-20.10.4-1.amzn2.x86_64                                                                          2/5
+  Verifying  : pigz-2.3.4-1.amzn2.0.1.x86_64                                                                          3/5
+  Verifying  : runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64                                                        4/5
+  Verifying  : libcgroup-0.41-21.amzn2.x86_64                                                                         5/5
+
+Installed:
+  docker.x86_64 0:20.10.4-1.amzn2
+
+Dependency Installed:
+  containerd.x86_64 0:1.4.4-1.amzn2                   libcgroup.x86_64 0:0.41-21.amzn2   pigz.x86_64 0:2.3.4-1.amzn2.0.1
+  runc.x86_64 0:1.0.0-0.1.20210225.git12644e6.amzn2
+
+Complete!
+[root@jenkinspac ~]# systemctl enable docker
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+[root@jenkinspac ~]# systemctl restart docker
+[root@jenkinspac ~]# mkdir testimage
+[root@jenkinspac ~]# cd testimage/
+[root@jenkinspac testimage]# ls -l
+total 0
+[root@jenkinspac testimage]# docker run -it --name test1 centos:7 /bin/bash
+Unable to find image 'centos:7' locally
+7: Pulling from library/centos
+2d473b07cdd5: Pull complete
+Digest: sha256:0f4ec88e21daf75124b8a9e5ca03c37a5e937e0e108a255d890492430789b60e
+Status: Downloaded newer image for centos:7
+[root@23a8dcecbc02 /]# pwd
+/
+[root@23a8dcecbc02 /]# exit
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# cat Dockerfile
+FROM centos:7
+WORKDIR /opt/myapp
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon  2.048kB
+Step 1/2 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/2 : WORKDIR /opt/myapp
+ ---> Running in 189868e2a364
+Removing intermediate container 189868e2a364
+ ---> 33a285cc998b
+Successfully built 33a285cc998b
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# docker run -it --name test2 testimage /bin/bash
+[root@5c9bc5378610 myapp]# pwd
+/opt/myapp
+[root@5c9bc5378610 myapp]# exit
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon  2.048kB
+Step 1/1 : FROM centos:7
+ ---> 8652b9f0cb4c
+Successfully built 8652b9f0cb4c
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# docker run -it --name test3 testimage /bin/bash
+[root@305e707b103f /]# pwd
+/
+[root@305e707b103f /]# exit
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# touch test1
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# cat Dockerfile
+FROM centos:7
+WORKDIR /opt/myapp
+COPY test1 /tmp/
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon   2.56kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : WORKDIR /opt/myapp
+ ---> Using cache
+ ---> 33a285cc998b
+Step 3/3 : COPY test1 /tmp/
+ ---> 4c7ce50b0d9c
+Successfully built 4c7ce50b0d9c
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# docker run -it --name test4 testimage /bin/bash
+[root@5f46059ac338 myapp]# ls -l /tmp/
+total 4
+-rwx------ 1 root root 836 Nov 13  2020 ks-script-DrRL8A
+-rw-r--r-- 1 root root   0 May 18 03:19 test1
+-rw------- 1 root root   0 Nov 13  2020 yum.log
+[root@5f46059ac338 myapp]# exit
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# cat Dockerfile
+FROM centos:7
+WORKDIR /opt/myapp
+COPY test1 .
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon   2.56kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : WORKDIR /opt/myapp
+ ---> Using cache
+ ---> 33a285cc998b
+Step 3/3 : COPY test1 .
+ ---> 0859de73136e
+Successfully built 0859de73136e
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# docker run -it --name test5 testimage /bin/bash
+[root@2f22704e7ec1 myapp]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May 18 03:19 test1
+[root@2f22704e7ec1 myapp]# exit
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# cat Dockerfile
+FROM centos:7
+WORKDIR /opt/myapp
+COPY . .
+[root@jenkinspac testimage]# ls -l
+total 4
+-rw-r--r-- 1 root root 42 May 18 03:22 Dockerfile
+-rw-r--r-- 1 root root  0 May 18 03:19 test1
+[root@jenkinspac testimage]# touch test{1..10}
+[root@jenkinspac testimage]# ls
+Dockerfile  test1  test10  test2  test3  test4  test5  test6  test7  test8  test9
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon  7.168kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : WORKDIR /opt/myapp
+ ---> Using cache
+ ---> 33a285cc998b
+Step 3/3 : COPY . .
+ ---> 084b9a87b1b0
+Successfully built 084b9a87b1b0
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# #docker run -it --name test6 testimage /bin/bash
+[root@jenkinspac testimage]# ls -l
+total 4
+-rw-r--r-- 1 root root 42 May 18 03:22 Dockerfile
+-rw-r--r-- 1 root root  0 May 18 03:22 test1
+-rw-r--r-- 1 root root  0 May 18 03:22 test10
+-rw-r--r-- 1 root root  0 May 18 03:22 test2
+-rw-r--r-- 1 root root  0 May 18 03:22 test3
+-rw-r--r-- 1 root root  0 May 18 03:22 test4
+-rw-r--r-- 1 root root  0 May 18 03:22 test5
+-rw-r--r-- 1 root root  0 May 18 03:22 test6
+-rw-r--r-- 1 root root  0 May 18 03:22 test7
+-rw-r--r-- 1 root root  0 May 18 03:22 test8
+-rw-r--r-- 1 root root  0 May 18 03:22 test9
+[root@jenkinspac testimage]# docker run -it --name test6 testimage /bin/bash
+[root@fb06c351fad6 myapp]# ls -l
+total 4
+-rw-r--r-- 1 root root 42 May 18 03:22 Dockerfile
+-rw-r--r-- 1 root root  0 May 18 03:22 test1
+-rw-r--r-- 1 root root  0 May 18 03:22 test10
+-rw-r--r-- 1 root root  0 May 18 03:22 test2
+-rw-r--r-- 1 root root  0 May 18 03:22 test3
+-rw-r--r-- 1 root root  0 May 18 03:22 test4
+-rw-r--r-- 1 root root  0 May 18 03:22 test5
+-rw-r--r-- 1 root root  0 May 18 03:22 test6
+-rw-r--r-- 1 root root  0 May 18 03:22 test7
+-rw-r--r-- 1 root root  0 May 18 03:22 test8
+-rw-r--r-- 1 root root  0 May 18 03:22 test9
+[root@fb06c351fad6 myapp]#
+[root@fb06c351fad6 myapp]#
+[root@fb06c351fad6 myapp]#
+[root@fb06c351fad6 myapp]# exit
+[root@jenkinspac testimage]#
+[root@jenkinspac testimage]#
+[root@jenkinspac testimage]# cat Dockerfile
+FROM centos:7
+WORKDIR /opt/myapp
+COPY . .
+[root@jenkinspac testimage]# vi Dockerfile
+[root@jenkinspac testimage]# docker build -t "testimage" .
+Sending build context to Docker daemon  7.168kB
+Step 1/4 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/4 : WORKDIR /opt/myapp
+ ---> Using cache
+ ---> 33a285cc998b
+Step 3/4 : COPY . .
+ ---> 065edee87e3b
+Step 4/4 : RUN echo "Hi Lekhraj" > /tmp/test.txt
+ ---> Running in d879ca732585
+Removing intermediate container d879ca732585
+ ---> 4df7bdcca6eb
+Successfully built 4df7bdcca6eb
+Successfully tagged testimage:latest
+[root@jenkinspac testimage]# docker run -it --name test7 testimage /bin/bash
+[root@dade77de8819 myapp]# ls -l /tmp/
+total 8
+-rwx------ 1 root root 836 Nov 13  2020 ks-script-DrRL8A
+-rw-r--r-- 1 root root  11 May 18 03:38 test.txt
+-rw------- 1 root root   0 Nov 13  2020 yum.log
+[root@dade77de8819 myapp]# cat /tmp/test.txt
+Hi Lekhraj
+[root@dade77de8819 myapp]# [root@jenkinspac testimage]#
+[root@jenkinspac testimage]#
+[root@jenkinspac testimage]# docker cp test7:/tmp/test.txt .
+[root@jenkinspac testimage]# ls -l
+total 8
+-rw-r--r-- 1 root root 80 May 18 03:38 Dockerfile
+-rw-r--r-- 1 root root  0 May 18 03:22 test1
+-rw-r--r-- 1 root root  0 May 18 03:22 test10
+-rw-r--r-- 1 root root  0 May 18 03:22 test2
+-rw-r--r-- 1 root root  0 May 18 03:22 test3
+-rw-r--r-- 1 root root  0 May 18 03:22 test4
+-rw-r--r-- 1 root root  0 May 18 03:22 test5
+-rw-r--r-- 1 root root  0 May 18 03:22 test6
+-rw-r--r-- 1 root root  0 May 18 03:22 test7
+-rw-r--r-- 1 root root  0 May 18 03:22 test8
+-rw-r--r-- 1 root root  0 May 18 03:22 test9
+-rw-r--r-- 1 root root 11 May 18 03:38 test.txt
+[root@jenkinspac testimage]# cat test.txt
+Hi Lekhraj
+[root@jenkinspac testimage]#

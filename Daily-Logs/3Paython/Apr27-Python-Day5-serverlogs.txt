@@ -1,0 +1,662 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Mon Apr 26 03:08:01 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+3 package(s) needed for security, out of 17 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@python ~]$
+[ec2-user@python ~]$ sudo su -
+Last login: Mon Apr 26 03:08:03 UTC 2021 on pts/0
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: import boto3
+---------------------------------------------------------------------------
+ImportError                               Traceback (most recent call last)
+<ipython-input-1-5c43c86c018e> in <module>()
+----> 1 import boto3
+
+ImportError: No module named boto3
+
+In [2]:
+Do you really want to exit ([y]/n)?
+[root@python ~]# pip install boto3
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip install --user` instead.
+Collecting boto3
+  Downloading https://files.pythonhosted.org/packages/15/f7/a80db6492ca4c9471c474f88853f2864766b136ff30240a61efcea965c14/boto3-1.17.58-py2.py3-none-any.whl (131kB)
+    100% |████████████████████████████████| 133kB 5.5MB/s
+Collecting botocore<1.21.0,>=1.20.58 (from boto3)
+  Downloading https://files.pythonhosted.org/packages/4f/c0/f42b171b59f5001aa3754bcebe379fb14065b057645ab89a029d831a48b1/botocore-1.20.58-py2.py3-none-any.whl (7.4MB)
+    100% |████████████████████████████████| 7.4MB 152kB/s
+Collecting s3transfer<0.5.0,>=0.4.0 (from boto3)
+  Downloading https://files.pythonhosted.org/packages/63/d0/693477c688348654ddc21dcdce0817653a294aa43f41771084c25e7ff9c7/s3transfer-0.4.2-py2.py3-none-any.whl (79kB)
+    100% |████████████████████████████████| 81kB 9.3MB/s
+Requirement already satisfied: jmespath<1.0.0,>=0.7.1 in /usr/lib/python2.7/site-packages (from boto3)
+Requirement already satisfied: urllib3<1.27,>=1.25.4 in /usr/lib/python2.7/site-packages (from botocore<1.21.0,>=1.20.58->boto3)
+Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in /usr/lib/python2.7/site-packages (from botocore<1.21.0,>=1.20.58->boto3)
+Requirement already satisfied: futures<4.0.0,>=2.2.0; python_version == "2.7" in /usr/lib/python2.7/site-packages (from s3transfer<0.5.0,>=0.4.0->boto3)
+Requirement already satisfied: six>=1.5 in /usr/lib/python2.7/site-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.21.0,>=1.20.58->boto3)
+Installing collected packages: botocore, s3transfer, boto3
+  Found existing installation: botocore 1.18.6
+    Uninstalling botocore-1.18.6:
+      Successfully uninstalled botocore-1.18.6
+  Found existing installation: s3transfer 0.3.3
+    Uninstalling s3transfer-0.3.3:
+      Successfully uninstalled s3transfer-0.3.3
+Successfully installed boto3-1.17.58 botocore-1.20.58 s3transfer-0.4.2
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: import boto3
+In [2]: boto3.resources?
+In [2]: boto3.resources?
+Type:        module
+String form: <module 'boto3.resources' from '/usr/lib/python2.7/site-packages/boto3/resources/__init__.pyc'>
+File:        /usr/lib/python2.7/site-packages/boto3/resources/__init__.py
+Docstring:   <no docstring>
+
+In [3]: myec2 = boto3.resources("ec2")
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-3-ee77b9811229> in <module>()
+----> 1 myec2 = boto3.resources("ec2")
+
+TypeError: 'module' object is not callable
+
+In [4]: myec2 = boto3.resource("ec2")
+/usr/lib/python2.7/site-packages/boto3/compat.py:86: PythonDeprecationWarning: Boto3 will no longer support Python 2.7 starting July 15, 2021. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.6 or later. More information can be found here: https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-python-2-7-in-aws-sdk-for-python-and-aws-cli-v1/
+  warnings.warn(warning, PythonDeprecationWarning)
+In [5]: myec2.create_instances?
+In [5]: myec2.create_instances?
+
+In [6]:
+Do you really want to exit ([y]/n)?
+
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# cat ~/.aws/config
+[default]
+output = json
+region = us-east-1
+[root@python ~]# mkdir ec2
+[root@python ~]# cd ec2/
+[root@python ec2]# vi create.py
+[root@python ec2]# cat create.py
+#!/usr/bin/python
+import boto3
+instance_count = input("Please enter server count:")
+myec2 = boto3.resource("ec2")
+myec2.create_instances(
+InstanceType = "t2.micro"
+SecurityGroups = ["Opentoworld"]
+ImageId = "ami-0742b4e673072066f"
+KeyName = "aruna_nvirg_key1"
+MinCount = 1
+MaxCount = instance_count
+)
+[root@python ec2]# python create.py
+  File "create.py", line 7
+    SecurityGroups = ["Opentoworld"]
+                 ^
+SyntaxError: invalid syntax
+[root@python ec2]# vi create.py
+[root@python ec2]# python create.py
+  File "create.py", line 7
+    SecurityGroups = "Opentoworld"
+                 ^
+SyntaxError: invalid syntax
+[root@python ec2]# vi create.py
+[root@python ec2]# python create.py
+Please enter server count:^CTraceback (most recent call last):
+  File "create.py", line 3, in <module>
+    instance_count = input("Please enter server count:")
+KeyboardInterrupt
+[root@python ec2]#
+[root@python ec2]# python create.py
+Please enter server count:1
+/usr/lib/python2.7/site-packages/boto3/compat.py:86: PythonDeprecationWarning: Boto3 will no longer support Python 2.7 starting July 15, 2021. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.6 or later. More information can be found here: https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-python-2-7-in-aws-sdk-for-python-and-aws-cli-v1/
+  warnings.warn(warning, PythonDeprecationWarning)
+[root@python ec2]# vi create.py
+[root@python ec2]# python create.py
+Please enter server count:1
+/usr/lib/python2.7/site-packages/boto3/compat.py:86: PythonDeprecationWarning: Boto3 will no longer support Python 2.7 starting July 15, 2021. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.6 or later. More information can be found here: https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-python-2-7-in-aws-sdk-for-python-and-aws-cli-v1/
+  warnings.warn(warning, PythonDeprecationWarning)
+[root@python ec2]# vi create.py
+[root@python ec2]# python create.py
+Please enter server count:1
+[root@python ec2]# cat create.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+instance_count = input("Please enter server count:")
+myec2 = boto3.resource("ec2")
+myec2.create_instances(
+InstanceType = "t2.micro",
+SecurityGroups = ["Opentoworld"],
+ImageId = "ami-0742b4e673072066f",
+KeyName = "aruna_nvirg_key1",
+MinCount = 1,
+MaxCount = instance_count
+)
+[root@python ec2]# cat create.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+instance_count = input("Please enter server count:")
+myec2 = boto3.resource("ec2")
+myec2.create_instances(
+InstanceType = "t2.micro",
+SecurityGroups = ["Opentoworld"],
+ImageId = "ami-0742b4e673072066f",
+KeyName = "aruna_nvirg_key1",
+MinCount = 1,
+MaxCount = instance_count
+)
+[root@python ec2]# python create.py
+Please enter server count:2
+[root@python ec2]#
+[root@python ec2]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+In [1]: import boto3
+In [1]: import boto3
+
+In [2]: myec2 = boto3.resource("ec2")
+/usr/lib/python2.7/site-packages/boto3/compat.py:86: PythonDeprecationWarning: Boto3 will no longer support Python 2.7 starting July 15, 2021. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.6 or later. More information can be found here: https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-python-2-7-in-aws-sdk-for-python-and-aws-cli-v1/
+  warnings.warn(warning, PythonDeprecationWarning)
+
+In [3]: import warnings
+   ...: warnings.filterwarnings("ignore")
+   ...:
+In [4]: myec2.instances.all()
+In [4]: myec2.instances.all()
+Out[4]: ec2.instancesCollection(ec2.ServiceResource(), ec2.Instance)
+
+In [5]: for server in myec2.instances.all():
+   ...:     print server
+   ...:
+ec2.Instance(id='i-0d77a67e7e21fd8f2')
+ec2.Instance(id='i-042d1fb177b5a64f0')
+ec2.Instance(id='i-0a4988d001087af6d')
+ec2.Instance(id='i-01b79cb2bc5ff6c3e')
+ec2.Instance(id='i-0271652b14bd9d38e')
+ec2.Instance(id='i-03dd10f6a66dcc91a')
+In [6]: for server in myec2.instances.all():
+   ...:     print server.id,server.tags
+   ...:
+In [6]: for server in myec2.instances.all():
+   ...:     print server.id,server.tags
+   ...:
+i-0d77a67e7e21fd8f2 [{u'Value': 'server1', u'Key': 'Name'}]
+i-042d1fb177b5a64f0 [{u'Value': 'server2', u'Key': 'Name'}]
+i-0a4988d001087af6d [{u'Value': 'Python', u'Key': 'Name'}]
+i-01b79cb2bc5ff6c3e [{u'Value': 'server3', u'Key': 'Name'}]
+i-0271652b14bd9d38e [{u'Value': 'server4', u'Key': 'Name'}]
+i-03dd10f6a66dcc91a [{u'Value': 'server5', u'Key': 'Name'}]
+
+In [7]: for server in myec2.instances.all():
+   ...:     print server.id,server.tags[0]['Value']
+   ...:
+i-0d77a67e7e21fd8f2 server1
+i-042d1fb177b5a64f0 server2
+i-0a4988d001087af6d Python
+i-01b79cb2bc5ff6c3e server3
+i-0271652b14bd9d38e server4
+i-03dd10f6a66dcc91a server5
+
+In [8]:
+Do you really want to exit ([y]/n)?
+[root@python ec2]# vi list.py
+[root@python ec2]# cat list.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+myec2 = boto3.resource("ec2")
+for server in myec2.instances.all():
+    print server.id,server.tags[0]['Value']
+
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1
+i-042d1fb177b5a64f0 server2
+i-0a4988d001087af6d Python
+i-01b79cb2bc5ff6c3e server3
+i-0271652b14bd9d38e server4
+i-03dd10f6a66dcc91a server5
+[root@python ec2]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+In [1]: import warnings
+   ...: warnings.filterwarnings("ignore")
+   ...:
+In [1]: import warnings
+   ...: warnings.filterwarnings("ignore")
+   ...:
+
+In [2]: import boto3
+
+In [3]: myec2 = boto3.resource("ec2")
+
+In [4]: myec2.instances.stop?
+
+In [5]: instance = myec2.Instance("i-03dd10f6a66dcc91a")
+
+In [6]: instance.stop()
+Out[6]:
+{'ResponseMetadata': {'HTTPHeaders': {'cache-control': 'no-cache, no-store',
+   'content-length': '579',
+   'content-type': 'text/xml;charset=UTF-8',
+   'date': 'Tue, 27 Apr 2021 02:26:18 GMT',
+   'server': 'AmazonEC2',
+   'strict-transport-security': 'max-age=31536000; includeSubDomains',
+   'x-amzn-requestid': '17d7ef4e-fffc-404f-99b2-75649a744d5b'},
+  'HTTPStatusCode': 200,
+  'RequestId': '17d7ef4e-fffc-404f-99b2-75649a744d5b',
+  'RetryAttempts': 0},
+ u'StoppingInstances': [{u'CurrentState': {u'Code': 64, u'Name': 'stopping'},
+   u'InstanceId': 'i-03dd10f6a66dcc91a',
+   u'PreviousState': {u'Code': 16, u'Name': 'running'}}]}
+
+In [7]:
+Do you really want to exit ([y]/n)?
+[root@python ec2]#
+[root@python ec2]#
+[root@python ec2]#
+[root@python ec2]# vi start-stop.py
+[root@python ec2]# vi list.py
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1
+Traceback (most recent call last):
+  File "list.py", line 7, in <module>
+    print server.id,server.tags[0]['Value'],i.state['Name']
+NameError: name 'i' is not defined
+[root@python ec2]# vi list.py
+[root@python ec2]# python list.py
+
+i-0d77a67e7e21fd8f2 server1 running
+i-042d1fb177b5a64f0 server2 running
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 running
+i-0271652b14bd9d38e server4 running
+i-03dd10f6a66dcc91a server5 stopped
+[root@python ec2]#
+[root@python ec2]# cat start-stop.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+myec2 = boto3.resource("ec2")
+instance = myec2.Instance("i-03dd10f6a66dcc91a")
+instance.start()
+[root@python ec2]# python start-stop.py
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1 running
+i-042d1fb177b5a64f0 server2 running
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 running
+i-0271652b14bd9d38e server4 running
+i-03dd10f6a66dcc91a server5 pending
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1 running
+i-042d1fb177b5a64f0 server2 running
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 running
+i-0271652b14bd9d38e server4 running
+i-03dd10f6a66dcc91a server5 pending
+[root@python ec2]# cat start-stop.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+myec2 = boto3.resource("ec2")
+instance = myec2.Instance("i-03dd10f6a66dcc91a")
+instance.start()
+[root@python ec2]# cp start-stop.py start.py
+[root@python ec2]# cp start-stop.py stop.py
+[root@python ec2]# rm -f start-stop.py
+[root@python ec2]# vi stop.py
+[root@python ec2]# cat stop.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+import sys
+myec2 = boto3.resource("ec2")
+for serverid in sys.argv[1:]:
+    instance = myec2.Instance(serverid)
+    instance.terminate()
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1 running
+i-042d1fb177b5a64f0 server2 running
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 running
+i-0271652b14bd9d38e server4 running
+i-03dd10f6a66dcc91a server5 running
+[root@python ec2]# mv stop.py ec2terminate.py
+[root@python ec2]# cat ec2terminate.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+import sys
+myec2 = boto3.resource("ec2")
+for serverid in sys.argv[1:]:
+    instance = myec2.Instance(serverid)
+    instance.terminate()
+[root@python ec2]# python ec2terminate.py i-03dd10f6a66dcc91a
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1 running
+i-042d1fb177b5a64f0 server2 running
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 running
+i-0271652b14bd9d38e server4 running
+i-03dd10f6a66dcc91a server5 shutting-down
+[root@python ec2]# python ec2terminate.py i-0271652b14bd9d38e i-01b79cb2bc5ff6c3e i-042d1fb177b5a64f0 i-0d77a67e7e21fd8f2
+[root@python ec2]# python list.py
+i-0d77a67e7e21fd8f2 server1 shutting-down
+i-042d1fb177b5a64f0 server2 shutting-down
+i-0a4988d001087af6d Python running
+i-01b79cb2bc5ff6c3e server3 shutting-down
+i-0271652b14bd9d38e server4 shutting-down
+i-03dd10f6a66dcc91a server5 shutting-down
+[root@python ec2]# cat list.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+myec2 = boto3.resource("ec2")
+for server in myec2.instances.all():
+    print server.id,server.tags[0]['Value'],server.state['Name']
+
+[root@python ec2]#
+[root@python ec2]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: import warnings
+   ...: warnings.filterwarnings("ignore")
+   ...:
+
+In [2]: import boto3
+
+In [3]: mys3 = boto3.resource("s3")
+
+In [4]: mys3.buckets.all()
+Out[4]: s3.bucketsCollection(s3.ServiceResource(), s3.Bucket)
+
+In [5]: for bkt in mys3.buckets.all():
+   ...:     print bkt
+   ...:
+s3.Bucket(name='dvs-batch1')
+s3.Bucket(name='dvs-blr1')
+s3.Bucket(name='dvs-hyd1')
+s3.Bucket(name='dvs-nvirg')
+s3.Bucket(name='dvs-ohio1')
+s3.Bucket(name='dvs.shaans.in')
+s3.Bucket(name='mydest1')
+s3.Bucket(name='mysrc1')
+s3.Bucket(name='static.shaans.in')
+In [6]: for bkt in mys3.buckets.all():
+   ...:     print bkt.name
+   ...:
+In [6]: for bkt in mys3.buckets.all():
+   ...:     print bkt.name
+   ...:
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+mydest1
+mysrc1
+static.shaans.in
+
+In [7]:
+Do you really want to exit ([y]/n)?
+[root@python ec2]#
+[root@python ec2]#
+[root@python ec2]# cd ..
+[root@python ~]# mkdir s3
+[root@python ~]# cd s3
+[root@python s3]# ls -l
+total 0
+[root@python s3]# vi list.py
+[root@python s3]# cat
+[root@python s3]# cat list.py
+#!/usr/bin/python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+mys3 = boto3.resource("s3")
+for bucket in mys3.buckets.all():
+    print bucket.name
+[root@python s3]# python list.py
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+mydest1
+mysrc1
+static.shaans.in
+[root@python s3]# vi listbucket.py
+[root@python s3]# cat listbucket.py
+#!/usr/bin/env python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+s3 = boto3.resource('s3')
+for bucket in s3.buckets.all():
+    print bucket.name
+    print "---"
+    for item in bucket.objects.all():
+        print "\t%s" % item.key
+
+[root@python s3]# python listbucket.py
+dvs-batch1
+---
+        error.html
+        index.html
+dvs-blr1
+---
+dvs-hyd1
+---
+        dvsbatch5.ppk
+        dvsbatch6.txt
+dvs-nvirg
+---
+        batch1-version.txt
+dvs-ohio1
+---
+        batch1-version.txt
+dvs.shaans.in
+---
+        error.html
+        index.html
+mydest1
+---
+        dvstest1
+        dvstest10
+        dvstest11
+        dvstest12
+        dvstest13
+        dvstest14
+        dvstest15
+        dvstest16
+        dvstest17
+        dvstest18
+        dvstest19
+        dvstest2
+        dvstest20
+        dvstest3
+        dvstest4
+        dvstest5
+        dvstest6
+        dvstest7
+        dvstest8
+        dvstest9
+mysrc1
+---
+        file1
+        file2
+        file3
+        file4
+        file5
+static.shaans.in
+---
+        error.html
+        index.html
+[root@python s3]# cat listbucket.py
+#!/usr/bin/env python
+import warnings
+warnings.filterwarnings("ignore")
+import boto3
+s3 = boto3.resource('s3')
+for bucket in s3.buckets.all():
+    print bucket.name
+    print "---"
+    for item in bucket.objects.all():
+        print "\t%s" % item.key
+
+[root@python s3]#
+[root@python s3]# vi create.py
+[root@python s3]# cat create.py
+#!/usr/bin/env python
+import warnings
+warnings.filterwarnings("ignore")
+import sys
+import boto3
+s3 = boto3.resource("s3")
+for bucket_name in sys.argv[1:]:
+        response = s3.create_bucket(Bucket=bucket_name)
+        print response
+
+[root@python s3]# python list
+listbucket.py  list.py
+[root@python s3]# python list.py
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+mydest1
+mysrc1
+static.shaans.in
+[root@python s3]# python create.py dvsbatch1-2704
+s3.Bucket(name='dvsbatch1-2704')
+[root@python s3]# python list.py
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+dvsbatch1-2704
+mydest1
+mysrc1
+static.shaans.in
+[root@python s3]# cd ..
+[root@python ~]# mkdir rds
+[root@python ~]# cd rds/
+[root@python rds]# vi create.py
+[root@python rds]# cat create.py
+#!/usr/bin/env python
+import boto3
+rds = boto3.client('rds')
+response = rds.create_db_instance(
+DBInstanceIdentifier='dbserver',
+MasterUsername='dbadmin',
+MasterUserPassword='abcdefg123456789',
+DBInstanceClass='db.t2.micro',
+Engine='mysql',
+AllocatedStorage=20)
+print response
+
+[root@python rds]# python create.py
+/usr/lib/python2.7/site-packages/boto3/compat.py:86: PythonDeprecationWarning: Boto3 will no longer support Python 2.7 starting July 15, 2021. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.6 or later. More information can be found here: https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-python-2-7-in-aws-sdk-for-python-and-aws-cli-v1/
+  warnings.warn(warning, PythonDeprecationWarning)
+{u'DBInstance': {u'PubliclyAccessible': True, u'MasterUsername': 'dbadmin', u'MonitoringInterval': 0, u'LicenseModel': 'general-public-license', u'CustomerOwnedIpEnabled': False, u'VpcSecurityGroups': [{u'Status': 'active', u'VpcSecurityGroupId': 'sg-cc436dc0'}], u'CopyTagsToSnapshot': False, u'OptionGroupMemberships': [{u'Status': 'in-sync', u'OptionGroupName': 'default:mysql-8-0'}], u'PendingModifiedValues': {u'MasterUserPassword': '****'}, u'Engine': 'mysql', u'MultiAZ': False, u'DBSecurityGroups': [], u'DBParameterGroups': [{u'DBParameterGroupName': 'default.mysql8.0', u'ParameterApplyStatus': 'in-sync'}], u'PerformanceInsightsEnabled': False, u'AutoMinorVersionUpgrade': True, u'PreferredBackupWindow': '09:45-10:15', u'DBSubnetGroup': {u'Subnets': [{u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-5f315500', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1b'}}, {u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-cf745f82', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1a'}}, {u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-4738a021', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1c'}}, {u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-efe3b1e1', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1f'}}, {u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-5ab41b6b', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1e'}}, {u'SubnetStatus': 'Active', u'SubnetIdentifier': 'subnet-e3781ec2', u'SubnetOutpost': {}, u'SubnetAvailabilityZone': {u'Name': 'us-east-1d'}}], u'DBSubnetGroupName': 'default', u'VpcId': 'vpc-876adefa', u'DBSubnetGroupDescription': 'default', u'SubnetGroupStatus': 'Complete'}, u'ReadReplicaDBInstanceIdentifiers': [], u'AllocatedStorage': 20, u'DBInstanceArn': 'arn:aws:rds:us-east-1:140770401787:db:dbserver', u'BackupRetentionPeriod': 1, u'PreferredMaintenanceWindow': 'sat:08:57-sat:09:27', u'DBInstanceStatus': 'creating', u'IAMDatabaseAuthenticationEnabled': False, u'EngineVersion': '8.0.20', u'DeletionProtection': False, u'DomainMemberships': [], u'StorageType': 'gp2', u'DbiResourceId': 'db-KZ3OM3IL543ITFHKYLLQW6WCXY', u'CACertificateIdentifier': 'rds-ca-2019', u'StorageEncrypted': False, u'AssociatedRoles': [], u'DBInstanceClass': 'db.t2.micro', u'DbInstancePort': 0, u'DBInstanceIdentifier': 'dbserver', u'TagList': []}, 'ResponseMetadata': {'RetryAttempts': 0, 'HTTPStatusCode': 200, 'RequestId': '1c43e0a8-0e13-4453-9137-98f81b33e5f9', 'HTTPHeaders': {'x-amzn-requestid': '1c43e0a8-0e13-4453-9137-98f81b33e5f9', 'content-type': 'text/xml', 'content-length': '4852', 'vary': 'accept-encoding', 'date': 'Tue, 27 Apr 2021 02:51:54 GMT'}}}
+[root@python rds]#
+[root@python rds]# #aws configure
+[root@python rds]# vi /tmp/test.txt
+[root@python rds]# vi /tmp/test.txt
+[root@python rds]#
+[root@python rds]#
+[root@python rds]#
+[root@python rds]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: print "test\ttest"
+test    test
+
+In [2]:
+
+In [2]:
+
+In [2]:
+Do you really want to exit ([y]/n)?
+[root@python rds]#
+[root@python rds]#
+[root@python rds]# vi /tmp/test.txt
+[root@python rds]# vi /tmp/test.txt
+[root@python rds]#
+[root@python rds]#
+[root@python rds]# vi /tmp/test
+[root@python rds]# vi /tmp/test.txt
+[root@python rds]#
+[root@python rds]#
+[root@python rds]#
+[root@python rds]#
+[root@python rds]#

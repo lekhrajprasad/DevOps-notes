@@ -1,0 +1,1321 @@
+Using username "ubuntu".
+Authenticating with public key "imported-openssh-key" from agent
+Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-210-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+124 packages can be updated.
+3 updates are security updates.
+
+
+Last login: Fri May 21 01:48:12 2021 from 86.98.83.254
+ubuntu@ip-172-31-76-12:~$
+ubuntu@ip-172-31-76-12:~$ sudo su -
+root@ip-172-31-76-12:~# ls -l
+total 32
+-rw-r--r-- 1 root root 2537 May 20 02:29 apt-key.gpg
+-rw-r--r-- 1 root root  376 May 21 03:34 deploy.yaml
+drwxr-xr-x 5 root root 4096 May 21 01:48 kubernetes-installation
+-rw-r--r-- 1 root root   95 May 21 02:15 namespace.yaml
+-rw-r--r-- 1 root root  146 May 21 03:19 pod.yaml
+-rw-r--r-- 1 root root  159 May 21 01:56 service.yaml
+-rw-r--r-- 1 root root  211 May 21 03:05 svc-lb.yaml
+-rw-r--r-- 1 root root  181 May 21 02:56 svc-nodeport.yaml
+root@ip-172-31-76-12:~# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod2
+spec:
+  containers:
+    - name: mycontainer-name
+      image: nginx
+  nodeName: ip-172-31-16-62
+root@ip-172-31-76-12:~# vi pod.yaml
+root@ip-172-31-76-12:~# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-resources
+spec:
+  containers:
+    - name: resourcepod
+      image: nginx
+      resources:
+        limits:
+          cpu: "1"
+          memory: 300Mi
+        requests:
+          cpu: "0.5"
+          memory: 100Mi
+root@ip-172-31-76-12:~# kubectl apply -f pod.yaml
+error: error parsing pod.yaml: error converting YAML to JSON: yaml: line 12: found character that cannot start any token
+root@ip-172-31-76-12:~# vi pod.yaml
+root@ip-172-31-76-12:~# kubectl apply -f pod.yaml
+error: error parsing pod.yaml: error converting YAML to JSON: yaml: line 12: found character that cannot start any token
+root@ip-172-31-76-12:~# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-resources
+spec:
+  containers:
+    - name: resourcepod
+      image: nginx
+      resources:
+        limits:
+          cpu: "1"
+          memory: "300Mi"
+        requests:
+          cpu: "0.5"
+          memory: "100Mi"
+root@ip-172-31-76-12:~# vi pod1.yaml
+root@ip-172-31-76-12:~# cat pod1.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-cpu-mem
+spec:
+  containers:
+  - name: demo-resources
+    image: nginx
+    resources:
+      limits:
+        cpu: "1"
+        memory: "200Mi"
+      requests:
+        cpu: "0.5"
+        memory: "100Mi"
+root@ip-172-31-76-12:~# kubectl apply -f pod1.yaml
+pod/demo-cpu-mem created
+root@ip-172-31-76-12:~# kubectl get pods
+NAME                            READY   STATUS    RESTARTS   AGE
+demo-cpu-mem                    1/1     Running   0          57s
+dvs-deployment-7498455b-24hvj   1/1     Running   1          24h
+dvs-deployment-7498455b-fpm2d   1/1     Running   1          24h
+dvs-deployment-7498455b-hfvhk   1/1     Running   1          24h
+dvs-deployment-7498455b-kfd7b   1/1     Running   1          24h
+dvs-deployment-7498455b-s57fg   1/1     Running   1          24h
+dvs-deployment-7498455b-z8gfz   1/1     Running   1          24h
+mypod1                          1/1     Running   1          24h
+mypod2                          1/1     Running   1          24h
+root@ip-172-31-76-12:~# kubectl describe pod demo-cpu-mem
+Name:         demo-cpu-mem
+Namespace:    default
+Priority:     0
+Node:         ip-172-31-16-62/172.31.16.62
+Start Time:   Sat, 22 May 2021 03:58:47 +0000
+Labels:       <none>
+Annotations:  <none>
+Status:       Running
+IP:           10.44.0.4
+IPs:
+  IP:  10.44.0.4
+Containers:
+  demo-resources:
+    Container ID:   docker://f42153ad0c9263bc197af196d3acab48551743255d43440df74bbcd4cb7f9781
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:df13abe416e37eb3db4722840dd479b00ba193ac6606e7902331dcea50f4f1f2
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Sat, 22 May 2021 03:58:48 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  200Mi
+    Requests:
+      cpu:        500m
+      memory:     100Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-drz99 (ro)
+Conditions:
+  Type              Status
+  Initialized       True
+  Ready             True
+  ContainersReady   True
+  PodScheduled      True
+Volumes:
+  kube-api-access-drz99:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  84s   default-scheduler  Successfully assigned default/demo-cpu-mem to ip-172-31-16-62
+  Normal  Pulling    83s   kubelet            Pulling image "nginx"
+  Normal  Pulled     83s   kubelet            Successfully pulled image "nginx" in 132.942197ms
+  Normal  Created    83s   kubelet            Created container demo-resources
+  Normal  Started    83s   kubelet            Started container demo-resources
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# kubectl get deamonsets
+error: the server doesn't have a resource type "deamonsets"
+root@ip-172-31-76-12:~# kubectl get daemonsets
+No resources found in default namespace.
+root@ip-172-31-76-12:~# kubectl get ds
+No resources found in default namespace.
+root@ip-172-31-76-12:~# vi daemonsets.yaml
+root@ip-172-31-76-12:~# cat daemonsets.yaml
+apiVersion: apps/v1
+kind: "DaemonSet"
+metadata:
+  labels:
+    app: nginx
+    ssd: "true"
+  name: nginx-fast-storage
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+      ssd: "true"
+  template:
+    metadata:
+      labels:
+        app: nginx
+        ssd: "true"
+    spec:
+      nodeSelector:
+        ssd: "true"
+      containers:
+        - name: nginx
+          image: nginx:1.10.0
+root@ip-172-31-76-12:~# kubectl apply -f daemonsets.yaml
+daemonset.apps/nginx-fast-storage created
+root@ip-172-31-76-12:~# kubectl get ds
+NAME                 DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+nginx-fast-storage   0         0         0       0            0           ssd=true        4s
+root@ip-172-31-76-12:~# kubectl get nodes -o wide
+NAME              STATUS   ROLES                  AGE    VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+ip-172-31-16-62   Ready    <none>                 2d1h   v1.21.1   172.31.16.62   <none>        Ubuntu 16.04.1 LTS   4.4.0-210-generic   docker://18.9.7
+ip-172-31-22-35   Ready    <none>                 2d1h   v1.21.1   172.31.22.35   <none>        Ubuntu 16.04.1 LTS   4.4.0-210-generic   docker://18.9.7
+ip-172-31-76-12   Ready    control-plane,master   2d1h   v1.21.1   172.31.76.12   <none>        Ubuntu 16.04.1 LTS   4.4.0-210-generic   docker://18.9.7
+root@ip-172-31-76-12:~# kubectl get nodes -l ssd=true
+No resources found
+root@ip-172-31-76-12:~# #kubectl label node ip-172-31-22-35 ssd=true
+root@ip-172-31-76-12:~# kubectl label node ip-172-31-22-35 ssd=true
+node/ip-172-31-22-35 labeled
+root@ip-172-31-76-12:~# kubectl get nodes -l ssd=true
+NAME              STATUS   ROLES    AGE    VERSION
+ip-172-31-22-35   Ready    <none>   2d1h   v1.21.1
+root@ip-172-31-76-12:~# kubectl get ds
+NAME                 DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+nginx-fast-storage   1         1         1       1            1           ssd=true        2m23s
+root@ip-172-31-76-12:~# kubectl get pods -l ssd=true
+NAME                       READY   STATUS    RESTARTS   AGE
+nginx-fast-storage-k7zrr   1/1     Running   0          32s
+root@ip-172-31-76-12:~# kubectl get pods -l ssd=true -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-fast-storage-k7zrr   1/1     Running   0          35s   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~# kubectl label node ip-172-31-16-62 ssd=true
+node/ip-172-31-16-62 labeled
+root@ip-172-31-76-12:~# kubectl get pods -l ssd=true -o wide
+NAME                       READY   STATUS              RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-fast-storage-jxmpt   0/1     ContainerCreating   0          7s    <none>      ip-172-31-16-62   <none>           <none>
+nginx-fast-storage-k7zrr   1/1     Running             0          84s   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~# kubectl get pods -l ssd=true -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-fast-storage-jxmpt   1/1     Running   0          17s   10.44.0.5   ip-172-31-16-62   <none>           <none>
+nginx-fast-storage-k7zrr   1/1     Running   0          94s   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~# kubectl label node ip-172-31-16-62 ssd-
+node/ip-172-31-16-62 labeled
+root@ip-172-31-76-12:~# kubectl get pods -l ssd=true -o wide
+NAME                       READY   STATUS    RESTARTS   AGE    IP          NODE              NOMINATED NODE   READINESS GATES
+nginx-fast-storage-k7zrr   1/1     Running   0          115s   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# vi Dockerfile
+root@ip-172-31-76-12:~# cat Dockerfile
+FROM httpd
+RUN echo "Hi I am V1" > /usr/local/apache2/htdocs/index.html
+root@ip-172-31-76-12:~# docker build -t "shan5a6/dvsbatch1:v1" .
+Sending build context to Docker daemon  3.865MB
+Step 1/2 : FROM httpd
+latest: Pulling from library/httpd
+69692152171a: Pull complete
+7284b4e0cc7b: Pull complete
+3678b2d55ccd: Pull complete
+ab492cf0b2a4: Pull complete
+991f7f97a9d8: Pull complete
+Digest: sha256:e4c2b93c04762468a6cce6d507d94def02ef4dc285278d0d926e09827f4857db
+Status: Downloaded newer image for httpd:latest
+ ---> f3cffeea581b
+Step 2/2 : RUN echo "Hi I am V1" > /usr/local/apache2/htdocs/index.html
+ ---> Running in 37c184a8da70
+Removing intermediate container 37c184a8da70
+ ---> 6a101ba172c8
+Successfully built 6a101ba172c8
+Successfully tagged shan5a6/dvsbatch1:v1
+root@ip-172-31-76-12:~# docker push shan5a6/dvsbatch1:v1
+The push refers to repository [docker.io/shan5a6/dvsbatch1]
+ddc1a93cc607: Preparing
+7e462892f8e9: Preparing
+a5c7a08a53e0: Preparing
+33c6c92714e0: Preparing
+15fd28211cd0: Preparing
+02c055ef67f5: Waiting
+denied: requested access to the resource is denied
+root@ip-172-31-76-12:~# docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: shan5a6
+Password:
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+root@ip-172-31-76-12:~# docker push shan5a6/dvsbatch1:v1
+The push refers to repository [docker.io/shan5a6/dvsbatch1]
+ddc1a93cc607: Pushed
+7e462892f8e9: Mounted from library/httpd
+a5c7a08a53e0: Mounted from library/httpd
+33c6c92714e0: Mounted from library/httpd
+15fd28211cd0: Mounted from library/httpd
+02c055ef67f5: Mounted from library/httpd
+v1: digest: sha256:210c8350a672aeeeb8ca3382ae2e71aeec09d3014b5d9eef1df3a30df2b4075d size: 1573
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v1
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-app-management created
+root@ip-172-31-76-12:~# kubectl get dc
+error: the server doesn't have a resource type "dc"
+root@ip-172-31-76-12:~# kubectl get deploy
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+demo-app-management   2/2     2            2           20s
+dvs-deployment        6/6     6            6           27h
+root@ip-172-31-76-12:~# kubectl delete deploy dvs-deployment
+deployment.apps "dvs-deployment" deleted
+root@ip-172-31-76-12:~# kubectl get svc
+NAME               TYPE           CLUSTER-IP       EXTERNAL-IP    PORT(S)        AGE
+dvs-service        ClusterIP      10.111.201.45    <none>         8080/TCP       27h
+dvs-svc-lb         LoadBalancer   10.109.70.92     172.31.76.12   80:31797/TCP   25h
+dvs-svc-nodeport   NodePort       10.107.226.178   <none>         80:30007/TCP   26h
+kubernetes         ClusterIP      10.96.0.1        <none>         443/TCP        2d2h
+root@ip-172-31-76-12:~# kubectl delete svc dvs-service dvs-svc-lb dvs-svc-nodeport
+service "dvs-service" deleted
+service "dvs-svc-lb" deleted
+service "dvs-svc-nodeport" deleted
+root@ip-172-31-76-12:~# cat svc-
+cat: svc-: No such file or directory
+root@ip-172-31-76-12:~# cat svc-
+svc-lb.yaml        svc-nodeport.yaml
+root@ip-172-31-76-12:~# cat svc-lb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: dvs-svc-lb
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  externalIPs:
+    - 172.31.76.12
+root@ip-172-31-76-12:~# cp svc-lb.yaml svc.yaml
+root@ip-172-31-76-12:~# vi svc.yaml
+root@ip-172-31-76-12:~# cat svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-app-svc
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+root@ip-172-31-76-12:~# kubectl apply -f svc.yaml
+service/demo-app-svc created
+root@ip-172-31-76-12:~# kubectl get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+demo-app-svc   ClusterIP   10.100.176.237   <none>        80/TCP    6s
+kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP   2d2h
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          3m1s
+demo-app-management-667fcc5767-zp552   1/1     Running   0          3m1s
+nginx-fast-storage-k7zrr               1/1     Running   0          29m
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx|grep -i demo
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          3m10s
+demo-app-management-667fcc5767-zp552   1/1     Running   0          3m10s
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# #docker push shan5a6/dvsbatch1:v1
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v1
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl get pods|grep -i demo
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          37m
+demo-app-management-667fcc5767-zp552   1/1     Running   0          37m
+demo-cpu-mem                           1/1     Running   0          95m
+root@ip-172-31-76-12:~# kubectl get pods|grep -i demo-app
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          37m
+demo-app-management-667fcc5767-zp552   1/1     Running   0          37m
+root@ip-172-31-76-12:~# kubectl get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+demo-app-svc   ClusterIP   10.100.176.237   <none>        80/TCP    35m
+kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP   2d3h
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+root@ip-172-31-76-12:~# kubectl get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+demo-app-svc   ClusterIP   10.100.176.237   <none>        80/TCP    36m
+kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP   2d3h
+root@ip-172-31-76-12:~# kubectl describe svc demo-app-svc
+Name:              demo-app-svc
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.100.176.237
+IPs:               10.100.176.237
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.36.0.8:80,10.36.0.9:80,10.44.0.5:80
+Session Affinity:  None
+Events:            <none>
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          39m
+demo-app-management-667fcc5767-zp552   1/1     Running   0          39m
+nginx-fast-storage-k7zrr               1/1     Running   0          65m
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx -o wide
+NAME                                   READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          39m   10.44.0.5   ip-172-31-16-62   <none>           <none>
+demo-app-management-667fcc5767-zp552   1/1     Running   0          39m   10.36.0.9   ip-172-31-22-35   <none>           <none>
+nginx-fast-storage-k7zrr               1/1     Running   0          66m   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~# kubectl get ds
+NAME                 DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+nginx-fast-storage   1         1         1       1            1           ssd=true        68m
+root@ip-172-31-76-12:~# kubectl delete ds nginx-fast-storage
+daemonset.apps "nginx-fast-storage" deleted
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx -o wide
+NAME                                   READY   STATUS        RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+demo-app-management-667fcc5767-b42gq   1/1     Running       0          40m   10.44.0.5   ip-172-31-16-62   <none>           <none>
+demo-app-management-667fcc5767-zp552   1/1     Running       0          40m   10.36.0.9   ip-172-31-22-35   <none>           <none>
+nginx-fast-storage-k7zrr               0/1     Terminating   0          66m   10.36.0.8   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx -o wide -w
+NAME                                   READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          40m   10.44.0.5   ip-172-31-16-62   <none>           <none>
+demo-app-management-667fcc5767-zp552   1/1     Running   0          40m   10.36.0.9   ip-172-31-22-35   <none>           <none>
+^Croot@ip-172-31-76-12:~# kubectl get pods -l app=nginx -o wide
+NAME                                   READY   STATUS    RESTARTS   AGE   IP          NODE              NOMINATED NODE   READINESS GATES
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          40m   10.44.0.5   ip-172-31-16-62   <none>           <none>
+demo-app-management-667fcc5767-zp552   1/1     Running   0          40m   10.36.0.9   ip-172-31-22-35   <none>           <none>
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# curl http://10.100.176.237
+Hi I am V1
+root@ip-172-31-76-12:~# vi Dockerfile
+root@ip-172-31-76-12:~# cat Dockerfile
+FROM httpd
+RUN echo "Hi I am V2" > /usr/local/apache2/htdocs/index.html
+root@ip-172-31-76-12:~# docker build -t "shan5a6/dvsbatch1:v2" .
+Sending build context to Docker daemon  3.868MB
+Step 1/2 : FROM httpd
+ ---> f3cffeea581b
+Step 2/2 : RUN echo "Hi I am V2" > /usr/local/apache2/htdocs/index.html
+ ---> Running in 3197fc0e46a3
+Removing intermediate container 3197fc0e46a3
+ ---> cc2e7ca4e6b1
+Successfully built cc2e7ca4e6b1
+Successfully tagged shan5a6/dvsbatch1:v2
+root@ip-172-31-76-12:~# docker push shan5a6/dvsbatch1:v2
+The push refers to repository [docker.io/shan5a6/dvsbatch1]
+bae2015b887b: Pushed
+7e462892f8e9: Layer already exists
+a5c7a08a53e0: Layer already exists
+33c6c92714e0: Layer already exists
+15fd28211cd0: Layer already exists
+02c055ef67f5: Layer already exists
+v2: digest: sha256:095055b6fbb5acaa1e9f12a6e5de8138e11ea56a5c47f79ce07684ba78929710 size: 1573
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          46m
+demo-app-management-667fcc5767-zp552   1/1     Running   0          46m
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v1
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-app-management configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-667fcc5767-b42gq   1/1     Running   0          46m
+demo-app-management-667fcc5767-bjkkt   1/1     Running   0          4s
+demo-app-management-667fcc5767-crkkk   1/1     Running   0          4s
+demo-app-management-667fcc5767-kb8fb   1/1     Running   0          4s
+demo-app-management-667fcc5767-m74j9   1/1     Running   0          4s
+demo-app-management-667fcc5767-zp552   1/1     Running   0          46m
+root@ip-172-31-76-12:~# kubectl get deploy
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+demo-app-management   6/6     6            6           46m
+root@ip-172-31-76-12:~# kubectl describe deploy demo-app-management
+Name:                   demo-app-management
+Namespace:              default
+CreationTimestamp:      Sat, 22 May 2021 04:56:45 +0000
+Labels:                 app=nginx
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=nginx
+Replicas:               6 desired | 6 updated | 6 total | 6 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:        shan5a6/dvsbatch1:v1
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   demo-app-management-667fcc5767 (6/6 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  47m   deployment-controller  Scaled up replica set demo-app-management-667fcc5767 to 2
+  Normal  ScalingReplicaSet  37s   deployment-controller  Scaled up replica set demo-app-management-667fcc5767 to 6
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v2
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-app-management configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS              RESTARTS   AGE
+demo-app-management-5f66c48b74-79zxq   1/1     Running             0          3s
+demo-app-management-5f66c48b74-d4zn4   0/1     ContainerCreating   0          1s
+demo-app-management-5f66c48b74-ngv4f   1/1     Running             0          3s
+demo-app-management-5f66c48b74-sjc2n   0/1     ContainerCreating   0          0s
+demo-app-management-5f66c48b74-t24wr   0/1     ContainerCreating   0          1s
+demo-app-management-5f66c48b74-tf7cv   1/1     Running             0          3s
+demo-app-management-667fcc5767-b42gq   1/1     Running             0          49m
+demo-app-management-667fcc5767-bjkkt   1/1     Terminating         0          2m45s
+demo-app-management-667fcc5767-crkkk   0/1     Terminating         0          2m45s
+demo-app-management-667fcc5767-kb8fb   1/1     Terminating         0          2m45s
+demo-app-management-667fcc5767-m74j9   1/1     Terminating         0          2m45s
+demo-app-management-667fcc5767-zp552   1/1     Running             0          49m
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 6
+  strategy:
+    type: "Recreate"
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v2
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-5f66c48b74-79zxq   1/1     Running   0          2m59s
+demo-app-management-5f66c48b74-d4zn4   1/1     Running   0          2m57s
+demo-app-management-5f66c48b74-ngv4f   1/1     Running   0          2m59s
+demo-app-management-5f66c48b74-sjc2n   1/1     Running   0          2m56s
+demo-app-management-5f66c48b74-t24wr   1/1     Running   0          2m57s
+demo-app-management-5f66c48b74-tf7cv   1/1     Running   0          2m59s
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-app-management configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-5f66c48b74-79zxq   1/1     Running   0          3m14s
+demo-app-management-5f66c48b74-d4zn4   1/1     Running   0          3m12s
+demo-app-management-5f66c48b74-ngv4f   1/1     Running   0          3m14s
+demo-app-management-5f66c48b74-sjc2n   1/1     Running   0          3m11s
+demo-app-management-5f66c48b74-t24wr   1/1     Running   0          3m12s
+demo-app-management-5f66c48b74-tf7cv   1/1     Running   0          3m14s
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 6
+  strategy:
+    type: "Recreate"
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v1
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl describe deploy demo-app-management
+Name:               demo-app-management
+Namespace:          default
+CreationTimestamp:  Sat, 22 May 2021 04:56:45 +0000
+Labels:             app=nginx
+Annotations:        deployment.kubernetes.io/revision: 2
+Selector:           app=nginx
+Replicas:           6 desired | 6 updated | 6 total | 6 available | 0 unavailable
+StrategyType:       Recreate
+MinReadySeconds:    0
+Pod Template:
+  Labels:  app=nginx
+  Containers:
+   nginx:
+    Image:        shan5a6/dvsbatch1:v2
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   demo-app-management-5f66c48b74 (6/6 replicas created)
+Events:
+  Type    Reason             Age                    From                   Message
+  ----    ------             ----                   ----                   -------
+  Normal  ScalingReplicaSet  52m                    deployment-controller  Scaled up replica set demo-app-management-667fcc5767 to 2
+  Normal  ScalingReplicaSet  6m31s                  deployment-controller  Scaled up replica set demo-app-management-667fcc5767 to 6
+  Normal  ScalingReplicaSet  3m49s                  deployment-controller  Scaled up replica set demo-app-management-5f66c48b74 to 2
+  Normal  ScalingReplicaSet  3m49s                  deployment-controller  Scaled down replica set demo-app-management-667fcc5767 to 5
+  Normal  ScalingReplicaSet  3m49s                  deployment-controller  Scaled up replica set demo-app-management-5f66c48b74 to 3
+  Normal  ScalingReplicaSet  3m47s                  deployment-controller  Scaled down replica set demo-app-management-667fcc5767 to 4
+  Normal  ScalingReplicaSet  3m47s                  deployment-controller  Scaled up replica set demo-app-management-5f66c48b74 to 4
+  Normal  ScalingReplicaSet  3m47s                  deployment-controller  Scaled down replica set demo-app-management-667fcc5767 to 3
+  Normal  ScalingReplicaSet  3m47s                  deployment-controller  Scaled up replica set demo-app-management-5f66c48b74 to 5
+  Normal  ScalingReplicaSet  3m46s                  deployment-controller  Scaled down replica set demo-app-management-667fcc5767 to 2
+  Normal  ScalingReplicaSet  3m45s (x3 over 3m46s)  deployment-controller  (combined from similar events): Scaled down replica set demo-app-management-667fcc5767 to 0
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-app-management configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS        RESTARTS   AGE
+demo-app-management-5f66c48b74-79zxq   1/1     Terminating   0          4m14s
+demo-app-management-5f66c48b74-d4zn4   0/1     Terminating   0          4m12s
+demo-app-management-5f66c48b74-ngv4f   0/1     Terminating   0          4m14s
+demo-app-management-5f66c48b74-sjc2n   0/1     Terminating   0          4m11s
+demo-app-management-5f66c48b74-t24wr   1/1     Terminating   0          4m12s
+demo-app-management-5f66c48b74-tf7cv   1/1     Terminating   0          4m14s
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS        RESTARTS   AGE
+demo-app-management-5f66c48b74-79zxq   0/1     Terminating   0          4m21s
+demo-app-management-5f66c48b74-d4zn4   0/1     Terminating   0          4m19s
+demo-app-management-5f66c48b74-ngv4f   0/1     Terminating   0          4m21s
+demo-app-management-5f66c48b74-sjc2n   0/1     Terminating   0          4m18s
+demo-app-management-5f66c48b74-t24wr   0/1     Terminating   0          4m19s
+demo-app-management-5f66c48b74-tf7cv   0/1     Terminating   0          4m21s
+root@ip-172-31-76-12:~# kubectl get pods -l app=nginx
+NAME                                   READY   STATUS    RESTARTS   AGE
+demo-app-management-667fcc5767-8cghb   1/1     Running   0          9s
+demo-app-management-667fcc5767-c6x4h   1/1     Running   0          9s
+demo-app-management-667fcc5767-d26pn   1/1     Running   0          9s
+demo-app-management-667fcc5767-dx5nk   1/1     Running   0          9s
+demo-app-management-667fcc5767-hwfq8   1/1     Running   0          9s
+demo-app-management-667fcc5767-l7vwm   1/1     Running   0          9s
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# kubectl get svc
+NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+demo-app-svc   ClusterIP   10.100.176.237   <none>        80/TCP    64m
+kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP   2d3h
+root@ip-172-31-76-12:~# kubectl describe svc demo-app-svc
+Name:              demo-app-svc
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.100.176.237
+IPs:               10.100.176.237
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.36.0.1:80,10.36.0.4:80,10.36.0.5:80 + 3 more...
+Session Affinity:  None
+Events:            <none>
+root@ip-172-31-76-12:~# host 10.100.176.237
+237.176.100.10.in-addr.arpa domain name pointer ip-10-100-176-237.ec2.internal.
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# vi configmap.yaml
+root@ip-172-31-76-12:~# cat configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-configmap
+data:
+  subject: "kubernetes"
+  day: "saturday"
+root@ip-172-31-76-12:~# kubectl apply -f configmap.yaml
+configmap/app1-configmap created
+root@ip-172-31-76-12:~# kubectl get configmaps
+NAME               DATA   AGE
+app1-configmap     2      10s
+kube-root-ca.crt   1      2d3h
+root@ip-172-31-76-12:~# kubectl get config
+error: the server doesn't have a resource type "config"
+root@ip-172-31-76-12:~# kubectl get configmaps
+NAME               DATA   AGE
+app1-configmap     2      25s
+kube-root-ca.crt   1      2d3h
+root@ip-172-31-76-12:~# kubectl describe configmap app1-configmap
+Name:         app1-configmap
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+day:
+----
+saturday
+subject:
+----
+kubernetes
+Events:  <none>
+root@ip-172-31-76-12:~# cat pod
+cat: pod: No such file or directory
+root@ip-172-31-76-12:~# cat pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod-resources
+spec:
+  containers:
+    - name: resourcepod
+      image: nginx
+      resources:
+        limits:
+          cpu: "1"
+          memory: "300Mi"
+        requests:
+          cpu: "0.5"
+          memory: "100Mi"
+root@ip-172-31-76-12:~# kubectl apply -f pod.yaml
+error: error parsing pod.yaml: error converting YAML to JSON: yaml: line 12: found character that cannot start any token
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app-management
+  labels:
+    app: nginx
+spec:
+  replicas: 6
+  strategy:
+    type: "Recreate"
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: shan5a6/dvsbatch1:v1
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~#  deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-configmap created
+root@ip-172-31-76-12:~# kubectl get pods -l app=configmap
+NAME                              READY   STATUS    RESTARTS   AGE
+demo-configmap-665d9f89df-ktmbh   1/1     Running   0          8s
+root@ip-172-31-76-12:~# kubectl exec -it demo-configmap-665d9f89df-ktmbh /bin/bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@demo-configmap-665d9f89df-ktmbh:/# env|grep -i subject
+root@demo-configmap-665d9f89df-ktmbh:/# env|grep -i batch
+root@demo-configmap-665d9f89df-ktmbh:/# env|grep -i day
+root@demo-configmap-665d9f89df-ktmbh:/# exit
+command terminated with exit code 1
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# cat configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-configmap
+data:
+  subject: "kubernetes"
+  day: "saturday"
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+root@ip-172-31-76-12:~# vi deploy.yaml
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+        env:
+          - name: SUBJECT
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: subject
+          - name: DAY
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: day
+
+root@ip-172-31-76-12:~# kubectl apply -f deploy.yaml
+deployment.apps/demo-configmap configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=configmap
+NAME                              READY   STATUS        RESTARTS   AGE
+demo-configmap-665d9f89df-ktmbh   0/1     Terminating   0          11m
+demo-configmap-787c7dd684-mnkv7   1/1     Running       0          9s
+root@ip-172-31-76-12:~# kubectl exec -it demo-configmap-787c7dd684-mnkv7 /bin/bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@demo-configmap-787c7dd684-mnkv7:/# env|grep -i subject
+SUBJECT=kubernetes
+root@demo-configmap-787c7dd684-mnkv7:/# env|grep -i day
+DAY=saturday
+root@demo-configmap-787c7dd684-mnkv7:/# exit
+root@ip-172-31-76-12:~# vi configmap.yaml
+root@ip-172-31-76-12:~# cat configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-configmap
+data:
+  subject: "kubernetes"
+  day: "monday"
+root@ip-172-31-76-12:~# kubectl apply -f configmap.yaml
+configmap/app1-configmap configured
+root@ip-172-31-76-12:~# kubectl get pods -l app=configmap
+NAME                              READY   STATUS    RESTARTS   AGE
+demo-configmap-787c7dd684-mnkv7   1/1     Running   0          4m18s
+root@ip-172-31-76-12:~# kubectl exec -it demo-configmap-787c7dd684-mnkv7 /bin/bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@demo-configmap-787c7dd684-mnkv7:/# env|grep -i day
+DAY=saturday
+root@demo-configmap-787c7dd684-mnkv7:/# exit
+root@ip-172-31-76-12:~# kubectl get configmap
+NAME               DATA   AGE
+app1-configmap     2      22m
+kube-root-ca.crt   1      2d4h
+root@ip-172-31-76-12:~# kubectl describe config app1-configmap
+error: the server doesn't have a resource type "config"
+root@ip-172-31-76-12:~# kubectl describe configmap app1-configmap
+Name:         app1-configmap
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+subject:
+----
+kubernetes
+day:
+----
+monday
+Events:  <none>
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+        env:
+          - name: SUBJECT
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: subject
+          - name: DAY
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: day
+
+root@ip-172-31-76-12:~# kubectl get deploy
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+demo-app-management   6/6     6            6           105m
+demo-configmap        1/1     1            1           17m
+root@ip-172-31-76-12:~# kubectl rollout deploy demo-app-management
+error: unknown command "deploy demo-app-management"
+See 'kubectl rollout -h' for help and examples
+root@ip-172-31-76-12:~# kubectl restart deploy demo-app-management
+Error: unknown command "restart" for "kubectl"
+Run 'kubectl --help' for usage.
+root@ip-172-31-76-12:~# kubectl deploy restart demo-app-management
+Error: unknown command "deploy" for "kubectl"
+Run 'kubectl --help' for usage.
+root@ip-172-31-76-12:~# kubectl rollout -h
+Manage the rollout of a resource.
+
+ Valid resource types include:
+
+  *  deployments
+  *  daemonsets
+  *  statefulsets
+
+Examples:
+  # Rollback to the previous deployment
+  kubectl rollout undo deployment/abc
+
+  # Check the rollout status of a daemonset
+  kubectl rollout status daemonset/foo
+
+Available Commands:
+  history     View rollout history
+  pause       Mark the provided resource as paused
+  restart     Restart a resource
+  resume      Resume a paused resource
+  status      Show the status of the rollout
+  undo        Undo a previous rollout
+
+Usage:
+  kubectl rollout SUBCOMMAND [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+root@ip-172-31-76-12:~# kubectl rollout restart deploy demo-app-management
+deployment.apps/demo-app-management restarted
+root@ip-172-31-76-12:~# kubectl get pods -l app=configmap
+NAME                              READY   STATUS    RESTARTS   AGE
+demo-configmap-787c7dd684-mnkv7   1/1     Running   0          7m22s
+root@ip-172-31-76-12:~# kubectl get pods -l app==configmap
+NAME                              READY   STATUS    RESTARTS   AGE
+demo-configmap-787c7dd684-mnkv7   1/1     Running   0          7m35s
+root@ip-172-31-76-12:~# kubectl get deploy
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+demo-app-management   6/6     6            6           107m
+demo-configmap        1/1     1            1           19m
+root@ip-172-31-76-12:~# kubectl rollout restart deploy demo-configmap
+deployment.apps/demo-configmap restarted
+root@ip-172-31-76-12:~# kubectl get pods -l app==configmap
+NAME                              READY   STATUS        RESTARTS   AGE
+demo-configmap-5c4dcc9bf6-7m4lb   1/1     Running       0          4s
+demo-configmap-787c7dd684-mnkv7   0/1     Terminating   0          8m14s
+root@ip-172-31-76-12:~# kubectl exec -it demo-configmap-5c4dcc9bf6-7m4lb /bin/bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+root@demo-configmap-5c4dcc9bf6-7m4lb:/# env|grep -i day
+DAY=monday
+root@demo-configmap-5c4dcc9bf6-7m4lb:/# exit
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~#
+root@ip-172-31-76-12:~# kubectl get configmap
+NAME               DATA   AGE
+app1-configmap     2      28m
+kube-root-ca.crt   1      2d4h
+root@ip-172-31-76-12:~# kubectl describe configmap app1-configmap
+Name:         app1-configmap
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+day:
+----
+monday
+subject:
+----
+kubernetes
+Events:  <none>
+root@ip-172-31-76-12:~# vi secret.yaml
+root@ip-172-31-76-12:~# cat secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app1-secret
+data:
+  # You can include additional key value pairs as you do with Opaque Secrets
+  dbname: "java-app"
+root@ip-172-31-76-12:~# kubectl apply -f secret.yaml
+Error from server (BadRequest): error when creating "secret.yaml": Secret in version "v1" cannot be handled as a Secret: v1.Secret.ObjectMeta: v1.ObjectMeta.TypeMeta: Kind: Data: decode base64: illegal base64 data at input byte 4, error found in #10 byte of ...|"java-app"},"kind":"|..., bigger context ...|{"apiVersion":"v1","data":{"dbname":"java-app"},"kind":"Secret","metadata":{"annotations":{"kube|...
+root@ip-172-31-76-12:~# cat secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app1-secret
+data:
+  # You can include additional key value pairs as you do with Opaque Secrets
+  dbname: "java-app"
+root@ip-172-31-76-12:~# echo "java-app"|base64
+amF2YS1hcHAK
+root@ip-172-31-76-12:~# vi secret.yaml
+root@ip-172-31-76-12:~# cat secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app1-secret
+data:
+  # You can include additional key value pairs as you do with Opaque Secrets
+  dbname: "amF2YS1hcHAK"
+root@ip-172-31-76-12:~# kubectl apply -f secret.yaml
+secret/app1-secret created
+root@ip-172-31-76-12:~# kubectl describe secret app1-secret
+Name:         app1-secret
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+dbname:  9 bytes
+root@ip-172-31-76-12:~# cat deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-configmap
+  labels:
+    app: configmap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmap
+  template:
+    metadata:
+      labels:
+        app: configmap
+    spec:
+      containers:
+      - name: configmap
+        image: nginx
+        ports:
+        - containerPort: 80
+        env:
+          - name: SUBJECT
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: subject
+          - name: DAY
+            valueFrom:
+              configMapKeyRef:
+                name: app1-configmap
+                key: day
+
+root@ip-172-31-76-12:~#

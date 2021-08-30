@@ -1,0 +1,762 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-20-10-10 ~]$ sudo su -
+[root@ip-10-20-10-10 ~]#
+[root@ip-10-20-10-10 ~]#
+[root@ip-10-20-10-10 ~]#
+[root@ip-10-20-10-10 ~]# hostnamectl set-hostname appserver
+[root@ip-10-20-10-10 ~]# bash
+[root@appserver ~]#
+[root@appserver ~]# sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+Installing php-pdo, php-mysqlnd, php-fpm, php-cli, php-json, mariadb
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Cleaning repos: amzn2-core amzn2extra-docker amzn2extra-lamp-mariadb10.2-php7.2 amzn2extra-php7.2
+12 metadata files removed
+4 sqlite files removed
+0 metadata files removed
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+amzn2extra-docker                                                                                  | 3.0 kB  00:00:00
+amzn2extra-lamp-mariadb10.2-php7.2                                                                 | 3.0 kB  00:00:00
+amzn2extra-php7.2                                                                                  | 3.0 kB  00:00:00
+(1/9): amzn2-core/2/x86_64/group_gz                                                                | 2.5 kB  00:00:00
+(2/9): amzn2-core/2/x86_64/updateinfo                                                              | 362 kB  00:00:00
+(3/9): amzn2extra-lamp-mariadb10.2-php7.2/2/x86_64/primary_db                                      | 464 kB  00:00:00
+(4/9): amzn2extra-php7.2/2/x86_64/updateinfo                                                       |   76 B  00:00:00
+(5/9): amzn2extra-php7.2/2/x86_64/primary_db                                                       | 580 kB  00:00:00
+(6/9): amzn2extra-docker/2/x86_64/updateinfo                                                       |   76 B  00:00:00
+(7/9): amzn2extra-lamp-mariadb10.2-php7.2/2/x86_64/updateinfo                                      |   76 B  00:00:00
+(8/9): amzn2extra-docker/2/x86_64/primary_db                                                       |  76 kB  00:00:00
+(9/9): amzn2-core/2/x86_64/primary_db                                                              |  51 MB  00:00:01
+Resolving Dependencies
+--> Running transaction check
+---> Package mariadb.x86_64 3:10.2.10-2.amzn2.0.3 will be installed
+--> Processing Dependency: mariadb-libs(x86-64) = 3:10.2.10-2.amzn2.0.3 for package: 3:mariadb-10.2.10-2.amzn2.0.3.x86_64
+--> Processing Dependency: mariadb-common(x86-64) = 3:10.2.10-2.amzn2.0.3 for package: 3:mariadb-10.2.10-2.amzn2.0.3.x86_64
+---> Package php-cli.x86_64 0:7.2.34-1.amzn2 will be installed
+--> Processing Dependency: php-common(x86-64) = 7.2.34-1.amzn2 for package: php-cli-7.2.34-1.amzn2.x86_64
+---> Package php-fpm.x86_64 0:7.2.34-1.amzn2 will be installed
+---> Package php-json.x86_64 0:7.2.34-1.amzn2 will be installed
+---> Package php-mysqlnd.x86_64 0:7.2.34-1.amzn2 will be installed
+---> Package php-pdo.x86_64 0:7.2.34-1.amzn2 will be installed
+--> Running transaction check
+---> Package mariadb-common.x86_64 3:10.2.10-2.amzn2.0.3 will be installed
+--> Processing Dependency: /etc/my.cnf for package: 3:mariadb-common-10.2.10-2.amzn2.0.3.x86_64
+---> Package mariadb-libs.x86_64 1:5.5.68-1.amzn2 will be updated
+---> Package mariadb-libs.x86_64 3:10.2.10-2.amzn2.0.3 will be an update
+---> Package php-common.x86_64 0:7.2.34-1.amzn2 will be installed
+--> Processing Dependency: libzip.so.5()(64bit) for package: php-common-7.2.34-1.amzn2.x86_64
+--> Running transaction check
+---> Package libzip.x86_64 0:1.3.2-1.amzn2.0.1 will be installed
+---> Package mariadb-config.x86_64 3:10.2.10-2.amzn2.0.3 will be installed
+---> Package mariadb-libs.x86_64 1:5.5.68-1.amzn2 will be updated
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                 Arch            Version                        Repository                                   Size
+==========================================================================================================================
+Installing:
+ mariadb                 x86_64          3:10.2.10-2.amzn2.0.3          amzn2extra-lamp-mariadb10.2-php7.2          6.1 M
+ php-cli                 x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                           4.4 M
+ php-fpm                 x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                           1.5 M
+ php-json                x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                            71 k
+ php-mysqlnd             x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                           238 k
+ php-pdo                 x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                           132 k
+Installing for dependencies:
+ libzip                  x86_64          1.3.2-1.amzn2.0.1              amzn2-core                                   62 k
+ mariadb-common          x86_64          3:10.2.10-2.amzn2.0.3          amzn2extra-lamp-mariadb10.2-php7.2           58 k
+ mariadb-config          x86_64          3:10.2.10-2.amzn2.0.3          amzn2extra-lamp-mariadb10.2-php7.2           34 k
+ php-common              x86_64          7.2.34-1.amzn2                 amzn2extra-php7.2                           1.1 M
+Updating for dependencies:
+ mariadb-libs            x86_64          3:10.2.10-2.amzn2.0.3          amzn2extra-lamp-mariadb10.2-php7.2          149 k
+
+Transaction Summary
+==========================================================================================================================
+Install  6 Packages (+4 Dependent packages)
+Upgrade             ( 1 Dependent package)
+
+Total download size: 14 M
+Downloading packages:
+Delta RPMs disabled because /usr/bin/applydeltarpm not installed.
+(1/11): libzip-1.3.2-1.amzn2.0.1.x86_64.rpm                                                        |  62 kB  00:00:00
+(2/11): mariadb-common-10.2.10-2.amzn2.0.3.x86_64.rpm                                              |  58 kB  00:00:00
+(3/11): mariadb-config-10.2.10-2.amzn2.0.3.x86_64.rpm                                              |  34 kB  00:00:00
+(4/11): mariadb-libs-10.2.10-2.amzn2.0.3.x86_64.rpm                                                | 149 kB  00:00:00
+(5/11): mariadb-10.2.10-2.amzn2.0.3.x86_64.rpm                                                     | 6.1 MB  00:00:00
+(6/11): php-common-7.2.34-1.amzn2.x86_64.rpm                                                       | 1.1 MB  00:00:00
+(7/11): php-cli-7.2.34-1.amzn2.x86_64.rpm                                                          | 4.4 MB  00:00:00
+(8/11): php-fpm-7.2.34-1.amzn2.x86_64.rpm                                                          | 1.5 MB  00:00:00
+(9/11): php-json-7.2.34-1.amzn2.x86_64.rpm                                                         |  71 kB  00:00:00
+(10/11): php-mysqlnd-7.2.34-1.amzn2.x86_64.rpm                                                     | 238 kB  00:00:00
+(11/11): php-pdo-7.2.34-1.amzn2.x86_64.rpm                                                         | 132 kB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      25 MB/s |  14 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libzip-1.3.2-1.amzn2.0.1.x86_64                                                                       1/12
+  Installing : php-common-7.2.34-1.amzn2.x86_64                                                                      2/12
+  Installing : php-json-7.2.34-1.amzn2.x86_64                                                                        3/12
+  Installing : php-pdo-7.2.34-1.amzn2.x86_64                                                                         4/12
+  Installing : 3:mariadb-config-10.2.10-2.amzn2.0.3.x86_64                                                           5/12
+  Installing : 3:mariadb-common-10.2.10-2.amzn2.0.3.x86_64                                                           6/12
+  Updating   : 3:mariadb-libs-10.2.10-2.amzn2.0.3.x86_64                                                             7/12
+  Installing : 3:mariadb-10.2.10-2.amzn2.0.3.x86_64                                                                  8/12
+  Installing : php-mysqlnd-7.2.34-1.amzn2.x86_64                                                                     9/12
+  Installing : php-cli-7.2.34-1.amzn2.x86_64                                                                        10/12
+  Installing : php-fpm-7.2.34-1.amzn2.x86_64                                                                        11/12
+  Cleanup    : 1:mariadb-libs-5.5.68-1.amzn2.x86_64                                                                 12/12
+  Verifying  : 3:mariadb-10.2.10-2.amzn2.0.3.x86_64                                                                  1/12
+  Verifying  : php-cli-7.2.34-1.amzn2.x86_64                                                                         2/12
+  Verifying  : php-fpm-7.2.34-1.amzn2.x86_64                                                                         3/12
+  Verifying  : php-json-7.2.34-1.amzn2.x86_64                                                                        4/12
+  Verifying  : 3:mariadb-common-10.2.10-2.amzn2.0.3.x86_64                                                           5/12
+  Verifying  : 3:mariadb-config-10.2.10-2.amzn2.0.3.x86_64                                                           6/12
+  Verifying  : libzip-1.3.2-1.amzn2.0.1.x86_64                                                                       7/12
+  Verifying  : 3:mariadb-libs-10.2.10-2.amzn2.0.3.x86_64                                                             8/12
+  Verifying  : php-mysqlnd-7.2.34-1.amzn2.x86_64                                                                     9/12
+  Verifying  : php-pdo-7.2.34-1.amzn2.x86_64                                                                        10/12
+  Verifying  : php-common-7.2.34-1.amzn2.x86_64                                                                     11/12
+  Verifying  : 1:mariadb-libs-5.5.68-1.amzn2.x86_64                                                                 12/12
+
+Installed:
+  mariadb.x86_64 3:10.2.10-2.amzn2.0.3      php-cli.x86_64 0:7.2.34-1.amzn2          php-fpm.x86_64 0:7.2.34-1.amzn2
+  php-json.x86_64 0:7.2.34-1.amzn2          php-mysqlnd.x86_64 0:7.2.34-1.amzn2      php-pdo.x86_64 0:7.2.34-1.amzn2
+
+Dependency Installed:
+  libzip.x86_64 0:1.3.2-1.amzn2.0.1                           mariadb-common.x86_64 3:10.2.10-2.amzn2.0.3
+  mariadb-config.x86_64 3:10.2.10-2.amzn2.0.3                 php-common.x86_64 0:7.2.34-1.amzn2
+
+Dependency Updated:
+  mariadb-libs.x86_64 3:10.2.10-2.amzn2.0.3
+
+Complete!
+  0  ansible2                        available    \
+        [ =2.4.2  =2.4.6  =2.8  =stable ]
+  2  httpd_modules                   available    [ =1.0  =stable ]
+  3  memcached1.5                    available    \
+        [ =1.5.1  =1.5.16  =1.5.17 ]
+  5  postgresql9.6                   available    \
+        [ =9.6.6  =9.6.8  =stable ]
+  6  postgresql10                    available    [ =10  =stable ]
+  8  redis4.0                        available    \
+        [ =4.0.5  =4.0.10  =stable ]
+  9  R3.4                            available    [ =3.4.3  =stable ]
+ 10  rust1                           available    \
+        [ =1.22.1  =1.26.0  =1.26.1  =1.27.2  =1.31.0  =1.38.0
+          =stable ]
+ 11  vim                             available    [ =8.0  =stable ]
+ 15  php7.2=latest                   enabled      \
+        [ =7.2.0  =7.2.4  =7.2.5  =7.2.8  =7.2.11  =7.2.13  =7.2.14
+          =7.2.16  =7.2.17  =7.2.19  =7.2.21  =7.2.22  =7.2.23
+          =7.2.24  =7.2.26  =stable ]
+ 17  lamp-mariadb10.2-php7.2=latest  enabled      \
+        [ =10.2.10_7.2.0  =10.2.10_7.2.4  =10.2.10_7.2.5
+          =10.2.10_7.2.8  =10.2.10_7.2.11  =10.2.10_7.2.13
+          =10.2.10_7.2.14  =10.2.10_7.2.16  =10.2.10_7.2.17
+          =10.2.10_7.2.19  =10.2.10_7.2.22  =10.2.10_7.2.23
+          =10.2.10_7.2.24  =stable ]
+ 18  libreoffice                     available    \
+        [ =5.0.6.2_15  =5.3.6.1  =stable ]
+ 19  gimp                            available    [ =2.8.22 ]
+ 20  docker=latest                   enabled      \
+        [ =17.12.1  =18.03.1  =18.06.1  =18.09.9  =stable ]
+ 21  mate-desktop1.x                 available    \
+        [ =1.19.0  =1.20.0  =stable ]
+ 22  GraphicsMagick1.3               available    \
+        [ =1.3.29  =1.3.32  =1.3.34  =stable ]
+ 23  tomcat8.5                       available    \
+        [ =8.5.31  =8.5.32  =8.5.38  =8.5.40  =8.5.42  =8.5.50
+          =stable ]
+ 24  epel                            available    [ =7.11  =stable ]
+ 25  testing                         available    [ =1.0  =stable ]
+ 26  ecs                             available    [ =stable ]
+ 27  corretto8                       available    \
+        [ =1.8.0_192  =1.8.0_202  =1.8.0_212  =1.8.0_222  =1.8.0_232
+          =1.8.0_242  =stable ]
+ 28  firecracker                     available    [ =0.11  =stable ]
+ 29  golang1.11                      available    \
+        [ =1.11.3  =1.11.11  =1.11.13  =stable ]
+ 30  squid4                          available    [ =4  =stable ]
+  _  php7.3                          available    \
+        [ =7.3.2  =7.3.3  =7.3.4  =7.3.6  =7.3.8  =7.3.9  =7.3.10
+          =7.3.11  =7.3.13  =stable ]
+ 32  lustre2.10                      available    \
+        [ =2.10.5  =2.10.8  =stable ]
+ 33  java-openjdk11                  available    [ =11  =stable ]
+ 34  lynis                           available    [ =stable ]
+ 35  kernel-ng                       available    [ =stable ]
+ 36  BCC                             available    [ =0.x  =stable ]
+ 37  mono                            available    [ =5.x  =stable ]
+ 38  nginx1                          available    [ =stable ]
+ 39  ruby2.6                         available    [ =2.6  =stable ]
+ 40  mock                            available    [ =stable ]
+ 41  postgresql11                    available    [ =11  =stable ]
+  _  php7.4                          available    [ =stable ]
+ 43  livepatch                       available    [ =stable ]
+ 44  python3.8                       available    [ =stable ]
+ 45  haproxy2                        available    [ =stable ]
+ 46  collectd                        available    [ =stable ]
+ 47  aws-nitro-enclaves-cli          available    [ =stable ]
+ 48  R4                              available    [ =stable ]
+ 49  kernel-5.4                      available    [ =stable ]
+ 50  selinux-ng                      available    [ =stable ]
+  _  php8.0                          available    [ =stable ]
+ 52  tomcat9                         available    [ =stable ]
+ 53  unbound1.13                     available    [ =stable ]
+[root@appserver ~]#
+[root@appserver ~]# sudo yum install -y httpd
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Existing lock /var/run/yum.pid: another copy is running as pid 3500.
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory : 146 M RSS (363 MB VSZ)
+    Started: Mon Apr  5 01:51:33 2021 - 00:03 ago
+    State  : Running, pid: 3500
+Resolving Dependencies
+--> Running transaction check
+---> Package httpd.x86_64 0:2.4.46-1.amzn2 will be installed
+--> Processing Dependency: httpd-tools = 2.4.46-1.amzn2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: httpd-filesystem = 2.4.46-1.amzn2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: system-logos-httpd for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: mod_http2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: httpd-filesystem for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: /etc/mime.types for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.46-1.amzn2.x86_64
+--> Running transaction check
+---> Package apr.x86_64 0:1.6.3-5.amzn2.0.2 will be installed
+---> Package apr-util.x86_64 0:1.6.1-5.amzn2.0.2 will be installed
+--> Processing Dependency: apr-util-bdb(x86-64) = 1.6.1-5.amzn2.0.2 for package: apr-util-1.6.1-5.amzn2.0.2.x86_64
+---> Package generic-logos-httpd.noarch 0:18.0.0-4.amzn2 will be installed
+---> Package httpd-filesystem.noarch 0:2.4.46-1.amzn2 will be installed
+---> Package httpd-tools.x86_64 0:2.4.46-1.amzn2 will be installed
+---> Package mailcap.noarch 0:2.1.41-2.amzn2 will be installed
+---> Package mod_http2.x86_64 0:1.15.14-2.amzn2 will be installed
+--> Running transaction check
+---> Package apr-util-bdb.x86_64 0:1.6.1-5.amzn2.0.2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                           Arch                 Version                            Repository                Size
+==========================================================================================================================
+Installing:
+ httpd                             x86_64               2.4.46-1.amzn2                     amzn2-core               1.3 M
+Installing for dependencies:
+ apr                               x86_64               1.6.3-5.amzn2.0.2                  amzn2-core               118 k
+ apr-util                          x86_64               1.6.1-5.amzn2.0.2                  amzn2-core                99 k
+ apr-util-bdb                      x86_64               1.6.1-5.amzn2.0.2                  amzn2-core                19 k
+ generic-logos-httpd               noarch               18.0.0-4.amzn2                     amzn2-core                19 k
+ httpd-filesystem                  noarch               2.4.46-1.amzn2                     amzn2-core                23 k
+ httpd-tools                       x86_64               2.4.46-1.amzn2                     amzn2-core                87 k
+ mailcap                           noarch               2.1.41-2.amzn2                     amzn2-core                31 k
+ mod_http2                         x86_64               1.15.14-2.amzn2                    amzn2-core               147 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+8 Dependent packages)
+
+Total download size: 1.8 M
+Installed size: 5.1 M
+Downloading packages:
+(1/9): apr-1.6.3-5.amzn2.0.2.x86_64.rpm                                                            | 118 kB  00:00:00
+(2/9): apr-util-1.6.1-5.amzn2.0.2.x86_64.rpm                                                       |  99 kB  00:00:00
+(3/9): apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64.rpm                                                   |  19 kB  00:00:00
+(4/9): generic-logos-httpd-18.0.0-4.amzn2.noarch.rpm                                               |  19 kB  00:00:00
+(5/9): httpd-filesystem-2.4.46-1.amzn2.noarch.rpm                                                  |  23 kB  00:00:00
+(6/9): httpd-tools-2.4.46-1.amzn2.x86_64.rpm                                                       |  87 kB  00:00:00
+(7/9): httpd-2.4.46-1.amzn2.x86_64.rpm                                                             | 1.3 MB  00:00:00
+(8/9): mailcap-2.1.41-2.amzn2.noarch.rpm                                                           |  31 kB  00:00:00
+(9/9): mod_http2-1.15.14-2.amzn2.x86_64.rpm                                                        | 147 kB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                     8.0 MB/s | 1.8 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : apr-1.6.3-5.amzn2.0.2.x86_64                                                                           1/9
+  Installing : apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64                                                                  2/9
+  Installing : apr-util-1.6.1-5.amzn2.0.2.x86_64                                                                      3/9
+  Installing : httpd-tools-2.4.46-1.amzn2.x86_64                                                                      4/9
+  Installing : generic-logos-httpd-18.0.0-4.amzn2.noarch                                                              5/9
+  Installing : mailcap-2.1.41-2.amzn2.noarch                                                                          6/9
+  Installing : httpd-filesystem-2.4.46-1.amzn2.noarch                                                                 7/9
+  Installing : mod_http2-1.15.14-2.amzn2.x86_64                                                                       8/9
+  Installing : httpd-2.4.46-1.amzn2.x86_64                                                                            9/9
+  Verifying  : apr-util-1.6.1-5.amzn2.0.2.x86_64                                                                      1/9
+  Verifying  : httpd-filesystem-2.4.46-1.amzn2.noarch                                                                 2/9
+  Verifying  : apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64                                                                  3/9
+  Verifying  : httpd-tools-2.4.46-1.amzn2.x86_64                                                                      4/9
+  Verifying  : mod_http2-1.15.14-2.amzn2.x86_64                                                                       5/9
+  Verifying  : apr-1.6.3-5.amzn2.0.2.x86_64                                                                           6/9
+  Verifying  : mailcap-2.1.41-2.amzn2.noarch                                                                          7/9
+  Verifying  : generic-logos-httpd-18.0.0-4.amzn2.noarch                                                              8/9
+  Verifying  : httpd-2.4.46-1.amzn2.x86_64                                                                            9/9
+
+Installed:
+  httpd.x86_64 0:2.4.46-1.amzn2
+
+Dependency Installed:
+  apr.x86_64 0:1.6.3-5.amzn2.0.2                             apr-util.x86_64 0:1.6.1-5.amzn2.0.2
+  apr-util-bdb.x86_64 0:1.6.1-5.amzn2.0.2                    generic-logos-httpd.noarch 0:18.0.0-4.amzn2
+  httpd-filesystem.noarch 0:2.4.46-1.amzn2                   httpd-tools.x86_64 0:2.4.46-1.amzn2
+  mailcap.noarch 0:2.1.41-2.amzn2                            mod_http2.x86_64 0:1.15.14-2.amzn2
+
+Complete!
+[root@appserver ~]# sudo systemctl start httpd
+[root@appserver ~]# sudo systemctl enable httpd
+Created symlink from /etc/systemd/system/multi-user.target.wants/httpd.service to /usr/lib/systemd/system/httpd.service.
+[root@appserver ~]#
+[root@appserver ~]# wget https://wordpress.org/latest.tar.gz
+--2021-04-05 01:51:54--  https://wordpress.org/latest.tar.gz
+Resolving wordpress.org (wordpress.org)... 198.143.164.252
+Connecting to wordpress.org (wordpress.org)|198.143.164.252|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 15747536 (15M) [application/octet-stream]
+Saving to: ‘latest.tar.gz’
+
+100%[================================================================================>] 15,747,536  42.0MB/s   in 0.4s
+
+2021-04-05 01:51:54 (42.0 MB/s) - ‘latest.tar.gz’ saved [15747536/15747536]
+
+[root@appserver ~]# tar -xzf latest.tar.gz
+[root@appserver ~]# sudo cp -r wordpress/* /var/www/html/
+[root@appserver ~]# ls -l /var/www/html/
+total 204
+-rw-r--r--  1 root root   405 Apr  5 01:52 index.php
+-rw-r--r--  1 root root 19915 Apr  5 01:52 license.txt
+-rw-r--r--  1 root root  7345 Apr  5 01:52 readme.html
+-rw-r--r--  1 root root  7165 Apr  5 01:52 wp-activate.php
+drwxr-xr-x  9 root root  4096 Apr  5 01:52 wp-admin
+-rw-r--r--  1 root root   351 Apr  5 01:52 wp-blog-header.php
+-rw-r--r--  1 root root  2328 Apr  5 01:52 wp-comments-post.php
+-rw-r--r--  1 root root  2913 Apr  5 01:52 wp-config-sample.php
+drwxr-xr-x  4 root root    52 Apr  5 01:52 wp-content
+-rw-r--r--  1 root root  3939 Apr  5 01:52 wp-cron.php
+drwxr-xr-x 25 root root  8192 Apr  5 01:52 wp-includes
+-rw-r--r--  1 root root  2496 Apr  5 01:52 wp-links-opml.php
+-rw-r--r--  1 root root  3313 Apr  5 01:52 wp-load.php
+-rw-r--r--  1 root root 44993 Apr  5 01:52 wp-login.php
+-rw-r--r--  1 root root  8509 Apr  5 01:52 wp-mail.php
+-rw-r--r--  1 root root 21125 Apr  5 01:52 wp-settings.php
+-rw-r--r--  1 root root 31328 Apr  5 01:52 wp-signup.php
+-rw-r--r--  1 root root  4747 Apr  5 01:52 wp-trackback.php
+-rw-r--r--  1 root root  3236 Apr  5 01:52 xmlrpc.php
+[root@appserver ~]# cd /var/www/html/
+[root@appserver html]# ls -l
+total 204
+-rw-r--r--  1 root root   405 Apr  5 01:52 index.php
+-rw-r--r--  1 root root 19915 Apr  5 01:52 license.txt
+-rw-r--r--  1 root root  7345 Apr  5 01:52 readme.html
+-rw-r--r--  1 root root  7165 Apr  5 01:52 wp-activate.php
+drwxr-xr-x  9 root root  4096 Apr  5 01:52 wp-admin
+-rw-r--r--  1 root root   351 Apr  5 01:52 wp-blog-header.php
+-rw-r--r--  1 root root  2328 Apr  5 01:52 wp-comments-post.php
+-rw-r--r--  1 root root  2913 Apr  5 01:52 wp-config-sample.php
+drwxr-xr-x  4 root root    52 Apr  5 01:52 wp-content
+-rw-r--r--  1 root root  3939 Apr  5 01:52 wp-cron.php
+drwxr-xr-x 25 root root  8192 Apr  5 01:52 wp-includes
+-rw-r--r--  1 root root  2496 Apr  5 01:52 wp-links-opml.php
+-rw-r--r--  1 root root  3313 Apr  5 01:52 wp-load.php
+-rw-r--r--  1 root root 44993 Apr  5 01:52 wp-login.php
+-rw-r--r--  1 root root  8509 Apr  5 01:52 wp-mail.php
+-rw-r--r--  1 root root 21125 Apr  5 01:52 wp-settings.php
+-rw-r--r--  1 root root 31328 Apr  5 01:52 wp-signup.php
+-rw-r--r--  1 root root  4747 Apr  5 01:52 wp-trackback.php
+-rw-r--r--  1 root root  3236 Apr  5 01:52 xmlrpc.php
+[root@appserver html]# sudo cp wp-config-sample.php wp-config.php
+[root@appserver html]# vi wp-config.php
+[root@appserver html]# vi wp-config.php
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]# #multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+[root@appserver html]# mysql -u admin -p -P 3306 -h multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.20 Source distribution
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+3 rows in set (0.01 sec)
+
+MySQL [(none)]> create database wordpressdb;
+Query OK, 1 row affected (0.02 sec)
+
+MySQL [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| wordpressdb        |
++--------------------+
+4 rows in set (0.00 sec)
+
+MySQL [(none)]> exit;
+Bye
+[root@appserver html]#
+[root@appserver html]# vi wp-config.php
+[root@appserver html]# sudo chown -R apache /var/www
+[root@appserver html]# sudo chgrp -R apache /var/www
+[root@appserver html]# sudo chmod 775 /var/www
+[root@appserver html]# sudo find /var/www -type d -exec sudo chmod 2775 {} \;
+[root@appserver html]# sudo find /var/www -type f -exec sudo chmod 0664 {} \;
+[root@appserver html]# sudo systemctl restart httpd
+[root@appserver html]# mysql -u admin -p -P 3306 -h multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 20
+Server version: 8.0.20 Source distribution
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> use wordpressdb;
+Database changed
+MySQL [wordpressdb]> show tables;
+Empty set (0.00 sec)
+
+MySQL [wordpressdb]> show tables;
++-----------------------+
+| Tables_in_wordpressdb |
++-----------------------+
+| wp_commentmeta        |
+| wp_comments           |
+| wp_links              |
+| wp_options            |
+| wp_postmeta           |
+| wp_posts              |
+| wp_term_relationships |
+| wp_term_taxonomy      |
+| wp_termmeta           |
+| wp_terms              |
+| wp_usermeta           |
+| wp_users              |
++-----------------------+
+12 rows in set (0.00 sec)
+
+MySQL [wordpressdb]> ^DBye
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]# hostname -i
+fe80::86a:51ff:fe32:4b19%eth0 10.20.10.10
+[root@appserver html]# mysql -u admin -p -P 3306 -h multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 42
+Server version: 8.0.20 Source distribution
+
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> ^DBye
+[root@appserver html]# host multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+[root@appserver html]# while true
+> do
+> host multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com
+> sleep 2
+> done
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.25.206
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+multiaz-rds.c6dv1jb0fho2.us-east-1.rds.amazonaws.com has address 10.20.15.224
+^C
+[root@appserver html]# host www.google.com
+www.google.com has address 172.217.164.132
+www.google.com has IPv6 address 2607:f8b0:4004:c09::67
+www.google.com has IPv6 address 2607:f8b0:4004:c09::68
+www.google.com has IPv6 address 2607:f8b0:4004:c09::69
+www.google.com has IPv6 address 2607:f8b0:4004:c09::6a
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]# top
+top - 03:18:34 up  1:29,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks: 108 total,   1 running,  71 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  1006896 total,   160092 free,   299540 used,   547264 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.   556012 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+ 8756 apache    20   0  308860   6272   3884 S  0.3  0.6   0:00.63 httpd
+    1 root      20   0  125636   5368   3832 S  0.0  0.5   0:02.37 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kthreadd
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+    7 root      20   0       0      0      0 S  0.0  0.0   0:00.30 ksoftirqd/0
+    8 root      20   0       0      0      0 I  0.0  0.0   0:00.28 rcu_sched
+    9 root      20   0       0      0      0 I  0.0  0.0   0:00.00 rcu_bh
+   10 root      rt   0       0      0      0 S  0.0  0.0   0:00.00 migration/0
+   11 root      rt   0       0      0      0 S  0.0  0.0   0:00.01 watchdog/0
+   12 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   14 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   15 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   16 root      20   0       0      0      0 I  0.0  0.0   0:00.15 kworker/u30:1
+  174 root      20   0       0      0      0 S  0.0  0.0   0:00.00 khungtaskd
+  175 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+  176 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 writeback
+  178 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kcompactd0
+  179 root      25   5       0      0      0 S  0.0  0.0   0:00.00 ksmd
+  180 root      39  19       0      0      0 S  0.0  0.0   0:00.00 khugepaged
+  181 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 crypto
+  182 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kintegrityd
+  184 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kblockd
+  535 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 md
+  538 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 edac-poller
+  543 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 watchdogd
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]#
+[root@appserver html]# sudo amazon-linux-extras install epel -y
+Installing epel-release
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Cleaning repos: amzn2-core amzn2extra-docker amzn2extra-epel amzn2extra-lamp-mariadb10.2-php7.2 amzn2extra-php7.2
+22 metadata files removed
+8 sqlite files removed
+0 metadata files removed
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+amzn2extra-docker                                                                                  | 3.0 kB  00:00:00
+amzn2extra-epel                                                                                    | 3.0 kB  00:00:00
+amzn2extra-lamp-mariadb10.2-php7.2                                                                 | 3.0 kB  00:00:00
+amzn2extra-php7.2                                                                                  | 3.0 kB  00:00:00
+(1/11): amzn2-core/2/x86_64/group_gz                                                               | 2.5 kB  00:00:00
+(2/11): amzn2-core/2/x86_64/updateinfo                                                             | 362 kB  00:00:00
+(3/11): amzn2extra-epel/2/x86_64/primary_db                                                        | 1.8 kB  00:00:00
+(4/11): amzn2extra-lamp-mariadb10.2-php7.2/2/x86_64/updateinfo                                     |   76 B  00:00:00
+(5/11): amzn2extra-lamp-mariadb10.2-php7.2/2/x86_64/primary_db                                     | 464 kB  00:00:00
+(6/11): amzn2extra-php7.2/2/x86_64/updateinfo                                                      |   76 B  00:00:00
+(7/11): amzn2extra-docker/2/x86_64/updateinfo                                                      |   76 B  00:00:00
+(8/11): amzn2extra-epel/2/x86_64/updateinfo                                                        |   76 B  00:00:00
+(9/11): amzn2extra-docker/2/x86_64/primary_db                                                      |  76 kB  00:00:00
+(10/11): amzn2extra-php7.2/2/x86_64/primary_db                                                     | 580 kB  00:00:00
+(11/11): amzn2-core/2/x86_64/primary_db                                                            |  51 MB  00:00:01
+Resolving Dependencies
+--> Running transaction check
+---> Package epel-release.noarch 0:7-11 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                        Arch                     Version                  Repository                         Size
+==========================================================================================================================
+Installing:
+ epel-release                   noarch                   7-11                     amzn2extra-epel                    15 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 15 k
+Installed size: 24 k
+Downloading packages:
+epel-release-7-11.noarch.rpm                                                                       |  15 kB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : epel-release-7-11.noarch                                                                               1/1
+  Verifying  : epel-release-7-11.noarch                                                                               1/1
+
+Installed:
+  epel-release.noarch 0:7-11
+
+Complete!
+  0  ansible2                        available    \
+        [ =2.4.2  =2.4.6  =2.8  =stable ]
+  2  httpd_modules                   available    [ =1.0  =stable ]
+  3  memcached1.5                    available    \
+        [ =1.5.1  =1.5.16  =1.5.17 ]
+  5  postgresql9.6                   available    \
+        [ =9.6.6  =9.6.8  =stable ]
+  6  postgresql10                    available    [ =10  =stable ]
+  8  redis4.0                        available    \
+        [ =4.0.5  =4.0.10  =stable ]
+  9  R3.4                            available    [ =3.4.3  =stable ]
+ 10  rust1                           available    \
+        [ =1.22.1  =1.26.0  =1.26.1  =1.27.2  =1.31.0  =1.38.0
+          =stable ]
+ 11  vim                             available    [ =8.0  =stable ]
+ 15  php7.2=latest                   enabled      \
+        [ =7.2.0  =7.2.4  =7.2.5  =7.2.8  =7.2.11  =7.2.13  =7.2.14
+          =7.2.16  =7.2.17  =7.2.19  =7.2.21  =7.2.22  =7.2.23
+          =7.2.24  =7.2.26  =stable ]
+ 17  lamp-mariadb10.2-php7.2=latest  enabled      \
+        [ =10.2.10_7.2.0  =10.2.10_7.2.4  =10.2.10_7.2.5
+          =10.2.10_7.2.8  =10.2.10_7.2.11  =10.2.10_7.2.13
+          =10.2.10_7.2.14  =10.2.10_7.2.16  =10.2.10_7.2.17
+          =10.2.10_7.2.19  =10.2.10_7.2.22  =10.2.10_7.2.23
+          =10.2.10_7.2.24  =stable ]
+ 18  libreoffice                     available    \
+        [ =5.0.6.2_15  =5.3.6.1  =stable ]
+ 19  gimp                            available    [ =2.8.22 ]
+ 20  docker=latest                   enabled      \
+        [ =17.12.1  =18.03.1  =18.06.1  =18.09.9  =stable ]
+ 21  mate-desktop1.x                 available    \
+        [ =1.19.0  =1.20.0  =stable ]
+ 22  GraphicsMagick1.3               available    \
+        [ =1.3.29  =1.3.32  =1.3.34  =stable ]
+ 23  tomcat8.5                       available    \
+        [ =8.5.31  =8.5.32  =8.5.38  =8.5.40  =8.5.42  =8.5.50
+          =stable ]
+ 24  epel=latest                     enabled      [ =7.11  =stable ]
+ 25  testing                         available    [ =1.0  =stable ]
+ 26  ecs                             available    [ =stable ]
+ 27  corretto8                       available    \
+        [ =1.8.0_192  =1.8.0_202  =1.8.0_212  =1.8.0_222  =1.8.0_232
+          =1.8.0_242  =stable ]
+ 28  firecracker                     available    [ =0.11  =stable ]
+ 29  golang1.11                      available    \
+        [ =1.11.3  =1.11.11  =1.11.13  =stable ]
+ 30  squid4                          available    [ =4  =stable ]
+  _  php7.3                          available    \
+        [ =7.3.2  =7.3.3  =7.3.4  =7.3.6  =7.3.8  =7.3.9  =7.3.10
+          =7.3.11  =7.3.13  =stable ]
+ 32  lustre2.10                      available    \
+        [ =2.10.5  =2.10.8  =stable ]
+ 33  java-openjdk11                  available    [ =11  =stable ]
+ 34  lynis                           available    [ =stable ]
+ 35  kernel-ng                       available    [ =stable ]
+ 36  BCC                             available    [ =0.x  =stable ]
+ 37  mono                            available    [ =5.x  =stable ]
+ 38  nginx1                          available    [ =stable ]
+ 39  ruby2.6                         available    [ =2.6  =stable ]
+ 40  mock                            available    [ =stable ]
+ 41  postgresql11                    available    [ =11  =stable ]
+  _  php7.4                          available    [ =stable ]
+ 43  livepatch                       available    [ =stable ]
+ 44  python3.8                       available    [ =stable ]
+ 45  haproxy2                        available    [ =stable ]
+ 46  collectd                        available    [ =stable ]
+ 47  aws-nitro-enclaves-cli          available    [ =stable ]
+ 48  R4                              available    [ =stable ]
+ 49  kernel-5.4                      available    [ =stable ]
+ 50  selinux-ng                      available    [ =stable ]
+  _  php8.0                          available    [ =stable ]
+ 52  tomcat9                         available    [ =stable ]
+ 53  unbound1.13                     available    [ =stable ]
+[root@appserver html]# sudo yum install stress -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+230 packages excluded due to repository priority protections
+Resolving Dependencies
+--> Running transaction check
+---> Package stress.x86_64 0:1.0.4-16.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                    Arch                       Version                             Repository                Size
+==========================================================================================================================
+Installing:
+ stress                     x86_64                     1.0.4-16.el7                        epel                      39 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 39 k
+Installed size: 94 k
+Downloading packages:
+warning: /var/cache/yum/x86_64/2/epel/packages/stress-1.0.4-16.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID 352c64e5: NOKEY
+Public key for stress-1.0.4-16.el7.x86_64.rpm is not installed
+stress-1.0.4-16.el7.x86_64.rpm                                                                     |  39 kB  00:00:00
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Importing GPG key 0x352C64E5:
+ Userid     : "Fedora EPEL (7) <epel@fedoraproject.org>"
+ Fingerprint: 91e9 7d7c 4a5e 96f1 7f3e 888f 6a2f aea2 352c 64e5
+ Package    : epel-release-7-11.noarch (@amzn2extra-epel)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : stress-1.0.4-16.el7.x86_64                                                                             1/1
+  Verifying  : stress-1.0.4-16.el7.x86_64                                                                             1/1
+
+Installed:
+  stress.x86_64 0:1.0.4-16.el7
+
+Complete!
+[root@appserver html]#
+[root@appserver html]# sudo stress --cpu 8 -v --timeout 30000
+stress: info: [6001] dispatching hogs: 8 cpu, 0 io, 0 vm, 0 hdd
+stress: dbug: [6001] using backoff sleep of 24000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 8 [6002] forked
+stress: dbug: [6001] using backoff sleep of 21000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 7 [6003] forked
+stress: dbug: [6001] using backoff sleep of 18000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 6 [6004] forked
+stress: dbug: [6001] using backoff sleep of 15000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 5 [6005] forked
+stress: dbug: [6001] using backoff sleep of 12000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 4 [6006] forked
+stress: dbug: [6001] using backoff sleep of 9000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 3 [6007] forked
+stress: dbug: [6001] using backoff sleep of 6000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 2 [6008] forked
+stress: dbug: [6001] using backoff sleep of 3000us
+stress: dbug: [6001] setting timeout to 30000s
+stress: dbug: [6001] --> hogcpu worker 1 [6009] forked

@@ -1,0 +1,673 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Fri May  7 03:14:27 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@git ~]$ sudo su -
+Last login: Fri May  7 03:14:40 UTC 2021 on pts/1
+[root@git ~]#
+[root@git ~]# ls
+ami.json  help.hwm  help.pwd  help.pwi  jenkins.sh  myproject  -v.hwm  -v.pwd  -v.pwi
+[root@git ~]# cd myproject/
+[root@git myproject]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  7 03:22 test1
+[root@git myproject]# cd ..
+[root@git ~]# mkdir testignore
+[root@git ~]# cd testignore/
+[root@git testignore]# ls -l
+total 0
+[root@git testignore]# ls -al
+total 0
+drwxr-xr-x 2 root root   6 May  8 01:44 .
+dr-xr-x--- 7 root root 330 May  8 01:44 ..
+[root@git testignore]# git init .
+Initialized empty Git repository in /root/testignore/.git/
+[root@git testignore]# ls -al
+total 0
+drwxr-xr-x 3 root root  18 May  8 01:44 .
+dr-xr-x--- 7 root root 330 May  8 01:44 ..
+drwxr-xr-x 7 root root 119 May  8 01:44 .git
+[root@git testignore]# touch test1 test2 test3.txt
+[root@git testignore]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 01:45 test1
+-rw-r--r-- 1 root root 0 May  8 01:45 test2
+-rw-r--r-- 1 root root 0 May  8 01:45 test3.txt
+[root@git testignore]# git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        test1
+        test2
+        test3.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git testignore]# vi .gitignore
+[root@git testignore]# git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        test1
+        test2
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git testignore]# touch test4.txt
+[root@git testignore]# git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        test1
+        test2
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git testignore]# cat .gitignore
+*.txt
+[root@git testignore]#
+[root@git testignore]#
+[root@git testignore]#
+[root@git testignore]# cd
+[root@git ~]# mkdir src
+[root@git ~]# cd src/
+[root@git src]# ls -al
+total 4
+drwxr-xr-x 2 root root    6 May  8 01:54 .
+dr-xr-x--- 8 root root 4096 May  8 01:54 ..
+[root@git src]# git init .
+Initialized empty Git repository in /root/src/.git/
+[root@git src]# ls -al
+total 4
+drwxr-xr-x 3 root root   18 May  8 01:54 .
+dr-xr-x--- 8 root root 4096 May  8 01:54 ..
+drwxr-xr-x 7 root root  119 May  8 01:54 .git
+[root@git src]# touch test{1..3}
+[root@git src]# git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        test1
+        test2
+        test3
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git src]# git add .
+[root@git src]# git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   test1
+        new file:   test2
+        new file:   test3
+
+[root@git src]# git commit -m "adding the files"
+[master (root-commit) 7daafd3] adding the files
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 test1
+ create mode 100644 test2
+ create mode 100644 test3
+[root@git src]# git status
+On branch master
+nothing to commit, working tree clean
+[root@git src]# ls -al
+total 4
+drwxr-xr-x 3 root root   57 May  8 01:54 .
+dr-xr-x--- 8 root root 4096 May  8 01:54 ..
+drwxr-xr-x 8 root root  166 May  8 01:55 .git
+-rw-r--r-- 1 root root    0 May  8 01:54 test1
+-rw-r--r-- 1 root root    0 May  8 01:54 test2
+-rw-r--r-- 1 root root    0 May  8 01:54 test3
+[root@git src]# cd ..
+[root@git ~]# ls -ld src/
+drwxr-xr-x 3 root root 57 May  8 01:54 src/
+[root@git ~]# git clone src dest
+Cloning into 'dest'...
+done.
+[root@git ~]# ls -ld dest
+drwxr-xr-x 3 root root 57 May  8 01:56 dest
+[root@git ~]# ls -ld src
+drwxr-xr-x 3 root root 57 May  8 01:54 src
+[root@git ~]# cd dest/
+[root@git dest]# ls -la
+total 4
+drwxr-xr-x 3 root root   57 May  8 01:56 .
+dr-xr-x--- 9 root root 4096 May  8 01:56 ..
+drwxr-xr-x 8 root root  163 May  8 01:56 .git
+-rw-r--r-- 1 root root    0 May  8 01:56 test1
+-rw-r--r-- 1 root root    0 May  8 01:56 test2
+-rw-r--r-- 1 root root    0 May  8 01:56 test3
+[root@git dest]# touch file{1..3}
+[root@git dest]# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        file1
+        file2
+        file3
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git dest]# git add .
+[root@git dest]# git commit -m "adding files"
+[master 72f00a6] adding files
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file1
+ create mode 100644 file2
+ create mode 100644 file3
+[root@git dest]# git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+[root@git dest]# pwd
+/root/dest
+[root@git dest]# ls -l ../src/
+total 0
+-rw-r--r-- 1 root root 0 May  8 01:54 test1
+-rw-r--r-- 1 root root 0 May  8 01:54 test2
+-rw-r--r-- 1 root root 0 May  8 01:54 test3
+[root@git dest]# cd ../src/
+[root@git src]# git pull ../dest/
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (2/2), done.
+From ../dest
+ * branch            HEAD       -> FETCH_HEAD
+Updating 7daafd3..72f00a6
+Fast-forward
+ file1 | 0
+ file2 | 0
+ file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file1
+ create mode 100644 file2
+ create mode 100644 file3
+[root@git src]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 01:59 file1
+-rw-r--r-- 1 root root 0 May  8 01:59 file2
+-rw-r--r-- 1 root root 0 May  8 01:59 file3
+-rw-r--r-- 1 root root 0 May  8 01:54 test1
+-rw-r--r-- 1 root root 0 May  8 01:54 test2
+-rw-r--r-- 1 root root 0 May  8 01:54 test3
+[root@git src]#
+[root@git src]#
+[root@git src]#
+[root@git src]# cd
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]# ls -l
+total 8
+-rw-r--r-- 1 root root 531 May  7 02:41 ami.json
+drwxr-xr-x 3 root root  96 May  8 01:58 dest
+-rw-r--r-- 1 root root   0 May  7 01:57 help.hwm
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwd
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwi
+-rw-r--r-- 1 root root 316 May  7 02:28 jenkins.sh
+drwxr-xr-x 3 root root  31 May  7 03:22 myproject
+drwxr-xr-x 3 root root  96 May  8 01:59 src
+drwxr-xr-x 3 root root  96 May  8 01:46 testignore
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.hwm
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwd
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwi
+[root@git ~]#
+[root@git ~]# git clone https://github.com/shan5a6/dvsbatch1.git
+Cloning into 'dvsbatch1'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+[root@git ~]# ls -l
+total 8
+-rw-r--r-- 1 root root 531 May  7 02:41 ami.json
+drwxr-xr-x 3 root root  96 May  8 01:58 dest
+drwxr-xr-x 3 root root  35 May  8 02:11 dvsbatch1
+-rw-r--r-- 1 root root   0 May  7 01:57 help.hwm
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwd
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwi
+-rw-r--r-- 1 root root 316 May  7 02:28 jenkins.sh
+drwxr-xr-x 3 root root  31 May  7 03:22 myproject
+drwxr-xr-x 3 root root  96 May  8 01:59 src
+drwxr-xr-x 3 root root  96 May  8 01:46 testignore
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.hwm
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwd
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwi
+[root@git ~]#
+[root@git ~]# ls -ld dvsbatch1/
+drwxr-xr-x 3 root root 35 May  8 02:11 dvsbatch1/
+[root@git ~]# cd dvsbatch1/
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]#
+[root@git dvsbatch1]#
+[root@git dvsbatch1]#
+[root@git dvsbatch1]# cd ..
+[root@git ~]#
+[root@git ~]# ls -l
+total 8
+-rw-r--r-- 1 root root 531 May  7 02:41 ami.json
+drwxr-xr-x 3 root root  96 May  8 01:58 dest
+drwxr-xr-x 3 root root  35 May  8 02:11 dvsbatch1
+-rw-r--r-- 1 root root   0 May  7 01:57 help.hwm
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwd
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwi
+-rw-r--r-- 1 root root 316 May  7 02:28 jenkins.sh
+drwxr-xr-x 3 root root  31 May  7 03:22 myproject
+drwxr-xr-x 3 root root  96 May  8 01:59 src
+drwxr-xr-x 3 root root  96 May  8 01:46 testignore
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.hwm
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwd
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwi
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]# cd dvsbatch1/
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]# git branch
+* master
+[root@git dvsbatch1]# touch f1 f2
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]# git add .
+[root@git dvsbatch1]# git commit -m "testing branching"
+[master 0c32f8c] testing branching
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f1
+ create mode 100644 f2
+[root@git dvsbatch1]# git branch
+* master
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]# git checkout -b mybranch1
+Switched to a new branch 'mybranch1'
+[root@git dvsbatch1]# git branch
+  master
+* mybranch1
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]# touch t1 t2
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+-rw-r--r-- 1 root root  0 May  8 02:27 t1
+-rw-r--r-- 1 root root  0 May  8 02:27 t2
+[root@git dvsbatch1]# git status
+On branch mybranch1
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        t1
+        t2
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git dvsbatch1]# git add .
+[root@git dvsbatch1]# git commit -m "adding t1,2 files to mybranch1"
+[mybranch1 5e1693d] adding t1,2 files to mybranch1
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t1
+ create mode 100644 t2
+[root@git dvsbatch1]# git status
+On branch mybranch1
+nothing to commit, working tree clean
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+-rw-r--r-- 1 root root  0 May  8 02:27 t1
+-rw-r--r-- 1 root root  0 May  8 02:27 t2
+[root@git dvsbatch1]# git branch
+  master
+* mybranch1
+[root@git dvsbatch1]# git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+[root@git dvsbatch1]#
+[root@git dvsbatch1]#
+[root@git dvsbatch1]# git branch
+* master
+  mybranch1
+[root@git dvsbatch1]# git checkout mybranch1
+Switched to branch 'mybranch1'
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+-rw-r--r-- 1 root root  0 May  8 02:35 t1
+-rw-r--r-- 1 root root  0 May  8 02:35 t2
+[root@git dvsbatch1]# git status
+On branch mybranch1
+nothing to commit, working tree clean
+[root@git dvsbatch1]# git push origin mybranch1
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (5/5), 458 bytes | 458.00 KiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+remote:
+remote: Create a pull request for 'mybranch1' on GitHub by visiting:
+remote:      https://github.com/shan5a6/dvsbatch1/pull/new/mybranch1
+remote:
+To https://github.com/shan5a6/dvsbatch1.git
+ * [new branch]      mybranch1 -> mybranch1
+[root@git dvsbatch1]#
+[root@git dvsbatch1]#
+[root@git dvsbatch1]#
+[root@git dvsbatch1]# cd ..
+[root@git ~]#
+[root@git ~]# ls -l
+total 8
+-rw-r--r-- 1 root root 531 May  7 02:41 ami.json
+drwxr-xr-x 3 root root  96 May  8 01:58 dest
+drwxr-xr-x 3 root root  75 May  8 02:35 dvsbatch1
+-rw-r--r-- 1 root root   0 May  7 01:57 help.hwm
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwd
+-rw-r--r-- 1 root root   0 May  7 01:57 help.pwi
+-rw-r--r-- 1 root root 316 May  7 02:28 jenkins.sh
+drwxr-xr-x 3 root root  31 May  7 03:22 myproject
+drwxr-xr-x 3 root root  96 May  8 01:59 src
+drwxr-xr-x 3 root root  96 May  8 01:46 testignore
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.hwm
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwd
+-rw-r--r-- 1 root root   0 May  7 01:56 -v.pwi
+[root@git ~]# mkdir tagging
+[root@git ~]# cd tagging/
+[root@git tagging]# git init .
+Initialized empty Git repository in /root/tagging/.git/
+[root@git tagging]#
+[root@git tagging]# git branch
+[root@git tagging]# touch file{1..3}
+[root@git tagging]# git add .
+[root@git tagging]# git commit -m "adding files"
+[master (root-commit) e7d2360] adding files
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file1
+ create mode 100644 file2
+ create mode 100644 file3
+[root@git tagging]# git status
+On branch master
+nothing to commit, working tree clean
+[root@git tagging]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 02:55 file1
+-rw-r--r-- 1 root root 0 May  8 02:55 file2
+-rw-r--r-- 1 root root 0 May  8 02:55 file3
+[root@git tagging]# git log
+commit e7d2360beff986e30b32caaa57fab5d563260d82 (HEAD -> master)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:55:39 2021 +0000
+
+    adding files
+[root@git tagging]# git tag myv1.0
+[root@git tagging]# git log
+commit e7d2360beff986e30b32caaa57fab5d563260d82 (HEAD -> master, tag: myv1.0)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:55:39 2021 +0000
+
+    adding files
+[root@git tagging]# touch test{1..4}
+[root@git tagging]# git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        test1
+        test2
+        test3
+        test4
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git tagging]# git add .
+[root@git tagging]# git commit -m "testing my tag"
+[master e5e36d8] testing my tag
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 test1
+ create mode 100644 test2
+ create mode 100644 test3
+ create mode 100644 test4
+[root@git tagging]# git tag myv1.1
+[root@git tagging]# git log
+commit e5e36d8ab783be038a1735b0098743f67bdd559f (HEAD -> master, tag: myv1.1)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:58:11 2021 +0000
+
+    testing my tag
+
+commit e7d2360beff986e30b32caaa57fab5d563260d82 (tag: myv1.0)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:55:39 2021 +0000
+
+    adding files
+[root@git tagging]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 02:55 file1
+-rw-r--r-- 1 root root 0 May  8 02:55 file2
+-rw-r--r-- 1 root root 0 May  8 02:55 file3
+-rw-r--r-- 1 root root 0 May  8 02:57 test1
+-rw-r--r-- 1 root root 0 May  8 02:57 test2
+-rw-r--r-- 1 root root 0 May  8 02:57 test3
+-rw-r--r-- 1 root root 0 May  8 02:57 test4
+[root@git tagging]# git log
+commit e5e36d8ab783be038a1735b0098743f67bdd559f (HEAD -> master, tag: myv1.1)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:58:11 2021 +0000
+
+    testing my tag
+
+commit e7d2360beff986e30b32caaa57fab5d563260d82 (tag: myv1.0)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Sat May 8 02:55:39 2021 +0000
+
+    adding files
+[root@git tagging]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 02:55 file1
+-rw-r--r-- 1 root root 0 May  8 02:55 file2
+-rw-r--r-- 1 root root 0 May  8 02:55 file3
+-rw-r--r-- 1 root root 0 May  8 02:57 test1
+-rw-r--r-- 1 root root 0 May  8 02:57 test2
+-rw-r--r-- 1 root root 0 May  8 02:57 test3
+-rw-r--r-- 1 root root 0 May  8 02:57 test4
+[root@git tagging]# git checkout e7d2360beff986e30b32caaa57fab5d563260d82
+Note: switching to 'e7d2360beff986e30b32caaa57fab5d563260d82'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at e7d2360 adding files
+[root@git tagging]# git checkout -b myrecovery
+Switched to a new branch 'myrecovery'
+[root@git tagging]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  8 02:55 file1
+-rw-r--r-- 1 root root 0 May  8 02:55 file2
+-rw-r--r-- 1 root root 0 May  8 02:55 file3
+[root@git tagging]# cd ../dvsbatch1/
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+-rw-r--r-- 1 root root  0 May  8 02:35 t1
+-rw-r--r-- 1 root root  0 May  8 02:35 t2
+[root@git dvsbatch1]# git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+[root@git dvsbatch1]# git pull
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (1/1), done.
+From https://github.com/shan5a6/dvsbatch1
+   13ba025..dc6ad4c  master     -> origin/master
+Updating 0c32f8c..dc6ad4c
+Fast-forward
+ t1 | 0
+ t2 | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t1
+ create mode 100644 t2
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 02:26 f1
+-rw-r--r-- 1 root root  0 May  8 02:26 f2
+-rw-r--r-- 1 root root 11 May  8 02:11 README.md
+-rw-r--r-- 1 root root  0 May  8 03:08 t1
+-rw-r--r-- 1 root root  0 May  8 03:08 t2
+[root@git dvsbatch1]# git checkout -b testbranch
+Switched to a new branch 'testbranch'
+[root@git dvsbatch1]# touch f{10..12}
+[root@git dvsbatch1]# git add .
+[root@git dvsbatch1]# git commit -m "adding f10-12 files"
+[testbranch d5c6232] adding f10-12 files
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f10
+ create mode 100644 f11
+ create mode 100644 f12
+[root@git dvsbatch1]# git push origin testbranch
+Username for 'https://github.com': ^C
+[root@git dvsbatch1]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:HUWuqWIfZh0vrpBWhjvy5Feerq/FyABSY8/LPMIYBjo root@git
+The key's randomart image is:
++---[RSA 2048]----+
+|.   +      .o    |
+|.. o +     o     |
+|E + . o   . .    |
+| o = + o . +     |
+|  . o B S =      |
+|     . O =.o     |
+|    . X Bo=..    |
+|     B B.+o.     |
+|      o.=*+      |
++----[SHA256]-----+
+[root@git dvsbatch1]# cat /root/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHSo3Uq+QenWXDx/8HVqS4V+k8s/DXG9JdeSONIUHVTyILpeEw/Ri1N0NE/qactM/b1U7JxA21DZzwpcZmCFKZZFggNo8kpiwk9c0TVq1Azm33KW1KLbB9AKKLKDDo6vxwbMSh+ikYJB1mWB5lrSmXX6OicXbnJ2Rm88XYlnbIYJGy3vBjVsX3/Zo6RLadfnukM6PH++7oIlyb7h8fKraXU8NfXUiic/Rnn1AKDm+0eVoDch7yj1/8othWQEJXRQvxck1gk0G6Lem/cBnpnv9RQr39e66K0UdsBU1eLyT4u8TwQ+1CfpZadqV0A0DMb92RnW2ZH2uYazdAApo3OzVn root@git
+[root@git dvsbatch1]# cd /tmp/
+[root@git tmp]# git clone git@github.com:shan5a6/dvsbatch1.git
+Cloning into 'dvsbatch1'...
+The authenticity of host 'github.com (140.82.114.3)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+RSA key fingerprint is MD5:16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,140.82.114.3' (RSA) to the list of known hosts.
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+[root@git tmp]# git clone git@github.com:shan5a6/dvsbatch1.git
+Cloning into 'dvsbatch1'...
+remote: Enumerating objects: 9, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 9 (delta 1), reused 5 (delta 1), pack-reused 0
+Receiving objects: 100% (9/9), done.
+Resolving deltas: 100% (1/1), done.
+[root@git tmp]# cd dvsbatch1/
+[root@git dvsbatch1]# ls -l
+total 4
+-rw-r--r-- 1 root root  0 May  8 03:12 f1
+-rw-r--r-- 1 root root  0 May  8 03:12 f2
+-rw-r--r-- 1 root root 11 May  8 03:12 README.md
+-rw-r--r-- 1 root root  0 May  8 03:12 t1
+-rw-r--r-- 1 root root  0 May  8 03:12 t2
+[root@git dvsbatch1]# git checkout -b test
+Switched to a new branch 'test'
+[root@git dvsbatch1]# touch f1{0-5}
+[root@git dvsbatch1]# git status
+On branch test
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f1{0-5}
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git dvsbatch1]# git add .
+[root@git dvsbatch1]# git commit -m "testfile"
+[test f80500b] testfile
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f1{0-5}
+[root@git dvsbatch1]# git push origin test
+Warning: Permanently added the RSA host key for IP address '140.82.112.3' to the list of known hosts.
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 226 bytes | 226.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote:
+remote: Create a pull request for 'test' on GitHub by visiting:
+remote:      https://github.com/shan5a6/dvsbatch1/pull/new/test
+remote:
+To github.com:shan5a6/dvsbatch1.git
+ * [new branch]      test -> test
+[root@git dvsbatch1]#

@@ -1,0 +1,838 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Wed Apr 14 01:51:12 2021 from 2.50.226.167
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@linuxserver ~]$ sudo su -
+Last login: Wed Apr 14 01:51:16 UTC 2021 on pts/1
+Last failed login: Wed Apr 14 03:40:14 UTC 2021 from 200.29.111.71 on ssh:notty
+There were 3 failed login attempts since the last successful login.
+[root@linuxserver ~]#
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+[root@linuxserver ~]# blkid
+/dev/xvda1: LABEL="/" UUID="74fc4c15-c86f-4c31-92f6-0df873546b85" TYPE="xfs" PARTLABEL="Linux" PARTUUID="ed868158-eb4b-43a5-8ed5-8b58aa998193"
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+xvdf    202:80   0  10G  0 disk
+[root@linuxserver ~]# fdisk /dev/xvdf
+
+Welcome to fdisk (util-linux 2.30.2).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table.
+Created a new DOS disklabel with disk identifier 0x41d302ba.
+
+Command (m for help): m
+
+Help:
+
+  DOS (MBR)
+   a   toggle a bootable flag
+   b   edit nested BSD disklabel
+   c   toggle the dos compatibility flag
+
+  Generic
+   d   delete a partition
+   F   list free unpartitioned space
+   l   list known partition types
+   n   add a new partition
+   p   print the partition table
+   t   change a partition type
+   v   verify the partition table
+   i   print information about a partition
+
+  Misc
+   m   print this menu
+   u   change display/entry units
+   x   extra functionality (experts only)
+
+  Script
+   I   load disk layout from sfdisk script file
+   O   dump disk layout to sfdisk script file
+
+  Save & Exit
+   w   write table to disk and exit
+   q   quit without saving changes
+
+  Create a new label
+   g   create a new empty GPT partition table
+   G   create a new empty SGI (IRIX) partition table
+   o   create a new empty DOS partition table
+   s   create a new empty Sun partition table
+
+
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): p
+Partition number (1-4, default 1): 1
+First sector (2048-20971519, default 2048):
+Last sector, +sectors or +size{K,M,G,T,P} (2048-20971519, default 20971519): +5G
+
+Created a new partition 1 of type 'Linux' and of size 5 GiB.
+
+Command (m for help): m
+
+Help:
+
+  DOS (MBR)
+   a   toggle a bootable flag
+   b   edit nested BSD disklabel
+   c   toggle the dos compatibility flag
+
+  Generic
+   d   delete a partition
+   F   list free unpartitioned space
+   l   list known partition types
+   n   add a new partition
+   p   print the partition table
+   t   change a partition type
+   v   verify the partition table
+   i   print information about a partition
+
+  Misc
+   m   print this menu
+   u   change display/entry units
+   x   extra functionality (experts only)
+
+  Script
+   I   load disk layout from sfdisk script file
+   O   dump disk layout to sfdisk script file
+
+  Save & Exit
+   w   write table to disk and exit
+   q   quit without saving changes
+
+  Create a new label
+   g   create a new empty GPT partition table
+   G   create a new empty SGI (IRIX) partition table
+   o   create a new empty DOS partition table
+   s   create a new empty Sun partition table
+
+
+Command (m for help): p
+Disk /dev/xvdf: 10 GiB, 10737418240 bytes, 20971520 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x41d302ba
+
+Device     Boot Start      End  Sectors Size Id Type
+/dev/xvdf1       2048 10487807 10485760   5G 83 Linux
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+xvdf    202:80   0  10G  0 disk
+└─xvdf1 202:81   0   5G  0 part
+[root@linuxserver ~]# fdisk /dev/xvdf
+
+Welcome to fdisk (util-linux 2.30.2).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): d
+Selected partition 1
+Partition 1 has been deleted.
+
+Command (m for help): p
+Disk /dev/xvdf: 10 GiB, 10737418240 bytes, 20971520 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x41d302ba
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# l
+-bash: l: command not found
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# fdisk /dev/xvdf
+
+Welcome to fdisk (util-linux 2.30.2).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): m
+
+Help:
+
+  DOS (MBR)
+   a   toggle a bootable flag
+   b   edit nested BSD disklabel
+   c   toggle the dos compatibility flag
+
+  Generic
+   d   delete a partition
+   F   list free unpartitioned space
+   l   list known partition types
+   n   add a new partition
+   p   print the partition table
+   t   change a partition type
+   v   verify the partition table
+   i   print information about a partition
+
+  Misc
+   m   print this menu
+   u   change display/entry units
+   x   extra functionality (experts only)
+
+  Script
+   I   load disk layout from sfdisk script file
+   O   dump disk layout to sfdisk script file
+
+  Save & Exit
+   w   write table to disk and exit
+   q   quit without saving changes
+
+  Create a new label
+   g   create a new empty GPT partition table
+   G   create a new empty SGI (IRIX) partition table
+   o   create a new empty DOS partition table
+   s   create a new empty Sun partition table
+
+
+Command (m for help): p
+Disk /dev/xvdf: 10 GiB, 10737418240 bytes, 20971520 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x41d302ba
+
+Command (m for help): n
+Partition type
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended (container for logical partitions)
+Select (default p): p
+Partition number (1-4, default 1): 1
+First sector (2048-20971519, default 2048):
+Last sector, +sectors or +size{K,M,G,T,P} (2048-20971519, default 20971519): +5G
+
+Created a new partition 1 of type 'Linux' and of size 5 GiB.
+
+Command (m for help): p
+Disk /dev/xvdf: 10 GiB, 10737418240 bytes, 20971520 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x41d302ba
+
+Device     Boot Start      End  Sectors Size Id Type
+/dev/xvdf1       2048 10487807 10485760   5G 83 Linux
+
+Command (m for help): w
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+xvdf    202:80   0  10G  0 disk
+└─xvdf1 202:81   0   5G  0 part
+[root@linuxserver ~]# mkfs.ext4 /dev/xvdf1
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+327680 inodes, 1310720 blocks
+65536 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=1342177280
+40 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# blkid
+/dev/xvda1: LABEL="/" UUID="74fc4c15-c86f-4c31-92f6-0df873546b85" TYPE="xfs" PARTLABEL="Linux" PARTUUID="ed868158-eb4b-43a5-8ed5-8b58aa998193"
+/dev/xvdf1: UUID="0ddc3548-e1ea-480e-96ae-954c51f9c808" TYPE="ext4" PARTUUID="41d302ba-01"
+[root@linuxserver ~]# mkdir /batch1
+[root@linuxserver ~]# mount -t ext4 /dev/xvdf1 /batch1
+[root@linuxserver ~]# df -hT /batch1/
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvdf1     ext4  4.8G   20M  4.6G   1% /batch1
+[root@linuxserver ~]# history
+    1  pwd
+    2  cd /tmp/
+    3  pwd
+    4  mkdir /tmp/batch1
+    5  ls -ld /tmp/batch1
+    6  touch /tmp/batch1/file1
+    7  ls -l /tmp/batch1/
+    8  ls -l /tmp/batch1/ -d
+    9  ls -l /tmp/batch1/
+   10  touch /tmp/batch1/file{2..4}
+   11  ls -l /tmp/batch1/
+   12  chmod 700 /tmp/batch1/
+   13  ls -l /tmp/batch1/
+   14  ls -ld /tmp/batch1/
+   15  chmod 700 /tmp/batch1/ -R
+   16  ls -l /tmp/batch1/
+   17  useradd linux
+   18  groupadd dvsbatch1
+   19  ls -ld /tmp/batch1/
+   20  chown linux:dvsbatch1 /tmp/batch1
+   21  ls -ld /tmp/batch1/
+   22  chmod 775 /tmp/batch1/
+   23  ls -ld /tmp/batch1/
+   24  ls -l /tmp/batch1/
+   25  ls -l /tmp/batch1/ -d
+   26  chown -R linux:dvsbatch1 /tmp/batch1/
+   27  ls -l /tmp/batch1/
+   28  #touch /tmp/batch1/file5 /tmp/batch1/file6 /tmp/batch1/file7
+   29  touch /tmp/batch1/file{5..7}
+   30  ls -l /tmp/batch1/
+   31  ls -l /tmp/batch1/ -d
+   32  ls -l /tmp/batch1/
+   33  ls -ld /tmp/batch1/
+   34  useradd murali
+   35  su - murali
+   36  chmod 750 /tmp/batch1/
+   37  su - murali
+   38  history
+   39  touch /tmp/batch1/testfile
+   40  ls -l /tmp/batch1/testfile
+   41  vi /tmp/batch1/testfile
+   42  cat /tmp/batch1/testfile
+   43  cat -n /tmp/batch1/testfile
+   44  vi /tmp/batch1/testfile
+   45  cat /tmp/batch1/testfile
+   46  cat /tmp/batch1/testfile|grep chennai
+   47  cat /tmp/batch1/testfile | grep chennai
+   48  cat -n /tmp/batch1/testfile | grep chennai
+   49  vi /tmp/batch1/testfile
+   50  cat /tmp/batch1/testfile
+   51  cat -n /tmp/batch1/testfile | grep -i chennai
+   52  find / -iname file1
+   53  touch /tmp/file1
+   54  find / -iname file1
+   55  touch /tmp/File1
+   56  find / -name file1
+   57  find / -iname file1
+   58  mkdir /tmp/src
+   59  mkdir /tmp/dest
+   60  ls -l /tmp/src/
+   61  ls -l /tmp/dest/
+   62  touch /tmp/src/file1 /tmp/src/file2
+   63  ls -l /tmp/src/
+   64  cp /tmp/src/file1 /tmp/dest/
+   65  ls -l /tmp/dest/
+   66  ls -l /tmp/src/
+   67  mv /tmp/src/file2 /tmp/dest/
+   68  ls -l /tmp/src/
+   69  ls -l /tmp/dest/
+   70  rm /tmp/dest/file1
+   71  ls -l /tmp/dest/
+   72  touch /tmp/dest/file{3..10000}
+   73  ls /tmp/dest/
+   74  rm /tmp/dest/file*
+   75  rm -f /tmp/dest/file*
+   76  ls -l /tmp/dest/
+   77  #rm -rf /
+   78  cd /tmp/dest/
+   79  pwd
+   80  rm -rf *
+   81  pwd
+   82  #cat -n /tmp/batch1/testfile | grep -i chennai
+   83  cat /tmp/batch1/testfile
+   84  vi /tmp/batch1/testfile
+   85  cat /tmp/batch1/testfile
+   86  cat /tmp/batch1/testfile | wc -l
+   87  cat /tmp/batch1/testfile | head -10
+   88  cat /tmp/batch1/testfile | tail -10
+   89  cat -n /tmp/batch1/testfile | grep 7
+   90  cat -n /tmp/batch1/testfile | grep -w 7
+   91  cat /tmp/batch1/testfile | head -7|tail -1
+   92  cat /tmp/batch1/testfile|head -7
+   93  cat /tmp/batch1/testfile|head -7|tail -1
+   94  cat /tmp/batch1/testfile|head -7|tail -2
+   95  cat -n /tmp/batch1/testfile|head -7|tail -2
+   96  cat /tmp/batch1/testfile|wc -c
+   97  cat /tmp/batch1/testfile
+   98  more /tmp/batch1/testfile
+   99  #more /tmp/batch1/testfile
+  100  #cat /tmp/batch1/testfile
+  101  man ls
+  102  man wc
+  103  cat /tmp/batch1/testfile |wc -w
+  104  #man wc
+  105  vim /tmp/batch1/editorcmds
+  106  cat /tmp/batch1/editorcmds
+  107  vim /tmp/batch1/editorcmds
+  108  cat /tmp/batch1/editorcmds
+  109  vi /tmp/batch1/editorcmds
+  110  vim /tmp/batch1/editorcmds
+  111  vi test
+  112  cat test
+  113  cat test|grep chn
+  114  cat test|grep -v chn
+  115  vi test
+  116  cat test|grep -v chn
+  117  cat test|grep chn
+  118  cat test|grep -w chn
+  119  cat /tmp/batch1/testfile
+  120  cat -n /tmp/batch1/testfile
+  121  vi /tmp/batch1/testfile
+  122  cat /tmp/batch1/testfile |grep lalitha
+  123  cat /tmp/batch1/testfile |grep lalitha -A10
+  124  cat /tmp/batch1/testfile |grep lalitha -A10|wc -l
+  125  cat /tmp/batch1/testfile |grep lalitha -A10 -B10
+  126  man grep
+  127  vi godwin
+  128  curl http://failover.mylearn.xyz
+  129  init -
+  130  init 0
+  131  top
+  132  ps -ef
+  133  ps -ef|grep -i syslog
+  134  vi  mycode.sh
+  135  bash mycode.sh &
+  136  ~..
+  137  lsblk
+  138  blkid
+  139  lsblk
+  140  fdisk /dev/xvdf
+  141  lsblk
+  142  fdisk /dev/xvdf
+  143  l
+  144  fdisk /dev/xvdf
+  145  lsblk
+  146  mkfs.ext4 /dev/xvdf1
+  147  blkid
+  148  mkdir /batch1
+  149  mount -t ext4 /dev/xvdf1 /batch1
+  150  df -hT /batch1/
+  151  history
+[root@linuxserver ~]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  416K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+/dev/xvdf1     ext4      4.8G   20M  4.6G   1% /batch1
+[root@linuxserver ~]# uptime
+ 02:34:01 up 57 min,  1 user,  load average: 0.00, 0.00, 0.00
+[root@linuxserver ~]# init 6
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Thu Apr 15 02:16:07 2021 from 2.50.226.167
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@linuxserver ~]$ sudo su -
+Last login: Thu Apr 15 02:16:09 UTC 2021 on pts/0
+Last failed login: Thu Apr 15 02:33:02 UTC 2021 from 128.199.231.162 on ssh:notty
+There were 17 failed login attempts since the last successful login.
+[root@linuxserver ~]# uptime
+ 02:35:36 up 0 min,  1 user,  load average: 0.26, 0.08, 0.02
+[root@linuxserver ~]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  408K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+[root@linuxserver ~]# vi /etc/fstab
+[root@linuxserver ~]# cat /etc/fstab
+#
+UUID=74fc4c15-c86f-4c31-92f6-0df873546b85     /           xfs    defaults,noatime  1   1
+/dev/xvdf1      /batch1         ext4    defaults        0       0
+[root@linuxserver ~]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  408K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+[root@linuxserver ~]# mount -a
+[root@linuxserver ~]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  408K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+/dev/xvdf1     ext4      4.8G   20M  4.6G   1% /batch1
+[root@linuxserver ~]# ls -l  /etc/rc.d/
+total 4
+drwxr-xr-x 2 root root  85 Mar 26 17:36 init.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc0.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc1.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc2.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc3.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc4.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc5.d
+drwxr-xr-x 2 root root  45 Mar 26 17:36 rc6.d
+-rw-r--r-- 1 root root 473 Feb  3  2020 rc.local
+[root@linuxserver ~]# #systemctl enable servicename
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+xvdf    202:80   0  10G  0 disk
+└─xvdf1 202:81   0   5G  0 part /batch1
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+xvdf    202:80   0  10G  0 disk
+└─xvdf1 202:81   0   5G  0 part /batch1
+xvdg    202:96   0  10G  0 disk
+[root@linuxserver ~]# blkid
+/dev/xvda1: LABEL="/" UUID="74fc4c15-c86f-4c31-92f6-0df873546b85" TYPE="xfs" PARTLABEL="Linux" PARTUUID="ed868158-eb4b-43 a5-8ed5-8b58aa998193"
+/dev/xvdf1: UUID="0ddc3548-e1ea-480e-96ae-954c51f9c808" TYPE="ext4" PARTUUID="41d302ba-01"
+[root@linuxserver ~]# pvcreate /dev/xvdg
+  Physical volume "/dev/xvdg" successfully created.
+[root@linuxserver ~]# pvs
+  PV         VG Fmt  Attr PSize  PFree
+  /dev/sdg      lvm2 ---  10.00g 10.00g
+[root@linuxserver ~]# vgcreate myvg /dev/sdg
+  Volume group "myvg" successfully created
+[root@linuxserver ~]# vgs
+  VG   #PV #LV #SN Attr   VSize   VFree
+  myvg   1   0   0 wz--n- <10.00g <10.00g
+[root@linuxserver ~]# lvcreate -L +10G -n mylv myvg
+  Volume group "myvg" has insufficient free space (2559 extents): 2560 required.
+[root@linuxserver ~]# lvcreate -L +9G -n mylv myvg
+  Logical volume "mylv" created.
+[root@linuxserver ~]# lvs
+  LV   VG   Attr       LSize Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  mylv myvg -wi-a----- 9.00g
+[root@linuxserver ~]# mkfs.ext4 /dev/myvg/mylv
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+589824 inodes, 2359296 blocks
+117964 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=2151677952
+72 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+[root@linuxserver ~]# mkdir /app1
+[root@linuxserver ~]# mount -t ext4 /dev/myvg/mylv /app1
+[root@linuxserver ~]# df -hT /app1
+Filesystem            Type  Size  Used Avail Use% Mounted on
+/dev/mapper/myvg-mylv ext4  8.8G   37M  8.3G   1% /app1
+[root@linuxserver ~]# history
+    1  pwd
+    2  cd /tmp/
+    3  pwd
+    4  mkdir /tmp/batch1
+    5  ls -ld /tmp/batch1
+    6  touch /tmp/batch1/file1
+    7  ls -l /tmp/batch1/
+    8  ls -l /tmp/batch1/ -d
+    9  ls -l /tmp/batch1/
+   10  touch /tmp/batch1/file{2..4}
+   11  ls -l /tmp/batch1/
+   12  chmod 700 /tmp/batch1/
+   13  ls -l /tmp/batch1/
+   14  ls -ld /tmp/batch1/
+   15  chmod 700 /tmp/batch1/ -R
+   16  ls -l /tmp/batch1/
+   17  useradd linux
+   18  groupadd dvsbatch1
+   19  ls -ld /tmp/batch1/
+   20  chown linux:dvsbatch1 /tmp/batch1
+   21  ls -ld /tmp/batch1/
+   22  chmod 775 /tmp/batch1/
+   23  ls -ld /tmp/batch1/
+   24  ls -l /tmp/batch1/
+   25  ls -l /tmp/batch1/ -d
+   26  chown -R linux:dvsbatch1 /tmp/batch1/
+   27  ls -l /tmp/batch1/
+   28  #touch /tmp/batch1/file5 /tmp/batch1/file6 /tmp/batch1/file7
+   29  touch /tmp/batch1/file{5..7}
+   30  ls -l /tmp/batch1/
+   31  ls -l /tmp/batch1/ -d
+   32  ls -l /tmp/batch1/
+   33  ls -ld /tmp/batch1/
+   34  useradd murali
+   35  su - murali
+   36  chmod 750 /tmp/batch1/
+   37  su - murali
+   38  history
+   39  touch /tmp/batch1/testfile
+   40  ls -l /tmp/batch1/testfile
+   41  vi /tmp/batch1/testfile
+   42  cat /tmp/batch1/testfile
+   43  cat -n /tmp/batch1/testfile
+   44  vi /tmp/batch1/testfile
+   45  cat /tmp/batch1/testfile
+   46  cat /tmp/batch1/testfile|grep chennai
+   47  cat /tmp/batch1/testfile | grep chennai
+   48  cat -n /tmp/batch1/testfile | grep chennai
+   49  vi /tmp/batch1/testfile
+   50  cat /tmp/batch1/testfile
+   51  cat -n /tmp/batch1/testfile | grep -i chennai
+   52  find / -iname file1
+   53  touch /tmp/file1
+   54  find / -iname file1
+   55  touch /tmp/File1
+   56  find / -name file1
+   57  find / -iname file1
+   58  mkdir /tmp/src
+   59  mkdir /tmp/dest
+   60  ls -l /tmp/src/
+   61  ls -l /tmp/dest/
+   62  touch /tmp/src/file1 /tmp/src/file2
+   63  ls -l /tmp/src/
+   64  cp /tmp/src/file1 /tmp/dest/
+   65  ls -l /tmp/dest/
+   66  ls -l /tmp/src/
+   67  mv /tmp/src/file2 /tmp/dest/
+   68  ls -l /tmp/src/
+   69  ls -l /tmp/dest/
+   70  rm /tmp/dest/file1
+   71  ls -l /tmp/dest/
+   72  touch /tmp/dest/file{3..10000}
+   73  ls /tmp/dest/
+   74  rm /tmp/dest/file*
+   75  rm -f /tmp/dest/file*
+   76  ls -l /tmp/dest/
+   77  #rm -rf /
+   78  cd /tmp/dest/
+   79  pwd
+   80  rm -rf *
+   81  pwd
+   82  #cat -n /tmp/batch1/testfile | grep -i chennai
+   83  cat /tmp/batch1/testfile
+   84  vi /tmp/batch1/testfile
+   85  cat /tmp/batch1/testfile
+   86  cat /tmp/batch1/testfile | wc -l
+   87  cat /tmp/batch1/testfile | head -10
+   88  cat /tmp/batch1/testfile | tail -10
+   89  cat -n /tmp/batch1/testfile | grep 7
+   90  cat -n /tmp/batch1/testfile | grep -w 7
+   91  cat /tmp/batch1/testfile | head -7|tail -1
+   92  cat /tmp/batch1/testfile|head -7
+   93  cat /tmp/batch1/testfile|head -7|tail -1
+   94  cat /tmp/batch1/testfile|head -7|tail -2
+   95  cat -n /tmp/batch1/testfile|head -7|tail -2
+   96  cat /tmp/batch1/testfile|wc -c
+   97  cat /tmp/batch1/testfile
+   98  more /tmp/batch1/testfile
+   99  #more /tmp/batch1/testfile
+  100  #cat /tmp/batch1/testfile
+  101  man ls
+  102  man wc
+  103  cat /tmp/batch1/testfile |wc -w
+  104  #man wc
+  105  vim /tmp/batch1/editorcmds
+  106  cat /tmp/batch1/editorcmds
+  107  vim /tmp/batch1/editorcmds
+  108  cat /tmp/batch1/editorcmds
+  109  vi /tmp/batch1/editorcmds
+  110  vim /tmp/batch1/editorcmds
+  111  vi test
+  112  cat test
+  113  cat test|grep chn
+  114  cat test|grep -v chn
+  115  vi test
+  116  cat test|grep -v chn
+  117  cat test|grep chn
+  118  cat test|grep -w chn
+  119  cat /tmp/batch1/testfile
+  120  cat -n /tmp/batch1/testfile
+  121  vi /tmp/batch1/testfile
+  122  cat /tmp/batch1/testfile |grep lalitha
+  123  cat /tmp/batch1/testfile |grep lalitha -A10
+  124  cat /tmp/batch1/testfile |grep lalitha -A10|wc -l
+  125  cat /tmp/batch1/testfile |grep lalitha -A10 -B10
+  126  man grep
+  127  vi godwin
+  128  curl http://failover.mylearn.xyz
+  129  init -
+  130  init 0
+  131  top
+  132  ps -ef
+  133  ps -ef|grep -i syslog
+  134  vi  mycode.sh
+  135  bash mycode.sh &
+  136  ~..
+  137  lsblk
+  138  blkid
+  139  lsblk
+  140  fdisk /dev/xvdf
+  141  lsblk
+  142  fdisk /dev/xvdf
+  143  l
+  144  fdisk /dev/xvdf
+  145  lsblk
+  146  mkfs.ext4 /dev/xvdf1
+  147  blkid
+  148  mkdir /batch1
+  149  mount -t ext4 /dev/xvdf1 /batch1
+  150  df -hT /batch1/
+  151  history
+  152  df -hT
+  153  uptime
+  154  init 6
+  155  uptime
+  156  df -hT
+  157  vi /etc/fstab
+  158  cat /etc/fstab
+  159  df -hT
+  160  mount -a
+  161  df -hT
+  162  ls -l  /etc/rc.d/
+  163  #systemctl enable servicename
+  164  lsblk
+  165  blkid
+  166  pvcreate /dev/xvdg
+  167  pvs
+  168  vgcreate myvg /dev/sdg
+  169  vgs
+  170  lvcreate -L +10G -n mylv myvg
+  171  lvcreate -L +9G -n mylv myvg
+  172  lvs
+  173  mkfs.ext4 /dev/myvg/mylv
+  174  mkdir /app1
+  175  mount -t ext4 /dev/myvg/mylv /app1
+  176  df -hT /app1
+  177  history
+[root@linuxserver ~]# df -hT
+Filesystem            Type      Size  Used Avail Use% Mounted on
+devtmpfs              devtmpfs  482M     0  482M   0% /dev
+tmpfs                 tmpfs     492M     0  492M   0% /dev/shm
+tmpfs                 tmpfs     492M  476K  492M   1% /run
+tmpfs                 tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1            xfs       8.0G  1.5G  6.6G  18% /
+tmpfs                 tmpfs      99M     0   99M   0% /run/user/1000
+/dev/xvdf1            ext4      4.8G   20M  4.6G   1% /batch1
+tmpfs                 tmpfs      99M     0   99M   0% /run/user/0
+/dev/mapper/myvg-mylv ext4      8.8G   37M  8.3G   1% /app1
+[root@linuxserver ~]# vgs
+  VG   #PV #LV #SN Attr   VSize   VFree
+  myvg   1   1   0 wz--n- <10.00g 1020.00m
+[root@linuxserver ~]# lsblk
+NAME        MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda        202:0    0   8G  0 disk
+└─xvda1     202:1    0   8G  0 part /
+xvdf        202:80   0  10G  0 disk
+└─xvdf1     202:81   0   5G  0 part /batch1
+xvdg        202:96   0  10G  0 disk
+└─myvg-mylv 253:0    0   9G  0 lvm  /app1
+xvdh        202:112  0   5G  0 disk
+[root@linuxserver ~]# vgs
+  VG   #PV #LV #SN Attr   VSize   VFree
+  myvg   1   1   0 wz--n- <10.00g 1020.00m
+[root@linuxserver ~]# pvcreate /dev/xvdh
+  Physical volume "/dev/xvdh" successfully created.
+[root@linuxserver ~]# pvs
+  PV         VG   Fmt  Attr PSize   PFree
+  /dev/sdg   myvg lvm2 a--  <10.00g 1020.00m
+  /dev/sdh        lvm2 ---    5.00g    5.00g
+[root@linuxserver ~]# vgextend myvg /dev/sdh
+  Volume group "myvg" successfully extended
+[root@linuxserver ~]# vgs
+  VG   #PV #LV #SN Attr   VSize  VFree
+  myvg   2   1   0 wz--n- 14.99g 5.99g
+[root@linuxserver ~]# lvextend -L +5G -n /dev/mapper/myvg-mylv -r
+  Size of logical volume myvg/mylv changed from 9.00 GiB (2304 extents) to 14.00 GiB (3584 extents).
+  Logical volume myvg/mylv successfully resized.
+resize2fs 1.42.9 (28-Dec-2013)
+Filesystem at /dev/mapper/myvg-mylv is mounted on /app1; on-line resizing required
+old_desc_blocks = 2, new_desc_blocks = 2
+The filesystem on /dev/mapper/myvg-mylv is now 3670016 blocks long.
+
+[root@linuxserver ~]# df -hT /app1
+Filesystem            Type  Size  Used Avail Use% Mounted on
+/dev/mapper/myvg-mylv ext4   14G   41M   13G   1% /app1
+[root@linuxserver ~]# cd
+[root@linuxserver ~]# umount /app1/
+[root@linuxserver ~]# lvremove /dev/myvg/mylv
+Do you really want to remove active logical volume myvg/mylv? [y/n]: y
+  Logical volume "mylv" successfully removed
+[root@linuxserver ~]# vgremove myvg
+  Volume group "myvg" successfully removed
+[root@linuxserver ~]# pvremove /dev/sdg /dev/sdh
+  Labels on physical volume "/dev/sdg" successfully wiped.
+  Labels on physical volume "/dev/sdh" successfully wiped.
+[root@linuxserver ~]# pvs
+[root@linuxserver ~]# vgs
+[root@linuxserver ~]# lvgs
+-bash: lvgs: command not found
+[root@linuxserver ~]# lvs
+[root@linuxserver ~]# df -hT /app1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/xvda1     xfs   8.0G  1.5G  6.6G  18% /
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#

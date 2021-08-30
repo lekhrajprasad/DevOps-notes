@@ -1,0 +1,932 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Thu Apr 22 01:44:37 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+3 package(s) needed for security, out of 17 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@python ~]$ sudo su -
+Last login: Thu Apr 22 01:44:40 UTC 2021 on pts/0
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi fn3.py
+[root@python ~]# cat fn3.py
+#!/usr/bin/python
+def sum(a,b):
+  print a+b
+
+sum(10,20)
+[root@python ~]# python fn3.py
+30
+[root@python ~]# vi fn3.py
+[root@python ~]# cat fn3.py
+#!/usr/bin/python
+def sum(a,b):
+  print a+b
+
+sum(10,20)
+sum(20)
+[root@python ~]# python fn3.py
+30
+Traceback (most recent call last):
+  File "fn3.py", line 6, in <module>
+    sum(20)
+TypeError: sum() takes exactly 2 arguments (1 given)
+[root@python ~]# vi fn3.py
+[root@python ~]# cat fn3.py
+#!/usr/bin/python
+def sum(a=10,b=20):
+  print a+b
+
+sum()
+sum(20)
+sum(100,200)
+[root@python ~]# python fn3.py
+30
+40
+300
+[root@python ~]#
+[root@python ~]# vi fn4.py
+[root@python ~]# cat fn4.py
+#!/usr/bin/python
+
+def myvars(var1,*num):
+  print var1
+  print type(num),num
+
+
+myvars(10,20,30,40,50,60,70,80,90,100)
+[root@python ~]# python fn4.py
+10
+<type 'tuple'> (20, 30, 40, 50, 60, 70, 80, 90, 100)
+[root@python ~]# vi fn4.py
+[root@python ~]# cat fn.4
+cat: fn.4: No such file or directory
+[root@python ~]# cat fn4.py
+#!/usr/bin/python
+
+def myvars(var1,*num):
+  print var1
+  print type(num),num
+  for ele  in num:
+    print ele
+
+
+myvars(10,20,30,40,50,60,70,80,90,100)
+[root@python ~]# python fn4.py
+10
+<type 'tuple'> (20, 30, 40, 50, 60, 70, 80, 90, 100)
+20
+30
+40
+50
+60
+70
+80
+90
+100
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi test.txt
+[root@python ~]# cat test.txt
+hello team
+welcome to class
+topic name is python
+[root@python ~]# var=$(cat test.txt)
+[root@python ~]# echo $var
+hello team welcome to class topic name is python
+[root@python ~]# for i in $(cat test.txt)
+> echo $i|grep -i class
+-bash: syntax error near unexpected token `echo'
+[root@python ~]# for i in $(cat test.txt); do echo $i|grep -i class;done
+class
+[root@python ~]# #for i in $(cat test.txt); do echo $i|grep -i class;done
+[root@python ~]#
+[root@python ~]# pwd
+/root
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+In [1]:
+In [1]:
+
+In [1]:
+
+In [1]: obj1=open("mybatch1.txt","r")
+---------------------------------------------------------------------------
+IOError                                   Traceback (most recent call last)
+<ipython-input-1-8167fc7d0054> in <module>()
+----> 1 obj1=open("mybatch1.txt","r")
+
+IOError: [Errno 2] No such file or directory: 'mybatch1.txt'
+
+In [2]: obj1=open("mybatch1.txt","w")
+
+In [3]: obj1.writelines("Hi Team welcome to Dvs\n")
+
+In [4]: obj1.writelines("Topic as Python\n")
+
+In [5]: obj1.close()
+
+In [6]: obj1=open("mybatch1.txt","w")
+
+In [7]: obj1.close()
+
+In [8]: obj1=open("mybatch1.txt","a")
+
+In [9]: obj1.writelines("Hi I am line1\n"
+   ...: )
+
+In [10]: obj1.writelines("Hi I am line2\n")
+
+In [11]: obj1.close()
+
+In [12]: obj1=open("mybatch1.txt","a")
+
+In [13]: obj1.writelines("Hi I am line3\n"
+    ...: )
+
+In [14]: obj1.close()
+In [15]:
+In [15]:
+
+In [15]:
+
+In [15]: obj1=open("mybatch1.txt","r")
+
+In [16]: obj1.readlines()
+Out[16]: ['Hi I am line1\n', 'Hi I am line2\n', 'Hi I am line3\n']
+
+In [17]: for line in obj1.readlines():
+    ...:     print line
+    ...:
+
+In [18]: obj1=open("mybatch1.txt","r")
+
+In [19]: for line in obj1.readlines():
+    ...:     print line
+    ...:
+Hi I am line1
+
+Hi I am line2
+
+Hi I am line3
+
+
+In [20]:
+
+In [20]: mydata=["Hi I am line4\n","Hi I am line5\n"]
+
+In [21]: obj1=open("mybatch1.txt","a")
+
+In [22]: for line in mydata:
+    ...:     obj1.writelines(line)
+    ...:
+
+In [23]: obj1.close()
+
+In [24]:
+Do you really want to exit ([y]/n)?
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi myfile.py
+[root@python ~]#
+[root@python ~]# cat myfile.py
+#!/usr/bin/python
+
+obj1=open("mynewdata","w")
+obj1.writelines("Hi Team I am line1\n")
+obj1.close()
+
+obj2=open("mynewdata","r")
+for line in obj2.readlines():
+  print line
+obj2.close()
+
+count=input("Please enter  the number of lines:")
+lis1=[]
+for i in range(count):
+  myfiledata=raw_input("please enter data for line",i)
+  lis1.append(myfiledata)
+
+
+obj3=open("mynewdata","a")
+for line in lis1:
+  obj3.writelines(line+"\n")
+obj3.close()
+
+
+[root@python ~]# python myfile.py
+Hi Team I am line1
+
+Please enter  the number of lines:^CTraceback (most recent call last):
+  File "myfile.py", line 12, in <module>
+    count=input("Please enter  the number of lines:")
+KeyboardInterrupt
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi myfile.py
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# python myfile.py
+Hi Team I am line1
+
+Please enter  the number of lines:3
+Traceback (most recent call last):
+  File "myfile.py", line 15, in <module>
+    myfiledata=raw_input("please enter data for line",i)
+TypeError: [raw_]input expected at most 1 arguments, got 2
+[root@python ~]# vi myfile.py
+[root@python ~]#
+[root@python ~]# python myfile.py
+Hi Team I am line1
+
+Please enter  the number of lines:3
+please enter data for line0^CTraceback (most recent call last):
+  File "myfile.py", line 15, in <module>
+    myfiledata=raw_input("please enter data for line"+str(i))
+KeyboardInterrupt
+[root@python ~]# vi myfile.py
+[root@python ~]#
+[root@python ~]# python myfile.py
+Hi Team I am line1
+
+Please enter  the number of lines:3
+please enter data for line1Hi Team i am line2
+please enter data for line2HI tem I am line3
+please enter data for line3Hi Team i am line4
+[root@python ~]# cat myfile.py
+#!/usr/bin/python
+
+obj1=open("mynewdata","w")
+obj1.writelines("Hi Team I am line1\n")
+obj1.close()
+
+obj2=open("mynewdata","r")
+for line in obj2.readlines():
+  print line
+obj2.close()
+
+count=input("Please enter  the number of lines:")
+lis1=[]
+for i in range(count):
+  myfiledata=raw_input("please enter data for line"+str(i+1))
+  lis1.append(myfiledata)
+
+
+obj3=open("mynewdata","a")
+for line in lis1:
+  obj3.writelines(line+"\n")
+obj3.close()
+
+
+[root@python ~]# vi myfile.py
+[root@python ~]#
+[root@python ~]# cat myfile.py
+#!/usr/bin/python
+
+obj1=open("mynewdata","w")
+obj1.writelines("Hi Team I am line1\n")
+obj1.close()
+
+obj2=open("mynewdata","r")
+for line in obj2.readlines():
+  print line
+obj2.close()
+
+count=input("Please enter  the number of lines:")
+lis1=[]
+for i in range(count):
+  myfiledata=raw_input("please enter data for line"+str(i+1)+":")
+  lis1.append(myfiledata)
+
+
+obj3=open("mynewdata","a")
+for line in lis1:
+  obj3.writelines(line+"\n")
+obj3.close()
+
+
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi mycalc.py
+[root@python ~]# cat mycalc.py
+#!/usr/bin/python
+
+def sum(a,b):
+  return(a+b)
+
+def sub(a,b):
+  return(a-b)
+[root@python ~]# vi mycode.py
+[root@python ~]# cat mycode.py
+#!/usr/bin/python
+
+import mycalc
+
+obj1=mycalc
+print obj1.sub(200,100)
+print obj1.sum(100,100)
+[root@python ~]# python mycode.py
+100
+200
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+In [1]: lis1=[10,20,30,40]
+In [1]: lis1=[10,20,30,40]
+
+In [2]: import mycalc
+
+In [3]: myobj1=mycalc
+
+In [4]: #myobj1.su
+
+In [5]: from mycalc import sum
+
+In [6]: sum(10,20)
+Out[6]: 30
+
+In [7]: sub(10,20)
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-7-3cca0ef5ba29> in <module>()
+----> 1 sub(10,20)
+
+NameError: name 'sub' is not defined
+
+In [8]:
+Do you really want to exit ([y]/n)?
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# cd /tmp/
+[root@python tmp]# mkdir test
+[root@python tmp]# cd test/
+[root@python test]# my file{1..4}
+-bash: my: command not found
+[root@python test]# touch file{1..4}
+[root@python test]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# touch file111
+[root@python test]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l file?
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l file???
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+[root@python test]# ls -l file*
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l file* -m1
+file1
+file111
+file2
+file3
+file4
+[root@python test]#
+[root@python test]#
+[root@python test]#
+[root@python test]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l|grep file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+[root@python test]# ls -l|grep -v file3
+total 0
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l|grep -e "file3\|file4"
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: input=['This', 'That', 'There', 'Their', 'these']
+
+In [2]: for ele in input:
+   ...:     print ele
+   ...:
+This
+That
+There
+Their
+these
+
+In [3]: import re
+
+In [4]: for ele in input:
+   ...:     mydata=re.search('^The',ele)
+   ...:     if mydata:
+   ...:         print ele
+   ...:
+There
+Their
+
+In [5]: for ele in input:
+   ...:     mydata=re.search('^The',ele,re.I)
+   ...:     if mydata:
+   ...:         print ele
+   ...:
+   ...:
+There
+Their
+these
+
+In [6]: input=['Call', 'Tall', 'Ball']
+
+In [7]: for ele in input:
+   ...:     mydata=re.search('[CT]all',ele,re.I)
+   ...:     if mydata:
+   ...:         print ele
+   ...:
+Call
+Tall
+
+In [8]: for ele in input:
+   ...:     mydata=re.search('[^CT]all',ele,re.I)
+   ...:     if mydata:
+   ...:         print ele
+   ...:
+   ...:
+Ball
+
+In [9]:
+Do you really want to exit ([y]/n)?
+[root@python test]#
+[root@python test]# cd
+[root@python ~]# cd -
+/tmp/test
+[root@python test]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l file?
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root 0 Apr 24 05:05 file4
+[root@python test]# ls -l file??
+ls: cannot access file??: No such file or directory
+[root@python test]#
+[root@python test]# vi mycode.sh
+[root@python test]# cat mycode.sh
+#!/bin/bash
+uname -a
+df -hT
+[root@python test]# bash mycode.sh
+Linux python 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.5G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+[root@python test]# vi mypy.py
+[root@python test]# cat mypy.py
+#!/usr/bin/python
+
+uname -a
+df -hT
+[root@python test]# python mypy.py
+Traceback (most recent call last):
+  File "mypy.py", line 3, in <module>
+    uname -a
+NameError: name 'uname' is not defined
+[root@python test]#
+[root@python test]#
+[root@python test]#
+[root@python test]# vi mypy.py
+[root@python test]# cat mypy.py
+#!/usr/bin/python
+import os
+print os.popen("uname -a").read()
+print os.popen("df -hT").read()
+[root@python test]# python mypy.py
+Linux python 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.5G  6.6G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+
+[root@python test]# vi mypy.py
+[root@python test]# cat mypy.py
+#!/usr/bin/python
+import os
+import subprocess
+#print os.popen("uname -a").read()
+#print os.popen("df -hT").read()
+
+
+val=subprocess.Popen("ls -l /tmp;uptime", stdout=subprocess.PIPE, shell=True)
+(output,error)=val.communicate()
+print "my output is",output
+[root@python test]# python mypy.py
+my output is total 0
+drwx------ 3 root root  17 Apr 24 03:36 systemd-private-340c73e45c7a46a09e22b070a2dc4fa2-chronyd.service-6jkMg9
+drwxr-xr-x 2 root root 105 Apr 24 05:31 test
+ 05:31:40 up  1:55,  1 user,  load average: 0.00, 0.00, 0.00
+
+[root@python test]# ls -l /tmp/
+total 0
+drwx------ 3 root root  17 Apr 24 03:36 systemd-private-340c73e45c7a46a09e22b070a2dc4fa2-chronyd.service-6jkMg9
+drwxr-xr-x 2 root root 105 Apr 24 05:31 test
+[root@python test]# uptime
+ 05:32:05 up  1:55,  1 user,  load average: 0.00, 0.00, 0.00
+[root@python test]#
+[root@python test]#
+[root@python test]#
+[root@python test]# ls -l
+total 8
+-rw-r--r-- 1 root root   0 Apr 24 05:05 file1
+-rw-r--r-- 1 root root   0 Apr 24 05:06 file111
+-rw-r--r-- 1 root root   0 Apr 24 05:05 file2
+-rw-r--r-- 1 root root   0 Apr 24 05:05 file3
+-rw-r--r-- 1 root root   0 Apr 24 05:05 file4
+-rw-r--r-- 1 root root  28 Apr 24 05:24 mycode.sh
+-rw-r--r-- 1 root root 255 Apr 24 05:31 mypy.py
+[root@python test]# cat mypy.py
+#!/usr/bin/python
+import os
+import subprocess
+#print os.popen("uname -a").read()
+#print os.popen("df -hT").read()
+
+
+val=subprocess.Popen("ls -l /tmp;uptime", stdout=subprocess.PIPE, shell=True)
+(output,error)=val.communicate()
+print "my output is",output
+[root@python test]#
+[root@python test]# pip install paramiko -U
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip install --user` instead.
+Collecting paramiko
+  Downloading https://files.pythonhosted.org/packages/95/19/124e9287b43e6ff3ebb9cdea3e5e8e88475a873c05ccdf8b7e20d2c4201e/paramiko-2.7.2-py2.py3-none-any.whl (206kB)
+    100% |████████████████████████████████| 215kB 4.5MB/s
+Collecting bcrypt>=3.1.3 (from paramiko)
+  Downloading https://files.pythonhosted.org/packages/ad/36/9a0227d048e98409f012570f7bef8a8c2373b9c9c5dfbf82963cbae05ede/bcrypt-3.1.7-cp27-cp27mu-manylinux1_x86_64.whl (59kB)
+    100% |████████████████████████████████| 61kB 7.9MB/s
+Collecting pynacl>=1.0.1 (from paramiko)
+  Downloading https://files.pythonhosted.org/packages/de/63/bb36279da38df643c6df3a8a389f29a6ff4a8854468f4c9b9d925b27d57d/PyNaCl-1.4.0-cp27-cp27mu-manylinux1_x86_64.whl (964kB)
+    100% |████████████████████████████████| 972kB 1.1MB/s
+Collecting cryptography>=2.5 (from paramiko)
+  Downloading https://files.pythonhosted.org/packages/86/41/44173175d378c9e3a73294bb33c73725f7726def5ce267af6bd11b72eb23/cryptography-3.3.2-cp27-cp27mu-manylinux1_x86_64.whl (2.7MB)
+    100% |████████████████████████████████| 2.7MB 420kB/s
+Collecting six>=1.4.1 (from bcrypt>=3.1.3->paramiko)
+  Downloading https://files.pythonhosted.org/packages/ee/ff/48bde5c0f013094d729fe4b0316ba2a24774b3ff1c52d924a8a4cb04078a/six-1.15.0-py2.py3-none-any.whl
+Collecting cffi>=1.1 (from bcrypt>=3.1.3->paramiko)
+  Downloading https://files.pythonhosted.org/packages/ab/a7/1df1dcd222c9a35d2d0c4c123bd55a533ed2d07b09909ad085829deea4d6/cffi-1.14.5-cp27-cp27mu-manylinux1_x86_64.whl (389kB)
+    100% |████████████████████████████████| 399kB 3.0MB/s
+Collecting enum34; python_version < "3" (from cryptography>=2.5->paramiko)
+  Downloading https://files.pythonhosted.org/packages/6f/2c/a9386903ece2ea85e9807e0e062174dc26fdce8b05f216d00491be29fad5/enum34-1.1.10-py2-none-any.whl
+Collecting ipaddress; python_version < "3" (from cryptography>=2.5->paramiko)
+  Downloading https://files.pythonhosted.org/packages/c2/f8/49697181b1651d8347d24c095ce46c7346c37335ddc7d255833e7cde674d/ipaddress-1.0.23-py2.py3-none-any.whl
+Collecting pycparser (from cffi>=1.1->bcrypt>=3.1.3->paramiko)
+  Downloading https://files.pythonhosted.org/packages/ae/e7/d9c3a176ca4b02024debf82342dab36efadfc5776f9c8db077e8f6e71821/pycparser-2.20-py2.py3-none-any.whl (112kB)
+    100% |████████████████████████████████| 112kB 8.6MB/s
+Installing collected packages: six, pycparser, cffi, bcrypt, pynacl, enum34, ipaddress, cryptography, paramiko
+  Found existing installation: six 1.9.0
+    Uninstalling six-1.9.0:
+      Successfully uninstalled six-1.9.0
+  Found existing installation: pycparser 2.14
+    Uninstalling pycparser-2.14:
+      Successfully uninstalled pycparser-2.14
+  Found existing installation: cffi 1.6.0
+    Uninstalling cffi-1.6.0:
+      Successfully uninstalled cffi-1.6.0
+  Found existing installation: enum34 1.0.4
+    DEPRECATION: Uninstalling a distutils installed project (enum34) has been deprecated and will be removed in a future version. This is due to the fact that uninstalling a distutils project will only partially uninstall the project.
+    Uninstalling enum34-1.0.4:
+      Successfully uninstalled enum34-1.0.4
+  Found existing installation: ipaddress 1.0.16
+    DEPRECATION: Uninstalling a distutils installed project (ipaddress) has been deprecated and will be removed in a future version. This is due to the fact that uninstalling a distutils project will only partially uninstall the project.
+    Uninstalling ipaddress-1.0.16:
+      Successfully uninstalled ipaddress-1.0.16
+  Found existing installation: cryptography 1.7.2
+    Uninstalling cryptography-1.7.2:
+      Successfully uninstalled cryptography-1.7.2
+Successfully installed bcrypt-3.1.7 cffi-1.14.5 cryptography-3.3.2 enum34-1.1.10 ipaddress-1.0.23 paramiko-2.7.2 pycparser-2.20 pynacl-1.4.0 six-1.15.0
+[root@python test]# pip install netmiko -U
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip install --user` instead.
+Collecting netmiko
+  Downloading https://files.pythonhosted.org/packages/a7/0b/4d9b1a53e749b2f097062dc7331206b5cfa01e6bed1659739b3fa5f13b5c/netmiko-3.4.0.tar.gz (502kB)
+    100% |████████████████████████████████| 512kB 2.1MB/s
+Collecting setuptools>=38.4.0 (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/e1/b7/182161210a13158cd3ccc41ee19aadef54496b74f2817cc147006ec932b4/setuptools-44.1.1-py2.py3-none-any.whl (583kB)
+    100% |████████████████████████████████| 583kB 1.9MB/s
+Requirement already up-to-date: paramiko>=2.6.0 in /usr/lib/python2.7/site-packages (from netmiko)
+Collecting scp>=0.13.2 (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/b7/37/122d300034f2c8576158a7830e02c687730635e65a95f9eb2b4eb002554d/scp-0.13.3-py2.py3-none-any.whl
+Collecting tenacity (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/41/ee/d6eddff86161c6a3a1753af4a66b06cbc508d3b77ca4698cd0374cd66531/tenacity-7.0.0-py2.py3-none-any.whl
+Collecting ntc-templates (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/f0/41/6163ad00c37e5314940da428926a849f0f849754705cc7f386d298a08ca8/ntc_templates-1.7.0.tar.gz (176kB)
+    100% |████████████████████████████████| 184kB 5.9MB/s
+Collecting pyserial (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/07/bc/587a445451b253b285629263eb51c2d8e9bcea4fc97826266d186f96f558/pyserial-3.5-py2.py3-none-any.whl (90kB)
+    100% |████████████████████████████████| 92kB 9.1MB/s
+Collecting importlib_resources (from netmiko)
+  Downloading https://files.pythonhosted.org/packages/8d/94/2f6ceee0c4e63bff0177c07e68d27c937a19f6bc77c4739755b49f5adb04/importlib_resources-3.3.1-py2.py3-none-any.whl
+Requirement already up-to-date: bcrypt>=3.1.3 in /usr/lib64/python2.7/site-packages (from paramiko>=2.6.0->netmiko)
+Requirement already up-to-date: pynacl>=1.0.1 in /usr/lib64/python2.7/site-packages (from paramiko>=2.6.0->netmiko)
+Requirement already up-to-date: cryptography>=2.5 in /usr/lib64/python2.7/site-packages (from paramiko>=2.6.0->netmiko)
+Requirement already up-to-date: six>=1.9.0 in /usr/lib/python2.7/site-packages (from tenacity->netmiko)
+Collecting monotonic>=0.6; python_version == "2.7" (from tenacity->netmiko)
+  Downloading https://files.pythonhosted.org/packages/9a/67/7e8406a29b6c45be7af7740456f7f37025f0506ae2e05fb9009a53946860/monotonic-1.6-py2.py3-none-any.whl
+Collecting futures>=3.0; python_version == "2.7" (from tenacity->netmiko)
+  Downloading https://files.pythonhosted.org/packages/d8/a6/f46ae3f1da0cd4361c344888f59ec2f5785e69c872e175a748ef6071cdb5/futures-3.3.0-py2-none-any.whl
+Collecting typing>=3.7.4.1; python_version == "2.7" (from tenacity->netmiko)
+  Downloading https://files.pythonhosted.org/packages/3b/c0/e44213fcb799eac02881e2485724ba5b0914600bc9df6ed922e364fdc059/typing-3.7.4.3-py2-none-any.whl
+Collecting textfsm>=1.1.0 (from ntc-templates->netmiko)
+  Downloading https://files.pythonhosted.org/packages/bd/27/0b149b6da3e47cc8daebace6920093114392171a8f5c24f1f2ad9a9e9c4d/textfsm-1.1.0-py2.py3-none-any.whl
+Collecting contextlib2; python_version < "3" (from importlib_resources->netmiko)
+  Downloading https://files.pythonhosted.org/packages/85/60/370352f7ef6aa96c52fb001831622f50f923c1d575427d021b8ab3311236/contextlib2-0.6.0.post1-py2.py3-none-any.whl
+Requirement already up-to-date: pathlib2; python_version < "3" in /usr/lib/python2.7/site-packages (from importlib_resources->netmiko)
+Collecting zipp>=0.4; python_version < "3.8" (from importlib_resources->netmiko)
+  Downloading https://files.pythonhosted.org/packages/96/0a/67556e9b7782df7118c1f49bdc494da5e5e429c93aa77965f33e81287c8c/zipp-1.2.0-py2.py3-none-any.whl
+Collecting singledispatch; python_version < "3.4" (from importlib_resources->netmiko)
+  Downloading https://files.pythonhosted.org/packages/7a/12/2b10635e91ec4007e2a287812b1a1c8649cf68686ff2d69ed97553cf8a7a/singledispatch-3.6.1-py2.py3-none-any.whl
+Requirement already up-to-date: cffi>=1.1 in /usr/lib64/python2.7/site-packages (from bcrypt>=3.1.3->paramiko>=2.6.0->netmiko)
+Requirement already up-to-date: enum34; python_version < "3" in /usr/lib/python2.7/site-packages (from cryptography>=2.5->paramiko>=2.6.0->netmiko)
+Requirement already up-to-date: ipaddress; python_version < "3" in /usr/lib/python2.7/site-packages (from cryptography>=2.5->paramiko>=2.6.0->netmiko)
+Collecting future (from textfsm>=1.1.0->ntc-templates->netmiko)
+  Downloading https://files.pythonhosted.org/packages/45/0b/38b06fd9b92dc2b68d58b75f900e97884c45bedd2ff83203d933cf5851c9/future-0.18.2.tar.gz (829kB)
+    100% |████████████████████████████████| 829kB 1.3MB/s
+Requirement already up-to-date: scandir; python_version < "3.5" in /usr/lib64/python2.7/site-packages (from pathlib2; python_version < "3"->importlib_resources->netmiko)
+Requirement already up-to-date: pycparser in /usr/lib/python2.7/site-packages (from cffi>=1.1->bcrypt>=3.1.3->paramiko>=2.6.0->netmiko)
+Installing collected packages: setuptools, scp, monotonic, futures, typing, tenacity, future, textfsm, ntc-templates, pyserial, contextlib2, zipp, singledispatch, importlib-resources, netmiko
+  Found existing installation: setuptools 38.4.0
+    Uninstalling setuptools-38.4.0:
+      Successfully uninstalled setuptools-38.4.0
+  Found existing installation: futures 3.0.5
+    DEPRECATION: Uninstalling a distutils installed project (futures) has been deprecated and will be removed in a future version. This is due to the fact that uninstalling a distutils project will only partially uninstall the project.
+    Uninstalling futures-3.0.5:
+      Successfully uninstalled futures-3.0.5
+  Running setup.py install for future ... done
+  Running setup.py install for ntc-templates ... done
+  Running setup.py install for netmiko ... done
+Successfully installed contextlib2-0.6.0.post1 future-0.18.2 futures-3.3.0 importlib-resources-3.3.1 monotonic-1.6 netmiko-3.4.0 ntc-templates-1.7.0 pyserial-3.5 scp-0.13.3 setuptools-44.1.1 singledispatch-3.6.1 tenacity-7.0.0 textfsm-1.1.0 typing-3.7.4.3 zipp-1.2.0
+[root@python test]#
+[root@python test]# vi /etc/hoss
+[root@python test]# vi /etc/hosts
+[root@python test]# ssh server1
+The authenticity of host 'server1 (172.31.27.116)' can't be established.
+ECDSA key fingerprint is SHA256:4pA1LL9eV/Xp5UV7Kvg3yd+iCx3dcEXLGfECDnAzmQw.
+ECDSA key fingerprint is MD5:f4:e1:bf:0a:a1:27:fb:81:2b:c7:ee:c4:e4:d2:20:17.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server1,172.31.27.116' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@python test]# ssh server2
+The authenticity of host 'server2 (172.31.31.46)' can't be established.
+ECDSA key fingerprint is SHA256:vbhDaSkriRo7fUBQ94BpqI/gJFPhsosxGJc0U0SikUY.
+ECDSA key fingerprint is MD5:73:1b:07:4c:fb:15:0e:1a:da:f8:58:f3:22:10:44:02.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server2,172.31.31.46' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@python test]#
+[root@python test]#
+[root@python test]#
+[root@python test]# vi ssh.py
+[root@python test]# mkdir -p /tmp/ssh/
+[root@python test]# vi /tmp/ssh/class_devops.pem
+[root@python test]# chmod 600 /tmp/ssh/class_devops.pem
+[root@python test]# cat ssh.py
+#!/usr/bin/python
+import paramiko
+k = paramiko.RSAKey.from_private_key_file("/tmp/ssh/class_devops.pem")
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+print "connecting"
+ssh.connect( hostname = "server1", username = "ec2-user", pkey = k )
+print "connected"
+commands = [ "/sbin/ifconfig eth0","df -hT"]
+for command in commands:
+    print "Executing {}".format( command )
+    stdin , stdout, stderr = ssh.exec_command(command)
+        if stderr:
+                print "Command execution failed"
+
+    print stdout.read()
+    print( "Errors")
+    print stderr.read()
+ssh.close()
+
+[root@python test]# python ssh.py
+  File "ssh.py", line 13
+    if stderr:
+    ^
+IndentationError: unexpected indent
+[root@python test]# vi ssh.py
+[root@python test]# python ssh.py
+/usr/lib/python2.7/site-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+  from cryptography.hazmat.backends import default_backend
+connecting
+connected
+Executing /sbin/ifconfig eth0
+Command execution failed
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.27.116  netmask 255.255.240.0  broadcast 172.31.31.255
+        inet6 fe80::8e6:35ff:fe98:4409  prefixlen 64  scopeid 0x20<link>
+        ether 0a:e6:35:98:44:09  txqueuelen 1000  (Ethernet)
+        RX packets 39358  bytes 57041291 (54.3 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 13598  bytes 794371 (775.7 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+Errors
+
+Executing df -hT
+Command execution failed
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+
+Errors
+
+[root@python test]# vi ssh.py
+[root@python test]#
+[root@python test]# python ssh.py
+/usr/lib/python2.7/site-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+  from cryptography.hazmat.backends import default_backend
+connecting
+connected
+Executing /sbin/ifconfig eth0
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.27.116  netmask 255.255.240.0  broadcast 172.31.31.255
+        inet6 fe80::8e6:35ff:fe98:4409  prefixlen 64  scopeid 0x20<link>
+        ether 0a:e6:35:98:44:09  txqueuelen 1000  (Ethernet)
+        RX packets 39435  bytes 57049994 (54.4 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 13679  bytes 804872 (786.0 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+Executing df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+
+[root@python test]# cat ssh.py
+#!/usr/bin/python
+import paramiko
+k = paramiko.RSAKey.from_private_key_file("/tmp/ssh/class_devops.pem")
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+print "connecting"
+ssh.connect( hostname = "server1", username = "ec2-user", pkey = k )
+print "connected"
+commands = [ "/sbin/ifconfig eth0","df -hT"]
+for command in commands:
+    print "Executing {}".format( command )
+    stdin , stdout, stderr = ssh.exec_command(command)
+    print stdout.read()
+ssh.close()
+
+[root@python test]# ssh ec2-user@54.83.71.151
+The authenticity of host '54.83.71.151 (54.83.71.151)' can't be established.
+ECDSA key fingerprint is SHA256:vbhDaSkriRo7fUBQ94BpqI/gJFPhsosxGJc0U0SikUY.
+ECDSA key fingerprint is MD5:73:1b:07:4c:fb:15:0e:1a:da:f8:58:f3:22:10:44:02.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '54.83.71.151' (ECDSA) to the list of known hosts.
+ec2-user@54.83.71.151's password:
+Last login: Sat Apr 24 05:52:43 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+1 package(s) needed for security, out of 15 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-31-46 ~]$ logout
+Connection to 54.83.71.151 closed.
+[root@python test]# vi ssh.py
+[root@python test]# cat ssh.py
+#!/usr/bin/python
+import paramiko
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+print "connecting"
+ssh.connect( hostname = "server2", username = "ec2-user", password = "redhat" )
+print "connected"
+commands = [ "/sbin/ifconfig eth0","df -hT"]
+for command in commands:
+    print "Executing {}".format( command )
+    stdin , stdout, stderr = ssh.exec_command(command)
+    print stdout.read()
+ssh.close()
+
+[root@python test]# python ssh.py
+/usr/lib/python2.7/site-packages/paramiko/transport.py:33: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
+  from cryptography.hazmat.backends import default_backend
+connecting
+connected
+Executing /sbin/ifconfig eth0
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.31.46  netmask 255.255.240.0  broadcast 172.31.31.255
+        inet6 fe80::807:2aff:fe73:a557  prefixlen 64  scopeid 0x20<link>
+        ether 0a:07:2a:73:a5:57  txqueuelen 1000  (Ethernet)
+        RX packets 39677  bytes 57069592 (54.4 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 14868  bytes 876804 (856.2 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+Executing df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  432K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+
+[root@python test]#
+[root@python test]# cat  ssh.py
+#!/usr/bin/python
+import paramiko
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+print "connecting"
+ssh.connect( hostname = "server2", username = "ec2-user", password = "redhat" )
+print "connected"
+commands = [ "/sbin/ifconfig eth0","df -hT"]
+for command in commands:
+    print "Executing {}".format( command )
+    stdin , stdout, stderr = ssh.exec_command(command)
+    print stdout.read()
+ssh.close()
+
+[root@python test]#

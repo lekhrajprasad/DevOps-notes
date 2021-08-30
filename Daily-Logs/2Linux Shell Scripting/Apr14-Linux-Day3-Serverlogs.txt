@@ -1,0 +1,942 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Wed Apr 14 01:40:52 2021 from 2.50.226.167
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@linuxserver ~]$ do su -
+-bash: syntax error near unexpected token `do'
+[ec2-user@linuxserver ~]$
+[ec2-user@linuxserver ~]$ sudo su -
+Last login: Wed Apr 14 01:40:56 UTC 2021 on pts/0
+
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# ps -ef|grep -i mycode
+root      3326  3280 21 01:50 pts/0    00:00:10 bash mycode.sh
+root      3413  3391  0 01:51 pts/1    00:00:00 grep --color=auto -i mycode
+[root@linuxserver ~]# kill -9 3326
+[root@linuxserver ~]# ps -ef|grep -i mycode
+root      3416  3391  0 01:52 pts/1    00:00:00 grep --color=auto -i mycode
+[root@linuxserver ~]# free -g
+              total        used        free      shared  buff/cache   available
+Mem:              0           0           0           0           0           0
+Swap:             0           0           0
+[root@linuxserver ~]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:            983          86         708           0         188         762
+Swap:             0           0           0
+[root@linuxserver ~]# free -k
+              total        used        free      shared  buff/cache   available
+Mem:        1006896       88680      725588         432      192628      780864
+Swap:             0           0           0
+[root@linuxserver ~]# cat /proc/cpuinfo
+processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 6
+model           : 63
+model name      : Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz
+stepping        : 2
+microcode       : 0x44
+cpu MHz         : 2400.092
+cache size      : 30720 KB
+physical id     : 0
+siblings        : 1
+core id         : 0
+cpu cores       : 1
+apicid          : 0
+initial apicid  : 0
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 13
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology cpuid pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm cpuid_fault invpcid_single pti fsgsbase bmi1 avx2 smep bmi2 erms invpcid xsaveopt
+bugs            : cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs itlb_multihit
+bogomips        : 4800.16
+clflush size    : 64
+cache_alignment : 64
+address sizes   : 46 bits physical, 48 bits virtual
+power management:
+
+[root@linuxserver ~]# cat /proc/meminfo
+MemTotal:        1006896 kB
+MemFree:          725044 kB
+MemAvailable:     780336 kB
+Buffers:            2088 kB
+Cached:           171992 kB
+SwapCached:            0 kB
+Active:           136868 kB
+Inactive:          86080 kB
+Active(anon):      49008 kB
+Inactive(anon):      280 kB
+Active(file):      87860 kB
+Inactive(file):    85800 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:               208 kB
+Writeback:             0 kB
+AnonPages:         48888 kB
+Mapped:            50320 kB
+Shmem:               432 kB
+Slab:              32224 kB
+SReclaimable:      18564 kB
+SUnreclaim:        13660 kB
+KernelStack:        2076 kB
+PageTables:         5720 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      503448 kB
+Committed_AS:     373124 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       51200 kB
+DirectMap2M:      997376 kB
+[root@linuxserver ~]# cat mycode.sh
+#!/bin/bash
+while true
+do
+echo "Hi"
+done
+[root@linuxserver ~]# man kill
+[root@linuxserver ~]#
+[root@linuxserver ~]# yum install httpd -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package httpd.x86_64 0:2.4.46-1.amzn2 will be installed
+--> Processing Dependency: httpd-tools = 2.4.46-1.amzn2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: httpd-filesystem = 2.4.46-1.amzn2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: system-logos-httpd for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: mod_http2 for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: httpd-filesystem for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: /etc/mime.types for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.46-1.amzn2.x86_64
+--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.46-1.amzn2.x86_64
+--> Running transaction check
+---> Package apr.x86_64 0:1.6.3-5.amzn2.0.2 will be installed
+---> Package apr-util.x86_64 0:1.6.1-5.amzn2.0.2 will be installed
+--> Processing Dependency: apr-util-bdb(x86-64) = 1.6.1-5.amzn2.0.2 for package: apr-util-1.6.1-5.amzn2.0.2.x86_64
+---> Package generic-logos-httpd.noarch 0:18.0.0-4.amzn2 will be installed
+---> Package httpd-filesystem.noarch 0:2.4.46-1.amzn2 will be installed
+---> Package httpd-tools.x86_64 0:2.4.46-1.amzn2 will be installed
+---> Package mailcap.noarch 0:2.1.41-2.amzn2 will be installed
+---> Package mod_http2.x86_64 0:1.15.14-2.amzn2 will be installed
+--> Running transaction check
+---> Package apr-util-bdb.x86_64 0:1.6.1-5.amzn2.0.2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                           Arch                 Version                            Repository                Size
+==========================================================================================================================
+Installing:
+ httpd                             x86_64               2.4.46-1.amzn2                     amzn2-core               1.3 M
+Installing for dependencies:
+ apr                               x86_64               1.6.3-5.amzn2.0.2                  amzn2-core               118 k
+ apr-util                          x86_64               1.6.1-5.amzn2.0.2                  amzn2-core                99 k
+ apr-util-bdb                      x86_64               1.6.1-5.amzn2.0.2                  amzn2-core                19 k
+ generic-logos-httpd               noarch               18.0.0-4.amzn2                     amzn2-core                19 k
+ httpd-filesystem                  noarch               2.4.46-1.amzn2                     amzn2-core                23 k
+ httpd-tools                       x86_64               2.4.46-1.amzn2                     amzn2-core                87 k
+ mailcap                           noarch               2.1.41-2.amzn2                     amzn2-core                31 k
+ mod_http2                         x86_64               1.15.14-2.amzn2                    amzn2-core               147 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+8 Dependent packages)
+
+Total download size: 1.8 M
+Installed size: 5.1 M
+Downloading packages:
+(1/9): apr-util-1.6.1-5.amzn2.0.2.x86_64.rpm                                                       |  99 kB  00:00:00
+(2/9): apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64.rpm                                                   |  19 kB  00:00:00
+(3/9): generic-logos-httpd-18.0.0-4.amzn2.noarch.rpm                                               |  19 kB  00:00:00
+(4/9): httpd-2.4.46-1.amzn2.x86_64.rpm                                                             | 1.3 MB  00:00:00
+(5/9): httpd-filesystem-2.4.46-1.amzn2.noarch.rpm                                                  |  23 kB  00:00:00
+(6/9): httpd-tools-2.4.46-1.amzn2.x86_64.rpm                                                       |  87 kB  00:00:00
+(7/9): mailcap-2.1.41-2.amzn2.noarch.rpm                                                           |  31 kB  00:00:00
+(8/9): mod_http2-1.15.14-2.amzn2.x86_64.rpm                                                        | 147 kB  00:00:00
+(9/9): apr-1.6.3-5.amzn2.0.2.x86_64.rpm                                                            | 118 kB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                     5.6 MB/s | 1.8 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : apr-1.6.3-5.amzn2.0.2.x86_64                                                                           1/9
+  Installing : apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64                                                                  2/9
+  Installing : apr-util-1.6.1-5.amzn2.0.2.x86_64                                                                      3/9
+  Installing : httpd-tools-2.4.46-1.amzn2.x86_64                                                                      4/9
+  Installing : generic-logos-httpd-18.0.0-4.amzn2.noarch                                                              5/9
+  Installing : mailcap-2.1.41-2.amzn2.noarch                                                                          6/9
+  Installing : httpd-filesystem-2.4.46-1.amzn2.noarch                                                                 7/9
+  Installing : mod_http2-1.15.14-2.amzn2.x86_64                                                                       8/9
+  Installing : httpd-2.4.46-1.amzn2.x86_64                                                                            9/9
+  Verifying  : apr-util-1.6.1-5.amzn2.0.2.x86_64                                                                      1/9
+  Verifying  : httpd-filesystem-2.4.46-1.amzn2.noarch                                                                 2/9
+  Verifying  : apr-util-bdb-1.6.1-5.amzn2.0.2.x86_64                                                                  3/9
+  Verifying  : httpd-tools-2.4.46-1.amzn2.x86_64                                                                      4/9
+  Verifying  : mod_http2-1.15.14-2.amzn2.x86_64                                                                       5/9
+  Verifying  : apr-1.6.3-5.amzn2.0.2.x86_64                                                                           6/9
+  Verifying  : mailcap-2.1.41-2.amzn2.noarch                                                                          7/9
+  Verifying  : generic-logos-httpd-18.0.0-4.amzn2.noarch                                                              8/9
+  Verifying  : httpd-2.4.46-1.amzn2.x86_64                                                                            9/9
+
+Installed:
+  httpd.x86_64 0:2.4.46-1.amzn2
+
+Dependency Installed:
+  apr.x86_64 0:1.6.3-5.amzn2.0.2                             apr-util.x86_64 0:1.6.1-5.amzn2.0.2
+  apr-util-bdb.x86_64 0:1.6.1-5.amzn2.0.2                    generic-logos-httpd.noarch 0:18.0.0-4.amzn2
+  httpd-filesystem.noarch 0:2.4.46-1.amzn2                   httpd-tools.x86_64 0:2.4.46-1.amzn2
+  mailcap.noarch 0:2.1.41-2.amzn2                            mod_http2.x86_64 0:1.15.14-2.amzn2
+
+Complete!
+[root@linuxserver ~]#
+[root@linuxserver ~]# systemctl restart httpd
+[root@linuxserver ~]#
+[root@linuxserver ~]# netstat -nap|grep :80
+tcp6       0      0 :::80                   :::*                    LISTEN      3576/httpd
+[root@linuxserver ~]# ps -ef|grep -i 3576
+root      3576     1  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3577  3576  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3578  3576  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3579  3576  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3580  3576  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+apache    3581  3576  0 02:02 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND
+root      3676  3391  0 02:06 pts/1    00:00:00 grep --color=auto -i 3576
+[root@linuxserver ~]# curl http://localhost
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+        <head>
+                <title>Test Page for the Apache HTTP Server</title>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <style type="text/css">
+                        /*<![CDATA[*/
+                        body {
+                                background-color: #fff;
+                                color: #000;
+                                font-size: 0.9em;
+                                font-family: sans-serif,helvetica;
+                                margin: 0;
+                                padding: 0;
+                        }
+                        :link {
+                                color: #c00;
+                        }
+                        :visited {
+                                color: #c00;
+                        }
+                        a:hover {
+                                color: #f50;
+                        }
+                        h1 {
+                                text-align: center;
+                                margin: 0;
+                                padding: 0.6em 2em 0.4em;
+                                background-color: #900;
+                                color: #fff;
+                                font-weight: normal;
+                                font-size: 1.75em;
+                                border-bottom: 2px solid #000;
+                        }
+                        h1 strong {
+                                font-weight: bold;
+                        }
+                        h2 {
+                                font-size: 1.1em;
+                                font-weight: bold;
+                        }
+                        hr {
+                                display: none;
+                        }
+                        .content {
+                                padding: 1em 5em;
+                        }
+                        .content-columns {
+                                /* Setting relative positioning allows for
+                                absolute positioning for sub-classes */
+                                position: relative;
+                                padding-top: 1em;
+                        }
+                        .content-column-left {
+                                /* Value for IE/Win; will be overwritten for other browsers */
+                                width: 47%;
+                                padding-right: 3%;
+                                float: left;
+                                padding-bottom: 2em;
+                        }
+                        .content-column-left hr {
+                                display: none;
+                        }
+                        .content-column-right {
+                                /* Values for IE/Win; will be overwritten for other browsers */
+                                width: 47%;
+                                padding-left: 3%;
+                                float: left;
+                                padding-bottom: 2em;
+                        }
+                        .content-columns>.content-column-left, .content-columns>.content-column-right {
+                                /* Non-IE/Win */
+                        }
+                        img {
+                                border: 2px solid #fff;
+                                padding: 2px;
+                                margin: 2px;
+                        }
+                        a:hover img {
+                                border: 2px solid #f50;
+                        }
+                        /*]]>*/
+                </style>
+        </head>
+
+        <body>
+                <h1>Test Page</h1>
+
+                <div class="content">
+                        <div class="content-middle">
+                                <p>This page is used to test the proper operation of the Apache HTTP server after it has been installed. If you can read this page, it means that the Apache HTTP server installed at this site is working properly.</p>
+                        </div>
+                        <hr />
+
+                        <div class="content-columns">
+                                <div class="content-column-left">
+                                        <h2>If you are a member of the general public:</h2>
+
+                                        <p>The fact that you are seeing this page indicates that the website you just visited is either experiencing problems, or is undergoing routine maintenance.</p>
+
+                                        <p>If you would like to let the administrators of this website know that you've seen this page instead of the page you expected, you should send them e-mail. In general, mail sent to the name "webmaster" and directed to the website's domain should reach the appropriate person.</p>
+
+                                        <p>For example, if you experienced problems while visiting www.example.com, you should send e-mail to "webmaster@example.com".</p>
+
+                                        <hr />
+                                </div>
+
+                                <div class="content-column-right">
+                                        <h2>If you are the website administrator:</h2>
+
+                                        <p>You may now add content to the directory <tt>/var/www/html/</tt>. Note that until you do so, people visiting your website will see this page, and not your content. To prevent this page from ever being used, follow the instructions in the file <tt>/etc/httpd/conf.d/welcome.conf</tt>.</p>
+
+                                        <p>You are free to use the image below on web sites powered by the Apache HTTP Server:</p>
+
+                                        <p align="center"><a href="http://httpd.apache.org/"><img src="/icons/apache_pb2.gif" alt="[ Powered by Apache ]"/></a></p>
+
+                                </div>
+                        </div>
+                </div>
+        </body>
+</html>
+[root@linuxserver ~]# ls /etc/
+acpi               DIR_COLORS.256color      httpd           motd               rc1.d             ssl
+adjtime            DIR_COLORS.lightbgcolor  idmapd.conf     mtab               rc2.d             statetab
+aliases            dracut.conf              image-id        my.cnf             rc3.d             statetab.d
+aliases.db         dracut.conf.d            init.d          my.cnf.d           rc4.d             subgid
+alternatives       e2fsck.conf              inittab         nanorc             rc5.d             subuid
+amazon             environment              inputrc         netconfig          rc6.d             sudo.conf
+anacrontab         ethertypes               iproute2        NetworkManager     rc.d              sudoers
+at.deny            exports                  issue           networks           rc.local          sudoers.d
+audisp             exports.d                issue.net       nfs.conf           request-key.conf  sudo-ldap.conf
+audit              filesystems              krb5.conf       nfsmount.conf      request-key.d     sysconfig
+bash_completion.d  fstab                    krb5.conf.d     nsswitch.conf      resolv.conf       sysctl.conf
+bashrc             gcrypt                   ld.so.cache     nsswitch.conf.bak  rpc               sysctl.d
+binfmt.d           GeoIP.conf               ld.so.conf      openldap           rpm               systemd
+chkconfig.d        GeoIP.conf.default       ld.so.conf.d    opt                rsyncd.conf       system-release
+chrony.conf        gnupg                    libaudit.conf   os-release         rsyslog.conf      system-release-cpe
+chrony.keys        GREP_COLORS              libnl           pam.d              rsyslog.d         terminfo
+cifs-utils         groff                    libuser.conf    passwd             rwtab             tmpfiles.d
+cloud              group                    locale.conf     passwd-            rwtab.d           trusted-key.key
+cron.d             group-                   localtime       pkcs11             sasl2             udev
+cron.daily         grub2.cfg                login.defs      pki                scl               updatedb.conf
+cron.deny          grub.d                   logrotate.conf  plymouth           screenrc          update-motd.d
+cron.hourly        gshadow                  logrotate.d     pm                 securetty         vimrc
+cron.monthly       gshadow-                 lsm             popt.d             security          virc
+crontab            gss                      lvm             postfix            selinux           wgetrc
+cron.weekly        gssproxy                 machine-id      ppp                services          X11
+csh.cshrc          hibagent-config.cfg      magic           prelink.conf.d     sestatus.conf     xdg
+csh.login          hibinit-config.cfg       mailcap         printcap           setuptool.d       xinetd.d
+dbus-1             host.conf                man_db.conf     profile            shadow            yum
+default            hostname                 mime.types      profile.d          shadow-           yum.conf
+depmod.d           hosts                    mke2fs.conf     protocols          shells            yum.repos.d
+dhcp               hosts.allow              modprobe.d      python             skel
+DIR_COLORS         hosts.deny               modules-load.d  rc0.d              ssh
+[root@linuxserver ~]# vmstat 2 3
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 1  0      0 670156   2088 229540    0    0   107    15   49 4928  2  1 96  0  0
+ 0  0      0 669784   2088 229540    0    0     0     0   49  139  0  1 100  0  0
+ 0  0      0 669784   2088 229540    0    0     0    23   35  110  0  0 100  0  0
+[root@linuxserver ~]# iostat 2 3
+Linux 4.14.225-169.362.amzn2.x86_64 (linuxserver)       04/14/2021      _x86_64_        (1 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           2.27    0.00    1.37    0.14    0.43   95.79
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              4.96       106.84        15.00     214649      30134
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.00    0.00    0.00    0.50    0.00   99.50
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              0.50         4.00         0.00          8          0
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.00    0.00    0.00    0.00    0.00  100.00
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              0.00         0.00         0.00          0          0
+
+[root@linuxserver ~]# vmstat 20 3
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 669940   2088 229612    0    0   102    14   47 4681  2  1 96  0  0
+ 0  0      0 669476   2088 229612    0    0     0    10   42  121  0  0 100  0  0
+ 0  0      0 669476   2088 229612    0    0     0     0   34  106  0  0 100  0  0
+[root@linuxserver ~]# ls -l /proc/
+total 0
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 10
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 11
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 12
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 14
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 15
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1542
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1558
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1559
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1562
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1563
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1592
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1593
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1596
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1597
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1598
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1599
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1600
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1601
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1602
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1603
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1604
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1667
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 174
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 175
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 176
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 178
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 179
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 180
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 1804
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 181
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 182
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 184
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2291
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2292
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2444
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2445
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2449
+dr-xr-xr-x  9 libstoragemgmt libstoragemgmt               0 Apr 14 01:37 2480
+dr-xr-xr-x  9 dbus           dbus                         0 Apr 14 01:37 2485
+dr-xr-xr-x  9 rpc            rpc                          0 Apr 14 01:37 2490
+dr-xr-xr-x  9 chrony         chrony                       0 Apr 14 01:37 2496
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2497
+dr-xr-xr-x  9 rngd           rngd                         0 Apr 14 01:37 2500
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2513
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2709
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2840
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 2983
+dr-xr-xr-x  9 postfix        postfix                      0 Apr 14 01:37 2984
+dr-xr-xr-x  9 postfix        postfix                      0 Apr 14 01:37 2985
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3023
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3024
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3041
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3044
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3107
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3108
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3148
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3177
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 3190
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:40 3218
+dr-xr-xr-x  9 ec2-user       ec2-user                     0 Apr 14 01:41 3252
+dr-xr-xr-x  9 ec2-user       ec2-user                     0 Apr 14 01:40 3253
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:40 3278
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:40 3279
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:41 3280
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:51 3329
+dr-xr-xr-x  9 ec2-user       ec2-user                     0 Apr 14 01:51 3363
+dr-xr-xr-x  9 ec2-user       ec2-user                     0 Apr 14 01:51 3364
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:51 3389
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:51 3390
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:51 3391
+dr-xr-xr-x  9 root           root                         0 Apr 14 02:03 3520
+dr-xr-xr-x  9 root           root                         0 Apr 14 02:02 3576
+dr-xr-xr-x  9 apache         apache                       0 Apr 14 02:03 3577
+dr-xr-xr-x  9 apache         apache                       0 Apr 14 02:03 3578
+dr-xr-xr-x  9 apache         apache                       0 Apr 14 02:03 3579
+dr-xr-xr-x  9 apache         apache                       0 Apr 14 02:03 3580
+dr-xr-xr-x  9 apache         apache                       0 Apr 14 02:03 3581
+dr-xr-xr-x  9 root           root                         0 Apr 14 02:05 3625
+dr-xr-xr-x  9 root           root                         0 Apr 14 02:10 3684
+dr-xr-xr-x  9 root           root                         0 Apr 14 02:15 3707
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 4
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 5
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 535
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 538
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 543
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 6
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 684
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 690
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 7
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 8
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 822
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 833
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 834
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 876
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 9
+dr-xr-xr-x  9 root           root                         0 Apr 14 01:37 903
+dr-xr-xr-x  2 root           root                         0 Apr 14 02:15 acpi
+-r--r--r--  1 root           root                         0 Apr 14 02:15 buddyinfo
+dr-xr-xr-x  4 root           root                         0 Apr 14 02:15 bus
+-r--r--r--  1 root           root                         0 Apr 14 02:15 cgroups
+-r--r--r--  1 root           root                         0 Apr 14 02:15 cmdline
+-r--r--r--  1 root           root                         0 Apr 14 02:15 consoles
+-r--r--r--  1 root           root                         0 Apr 14 02:15 cpuinfo
+-r--r--r--  1 root           root                         0 Apr 14 02:15 crypto
+-r--r--r--  1 root           root                         0 Apr 14 02:15 devices
+-r--r--r--  1 root           root                         0 Apr 14 02:15 diskstats
+-r--r--r--  1 root           root                         0 Apr 14 02:15 dma
+dr-xr-xr-x  2 root           root                         0 Apr 14 02:15 driver
+-r--r--r--  1 root           root                         0 Apr 14 02:15 execdomains
+-r--r--r--  1 root           root                         0 Apr 14 02:15 filesystems
+dr-xr-xr-x  4 root           root                         0 Apr 14 02:15 fs
+-r--r--r--  1 root           root                         0 Apr 14 02:15 interrupts
+-r--r--r--  1 root           root                         0 Apr 14 02:15 iomem
+-r--r--r--  1 root           root                         0 Apr 14 02:15 ioports
+dr-xr-xr-x 27 root           root                         0 Apr 14 02:15 irq
+-r--r--r--  1 root           root                         0 Apr 14 02:15 kallsyms
+-r--------  1 root           root           140737477885952 Apr 14 02:15 kcore
+-r--r--r--  1 root           root                         0 Apr 14 02:15 keys
+-r--r--r--  1 root           root                         0 Apr 14 02:15 key-users
+-r--------  1 root           root                         0 Apr 14 02:15 kmsg
+-r--------  1 root           root                         0 Apr 14 02:15 kpagecgroup
+-r--------  1 root           root                         0 Apr 14 02:15 kpagecount
+-r--------  1 root           root                         0 Apr 14 02:15 kpageflags
+-rw-r--r--  1 root           root                         0 Apr 14 02:15 latency_stats
+-r--r--r--  1 root           root                         0 Apr 14 02:15 loadavg
+-r--r--r--  1 root           root                         0 Apr 14 02:15 locks
+-r--r--r--  1 root           root                         0 Apr 14 02:15 mdstat
+-r--r--r--  1 root           root                         0 Apr 14 02:15 meminfo
+-r--r--r--  1 root           root                         0 Apr 14 02:15 misc
+-r--r--r--  1 root           root                         0 Apr 14 02:15 modules
+lrwxrwxrwx  1 root           root                        11 Apr 14 02:15 mounts -> self/mounts
+-rw-r--r--  1 root           root                         0 Apr 14 02:15 mtrr
+lrwxrwxrwx  1 root           root                         8 Apr 14 02:15 net -> self/net
+-r--------  1 root           root                         0 Apr 14 02:15 pagetypeinfo
+-r--r--r--  1 root           root                         0 Apr 14 02:15 partitions
+-r--r--r--  1 root           root                         0 Apr 14 02:15 sched_debug
+-r--r--r--  1 root           root                         0 Apr 14 02:15 schedstat
+dr-xr-xr-x  2 root           root                         0 Apr 14 02:15 scsi
+lrwxrwxrwx  1 root           root                         0 Apr 14 01:37 self -> 3707
+-r--------  1 root           root                         0 Apr 14 02:15 slabinfo
+-r--r--r--  1 root           root                         0 Apr 14 02:15 softirqs
+-r--r--r--  1 root           root                         0 Apr 14 02:15 stat
+-r--r--r--  1 root           root                         0 Apr 14 01:37 swaps
+dr-xr-xr-x  1 root           root                         0 Apr 14 01:37 sys
+--w-------  1 root           root                         0 Apr 14 02:15 sysrq-trigger
+dr-xr-xr-x  2 root           root                         0 Apr 14 02:15 sysvipc
+lrwxrwxrwx  1 root           root                         0 Apr 14 01:37 thread-self -> 3707/task/3707
+-r--------  1 root           root                         0 Apr 14 02:15 timer_list
+dr-xr-xr-x  4 root           root                         0 Apr 14 02:15 tty
+-r--r--r--  1 root           root                         0 Apr 14 02:15 uptime
+-r--r--r--  1 root           root                         0 Apr 14 02:15 version
+-r--------  1 root           root                         0 Apr 14 02:15 vmallocinfo
+-r--r--r--  1 root           root                         0 Apr 14 02:15 vmstat
+dr-xr-xr-x  2 root           root                         0 Apr 14 02:15 xen
+-r--r--r--  1 root           root                         0 Apr 14 02:15 zoneinfo
+[root@linuxserver ~]# ps -ef|wc -l
+101
+[root@linuxserver ~]# ls -l /proc/|wc -l
+160
+[root@linuxserver ~]# ls /etc/
+acpi               DIR_COLORS.256color      httpd           motd               rc1.d             ssl
+adjtime            DIR_COLORS.lightbgcolor  idmapd.conf     mtab               rc2.d             statetab
+aliases            dracut.conf              image-id        my.cnf             rc3.d             statetab.d
+aliases.db         dracut.conf.d            init.d          my.cnf.d           rc4.d             subgid
+alternatives       e2fsck.conf              inittab         nanorc             rc5.d             subuid
+amazon             environment              inputrc         netconfig          rc6.d             sudo.conf
+anacrontab         ethertypes               iproute2        NetworkManager     rc.d              sudoers
+at.deny            exports                  issue           networks           rc.local          sudoers.d
+audisp             exports.d                issue.net       nfs.conf           request-key.conf  sudo-ldap.conf
+audit              filesystems              krb5.conf       nfsmount.conf      request-key.d     sysconfig
+bash_completion.d  fstab                    krb5.conf.d     nsswitch.conf      resolv.conf       sysctl.conf
+bashrc             gcrypt                   ld.so.cache     nsswitch.conf.bak  rpc               sysctl.d
+binfmt.d           GeoIP.conf               ld.so.conf      openldap           rpm               systemd
+chkconfig.d        GeoIP.conf.default       ld.so.conf.d    opt                rsyncd.conf       system-release
+chrony.conf        gnupg                    libaudit.conf   os-release         rsyslog.conf      system-release-cpe
+chrony.keys        GREP_COLORS              libnl           pam.d              rsyslog.d         terminfo
+cifs-utils         groff                    libuser.conf    passwd             rwtab             tmpfiles.d
+cloud              group                    locale.conf     passwd-            rwtab.d           trusted-key.key
+cron.d             group-                   localtime       pkcs11             sasl2             udev
+cron.daily         grub2.cfg                login.defs      pki                scl               updatedb.conf
+cron.deny          grub.d                   logrotate.conf  plymouth           screenrc          update-motd.d
+cron.hourly        gshadow                  logrotate.d     pm                 securetty         vimrc
+cron.monthly       gshadow-                 lsm             popt.d             security          virc
+crontab            gss                      lvm             postfix            selinux           wgetrc
+cron.weekly        gssproxy                 machine-id      ppp                services          X11
+csh.cshrc          hibagent-config.cfg      magic           prelink.conf.d     sestatus.conf     xdg
+csh.login          hibinit-config.cfg       mailcap         printcap           setuptool.d       xinetd.d
+dbus-1             host.conf                man_db.conf     profile            shadow            yum
+default            hostname                 mime.types      profile.d          shadow-           yum.conf
+depmod.d           hosts                    mke2fs.conf     protocols          shells            yum.repos.d
+dhcp               hosts.allow              modprobe.d      python             skel
+DIR_COLORS         hosts.deny               modules-load.d  rc0.d              ssh
+[root@linuxserver ~]# iostat 2 3
+Linux 4.14.225-169.362.amzn2.x86_64 (linuxserver)       04/14/2021      _x86_64_        (1 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           1.68    0.00    1.02    0.11    0.32   96.87
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              3.80        79.14        11.81     214697      32026
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.00    0.00    0.00    0.00    0.00  100.00
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              0.50         0.00         4.00          0          8
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.00    0.00    0.00    0.00    0.00  100.00
+
+Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn
+xvda              0.00         0.00         0.00          0          0
+
+[root@linuxserver ~]# lsblk
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+xvda    202:0    0   8G  0 disk
+└─xvda1 202:1    0   8G  0 part /
+[root@linuxserver ~]# vmstat 2 3
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0      0 668208   2088 229752    0    0    76    11   43 3540  2  1 97  0  0
+ 0  0      0 668200   2088 229752    0    0     0     0   30   95  0  0 100  0  0
+ 0  0      0 668200   2088 229752    0    0     0     0   30   98  0  0 100  0  0
+[root@linuxserver ~]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:            983         104         652           0         226         745
+Swap:             0           0           0
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# id -a ramesh
+id: ramesh: no such user
+[root@linuxserver ~]# useradd -u 1002 -c "test user" -d /home/ramesh -s /bin/bash ramesh
+useradd: UID 1002 is not unique
+[root@linuxserver ~]# useradd -u 9002 -c "test user" -d /home/ramesh -s /bin/bash ramesh
+[root@linuxserver ~]# id -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh)
+[root@linuxserver ~]# id  -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh)
+[root@linuxserver ~]# groupadd sysadmin
+[root@linuxserver ~]# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin
+chrony:x:996:994::/var/lib/chrony:/sbin/nologin
+tcpdump:x:72:72::/:/sbin/nologin
+ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash
+linux:x:1001:1001::/home/linux:/bin/bash
+murali:x:1002:1003::/home/murali:/bin/bash
+apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin
+ramesh:x:9002:9002:test user:/home/ramesh:/bin/bash
+[root@linuxserver ~]# cat /etc/groups
+cat: /etc/groups: No such file or directory
+[root@linuxserver ~]# cat /etc/group
+root:x:0:
+bin:x:1:
+daemon:x:2:
+sys:x:3:
+adm:x:4:ec2-user
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mem:x:8:
+kmem:x:9:
+wheel:x:10:ec2-user
+cdrom:x:11:
+mail:x:12:postfix
+man:x:15:
+dialout:x:18:
+floppy:x:19:
+games:x:20:
+tape:x:33:
+video:x:39:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+nobody:x:99:
+users:x:100:
+utmp:x:22:
+utempter:x:35:
+input:x:999:
+systemd-journal:x:190:ec2-user
+systemd-network:x:192:
+dbus:x:81:
+ssh_keys:x:998:
+rpc:x:32:
+libstoragemgmt:x:997:
+sshd:x:74:
+rpcuser:x:29:
+nfsnobody:x:65534:
+ec2-instance-connect:x:996:
+slocate:x:21:
+postdrop:x:90:
+postfix:x:89:
+rngd:x:995:
+chrony:x:994:
+screen:x:84:
+stapusr:x:156:
+stapsys:x:157:
+stapdev:x:158:
+tcpdump:x:72:
+ec2-user:x:1000:
+linux:x:1001:
+dvsbatch1:x:1002:
+murali:x:1003:
+apache:x:48:
+ramesh:x:9002:
+sysadmin:x:9003:
+[root@linuxserver ~]# #cat /etc/group
+[root@linuxserver ~]# #cat /etc/passwd
+[root@linuxserver ~]# cat /etc/passwd|grep -i ramesh
+ramesh:x:9002:9002:test user:/home/ramesh:/bin/bash
+[root@linuxserver ~]# #useradd -u 9002 -c "test user" -d /home/ramesh -s /bin/bash ramesh
+[root@linuxserver ~]# usermod -c "dvsbatch1 test user" ramesh
+[root@linuxserver ~]# cat /etc/passwd|grep -i ramesh
+ramesh:x:9002:9002:dvsbatch1 test user:/home/ramesh:/bin/bash
+[root@linuxserver ~]# id -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh)
+[root@linuxserver ~]# gpasswd -a ramesh sysadmin
+Adding user ramesh to group sysadmin
+[root@linuxserver ~]# id -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh),9003(sysadmin)
+[root@linuxserver ~]# gpasswd -d ramesh sysadmin
+Removing user ramesh from group sysadmin
+[root@linuxserver ~]# id -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh)
+[root@linuxserver ~]# ls -l /etc/group*
+-rw-r--r-- 1 root root 758 Apr 14 02:49 /etc/group
+-rw-r--r-- 1 root root 764 Apr 14 02:48 /etc/group-
+[root@linuxserver ~]# more /etc/group-
+root:x:0:
+bin:x:1:
+daemon:x:2:
+sys:x:3:
+adm:x:4:ec2-user
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mem:x:8:
+kmem:x:9:
+wheel:x:10:ec2-user
+cdrom:x:11:
+mail:x:12:postfix
+man:x:15:
+dialout:x:18:
+floppy:x:19:
+games:x:20:
+tape:x:33:
+video:x:39:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+nobody:x:99:
+users:x:100:
+utmp:x:22:
+utempter:x:35:
+input:x:999:
+systemd-journal:x:190:ec2-user
+systemd-network:x:192:
+dbus:x:81:
+ssh_keys:x:998:
+rpc:x:32:
+libstoragemgmt:x:997:
+sshd:x:74:
+rpcuser:x:29:
+nfsnobody:x:65534:
+ec2-instance-connect:x:996:
+slocate:x:21:
+postdrop:x:90:
+postfix:x:89:
+rngd:x:995:
+chrony:x:994:
+screen:x:84:
+stapusr:x:156:
+stapsys:x:157:
+stapdev:x:158:
+tcpdump:x:72:
+ec2-user:x:1000:
+linux:x:1001:
+dvsbatch1:x:1002:
+murali:x:1003:
+apache:x:48:
+ramesh:x:9002:
+sysadmin:x:9003:ramesh
+[root@linuxserver ~]# ls -l /etc/group*
+-rw-r--r-- 1 root root 758 Apr 14 02:49 /etc/group
+-rw-r--r-- 1 root root 764 Apr 14 02:48 /etc/group-
+[root@linuxserver ~]# groupdel apache
+groupdel: cannot remove the primary group of user 'apache'
+[root@linuxserver ~]# groupdel sysadmin
+[root@linuxserver ~]# ls -l /etc/group*
+-rw-r--r-- 1 root root 741 Apr 14 02:51 /etc/group
+-rw-r--r-- 1 root root 758 Apr 14 02:49 /etc/group-
+[root@linuxserver ~]#
+[root@linuxserver ~]# id -a ramesh
+uid=9002(ramesh) gid=9002(ramesh) groups=9002(ramesh)
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# mkdir /home/ramesh/.ssh
+[root@linuxserver ~]# chown ramesh:ramesh /home/ramesh/.ssh
+[root@linuxserver ~]# vi /home/ramesh/.ssh/authorized_keys
+[root@linuxserver ~]# cat /home/ramesh/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAq93Qx6Q+bWDgZ8RLP6mVWwV8Tr7u2Lt/u8V6Chxj+ZM6/isxDKRonzswEwMHZEcCYzM00xt+qqiCc6RKV+8ZoZV+QIlmdM6edu10WpVr6MfydhJA/D6DA1qXHCBgmMhw8FgueuQbX2CFIIKLBzNnnCjTJIlsOgq53GAx1ZiDV9yrD8FWbkVt+ECr0Wes0bCUBxh/mtHDitjTwzF2l+F/4M0I8IDpzJbE1xxpUm8jO9kOPEN0rKBytdYpnKOb5lhEX0SdLJRfoTLVp20iaLg4xNnE2ZvQrpVzMwCrBH4lcWZdJsYQdP4pEsdS/tcQxAfDgsAqI2zaV7J6dIEPfj07mQ== rsa-key-20210414
+[root@linuxserver ~]# chown ramesh:ramesh /home/ramesh/.ssh/authorized_keys
+[root@linuxserver ~]# chmod 700 /home/ramesh/.ssh/
+[root@linuxserver ~]# chmod 600 /home/ramesh/.ssh/authorized_keys
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# useradd -u 9003 -c "pavan test user2" -d /home/pavan -s /bin/bash pavan
+[root@linuxserver ~]# mkdir /home/pavan/.ssh
+[root@linuxserver ~]# chmod 700 /home/pavan/.ssh/
+[root@linuxserver ~]# chown pavan:pavan /home/pavan/.ssh/
+[root@linuxserver ~]# vi /home/pavan/.ssh/authorized_keys
+[root@linuxserver ~]# cat /home/pavan/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAhl3lWeSKL+JhcfFT50DeYZWIH1szxsZefs9MCEIiCjIAUKnxWgCs3yZo4PAcusSKrsA4N3plc2o/ivLKqmD1oXB2xa38VOr35ipGCcSi1yJ6j5TryyzFP+us9fD84tw9hrjiv9807HTlcCatgfTFueoe3EOtIfekyWgTWrgCzJTRdm8/LCXvODuVHB1igjZekgriOeLJYHh7xDmzR0fiEcnxuV4K0Udzv/j9Nw2f30J6WEbxBmA8XaOjhvTqbMWjxQ5ndhoA0O8phn+IMzUn//x+enmOs5u4zjVGtMxqrlnTQcPHSztd4NHa/Zteoq25H7+0gDP5XoqxgEgbvl6IJw== rsa-key-20210414
+[root@linuxserver ~]# chown pavan:pavan /home/pavan/.ssh/
+[root@linuxserver ~]# chmod 600 /home/pavan/.ssh/authorized_keys
+[root@linuxserver ~]# chown pavan:pavan /home/pavan/.ssh/authorized_keys
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# grep -w PasswordAuthentication /etc/ssh/sshd_config
+#PasswordAuthentication yes
+PasswordAuthentication no
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication, then enable this but set PasswordAuthentication
+[root@linuxserver ~]# vi /etc/ssh/sshd_config
+[root@linuxserver ~]# grep -w PasswordAuthentication /etc/ssh/sshd_config
+#PasswordAuthentication yes
+PasswordAuthentication yes
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication, then enable this but set PasswordAuthentication
+[root@linuxserver ~]# vi /etc/ssh/sshd_config
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# cat /etc/ssh/sshd_config |grep -i passwordauth
+#PasswordAuthentication yes
+PasswordAuthentication no
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication, then enable this but set PasswordAuthentication
+[root@linuxserver ~]# sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+[root@linuxserver ~]# cat /etc/ssh/sshd_config |grep -i passwordauth
+#PasswordAuthentication yes
+PasswordAuthentication yes
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication, then enable this but set PasswordAuthentication
+[root@linuxserver ~]# systemctl reload sshd
+[root@linuxserver ~]# useradd -u 9003 -d /home/hema -s /bin/bash -c "hema - developer" hema
+useradd: UID 9003 is not unique
+[root@linuxserver ~]# useradd -u 9004 -d /home/hema -s /bin/bash -c "hema - developer" hema
+[root@linuxserver ~]# id -a hema
+uid=9004(hema) gid=9004(hema) groups=9004(hema)
+[root@linuxserver ~]# passwd hema
+Changing password for user hema.
+New password:
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password:
+passwd: all authentication tokens updated successfully.
+[root@linuxserver ~]# ls -l /etc/shadow
+---------- 1 root root 933 Apr 14 03:19 /etc/shadow
+[root@linuxserver ~]# cat /etc/shadow
+root:*LOCK*:14600::::::
+bin:*:18313:0:99999:7:::
+daemon:*:18313:0:99999:7:::
+adm:*:18313:0:99999:7:::
+lp:*:18313:0:99999:7:::
+sync:*:18313:0:99999:7:::
+shutdown:*:18313:0:99999:7:::
+halt:*:18313:0:99999:7:::
+mail:*:18313:0:99999:7:::
+operator:*:18313:0:99999:7:::
+games:*:18313:0:99999:7:::
+ftp:*:18313:0:99999:7:::
+nobody:*:18313:0:99999:7:::
+systemd-network:!!:18712::::::
+dbus:!!:18712::::::
+rpc:!!:18712:0:99999:7:::
+libstoragemgmt:!!:18712::::::
+sshd:!!:18712::::::
+rpcuser:!!:18712::::::
+nfsnobody:!!:18712::::::
+ec2-instance-connect:!!:18712::::::
+postfix:!!:18712::::::
+rngd:!!:18712::::::
+chrony:!!:18712::::::
+tcpdump:!!:18712::::::
+ec2-user:!!:18730:0:99999:7:::
+linux:!!:18730:0:99999:7:::
+murali:!!:18730:0:99999:7:::
+apache:!!:18731::::::
+ramesh:!!:18731:0:99999:7:::
+pavan:!!:18731:0:99999:7:::
+hema:$6$sxy46hkC$nax1Wk6WtoeTBFVrGsVqDChMoUIEGXLXv6lGwA4jcRCXKXuhqOOAnXpLSopf279VUT8GKi4pVwFXILRLHs2Xs1:18731:0:99999:7:::
+[root@linuxserver ~]# #cat /etc/shadow
+[root@linuxserver ~]#

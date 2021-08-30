@@ -1,0 +1,413 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-172-31-57-41 ~]$
+[ec2-user@ip-172-31-57-41 ~]$ sudo su -
+[root@ip-172-31-57-41 ~]# hostnamectl set-hostname controller
+[root@ip-172-31-57-41 ~]# vi /etc/hosts
+[root@ip-172-31-57-41 ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+172.31.62.207   server1
+172.31.62.255   server2
+[root@ip-172-31-57-41 ~]# logout
+[ec2-user@ip-172-31-57-41 ~]$ sudo amazon-linux-extras install epel -y
+Installing epel-release
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Cleaning repos: amzn2-core amzn2extra-docker amzn2extra-epel
+12 metadata files removed
+4 sqlite files removed
+0 metadata files removed
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+amzn2extra-docker                                                                                  | 3.0 kB  00:00:00
+amzn2extra-epel                                                                                    | 3.0 kB  00:00:00
+(1/7): amzn2-core/2/x86_64/group_gz                                                                | 2.5 kB  00:00:00
+(2/7): amzn2-core/2/x86_64/updateinfo                                                              | 367 kB  00:00:00
+(3/7): amzn2extra-epel/2/x86_64/primary_db                                                         | 1.8 kB  00:00:00
+(4/7): amzn2extra-docker/2/x86_64/updateinfo                                                       |   76 B  00:00:00
+(5/7): amzn2extra-epel/2/x86_64/updateinfo                                                         |   76 B  00:00:00
+(6/7): amzn2extra-docker/2/x86_64/primary_db                                                       |  76 kB  00:00:00
+(7/7): amzn2-core/2/x86_64/primary_db                                                              |  52 MB  00:00:01
+Resolving Dependencies
+--> Running transaction check
+---> Package epel-release.noarch 0:7-11 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                        Arch                     Version                  Repository                         Size
+==========================================================================================================================
+Installing:
+ epel-release                   noarch                   7-11                     amzn2extra-epel                    15 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 15 k
+Installed size: 24 k
+Downloading packages:
+epel-release-7-11.noarch.rpm                                                                       |  15 kB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : epel-release-7-11.noarch                                                                               1/1
+  Verifying  : epel-release-7-11.noarch                                                                               1/1
+
+Installed:
+  epel-release.noarch 0:7-11
+
+Complete!
+  0  ansible2                 available    \
+        [ =2.4.2  =2.4.6  =2.8  =stable ]
+  2  httpd_modules            available    [ =1.0  =stable ]
+  3  memcached1.5             available    \
+        [ =1.5.1  =1.5.16  =1.5.17 ]
+  5  postgresql9.6            available    \
+        [ =9.6.6  =9.6.8  =stable ]
+  6  postgresql10             available    [ =10  =stable ]
+  8  redis4.0                 available    \
+        [ =4.0.5  =4.0.10  =stable ]
+  9  R3.4                     available    [ =3.4.3  =stable ]
+ 10  rust1                    available    \
+        [ =1.22.1  =1.26.0  =1.26.1  =1.27.2  =1.31.0  =1.38.0
+          =stable ]
+ 11  vim                      available    [ =8.0  =stable ]
+ 15  php7.2                   available    \
+        [ =7.2.0  =7.2.4  =7.2.5  =7.2.8  =7.2.11  =7.2.13  =7.2.14
+          =7.2.16  =7.2.17  =7.2.19  =7.2.21  =7.2.22  =7.2.23
+          =7.2.24  =7.2.26  =stable ]
+ 17  lamp-mariadb10.2-php7.2  available    \
+        [ =10.2.10_7.2.0  =10.2.10_7.2.4  =10.2.10_7.2.5
+          =10.2.10_7.2.8  =10.2.10_7.2.11  =10.2.10_7.2.13
+          =10.2.10_7.2.14  =10.2.10_7.2.16  =10.2.10_7.2.17
+          =10.2.10_7.2.19  =10.2.10_7.2.22  =10.2.10_7.2.23
+          =10.2.10_7.2.24  =stable ]
+ 18  libreoffice              available    \
+        [ =5.0.6.2_15  =5.3.6.1  =stable ]
+ 19  gimp                     available    [ =2.8.22 ]
+ 20  docker=latest            enabled      \
+        [ =17.12.1  =18.03.1  =18.06.1  =18.09.9  =stable ]
+ 21  mate-desktop1.x          available    \
+        [ =1.19.0  =1.20.0  =stable ]
+ 22  GraphicsMagick1.3        available    \
+        [ =1.3.29  =1.3.32  =1.3.34  =stable ]
+ 23  tomcat8.5                available    \
+        [ =8.5.31  =8.5.32  =8.5.38  =8.5.40  =8.5.42  =8.5.50
+          =stable ]
+ 24  epel=latest              enabled      [ =7.11  =stable ]
+ 25  testing                  available    [ =1.0  =stable ]
+ 26  ecs                      available    [ =stable ]
+ 27  corretto8                available    \
+        [ =1.8.0_192  =1.8.0_202  =1.8.0_212  =1.8.0_222  =1.8.0_232
+          =1.8.0_242  =stable ]
+ 28  firecracker              available    [ =0.11  =stable ]
+ 29  golang1.11               available    \
+        [ =1.11.3  =1.11.11  =1.11.13  =stable ]
+ 30  squid4                   available    [ =4  =stable ]
+ 31  php7.3                   available    \
+        [ =7.3.2  =7.3.3  =7.3.4  =7.3.6  =7.3.8  =7.3.9  =7.3.10
+          =7.3.11  =7.3.13  =stable ]
+ 32  lustre2.10               available    \
+        [ =2.10.5  =2.10.8  =stable ]
+ 33  java-openjdk11           available    [ =11  =stable ]
+ 34  lynis                    available    [ =stable ]
+ 35  kernel-ng                available    [ =stable ]
+ 36  BCC                      available    [ =0.x  =stable ]
+ 37  mono                     available    [ =5.x  =stable ]
+ 38  nginx1                   available    [ =stable ]
+ 39  ruby2.6                  available    [ =2.6  =stable ]
+ 40  mock                     available    [ =stable ]
+ 41  postgresql11             available    [ =11  =stable ]
+ 42  php7.4                   available    [ =stable ]
+ 43  livepatch                available    [ =stable ]
+ 44  python3.8                available    [ =stable ]
+ 45  haproxy2                 available    [ =stable ]
+ 46  collectd                 available    [ =stable ]
+ 47  aws-nitro-enclaves-cli   available    [ =stable ]
+ 48  R4                       available    [ =stable ]
+ 49  kernel-5.4               available    [ =stable ]
+ 50  selinux-ng               available    [ =stable ]
+ 51  php8.0                   available    [ =stable ]
+ 52  tomcat9                  available    [ =stable ]
+ 53  unbound1.13              available    [ =stable ]
+ 54  mariadb10.5              available    [ =stable ]
+ 55  kernel-5.10              available    [ =stable ]
+[ec2-user@ip-172-31-57-41 ~]$ sudo yum install ansible -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Existing lock /var/run/yum.pid: another copy is running as pid 3440.
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory :  66 M RSS (358 MB VSZ)
+    Started: Sat May  1 05:21:22 2021 - 00:02 ago
+    State  : Sleeping, pid: 3440
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory : 263 M RSS (555 MB VSZ)
+    Started: Sat May  1 05:21:22 2021 - 00:04 ago
+    State  : Running, pid: 3440
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory : 287 M RSS (578 MB VSZ)
+    Started: Sat May  1 05:21:22 2021 - 00:06 ago
+    State  : Running, pid: 3440
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory : 308 M RSS (600 MB VSZ)
+    Started: Sat May  1 05:21:22 2021 - 00:08 ago
+    State  : Running, pid: 3440
+Another app is currently holding the yum lock; waiting for it to exit...
+  The other application is: yum
+    Memory : 308 M RSS (600 MB VSZ)
+    Started: Sat May  1 05:21:22 2021 - 00:10 ago
+    State  : Running, pid: 3440
+219 packages excluded due to repository priority protections
+Resolving Dependencies
+--> Running transaction check
+---> Package ansible.noarch 0:2.9.18-1.el7 will be installed
+--> Processing Dependency: python-httplib2 for package: ansible-2.9.18-1.el7.noarch
+--> Processing Dependency: python-paramiko for package: ansible-2.9.18-1.el7.noarch
+--> Processing Dependency: sshpass for package: ansible-2.9.18-1.el7.noarch
+--> Running transaction check
+---> Package python-paramiko.noarch 0:2.1.1-0.10.el7 will be installed
+---> Package python2-httplib2.noarch 0:0.18.1-3.el7 will be installed
+---> Package sshpass.x86_64 0:1.06-1.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                           Arch                    Version                            Repository             Size
+==========================================================================================================================
+Installing:
+ ansible                           noarch                  2.9.18-1.el7                       epel                   17 M
+Installing for dependencies:
+ python-paramiko                   noarch                  2.1.1-0.10.el7                     epel                  269 k
+ python2-httplib2                  noarch                  0.18.1-3.el7                       epel                  125 k
+ sshpass                           x86_64                  1.06-1.el7                         epel                   21 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+3 Dependent packages)
+
+Total download size: 18 M
+Installed size: 106 M
+Downloading packages:
+warning: /var/cache/yum/x86_64/2/epel/packages/ansible-2.9.18-1.el7.noarch.rpm: Header V4 RSA/SHA256 Signature, key ID 352c64e5: NOKEY
+Public key for ansible-2.9.18-1.el7.noarch.rpm is not installed
+(1/4): ansible-2.9.18-1.el7.noarch.rpm                                                             |  17 MB  00:00:01
+(2/4): python-paramiko-2.1.1-0.10.el7.noarch.rpm                                                   | 269 kB  00:00:00
+(3/4): python2-httplib2-0.18.1-3.el7.noarch.rpm                                                    | 125 kB  00:00:00
+(4/4): sshpass-1.06-1.el7.x86_64.rpm                                                               |  21 kB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      10 MB/s |  18 MB  00:00:01
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Importing GPG key 0x352C64E5:
+ Userid     : "Fedora EPEL (7) <epel@fedoraproject.org>"
+ Fingerprint: 91e9 7d7c 4a5e 96f1 7f3e 888f 6a2f aea2 352c 64e5
+ Package    : epel-release-7-11.noarch (@amzn2extra-epel)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : python2-httplib2-0.18.1-3.el7.noarch                                                                   1/4
+  Installing : python-paramiko-2.1.1-0.10.el7.noarch                                                                  2/4
+  Installing : sshpass-1.06-1.el7.x86_64                                                                              3/4
+  Installing : ansible-2.9.18-1.el7.noarch                                                                            4/4
+  Verifying  : sshpass-1.06-1.el7.x86_64                                                                              1/4
+  Verifying  : python-paramiko-2.1.1-0.10.el7.noarch                                                                  2/4
+  Verifying  : ansible-2.9.18-1.el7.noarch                                                                            3/4
+  Verifying  : python2-httplib2-0.18.1-3.el7.noarch                                                                   4/4
+
+Installed:
+  ansible.noarch 0:2.9.18-1.el7
+
+Dependency Installed:
+  python-paramiko.noarch 0:2.1.1-0.10.el7     python2-httplib2.noarch 0:0.18.1-3.el7     sshpass.x86_64 0:1.06-1.el7
+
+Complete!
+[ec2-user@ip-172-31-57-41 ~]$ ansible --version
+ansible 2.9.18
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/home/ec2-user/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 2.7.18 (default, Feb 18 2021, 06:07:59) [GCC 7.3.1 20180712 (Red Hat 7.3.1-12)]
+[ec2-user@ip-172-31-57-41 ~]$
+[ec2-user@ip-172-31-57-41 ~]$ ls -l /etc/ansible/ansible.cfg
+-rw-r--r-- 1 root root 19985 Feb 20 21:33 /etc/ansible/ansible.cfg
+[ec2-user@ip-172-31-57-41 ~]$ ls -l /etc/ansible/hosts
+-rw-r--r-- 1 root root 1016 Feb 20 21:33 /etc/ansible/hosts
+[ec2-user@ip-172-31-57-41 ~]$ mkdir myansible
+[ec2-user@ip-172-31-57-41 ~]$ cd myansible/
+[ec2-user@ip-172-31-57-41 myansible]$ ls -l
+total 0
+[ec2-user@ip-172-31-57-41 myansible]$ vi ansible.cfg
+[ec2-user@ip-172-31-57-41 myansible]$ pwd
+/home/ec2-user/myansible
+[ec2-user@ip-172-31-57-41 myansible]$ cat ansible.cfg
+[defaults]
+inventory=./myansiblehosts
+
+[ec2-user@ip-172-31-57-41 myansible]$ ls -l myansiblehosts
+ls: cannot access myansiblehosts: No such file or directory
+[ec2-user@ip-172-31-57-41 myansible]$ vi myansiblehosts
+[ec2-user@ip-172-31-57-41 myansible]$ cat myansiblehosts
+[dev]
+server1
+[prod]
+server2
+[ec2-user@ip-172-31-57-41 myansible]$ vi ansible.cfg
+[ec2-user@ip-172-31-57-41 myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+[ec2-user@ip-172-31-57-41 myansible]$ ls -l mykey.pem
+ls: cannot access mykey.pem: No such file or directory
+[ec2-user@ip-172-31-57-41 myansible]$ vi mykey.pem
+[ec2-user@ip-172-31-57-41 myansible]$ cat mykey.pem
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAmdBWA43Fns7NH/Abzvbk3GcKiU65D/BqFEBrkKpyqe8P4mW8
+vn1nrj54T7g6f0jhOn3xGBOJkdjzuKSHdCLGdz6WrxIcCHYJYAfayTpYSQ5XUIiM
+yGC1AQswzb1Cw66bNfH4VdWfpul+iRJKP9xTw0+Xg7nZmALHQ+Vf6pptkej6/y6n
+RhMWnB55qXy2kMGJjc6ptx8k+jIKgNDXMR71y9Qxre7A9KWgEB2dWmuo/fcHSsFM
+uqI2DHPs/noSNUe9Vlj0oUHwk42btnqC9FU4zGi6JeXpSeEWLRP0UDCrsxbbw0Gv
+U9vbFLiaAQ3FiNeMhPM81eV0PWWjZCHe7Msk/wIDAQABAoIBAG1Bp1du5OkhTGNb
+UuV4SqikKL/Pw3Sm+TLZb46bBEfhIA9Y5PEKcxM6HIvD+Qlg41uBCjhn6FhJGxYV
+CIJeEUuykaZZ3r/D2HT2H1rAruV14l+6HwZWazwKjugVf88vv+BZuGSAEZ+mS9Nh
+wowKHRWm+6D96qonjxOTYsZqW1pAYHFj+LkcPYbJB/zyyu7Vdt9kapZzDS24WVmE
+ogExe02eqfT3CIJdATjzgvgcIQVf/9jLgB7v+ZbsNfDNkafkqX4e9FbmwSqSUhDl
+RHNi0PrV0LN0ble2nmmhg4JCfwjsszdtZGZke6k81LXn4vT8VZjT52m72WHcZjHS
+xIClroECgYEA24SH8bUvvAVW9UwhGxNz0tOBlourBLAyj5KJ8YHj1wKTfG24v7Pd
+iY44y5nGNblvIHPpppDU4nXSvJyY8dk7Y1c6CVUXAh8u74NtjElmiOFspHKpMgwQ
+LAuHozO+vS0K0xwValvU5xzCy3b/MzSMgsSHnLKkpYvYdF1HrGWK1qcCgYEAs2Bo
+GCwSK7gL7yYWGQnzGWEQQ7kgbhDdFQfkdrM3F5N7RB9uHGO58jlHKv79kEubttZt
+kzBExE597FcgJ/DBr7mm7zmKktom/rbQ1q48ZnYOR1y3lKO48sChUU9x4XBLJGPy
+cMQQy9vYbiJAD1U4i+akjV2G6pklqnux0fyz4ekCgYAoVptQnFXwPB71po6y1glD
+paA7lODRVLuFzIzSt2ax3QRTKip398pu+5aOO2zD9JZqJUK7XAPytWoLRM+KKbwT
+DjVY/6zhs+9BDiq0S8yuvJXlRji3PKZAIcJECD81rjA+CPwadlOSQKO/FdfhhfeI
+FCtDbUR6M0+MWpPQJzyzIwKBgGRKSKkLKvWqp3GEl+JT/8l2zYMv5IPlhdaWXRRI
+y0qxOMAz2nqg/3wArlvJybd9roghh4499JTVVe5oICB0qbY4VK94OpQ0yIytZkJB
+lJ+s7frUSggfKe7/6LHvezqScFDeWNTXqpRwTKf3Gl34Re9ieypW2nIcQkT5d8hy
+Q5jRAoGAZvfWMYva+M7XghgpPgx1/ocPfkEMVRIL8hxZcN0GToyN3gosrfRD0UZL
+C0OMZg6pkA8VpUJ8cnL7fTVXowHdhrw8CtUYdOGpZweHdIN4wt6Py1S4/ZfM/pBQ
+hkSNJ1pcgAMhdf5+PWrRXpXl6BDwINV9f27nM5jftQcn3yQTeMg=
+-----END RSA PRIVATE KEY-----
+[ec2-user@ip-172-31-57-41 myansible]$ chmod 600 mykey.pem
+[ec2-user@ip-172-31-57-41 myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+[ec2-user@ip-172-31-57-41 myansible]$ cat myansiblehosts
+[dev]
+server1
+[prod]
+server2
+[ec2-user@ip-172-31-57-41 myansible]$ cat mykey.pem
+-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAmdBWA43Fns7NH/Abzvbk3GcKiU65D/BqFEBrkKpyqe8P4mW8
+vn1nrj54T7g6f0jhOn3xGBOJkdjzuKSHdCLGdz6WrxIcCHYJYAfayTpYSQ5XUIiM
+yGC1AQswzb1Cw66bNfH4VdWfpul+iRJKP9xTw0+Xg7nZmALHQ+Vf6pptkej6/y6n
+RhMWnB55qXy2kMGJjc6ptx8k+jIKgNDXMR71y9Qxre7A9KWgEB2dWmuo/fcHSsFM
+uqI2DHPs/noSNUe9Vlj0oUHwk42btnqC9FU4zGi6JeXpSeEWLRP0UDCrsxbbw0Gv
+U9vbFLiaAQ3FiNeMhPM81eV0PWWjZCHe7Msk/wIDAQABAoIBAG1Bp1du5OkhTGNb
+UuV4SqikKL/Pw3Sm+TLZb46bBEfhIA9Y5PEKcxM6HIvD+Qlg41uBCjhn6FhJGxYV
+CIJeEUuykaZZ3r/D2HT2H1rAruV14l+6HwZWazwKjugVf88vv+BZuGSAEZ+mS9Nh
+wowKHRWm+6D96qonjxOTYsZqW1pAYHFj+LkcPYbJB/zyyu7Vdt9kapZzDS24WVmE
+ogExe02eqfT3CIJdATjzgvgcIQVf/9jLgB7v+ZbsNfDNkafkqX4e9FbmwSqSUhDl
+RHNi0PrV0LN0ble2nmmhg4JCfwjsszdtZGZke6k81LXn4vT8VZjT52m72WHcZjHS
+xIClroECgYEA24SH8bUvvAVW9UwhGxNz0tOBlourBLAyj5KJ8YHj1wKTfG24v7Pd
+iY44y5nGNblvIHPpppDU4nXSvJyY8dk7Y1c6CVUXAh8u74NtjElmiOFspHKpMgwQ
+LAuHozO+vS0K0xwValvU5xzCy3b/MzSMgsSHnLKkpYvYdF1HrGWK1qcCgYEAs2Bo
+GCwSK7gL7yYWGQnzGWEQQ7kgbhDdFQfkdrM3F5N7RB9uHGO58jlHKv79kEubttZt
+kzBExE597FcgJ/DBr7mm7zmKktom/rbQ1q48ZnYOR1y3lKO48sChUU9x4XBLJGPy
+cMQQy9vYbiJAD1U4i+akjV2G6pklqnux0fyz4ekCgYAoVptQnFXwPB71po6y1glD
+paA7lODRVLuFzIzSt2ax3QRTKip398pu+5aOO2zD9JZqJUK7XAPytWoLRM+KKbwT
+DjVY/6zhs+9BDiq0S8yuvJXlRji3PKZAIcJECD81rjA+CPwadlOSQKO/FdfhhfeI
+FCtDbUR6M0+MWpPQJzyzIwKBgGRKSKkLKvWqp3GEl+JT/8l2zYMv5IPlhdaWXRRI
+y0qxOMAz2nqg/3wArlvJybd9roghh4499JTVVe5oICB0qbY4VK94OpQ0yIytZkJB
+lJ+s7frUSggfKe7/6LHvezqScFDeWNTXqpRwTKf3Gl34Re9ieypW2nIcQkT5d8hy
+Q5jRAoGAZvfWMYva+M7XghgpPgx1/ocPfkEMVRIL8hxZcN0GToyN3gosrfRD0UZL
+C0OMZg6pkA8VpUJ8cnL7fTVXowHdhrw8CtUYdOGpZweHdIN4wt6Py1S4/ZfM/pBQ
+hkSNJ1pcgAMhdf5+PWrRXpXl6BDwINV9f27nM5jftQcn3yQTeMg=
+-----END RSA PRIVATE KEY-----
+[ec2-user@ip-172-31-57-41 myansible]$
+[ec2-user@ip-172-31-57-41 myansible]$
+[ec2-user@ip-172-31-57-41 myansible]$
+[ec2-user@ip-172-31-57-41 myansible]$
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" all
+The authenticity of host 'server1 (172.31.62.207)' can't be established.
+ECDSA key fingerprint is SHA256:PO94PFbdGOEmFWodeJHaYP5XRDrxr6MYKcn9SNGuOFk.
+ECDSA key fingerprint is MD5:67:9e:c8:74:09:6e:42:f1:3b:ec:1e:5c:f7:42:4b:f4.
+Are you sure you want to continue connecting (yes/no)? The authenticity of host 'server2 (172.31.62.255)' can't be established.
+ECDSA key fingerprint is SHA256:ba2pRL2a33DxoZPJys9usehMQcLZGTkYV7SJhpV089o.
+ECDSA key fingerprint is MD5:62:32:5d:7f:44:59:e0:14:83:f5:5f:3f:8b:68:7b:03.
+Are you sure you want to continue connecting (yes/no)? yes
+[WARNING]: Platform linux on host server1 is using the discovered Python interpreter at /usr/bin/python, but future
+installation of another Python interpreter could change this. See
+https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
+server1 | CHANGED | rc=0 >>
+ 05:31:58 up 13 min,  1 user,  load average: 0.00, 0.00, 0.00
+yes
+[WARNING]: Platform linux on host server2 is using the discovered Python interpreter at /usr/bin/python, but future
+installation of another Python interpreter could change this. See
+https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
+server2 | CHANGED | rc=0 >>
+ 05:32:00 up 13 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$ vi ansible.cfg
+[ec2-user@ip-172-31-57-41 myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" all
+server1 | CHANGED | rc=0 >>
+ 05:32:55 up 14 min,  1 user,  load average: 0.00, 0.00, 0.00
+server2 | CHANGED | rc=0 >>
+ 05:32:55 up 14 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$
+[ec2-user@ip-172-31-57-41 myansible]$ cat ansible.cfg
+[defaults]
+inventory = ./myansiblehosts
+remote_user = ec2-user
+private_key_file = ./mykey.pem
+interpreter_python = /usr/bin/python
+[ec2-user@ip-172-31-57-41 myansible]$ cat myansiblehosts
+[dev]
+server1
+[prod]
+server2
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" dev
+server1 | CHANGED | rc=0 >>
+ 05:39:55 up 21 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" prod
+server2 | CHANGED | rc=0 >>
+ 05:40:23 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$ vi myansiblehosts
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" dev
+server2 | CHANGED | rc=0 >>
+ 05:40:44 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00
+server1 | CHANGED | rc=0 >>
+ 05:40:44 up 22 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+[ec2-user@ip-172-31-57-41 myansible]$ ansible -m command -a "uptime" server1
+server1 | CHANGED | rc=0 >>
+ 05:41:21 up 23 min,  1 user,  load average: 0.00, 0.00, 0.00
+[ec2-user@ip-172-31-57-41 myansible]$

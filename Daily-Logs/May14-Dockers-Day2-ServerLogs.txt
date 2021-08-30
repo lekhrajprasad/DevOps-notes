@@ -1,0 +1,710 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-172-31-26-71 ~]$
+[ec2-user@ip-172-31-26-71 ~]$ sudo su -
+[root@ip-172-31-26-71 ~]#
+[root@ip-172-31-26-71 ~]# hostnamectl set-hostname dockers
+[root@ip-172-31-26-71 ~]# bash
+[root@dockers ~]#
+[root@dockers ~]# yum install docker -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Resolving Dependencies
+--> Running transaction check
+---> Package docker.x86_64 0:20.10.4-1.amzn2 will be installed
+--> Processing Dependency: runc >= 1.0.0 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: libcgroup >= 0.40.rc1-5.15 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: containerd >= 1.3.2 for package: docker-20.10.4-1.amzn2.x86_64
+--> Processing Dependency: pigz for package: docker-20.10.4-1.amzn2.x86_64
+--> Running transaction check
+---> Package containerd.x86_64 0:1.4.4-1.amzn2 will be installed
+---> Package libcgroup.x86_64 0:0.41-21.amzn2 will be installed
+---> Package pigz.x86_64 0:2.3.4-1.amzn2.0.1 will be installed
+---> Package runc.x86_64 0:1.0.0-0.1.20210225.git12644e6.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package              Arch             Version                                          Repository                   Size
+==========================================================================================================================
+Installing:
+ docker               x86_64           20.10.4-1.amzn2                                  amzn2extra-docker            32 M
+Installing for dependencies:
+ containerd           x86_64           1.4.4-1.amzn2                                    amzn2extra-docker            24 M
+ libcgroup            x86_64           0.41-21.amzn2                                    amzn2-core                   66 k
+ pigz                 x86_64           2.3.4-1.amzn2.0.1                                amzn2-core                   81 k
+ runc                 x86_64           1.0.0-0.1.20210225.git12644e6.amzn2              amzn2extra-docker           3.2 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+4 Dependent packages)
+
+Total download size: 59 M
+Installed size: 243 M
+Downloading packages:
+(1/5): pigz-2.3.4-1.amzn2.0.1.x86_64.rpm                                                           |  81 kB  00:00:00
+(2/5): libcgroup-0.41-21.amzn2.x86_64.rpm                                                          |  66 kB  00:00:00
+(3/5): containerd-1.4.4-1.amzn2.x86_64.rpm                                                         |  24 MB  00:00:01
+(4/5): docker-20.10.4-1.amzn2.x86_64.rpm                                                           |  32 MB  00:00:01
+(5/5): runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64.rpm                                         | 3.2 MB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      40 MB/s |  59 MB  00:00:01
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64                                                        1/5
+  Installing : containerd-1.4.4-1.amzn2.x86_64                                                                        2/5
+  Installing : libcgroup-0.41-21.amzn2.x86_64                                                                         3/5
+  Installing : pigz-2.3.4-1.amzn2.0.1.x86_64                                                                          4/5
+  Installing : docker-20.10.4-1.amzn2.x86_64                                                                          5/5
+  Verifying  : containerd-1.4.4-1.amzn2.x86_64                                                                        1/5
+  Verifying  : docker-20.10.4-1.amzn2.x86_64                                                                          2/5
+  Verifying  : pigz-2.3.4-1.amzn2.0.1.x86_64                                                                          3/5
+  Verifying  : runc-1.0.0-0.1.20210225.git12644e6.amzn2.x86_64                                                        4/5
+  Verifying  : libcgroup-0.41-21.amzn2.x86_64                                                                         5/5
+
+Installed:
+  docker.x86_64 0:20.10.4-1.amzn2
+
+Dependency Installed:
+  containerd.x86_64 0:1.4.4-1.amzn2                   libcgroup.x86_64 0:0.41-21.amzn2   pigz.x86_64 0:2.3.4-1.amzn2.0.1
+  runc.x86_64 0:1.0.0-0.1.20210225.git12644e6.amzn2
+
+Complete!
+[root@dockers ~]# systemctl enable docker
+Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.
+[root@dockers ~]# systemctl restart docker
+[root@dockers ~]#
+[root@dockers ~]# docker info
+Client:
+ Context:    default
+ Debug Mode: false
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 20.10.4
+ Storage Driver: overlay2
+  Backing Filesystem: xfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Cgroup Version: 1
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 io.containerd.runtime.v1.linux runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 05f951a3781f4f2c1911b05e61c160e9c30eaa8e
+ runc version: 12644e614e25b05da6fd08a38ffa0cfe1903fdec
+ init version: de40ad0
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 4.14.231-173.361.amzn2.x86_64
+ Operating System: Amazon Linux 2
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 983.3MiB
+ Name: dockers
+ ID: C43S:4KQV:S6ZH:FD4J:2HXO:YMFU:SDL7:ONW4:YX2I:CYC2:24DM:VZRL
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+[root@dockers ~]# docker images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+[root@dockers ~]# docker pull centos
+Using default tag: latest
+latest: Pulling from library/centos
+7a0437f04f83: Pull complete
+Digest: sha256:5528e8b1b1719d34604c87e11dcd1c0a20bedf46e83b5632cdeac91b8c04efc1
+Status: Downloaded newer image for centos:latest
+docker.io/library/centos:latest
+[root@dockers ~]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+centos       latest    300e315adb2f   5 months ago   209MB
+[root@dockers ~]# docker pull centos:latest
+latest: Pulling from library/centos
+Digest: sha256:5528e8b1b1719d34604c87e11dcd1c0a20bedf46e83b5632cdeac91b8c04efc1
+Status: Image is up to date for centos:latest
+docker.io/library/centos:latest
+[root@dockers ~]# docker pull centos:7
+7: Pulling from library/centos
+2d473b07cdd5: Pull complete
+Digest: sha256:0f4ec88e21daf75124b8a9e5ca03c37a5e937e0e108a255d890492430789b60e
+Status: Downloaded newer image for centos:7
+docker.io/library/centos:7
+[root@dockers ~]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+centos       latest    300e315adb2f   5 months ago   209MB
+centos       7         8652b9f0cb4c   6 months ago   204MB
+[root@dockers ~]# docker run -it --name myc1 centos /bin/bash
+[root@8aa99deb7e99 /]# cat /etc/redhat-release
+CentOS Linux release 8.3.2011
+[root@8aa99deb7e99 /]# exit
+exit
+[root@dockers ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[root@dockers ~]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS                          PORTS     NAMES
+8aa99deb7e99   centos    "/bin/bash"   6 minutes ago   Exited (0) About a minute ago             myc1
+[root@dockers ~]# docker restart myc1
+myc1
+[root@dockers ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS         PORTS     NAMES
+8aa99deb7e99   centos    "/bin/bash"   7 minutes ago   Up 3 seconds             myc1
+[root@dockers ~]# docker exec -it myc1 /bin/bash
+[root@8aa99deb7e99 /]# ##ctrl+p+q
+[root@8aa99deb7e99 /]# read escape sequence
+[root@dockers ~]# docker ps
+CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS              PORTS     NAMES
+8aa99deb7e99   centos    "/bin/bash"   8 minutes ago   Up About a minute             myc1
+[root@dockers ~]# #ctrl+p+q
+[root@dockers ~]# docker run -itd --name myc2 centos:7 /bin/bash
+9854b66c1d173450e176afc273ece215122f86d1ac59b293aab921c2a3fc7972
+[root@dockers ~]# docker ps
+CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS          PORTS     NAMES
+9854b66c1d17   centos:7   "/bin/bash"   19 seconds ago   Up 18 seconds             myc2
+8aa99deb7e99   centos     "/bin/bash"   11 minutes ago   Up 4 minutes              myc1
+[root@dockers ~]#
+[root@dockers ~]# #docker run
+[root@dockers ~]# docker ps
+CONTAINER ID   IMAGE      COMMAND       CREATED              STATUS              PORTS     NAMES
+9854b66c1d17   centos:7   "/bin/bash"   About a minute ago   Up About a minute             myc2
+8aa99deb7e99   centos     "/bin/bash"   12 minutes ago       Up 5 minutes                  myc1
+[root@dockers ~]# docker exec -it myc2 /bin/bash
+[root@9854b66c1d17 /]# cat /etc/redhat-release
+CentOS Linux release 7.9.2009 (Core)
+[root@9854b66c1d17 /]# read escape sequence
+[root@dockers ~]#
+[root@dockers ~]#
+[root@dockers ~]# docker exec -it myc1 /bin/bash
+[root@8aa99deb7e99 /]# cd /tmp/
+[root@8aa99deb7e99 tmp]# touch dvs1.txt
+[root@8aa99deb7e99 tmp]# echo "Hi Team I am in C1"> dvs1.txt
+[root@8aa99deb7e99 tmp]# read escape sequence
+[root@dockers ~]#
+[root@dockers ~]#
+[root@dockers ~]# docker exec -it myc2 /bin/bash
+[root@9854b66c1d17 /]# #cat /tmp/dvs1.txt
+[root@9854b66c1d17 /]# cat /tmp/dvs1.txt
+cat: /tmp/dvs1.txt: No such file or directory
+[root@9854b66c1d17 /]# read escape sequence
+[root@dockers ~]#
+[root@dockers ~]# docker images
+REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+centos       latest    300e315adb2f   5 months ago   209MB
+centos       7         8652b9f0cb4c   6 months ago   204MB
+[root@dockers ~]# docker run -itd --name c1 centos:7 /bin/bash
+c7c58f73786ac2e801d3b852dabc195a6d092235869a84b48a22319193ed0e11
+[root@dockers ~]# docker exec  -it c1 /bin/bash
+[root@c7c58f73786a /]# telnet
+bash: telnet: command not found
+[root@c7c58f73786a /]# id -a dvsbatch1
+id: dvsbatch1: no such user
+[root@c7c58f73786a /]# yum install telnet -y
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ * base: d36uatko69830t.cloudfront.net
+ * extras: d36uatko69830t.cloudfront.net
+ * updates: d36uatko69830t.cloudfront.net
+base                                                                                               | 3.6 kB  00:00:00
+extras                                                                                             | 2.9 kB  00:00:00
+updates                                                                                            | 2.9 kB  00:00:00
+(1/4): base/7/x86_64/group_gz                                                                      | 153 kB  00:00:00
+(2/4): extras/7/x86_64/primary_db                                                                  | 236 kB  00:00:00
+(3/4): updates/7/x86_64/primary_db                                                                 | 8.0 MB  00:00:00
+(4/4): base/7/x86_64/primary_db                                                                    | 6.1 MB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package telnet.x86_64 1:0.17-66.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                   Arch                      Version                             Repository                  Size
+==========================================================================================================================
+Installing:
+ telnet                    x86_64                    1:0.17-66.el7                       updates                     64 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 64 k
+Installed size: 113 k
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/updates/packages/telnet-0.17-66.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key for telnet-0.17-66.el7.x86_64.rpm is not installed
+telnet-0.17-66.el7.x86_64.rpm                                                                      |  64 kB  00:00:00
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Importing GPG key 0xF4A80EB5:
+ Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-9.2009.0.el7.centos.x86_64 (@CentOS)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:telnet-0.17-66.el7.x86_64                                                                            1/1
+  Verifying  : 1:telnet-0.17-66.el7.x86_64                                                                            1/1
+
+Installed:
+  telnet.x86_64 1:0.17-66.el7
+
+Complete!
+[root@c7c58f73786a /]# useradd dvsbatch1
+[root@c7c58f73786a /]# telnet
+telnet> q
+[root@c7c58f73786a /]# id -a dvsbatch1
+uid=1000(dvsbatch1) gid=1000(dvsbatch1) groups=1000(dvsbatch1)
+[root@c7c58f73786a /]# #ctrl+p+q
+[root@c7c58f73786a /]# read escape sequence
+[root@dockers ~]# docker  ps
+CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS          PORTS     NAMES
+c7c58f73786a   centos:7   "/bin/bash"   3 minutes ago    Up 3 minutes              c1
+9854b66c1d17   centos:7   "/bin/bash"   21 minutes ago   Up 21 minutes             myc2
+8aa99deb7e99   centos     "/bin/bash"   32 minutes ago   Up 24 minutes             myc1
+[root@dockers ~]# docker commit -m "telnet,dvsbatch1" c1 mycustimage:v1
+sha256:6d36d3450057237735ddbeb1819ea8e06947128ad8ca9fa9624df5b72287c0b5
+[root@dockers ~]# docker images
+REPOSITORY    TAG       IMAGE ID       CREATED         SIZE
+mycustimage   v1        6d36d3450057   7 seconds ago   321MB
+centos        latest    300e315adb2f   5 months ago    209MB
+centos        7         8652b9f0cb4c   6 months ago    204MB
+[root@dockers ~]# docker run -it --name testimagebuild mycustimage:v1 /bin/bash
+[root@1a8191b754dc /]# id -a dvsbatch1
+uid=1000(dvsbatch1) gid=1000(dvsbatch1) groups=1000(dvsbatch1)
+[root@1a8191b754dc /]# telnet
+telnet> q
+[root@1a8191b754dc /]# exit
+[root@dockers ~]#
+[root@dockers ~]#
+[root@dockers ~]#
+[root@dockers ~]# mkdir myimages
+[root@dockers ~]# cd myimages/
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet
+RUN useradd dvsbatch1
+[root@dockers myimages]# docker build -t "dockerfileimage:v1" .
+Sending build context to Docker daemon  2.048kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : RUN yum install telnet
+ ---> Running in 738ba5443433
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ * base: d36uatko69830t.cloudfront.net
+ * extras: d36uatko69830t.cloudfront.net
+ * updates: d36uatko69830t.cloudfront.net
+Resolving Dependencies
+--> Running transaction check
+---> Package telnet.x86_64 1:0.17-66.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package         Arch            Version                 Repository        Size
+================================================================================
+Installing:
+ telnet          x86_64          1:0.17-66.el7           updates           64 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total download size: 64 k
+Installed size: 113 k
+Is this ok [y/d/N]: Exiting on user command
+Your transaction was saved, rerun it with:
+ yum load-transaction /tmp/yum_save_tx.2021-05-14.02-40.Ru1H_Y.yumtx
+The command '/bin/sh -c yum install telnet' returned a non-zero code: 1
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet
+RUN useradd dvsbatch1
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y
+RUN useradd dvsbatch1
+[root@dockers myimages]# docker build -t "dockerfileimage:v1" .
+Sending build context to Docker daemon  2.048kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : RUN yum install telnet -y
+ ---> Running in 2b9a2c7f9f68
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ * base: d36uatko69830t.cloudfront.net
+ * extras: d36uatko69830t.cloudfront.net
+ * updates: d36uatko69830t.cloudfront.net
+Resolving Dependencies
+--> Running transaction check
+---> Package telnet.x86_64 1:0.17-66.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package         Arch            Version                 Repository        Size
+================================================================================
+Installing:
+ telnet          x86_64          1:0.17-66.el7           updates           64 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total download size: 64 k
+Installed size: 113 k
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/updates/packages/telnet-0.17-66.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key for telnet-0.17-66.el7.x86_64.rpm is not installed
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Importing GPG key 0xF4A80EB5:
+ Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-9.2009.0.el7.centos.x86_64 (@CentOS)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:telnet-0.17-66.el7.x86_64                                  1/1
+  Verifying  : 1:telnet-0.17-66.el7.x86_64                                  1/1
+
+Installed:
+  telnet.x86_64 1:0.17-66.el7
+
+Complete!
+Removing intermediate container 2b9a2c7f9f68
+ ---> 646882da123d
+Step 3/3 : RUN useradd dvsbatch1
+ ---> Running in 16b4f5365541
+Removing intermediate container 16b4f5365541
+ ---> 50233959b402
+Successfully built 50233959b402
+Successfully tagged dockerfileimage:v1
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y
+RUN useradd dvsbatch1
+[root@dockers myimages]# cat Dockerfile  -n
+     1  FROM centos:7
+     2  RUN yum install telnet -y
+     3  RUN useradd dvsbatch1
+[root@dockers myimages]# docker images
+REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
+dockerfileimage   v1        50233959b402   6 minutes ago    321MB
+mycustimage       v1        6d36d3450057   21 minutes ago   321MB
+centos            latest    300e315adb2f   5 months ago     209MB
+centos            7         8652b9f0cb4c   6 months ago     204MB
+[root@dockers myimages]# docker run -it --name docfilec1 dockerfileimage:v1 /bin/bash
+[root@ea599ec0280c /]# id -a dvsbatch1
+uid=1000(dvsbatch1) gid=1000(dvsbatch1) groups=1000(dvsbatch1)
+[root@ea599ec0280c /]# telnet
+telnet>
+telnet> q
+[root@ea599ec0280c /]#
+[root@ea599ec0280c /]#
+[root@ea599ec0280c /]# exit
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y
+RUN useradd dvsbatch1
+[root@dockers myimages]# docker history dockerfileimage:v1
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+50233959b402   11 minutes ago   /bin/sh -c useradd dvsbatch1                    360kB
+646882da123d   11 minutes ago   /bin/sh -c yum install telnet -y                117MB
+8652b9f0cb4c   6 months ago     /bin/sh -c #(nop)  CMD ["/bin/bash"]            0B
+<missing>      6 months ago     /bin/sh -c #(nop)  LABEL org.label-schema.sc…   0B
+<missing>      6 months ago     /bin/sh -c #(nop) ADD file:b3ebbe8bd304723d4…   204MB
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y
+RUN useradd dvsbatch1
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+[root@dockers myimages]# docker build -t "dockerfileimage:v1" .
+Sending build context to Docker daemon  2.048kB
+Step 1/2 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/2 : RUN yum install telnet -y     && useradd dvsbatch1
+ ---> Running in 2c83abd8f5b8
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ * base: d36uatko69830t.cloudfront.net
+ * extras: d36uatko69830t.cloudfront.net
+ * updates: d36uatko69830t.cloudfront.net
+Resolving Dependencies
+--> Running transaction check
+---> Package telnet.x86_64 1:0.17-66.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package         Arch            Version                 Repository        Size
+================================================================================
+Installing:
+ telnet          x86_64          1:0.17-66.el7           updates           64 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total download size: 64 k
+Installed size: 113 k
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/updates/packages/telnet-0.17-66.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key for telnet-0.17-66.el7.x86_64.rpm is not installed
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Importing GPG key 0xF4A80EB5:
+ Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-9.2009.0.el7.centos.x86_64 (@CentOS)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:telnet-0.17-66.el7.x86_64                                  1/1
+  Verifying  : 1:telnet-0.17-66.el7.x86_64                                  1/1
+
+Installed:
+  telnet.x86_64 1:0.17-66.el7
+
+Complete!
+Removing intermediate container 2c83abd8f5b8
+ ---> e456cfcf3a15
+Successfully built e456cfcf3a15
+Successfully tagged dockerfileimage:v1
+[root@dockers myimages]#
+[root@dockers myimages]# ls -l
+total 4
+-rw-r--r-- 1 root root 67 May 14 02:55 Dockerfile
+[root@dockers myimages]# docker run -it centos:7 /bin/bash
+[root@e2373a56934f /]# #echo $MYVAR1
+[root@e2373a56934f /]# $echo $JAVA_HOME
+[root@e2373a56934f /]# env
+HOSTNAME=e2373a56934f
+TERM=xterm
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+SHLVL=1
+HOME=/root
+_=/usr/bin/env
+[root@e2373a56934f /]# exit
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+[root@dockers myimages]#
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+[root@dockers myimages]# docker build -t "dvsbatch1:env" .
+Sending build context to Docker daemon  2.048kB
+Step 1/3 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/3 : RUN yum install telnet -y     && useradd dvsbatch1
+ ---> Using cache
+ ---> e456cfcf3a15
+Step 3/3 : ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+ ---> Running in 5ea88180c25e
+Removing intermediate container 5ea88180c25e
+ ---> 44f7640c74da
+Successfully built 44f7640c74da
+Successfully tagged dvsbatch1:env
+[root@dockers myimages]# docker run -it dvsbatch1:env /bin/bash
+[root@22411c212b51 /]# echo $MYVAR1
+1000
+[root@22411c212b51 /]# echo $JAVA_HOME
+/bin/myhome
+[root@22411c212b51 /]# exit
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]# ls -l /tmp/
+total 0
+drwx------ 3 root root 17 May 14 01:37 systemd-private-368d545ec35445739b4031fd1cafb583-chronyd.service-WunQO0
+[root@dockers myimages]# touch /tmp/file{1..5}
+[root@dockers myimages]# ls -l /tmp/
+total 0
+-rw-r--r-- 1 root root  0 May 14 03:03 file1
+-rw-r--r-- 1 root root  0 May 14 03:03 file2
+-rw-r--r-- 1 root root  0 May 14 03:03 file3
+-rw-r--r-- 1 root root  0 May 14 03:03 file4
+-rw-r--r-- 1 root root  0 May 14 03:03 file5
+drwx------ 3 root root 17 May 14 01:37 systemd-private-368d545ec35445739b4031fd1cafb583-chronyd.service-WunQO0
+[root@dockers myimages]# tar -cvf mydata.tar /tmp/
+tar: Removing leading `/' from member names
+/tmp/
+/tmp/.ICE-unix/
+/tmp/.X11-unix/
+/tmp/.Test-unix/
+/tmp/.XIM-unix/
+/tmp/.font-unix/
+/tmp/systemd-private-368d545ec35445739b4031fd1cafb583-chronyd.service-WunQO0/
+/tmp/systemd-private-368d545ec35445739b4031fd1cafb583-chronyd.service-WunQO0/tmp/
+/tmp/file1
+/tmp/file2
+/tmp/file3
+/tmp/file4
+/tmp/file5
+[root@dockers myimages]# ls -l mydata.tar
+-rw-r--r-- 1 root root 10240 May 14 03:03 mydata.tar
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+COPY ./mydata.tar /tmp/
+[root@dockers myimages]# docker build -t "dvsbatch1:copy" .
+Sending build context to Docker daemon   12.8kB
+Step 1/4 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/4 : RUN yum install telnet -y     && useradd dvsbatch1
+ ---> Using cache
+ ---> e456cfcf3a15
+Step 3/4 : ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+ ---> Using cache
+ ---> 44f7640c74da
+Step 4/4 : COPY ./mydata.tar /tmp/
+ ---> c5cdc0414c01
+Successfully built c5cdc0414c01
+Successfully tagged dvsbatch1:copy
+[root@dockers myimages]# docker run -it dvsbatch1:copy /bin/bash
+[root@27dba7a15c9e /]# ls -l /tmp/
+total 16
+-rwx------ 1 root root   836 Nov 13 01:55 ks-script-DrRL8A
+-rw-r--r-- 1 root root 10240 May 14 03:03 mydata.tar
+-rw------- 1 root root     0 Nov 13 01:53 yum.log
+[root@27dba7a15c9e /]# exit
+[root@dockers myimages]# docker images
+REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
+dvsbatch1         copy      c5cdc0414c01   3 minutes ago    321MB
+dvsbatch1         env       44f7640c74da   8 minutes ago    321MB
+dockerfileimage   v1        e456cfcf3a15   11 minutes ago   321MB
+<none>            <none>    50233959b402   26 minutes ago   321MB
+mycustimage       v1        6d36d3450057   41 minutes ago   321MB
+centos            latest    300e315adb2f   5 months ago     209MB
+centos            7         8652b9f0cb4c   6 months ago     204MB
+[root@dockers myimages]# vi Dockerfile
+[root@dockers myimages]# cat Dockerfile
+FROM centos:7
+RUN yum install telnet -y \
+    && useradd dvsbatch1
+ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+ADD ./mydata.tar /tmp/
+[root@dockers myimages]# docker build -t "dvsbatch1:add" .
+Sending build context to Docker daemon   12.8kB
+Step 1/4 : FROM centos:7
+ ---> 8652b9f0cb4c
+Step 2/4 : RUN yum install telnet -y     && useradd dvsbatch1
+ ---> Using cache
+ ---> e456cfcf3a15
+Step 3/4 : ENV JAVA_HOME=/bin/myhome MYVAR1=1000
+ ---> Using cache
+ ---> 44f7640c74da
+Step 4/4 : ADD ./mydata.tar /tmp/
+ ---> 4c94fdaf187b
+Successfully built 4c94fdaf187b
+Successfully tagged dvsbatch1:add
+[root@dockers myimages]# docker run -it dvsbatch1:add /bin/bash
+[root@e0de8b14eac7 /]# ls -l /tmp/
+total 4
+-rwx------ 1 root root 836 Nov 13 01:55 ks-script-DrRL8A
+drwxrwxrwt 8 root root 237 May 14 03:03 tmp
+-rw------- 1 root root   0 Nov 13 01:53 yum.log
+[root@e0de8b14eac7 /]# ls -l /tmp/tmp/
+total 0
+-rw-r--r-- 1 root root  0 May 14 03:03 file1
+-rw-r--r-- 1 root root  0 May 14 03:03 file2
+-rw-r--r-- 1 root root  0 May 14 03:03 file3
+-rw-r--r-- 1 root root  0 May 14 03:03 file4
+-rw-r--r-- 1 root root  0 May 14 03:03 file5
+drwx------ 3 root root 17 May 14 01:37 systemd-private-368d545ec35445739b4031fd1cafb583-chronyd.service-WunQO0
+[root@e0de8b14eac7 /]#
+[root@e0de8b14eac7 /]# exit
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]# ls
+Dockerfile  mydata.tar
+[root@dockers myimages]# ps -ef|grep -i ls
+libstor+  2481     1  0 01:37 ?        00:00:00 /usr/bin/lsmd -d
+root      4509  3346  0 03:19 pts/0    00:00:00 grep --color=auto -i ls
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]#
+[root@dockers myimages]# vi myscript.sh
+[root@dockers myimages]# bash myscript.sh &
+[1] 4519
+[root@dockers myimages]# hello world
+
+[root@dockers myimages]# phello world
+s -e^C
+[root@dockers myimages]# ps -ef|grep -hello world
+i myscript
+hello world
+root      4519  3346  0 03:20 pts/0    00:00:00 bash myscript.sh
+root      4525  3346  0 03:20 pts/0    00:00:00 grep --color=auto -i myscript
+[root@dockers myimages]# hello world
+hello world
+hello world
+hello world
+^C
+[root@dockers myimages]# kill -9hello world
+ 4519
+[root@dockers myimages]# ps -ef|grep -i myscript
+root      4535  3346  0 03:21 pts/0    00:00:00 grep --color=auto -i myscript
+[1]+  Killed                  bash myscript.sh
+[root@dockers myimages]# #yum list installed
+[root@dockers myimages]#

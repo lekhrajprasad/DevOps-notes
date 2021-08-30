@@ -1,0 +1,631 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Wed Apr 21 01:52:55 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+3 package(s) needed for security, out of 17 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@python ~]$ sudo su -
+Last login: Wed Apr 21 01:52:57 UTC 2021 on pts/0
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# ls -l
+total 16
+-rwxr-xr-x 1 root root 223 Apr 21 02:04 prg1.py
+-rw-r--r-- 1 root root 563 Apr 21 02:40 prg2.py
+-rw-r--r-- 1 root root 142 Apr 21 03:04 prg3.py
+-rw-r--r-- 1 root root 243 Apr 21 03:14 prg4.py
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi myfor.py
+[root@python ~]# cat myfor.py
+#!/usr/bin/python
+for i in [10,20,30,40]:
+  print i
+
+[root@python ~]# python myfor.py
+10
+20
+30
+40
+[root@python ~]# vi myfor.py
+[root@python ~]# cat myfor.py
+#!/usr/bin/python
+
+lis1=[10,20,30,40]
+
+for i in lis1:
+  print i
+
+[root@python ~]# python myfor.py
+10
+20
+30
+40
+[root@python ~]# vi myfor.py
+[root@python ~]# cat myfor.py
+#!/usr/bin/python
+
+lis1=[10,20,30,40]
+
+for i in lis1:
+  print i
+print range(5)
+[root@python ~]# python myfor.py
+10
+20
+30
+40
+[0, 1, 2, 3, 4]
+[root@python ~]# vi myfor.py
+[root@python ~]# cat myfor.py
+#!/usr/bin/python
+
+lis1=[10,20,30,40]
+
+for i in lis1:
+  print i
+for j in range(5):
+  print j
+[root@python ~]# python myfor.py
+10
+20
+30
+40
+0
+1
+2
+3
+4
+[root@python ~]# vi mywhile.py
+[root@python ~]# cat mywhile.py
+#!/usr/bin/python
+
+val1=0
+
+while val1<=10:
+  print val1
+  val1 = val1 + 1
+[root@python ~]# python mywhile.py
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+[root@python ~]#
+[root@python ~]# pip
+-bash: pip: command not found
+[root@python ~]# yum list all|grep -i pip
+libpipeline.x86_64                     1.2.3-3.amzn2.0.2              installed
+libpipeline.i686                       1.2.3-3.amzn2.0.2              amzn2-core
+libpipeline-devel.x86_64               1.2.3-3.amzn2.0.2              amzn2-core
+python2-pip.noarch                     9.0.3-1.amzn2.0.2              amzn2-core
+python3-pip.noarch                     9.0.3-1.amzn2.0.2              amzn2-core
+[root@python ~]# yum install python2-pip.noarch -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package python2-pip.noarch 0:9.0.3-1.amzn2.0.2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                     Arch                   Version                              Repository                  Size
+==========================================================================================================================
+Installing:
+ python2-pip                 noarch                 9.0.3-1.amzn2.0.2                    amzn2-core                 1.9 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 1.9 M
+Installed size: 8.3 M
+Downloading packages:
+python2-pip-9.0.3-1.amzn2.0.2.noarch.rpm                                                           | 1.9 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : python2-pip-9.0.3-1.amzn2.0.2.noarch                                                                   1/1
+  Verifying  : python2-pip-9.0.3-1.amzn2.0.2.noarch                                                                   1/1
+
+Installed:
+  python2-pip.noarch 0:9.0.3-1.amzn2.0.2
+
+Complete!
+[root@python ~]# pip install ipython
+WARNING: Running pip install with root privileges is generally not a good idea. Try `pip install --user` instead.
+Collecting ipython
+  Downloading https://files.pythonhosted.org/packages/ce/2c/2849a2b37024a01a847c87d81825c0489eb22ffc6416cac009bf281ea838/ipython-5.10.0-py2-none-any.whl (760kB)
+    100% |████████████████████████████████| 768kB 1.5MB/s
+Collecting decorator (from ipython)
+  Downloading https://files.pythonhosted.org/packages/ed/1b/72a1821152d07cf1d8b6fce298aeb06a7eb90f4d6d41acec9861e7cc6df0/decorator-4.4.2-py2.py3-none-any.whl
+Collecting pickleshare (from ipython)
+  Downloading https://files.pythonhosted.org/packages/9a/41/220f49aaea88bc6fa6cba8d05ecf24676326156c23b991e80b3f2fc24c77/pickleshare-0.7.5-py2.py3-none-any.whl
+Collecting backports.shutil-get-terminal-size; python_version == "2.7" (from ipython)
+  Downloading https://files.pythonhosted.org/packages/7d/cd/1750d6c35fe86d35f8562091737907f234b78fdffab42b29c72b1dd861f4/backports.shutil_get_terminal_size-1.0.0-py2.py3-none-any.whl
+Collecting prompt-toolkit<2.0.0,>=1.0.4 (from ipython)
+  Downloading https://files.pythonhosted.org/packages/9d/d2/2f099b5cd62dab819ce7a9f1431c09a9032fbfbb6474f442722e88935376/prompt_toolkit-1.0.18-py2-none-any.whl (245kB)
+    100% |████████████████████████████████| 245kB 4.5MB/s
+Requirement already satisfied: setuptools>=18.5 in /usr/lib/python2.7/site-packages (from ipython)
+Collecting pygments<2.6 (from ipython)
+  Downloading https://files.pythonhosted.org/packages/be/39/32da3184734730c0e4d3fa3b2b5872104668ad6dc1b5a73d8e477e5fe967/Pygments-2.5.2-py2.py3-none-any.whl (896kB)
+    100% |████████████████████████████████| 901kB 1.3MB/s
+Collecting traitlets>=4.2 (from ipython)
+  Downloading https://files.pythonhosted.org/packages/ca/ab/872a23e29cec3cf2594af7e857f18b687ad21039c1f9b922fac5b9b142d5/traitlets-4.3.3-py2.py3-none-any.whl (75kB)
+    100% |████████████████████████████████| 81kB 9.9MB/s
+Collecting simplegeneric>0.8 (from ipython)
+  Downloading https://files.pythonhosted.org/packages/3d/57/4d9c9e3ae9a255cd4e1106bb57e24056d3d0709fc01b2e3e345898e49d5b/simplegeneric-0.8.1.zip
+Collecting pathlib2; python_version == "2.7" or python_version == "3.3" (from ipython)
+  Downloading https://files.pythonhosted.org/packages/e9/45/9c82d3666af4ef9f221cbb954e1d77ddbb513faf552aea6df5f37f1a4859/pathlib2-2.3.5-py2.py3-none-any.whl
+Collecting pexpect; sys_platform != "win32" (from ipython)
+  Downloading https://files.pythonhosted.org/packages/39/7b/88dbb785881c28a102619d46423cb853b46dbccc70d3ac362d99773a78ce/pexpect-4.8.0-py2.py3-none-any.whl (59kB)
+    100% |████████████████████████████████| 61kB 9.0MB/s
+Collecting wcwidth (from prompt-toolkit<2.0.0,>=1.0.4->ipython)
+  Downloading https://files.pythonhosted.org/packages/59/7c/e39aca596badaf1b78e8f547c807b04dae603a433d3e7a7e04d67f2ef3e5/wcwidth-0.2.5-py2.py3-none-any.whl
+Requirement already satisfied: six>=1.9.0 in /usr/lib/python2.7/site-packages (from prompt-toolkit<2.0.0,>=1.0.4->ipython)
+Collecting ipython-genutils (from traitlets>=4.2->ipython)
+  Downloading https://files.pythonhosted.org/packages/fa/bc/9bd3b5c2b4774d5f33b2d544f1460be9df7df2fe42f352135381c347c69a/ipython_genutils-0.2.0-py2.py3-none-any.whl
+Requirement already satisfied: enum34; python_version == "2.7" in /usr/lib/python2.7/site-packages (from traitlets>=4.2->ipython)
+Collecting scandir; python_version < "3.5" (from pathlib2; python_version == "2.7" or python_version == "3.3"->ipython)
+  Downloading https://files.pythonhosted.org/packages/df/f5/9c052db7bd54d0cbf1bc0bb6554362bba1012d03e5888950a4f5c5dadc4e/scandir-1.10.0.tar.gz
+Collecting ptyprocess>=0.5 (from pexpect; sys_platform != "win32"->ipython)
+  Downloading https://files.pythonhosted.org/packages/22/a6/858897256d0deac81a172289110f31629fc4cee19b6f01283303e18c8db3/ptyprocess-0.7.0-py2.py3-none-any.whl
+Collecting backports.functools-lru-cache>=1.2.1; python_version < "3.2" (from wcwidth->prompt-toolkit<2.0.0,>=1.0.4->ipython)
+  Downloading https://files.pythonhosted.org/packages/e5/c1/1a48a4bb9b515480d6c666977eeca9243be9fa9e6fb5a34be0ad9627f737/backports.functools_lru_cache-1.6.4-py2.py3-none-any.whl
+Installing collected packages: decorator, scandir, pathlib2, pickleshare, backports.shutil-get-terminal-size, backports.functools-lru-cache, wcwidth, prompt-toolkit, pygments, ipython-genutils, traitlets, simplegeneric, ptyprocess, pexpect, ipython
+  Running setup.py install for scandir ... done
+  Running setup.py install for simplegeneric ... done
+Successfully installed backports.functools-lru-cache-1.6.4 backports.shutil-get-terminal-size-1.0.0 decorator-4.4.2 ipython-5.10.0 ipython-genutils-0.2.0 pathlib2-2.3.5 pexpect-4.8.0 pickleshare-0.7.5 prompt-toolkit-1.0.18 ptyprocess-0.7.0 pygments-2.5.2 scandir-1.10.0 simplegeneric-0.8.1 traitlets-4.3.3 wcwidth-0.2.5
+[root@python ~]# history
+    1  python -version
+    2  python -v
+    3  python -V
+    4  vi prg1.py
+    5  which python
+    6  vi prg1.py
+    7  cat prg1.py
+    8  chmod +x prg1.py
+    9  ./prg1.py
+   10  python prg1.py
+   11  vi prg1.py
+   12  cat prg1.py
+   13  python prg1.py
+   14  vi prg1.py
+   15  cat prg1.py
+   16  python prg1.py
+   17  vi prg1.py
+   18  python prg1.py
+   19  vi prg2.py
+   20  cat prg2.py
+   21  python prg2.py
+   22  vi prg3.py
+   23  cat prg3.py
+   24  python prg3.py
+   25  vi prg3.py
+   26  cat prg3.py
+   27  python prg3.py
+   28  vi prg3.py
+   29  cat prg3.py
+   30  python prg3.py
+   31  vi prg4.py
+   32  cat prg4.py
+   33  python prg4.py
+   34  vi prg4.py
+   35  cat prg4.py
+   36  python prg4.py
+   37  cat prg2.py
+   38  init 0
+   39  hostnamectl set-hostname python
+   40  bash
+   41  ls -l
+   42  vi myfor.py
+   43  cat myfor.py
+   44  python myfor.py
+   45  vi myfor.py
+   46  cat myfor.py
+   47  python myfor.py
+   48  vi myfor.py
+   49  cat myfor.py
+   50  python myfor.py
+   51  vi myfor.py
+   52  cat myfor.py
+   53  python myfor.py
+   54  vi mywhile.py
+   55  cat mywhile.py
+   56  python mywhile.py
+   57  pip
+   58  yum list all|grep -i pip
+   59  yum install python2-pip.noarch -y
+   60  pip install ipython
+   61  history
+[root@python ~]#
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]: lis1=[10,20,30]
+
+In [2]: print list1
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-2-5b7e7eda2060> in <module>()
+----> 1 print list1
+
+NameError: name 'list1' is not defined
+
+In [3]: print lis1
+[10, 20, 30]
+
+In [4]: lis1
+Out[4]: [10, 20, 30]
+
+In [5]: lis1[0]
+Out[5]: 10
+
+In [6]: lis1[-1]
+Out[6]: 30
+
+In [7]: lis1[0:2]
+Out[7]: [10, 20]
+In [8]: str1="hi team welcome to Dvs"
+In [8]: str1="hi team welcome to Dvs"
+
+In [9]: str1
+Out[9]: 'hi team welcome to Dvs'
+
+In [10]: str1[1]
+Out[10]: 'i'
+
+In [11]: str1[-1]
+Out[11]: 's'
+
+In [12]: str1[::-1]
+Out[12]: 'svD ot emoclew maet ih'
+
+In [13]: #batch1 == 1hctab
+
+In [14]: lis1=[10,20,30,40,50,60,70]
+
+In [15]: lis1[0]
+Out[15]: 10
+
+In [16]: lis1[0:3]
+Out[16]: [10, 20, 30]
+
+In [17]: lis1[-1]
+Out[17]: 70
+
+In [18]: lis1[-1:]
+Out[18]: [70]
+
+In [19]: lis1[:-1]
+Out[19]: [10, 20, 30, 40, 50, 60]
+
+In [20]: lis1[2:4]
+Out[20]: [30, 40]
+
+In [21]: lis1[::-1]
+Out[21]: [70, 60, 50, 40, 30, 20, 10]
+In [22]: str1
+In [22]: str1
+Out[22]: 'hi team welcome to Dvs'
+
+In [23]: str1.split?
+Docstring:
+S.split([sep [,maxsplit]]) -> list of strings
+
+Return a list of the words in the string S, using sep as the
+delimiter string.  If maxsplit is given, at most maxsplit
+splits are done. If sep is not specified or is None, any
+whitespace string is a separator and empty strings are removed
+from the result.
+Type:      builtin_function_or_method
+
+In [24]: str1.split(" ")
+Out[24]: ['hi', 'team', 'welcome', 'to', 'Dvs']
+
+In [25]: str1.capitalize()
+Out[25]: 'Hi team welcome to dvs'
+
+In [26]: str1.upper()
+Out[26]: 'HI TEAM WELCOME TO DVS'
+
+In [27]: mydata=str1.upper()
+
+In [28]: mydata
+Out[28]: 'HI TEAM WELCOME TO DVS'
+
+In [29]: mydata.lower()
+Out[29]: 'hi team welcome to dvs'
+In [30]: str1.capitalize()
+In [30]: str1.capitalize()
+Out[30]: 'Hi team welcome to dvs'
+
+In [31]: str1
+Out[31]: 'hi team welcome to Dvs'
+
+In [32]: str1.split(" ")
+Out[32]: ['hi', 'team', 'welcome', 'to', 'Dvs']
+
+In [33]: str1.upper()
+Out[33]: 'HI TEAM WELCOME TO DVS'
+
+In [34]: str1.find('D')
+Out[34]: 19
+
+In [35]: str1
+Out[35]: 'hi team welcome to Dvs'
+
+In [36]: len(str1)
+Out[36]: 22
+
+In [37]: str1.count()
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-37-786e159b965a> in <module>()
+----> 1 str1.count()
+
+TypeError: count() takes at least 1 argument (0 given)
+In [38]: str1
+In [38]: str1
+Out[38]: 'hi team welcome to Dvs'
+
+In [39]: str1.count('t')
+Out[39]: 2
+
+In [40]: str1.count('a')
+Out[40]: 1
+
+In [41]: str1.count('h')
+Out[41]: 1
+
+In [42]: len(str)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-42-42c4b1b23257> in <module>()
+----> 1 len(str)
+
+TypeError: object of type 'type' has no len()
+
+In [43]: len(str1)
+Out[43]: 22
+In [44]: lis1=[10,20,30,40,50,60]
+In [44]: lis1=[10,20,30,40,50,60]
+
+In [45]:
+
+In [45]:
+
+In [45]: lis1
+Out[45]: [10, 20, 30, 40, 50, 60]
+
+In [46]: lis1.count(10)
+Out[46]: 1
+
+In [47]: lis1.append(10)
+
+In [48]: lis1
+Out[48]: [10, 20, 30, 40, 50, 60, 10]
+
+In [49]: lis1.count(10)
+Out[49]: 2
+
+In [50]: lis1.insert?
+Docstring: L.insert(index, object) -- insert object before index
+Type:      builtin_function_or_method
+
+In [51]: lis1.insert(3,"batch1")
+
+In [52]: lis1
+Out[52]: [10, 20, 30, 'batch1', 40, 50, 60, 10]
+
+In [53]: lis1.pop()
+Out[53]: 10
+
+In [54]: lis1
+Out[54]: [10, 20, 30, 'batch1', 40, 50, 60]
+
+In [55]: lis1.remove?
+Docstring:
+L.remove(value) -- remove first occurrence of value.
+Raises ValueError if the value is not present.
+Type:      builtin_function_or_method
+
+In [56]: lis1.remove('batch1')
+
+In [57]: lis1
+Out[57]: [10, 20, 30, 40, 50, 60]
+
+In [58]: 40 in lis1
+Out[58]: True
+
+In [59]: 100 in lis1
+Out[59]: False
+
+In [60]: 40 not in list1
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-60-abc977489270> in <module>()
+----> 1 40 not in list1
+
+NameError: name 'list1' is not defined
+
+In [61]: 40 not in lis1
+Out[61]: False
+
+In [62]: lis1.insert(2,[100,200])
+
+In [63]: lis1
+Out[63]: [10, 20, [100, 200], 30, 40, 50, 60]
+
+In [64]: lis1.extend?
+Docstring: L.extend(iterable) -- extend list by appending elements from the iterable
+Type:      builtin_function_or_method
+
+In [65]: lis1.extend(2000,3000)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+<ipython-input-65-aca1f03cd5d5> in <module>()
+----> 1 lis1.extend(2000,3000)
+
+TypeError: extend() takes exactly one argument (2 given)
+
+In [66]: lis1.extend([2000,3000])
+
+In [67]: lis1
+Out[67]: [10, 20, [100, 200], 30, 40, 50, 60, 2000, 3000]
+
+In [68]: lis1.append([2000,3000])
+
+In [69]: lis1
+Out[69]: [10, 20, [100, 200], 30, 40, 50, 60, 2000, 3000, [2000, 3000]]
+In [70]: dict1 = {"subject": "python", "batchno": 1}
+In [70]: dict1 = {"subject": "python", "batchno": 1}
+
+In [71]: dict1["subject"]
+Out[71]: 'python'
+
+In [72]: dict1.keys()
+Out[72]: ['batchno', 'subject']
+
+In [73]: dict1.values()
+Out[73]: [1, 'python']
+
+In [74]: "python" in dict1.values()
+Out[74]: True
+
+In [75]: "python1" in dict1.values()
+Out[75]: False
+
+In [76]: dict1["month"] = "April"
+
+In [77]: dict1
+Out[77]: {'batchno': 1, 'month': 'April', 'subject': 'python'}
+
+In [78]: dict1['batchno'] = 2
+
+In [79]: ditc1
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-79-23b2ae6c6426> in <module>()
+----> 1 ditc1
+
+NameError: name 'ditc1' is not defined
+
+In [80]: dict1
+Out[80]: {'batchno': 2, 'month': 'April', 'subject': 'python'}
+In [81]:
+In [81]:
+
+In [81]:
+
+In [81]:
+Do you really want to exit ([y]/n)?
+Do you really want to exit ([y]/n)?
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi myfn1.py
+[root@python ~]# cat myfn1.py
+#!/usr/bin/python
+
+
+def calc(x,y):
+  print x+y
+
+
+
+calc(100,200)
+[root@python ~]# python myfn1.py
+300
+[root@python ~]# vi myfn1.py
+[root@python ~]# cat myfn1.py
+#!/usr/bin/python
+
+
+def calc(x,y):
+  print x+y
+
+
+
+calc(100,200)
+calc(1000)
+[root@python ~]# python myfn1.py
+300
+Traceback (most recent call last):
+  File "myfn1.py", line 10, in <module>
+    calc(1000)
+TypeError: calc() takes exactly 2 arguments (1 given)
+[root@python ~]#
+[root@python ~]# vi myfn2.py
+[root@python ~]# cat myf2
+cat: myf2: No such file or directory
+[root@python ~]# cat myfn2.py
+#!/usr/bin/python
+
+
+def myflat(area,price):
+  print "area is",area,"price is",price*price
+
+
+myflat("BTM",1000)
+[root@python ~]# python myfn2.py
+area is BTM price is 1000000
+[root@python ~]# vi myfn2.py
+[root@python ~]# cat myfn2.py
+#!/usr/bin/python
+
+
+def myflat(area,price):
+  print "area is",area,"price is",price*price
+
+
+myflat("BTM",1000)
+myflat(2000,"HSR")
+[root@python ~]# python myfn2.py
+area is BTM price is 1000000
+area is 2000 price is
+Traceback (most recent call last):
+  File "myfn2.py", line 9, in <module>
+    myflat(2000,"HSR")
+  File "myfn2.py", line 5, in myflat
+    print "area is",area,"price is",price*price
+TypeError: can't multiply sequence by non-int of type 'str'
+[root@python ~]# vi myfn2.py
+[root@python ~]# cat myfn2.py
+#!/usr/bin/python
+
+
+def myflat(area,price):
+  print "area is",area,"price is",price*price
+
+
+myflat("BTM",1000)
+myflat(price=2000,area="HSR")
+[root@python ~]# python myfn2.py
+area is BTM price is 1000000
+area is HSR price is 4000000
+[root@python ~]#

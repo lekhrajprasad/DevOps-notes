@@ -1,0 +1,1009 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Wed Apr 28 03:21:44 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+1 package(s) needed for security, out of 15 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-19-63 ~]$ sudo su -
+Last login: Wed Apr 28 03:21:47 UTC 2021 on pts/0
+[root@ip-172-31-19-63 ~]# hostnamectl set-hostname terraform
+[root@ip-172-31-19-63 ~]# bash
+[root@terraform ~]#
+[root@terraform ~]#
+[root@terraform ~]# sudo curl -O https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 20.1M  100 20.1M    0     0  94.1M      0 --:--:-- --:--:-- --:--:-- 94.1M
+[root@terraform ~]# sudo yum install -y unzip
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+Package unzip-6.0-43.amzn2.x86_64 already installed and latest version
+Nothing to do
+[root@terraform ~]# sudo unzip terraform_0.11.13_linux_amd64.zip -d /usr/bin/
+Archive:  terraform_0.11.13_linux_amd64.zip
+  inflating: /usr/bin/terraform
+[root@terraform ~]# terraform --version
+Terraform v0.11.13
+
+Your version of Terraform is out of date! The latest version
+is 0.15.1. You can update by downloading from www.terraform.io/downloads.html
+[root@terraform ~]#
+[root@terraform ~]# aws configure
+AWS Access Key ID [None]: AKIASBRUR3X5TQUXDVSL
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: json
+[root@terraform ~]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-27 02:48:32 dvsbatch1-2704
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@terraform ~]# mkdir terraformbasics
+[root@terraform ~]# cd terraformbasics/
+[root@terraform terraformbasics]# ls -l
+total 0
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+resource "aws_key_pair" "mykey" {
+  key_name   = "dvsbatch1-key1"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+}
+[root@terraform terraformbasics]# pwd
+/root/terraformbasics
+[root@terraform terraformbasics]# ls -al
+total 4
+drwxr-xr-x 2 root root  21 Apr 29 02:02 .
+dr-xr-x--- 6 root root 235 Apr 29 01:49 ..
+-rw-r--r-- 1 root root 531 Apr 29 02:02 main.tf
+[root@terraform terraformbasics]# mkdir .shan
+[root@terraform terraformbasics]# ls -l
+total 4
+-rw-r--r-- 1 root root 531 Apr 29 02:02 main.tf
+[root@terraform terraformbasics]# ls -al
+total 4
+drwxr-xr-x 3 root root  34 Apr 29 02:05 .
+dr-xr-x--- 6 root root 235 Apr 29 01:49 ..
+-rw-r--r-- 1 root root 531 Apr 29 02:02 main.tf
+drwxr-xr-x 2 root root   6 Apr 29 02:05 .shan
+[root@terraform terraformbasics]# rm -rf .shan/
+[root@terraform terraformbasics]# ls -l
+total 4
+-rw-r--r-- 1 root root 531 Apr 29 02:02 main.tf
+[root@terraform terraformbasics]# terraform init .
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "aws" (2.70.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+resource "aws_key_pair" "mykey" {
+  key_name   = "dvsbatch1-key1"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+}
+[root@terraform terraformbasics]# ls -la
+total 4
+drwxr-xr-x 3 root root  39 Apr 29 02:06 .
+dr-xr-x--- 6 root root 235 Apr 29 01:49 ..
+-rw-r--r-- 1 root root 531 Apr 29 02:02 main.tf
+drwxr-xr-x 3 root root  21 Apr 29 02:06 .terraform
+[root@terraform terraformbasics]# ls -l .terraform/plugins/
+total 0
+drwxr-xr-x 2 root root 64 Apr 29 02:06 linux_amd64
+[root@terraform terraformbasics]# ls -l .terraform/plugins/linux_amd64/
+total 154456
+-rwxr-xr-x 1 root root        79 Apr 29 02:06 lock.json
+-rwxr-xr-x 1 root root 158158848 Apr 29 02:06 terraform-provider-aws_v2.70.0_x4
+[root@terraform terraformbasics]# terraform plan
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_key_pair.mykey
+      id:          <computed>
+      arn:         <computed>
+      fingerprint: <computed>
+      key_name:    "dvsbatch1-key1"
+      key_pair_id: <computed>
+      public_key:  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[root@terraform terraformbasics]# terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_key_pair.mykey
+      id:          <computed>
+      arn:         <computed>
+      fingerprint: <computed>
+      key_name:    "dvsbatch1-key1"
+      key_pair_id: <computed>
+      public_key:  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_key_pair.mykey: Creating...
+  arn:         "" => "<computed>"
+  fingerprint: "" => "<computed>"
+  key_name:    "" => "dvsbatch1-key1"
+  key_pair_id: "" => "<computed>"
+  public_key:  "" => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+aws_key_pair.mykey: Creation complete after 0s (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# terraform destroy
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  - aws_key_pair.mykey
+
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_key_pair.mykey: Destroying... (ID: dvsbatch1-key1)
+aws_key_pair.mykey: Destruction complete after 0s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform terraformbasics]# terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_key_pair.mykey
+      id:          <computed>
+      arn:         <computed>
+      fingerprint: <computed>
+      key_name:    "dvsbatch1-key1"
+      key_pair_id: <computed>
+      public_key:  "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: ^C
+
+Error: Error asking for approval: interrupted
+
+
+[root@terraform terraformbasics]# terraform apply -auto-approve
+aws_key_pair.mykey: Creating...
+  arn:         "" => "<computed>"
+  fingerprint: "" => "<computed>"
+  key_name:    "" => "dvsbatch1-key1"
+  key_pair_id: "" => "<computed>"
+  public_key:  "" => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+aws_key_pair.mykey: Creation complete after 0s (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# ls -l
+total 12
+-rw-r--r-- 1 root root  531 Apr 29 02:02 main.tf
+-rw-r--r-- 1 root root 1731 Apr 29 02:12 terraform.tfstate
+-rw-r--r-- 1 root root  318 Apr 29 02:12 terraform.tfstate.backup
+[root@terraform terraformbasics]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "a20c6b10-5448-1caa-b8b6-ee20e9c89e76",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_key_pair.mykey": {
+                    "type": "aws_key_pair",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "dvsbatch1-key1",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:key-pair/dvsbatch1-key1",
+                            "fingerprint": "d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62",
+                            "id": "dvsbatch1-key1",
+                            "key_name": "dvsbatch1-key1",
+                            "key_pair_id": "key-049b15a263dbd10e7",
+                            "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com",
+                            "tags.%": "0"
+                        },
+                        "meta": {
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform terraformbasics]# #cat terraform.tfstate
+[root@terraform terraformbasics]# ls -l
+total 12
+-rw-r--r-- 1 root root  531 Apr 29 02:02 main.tf
+-rw-r--r-- 1 root root 1731 Apr 29 02:12 terraform.tfstate
+-rw-r--r-- 1 root root  318 Apr 29 02:12 terraform.tfstate.backup
+[root@terraform terraformbasics]# terraform show
+aws_key_pair.mykey:
+  id = dvsbatch1-key1
+  arn = arn:aws:ec2:us-east-1:140770401787:key-pair/dvsbatch1-key1
+  fingerprint = d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62
+  key_name = dvsbatch1-key1
+  key_pair_id = key-049b15a263dbd10e7
+  public_key = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com
+  tags.% = 0
+
+[root@terraform terraformbasics]# #cp terraform.tfstate.backup terraform.tfstate
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "mykey_name" {
+
+        default = "dvsbatch1-key1"
+}
+
+resource "aws_key_pair" "mykey" {
+  key_name   = "${var.mykey_name}"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+}
+
+
+[root@terraform terraformbasics]# terraform apply
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "mykey_name" {
+
+}
+
+resource "aws_key_pair" "mykey" {
+  key_name   = "${var.mykey_name}"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+}
+
+
+[root@terraform terraformbasics]# terraform apply
+var.mykey_name
+  Enter a value: dvsbatch1-key1
+
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# terraform apply -var mykey_name="dvsbatch1-key1"
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# #terraform apply -var mykey_name="dvsbatch1-key1" -var var2=val2 -var var3=val3 -var  var4=val4 ..........
+[root@terraform terraformbasics]# vi myvar.tfvars
+[root@terraform terraformbasics]# cat myvar.tfvars
+mykey_name="dvsbatch1-key1"
+[root@terraform terraformbasics]# terraform apply -vars-file=myvar.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform terraformbasics]# terraform apply -var-file=myvar.tfvars
+[root@terraform terraformbasics]# terraform apply -var-file=myvar.tfvars
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# #terraform apply -var-file=myvar.tfvars
+[root@terraform terraformbasics]# terraform show
+aws_key_pair.mykey:
+  id = dvsbatch1-key1
+  arn = arn:aws:ec2:us-east-1:140770401787:key-pair/dvsbatch1-key1
+  fingerprint = d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62
+  key_name = dvsbatch1-key1
+  key_pair_id = key-049b15a263dbd10e7
+  public_key = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com
+  tags.% = 0
+
+[root@terraform terraformbasics]# terraform destroy  -auto-appvoe
+Usage: terraform destroy [options] [DIR]
+
+  Destroy Terraform-managed infrastructure.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval before destroying.
+
+  -force                 Deprecated: same as auto-approve.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of concurrent operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# terraform destroy  -auto-approve
+var.mykey_name
+  Enter a value: dvsbatch1-key1
+
+aws_key_pair.mykey: Refreshing state... (ID: dvsbatch1-key1)
+aws_key_pair.mykey: Destroying... (ID: dvsbatch1-key1)
+aws_key_pair.mykey: Destruction complete after 0s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform terraformbasics]# terraform show
+
+[root@terraform terraformbasics]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 4,
+    "lineage": "a20c6b10-5448-1caa-b8b6-ee20e9c89e76",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {},
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "DvsBatch1"
+  }
+}
+[root@terraform terraformbasics]# terraform plan
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_instance.myec2ref
+      id:                           <computed>
+      ami:                          "ami-048f6ed62451373d9"
+      arn:                          <computed>
+      associate_public_ip_address:  <computed>
+      availability_zone:            <computed>
+      cpu_core_count:               <computed>
+      cpu_threads_per_core:         <computed>
+      ebs_block_device.#:           <computed>
+      ephemeral_block_device.#:     <computed>
+      get_password_data:            "false"
+      host_id:                      <computed>
+      instance_state:               <computed>
+      instance_type:                "t2.micro"
+      ipv6_address_count:           <computed>
+      ipv6_addresses.#:             <computed>
+      key_name:                     "aruna_nvirg_key1"
+      metadata_options.#:           <computed>
+      network_interface.#:          <computed>
+      network_interface_id:         <computed>
+      outpost_arn:                  <computed>
+      password_data:                <computed>
+      placement_group:              <computed>
+      primary_network_interface_id: <computed>
+      private_dns:                  <computed>
+      private_ip:                   <computed>
+      public_dns:                   <computed>
+      public_ip:                    <computed>
+      root_block_device.#:          <computed>
+      security_groups.#:            "1"
+      security_groups.372965590:    "Opentoworld"
+      source_dest_check:            "true"
+      subnet_id:                    <computed>
+      tags.%:                       "1"
+      tags.Name:                    "DvsBatch1"
+      tenancy:                      <computed>
+      volume_tags.%:                <computed>
+      vpc_security_group_ids.#:     <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[root@terraform terraformbasics]# terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_instance.myec2ref
+      id:                           <computed>
+      ami:                          "ami-048f6ed62451373d9"
+      arn:                          <computed>
+      associate_public_ip_address:  <computed>
+      availability_zone:            <computed>
+      cpu_core_count:               <computed>
+      cpu_threads_per_core:         <computed>
+      ebs_block_device.#:           <computed>
+      ephemeral_block_device.#:     <computed>
+      get_password_data:            "false"
+      host_id:                      <computed>
+      instance_state:               <computed>
+      instance_type:                "t2.micro"
+      ipv6_address_count:           <computed>
+      ipv6_addresses.#:             <computed>
+      key_name:                     "aruna_nvirg_key1"
+      metadata_options.#:           <computed>
+      network_interface.#:          <computed>
+      network_interface_id:         <computed>
+      outpost_arn:                  <computed>
+      password_data:                <computed>
+      placement_group:              <computed>
+      primary_network_interface_id: <computed>
+      private_dns:                  <computed>
+      private_ip:                   <computed>
+      public_dns:                   <computed>
+      public_ip:                    <computed>
+      root_block_device.#:          <computed>
+      security_groups.#:            "1"
+      security_groups.372965590:    "Opentoworld"
+      source_dest_check:            "true"
+      subnet_id:                    <computed>
+      tags.%:                       "1"
+      tags.Name:                    "DvsBatch1"
+      tenancy:                      <computed>
+      volume_tags.%:                <computed>
+      vpc_security_group_ids.#:     <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_instance.myec2ref: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "aruna_nvirg_key1"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "1"
+  security_groups.372965590:    "" => "Opentoworld"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "DvsBatch1"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2ref: Still creating... (10s elapsed)
+aws_instance.myec2ref: Still creating... (20s elapsed)
+aws_instance.myec2ref: Still creating... (30s elapsed)
+aws_instance.myec2ref: Creation complete after 32s (ID: i-0bd906a8a1e1c4448)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "myservername" {
+
+        default  = "DvsBatch1"
+}
+variable "myservertype" {
+
+        default = "t2.micro"
+}
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "${var.myservertype}"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "${var.myservername}"
+  }
+}
+
+
+[root@terraform terraformbasics]# terraform apply -auto-approve
+aws_instance.myec2ref: Refreshing state... (ID: i-0bd906a8a1e1c4448)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform terraformbasics]# terraform apply -auto-approve -var myservername="Terr-server1"
+aws_instance.myec2ref: Refreshing state... (ID: i-0bd906a8a1e1c4448)
+aws_instance.myec2ref: Modifying... (ID: i-0bd906a8a1e1c4448)
+  tags.Name: "DvsBatch1" => "Terr-server1"
+aws_instance.myec2ref: Modifications complete after 1s (ID: i-0bd906a8a1e1c4448)
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "myservername" {
+
+        default  = "DvsBatch1"
+}
+variable "myservertype" {
+
+        default = "t2.micro"
+}
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "${var.myservertype}"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "${var.myservername}"
+  }
+}
+
+
+[root@terraform terraformbasics]# terraform show
+aws_instance.myec2ref:
+  id = i-0bd906a8a1e1c4448
+  ami = ami-048f6ed62451373d9
+  arn = arn:aws:ec2:us-east-1:140770401787:instance/i-0bd906a8a1e1c4448
+  associate_public_ip_address = true
+  availability_zone = us-east-1a
+  cpu_core_count = 1
+  cpu_threads_per_core = 1
+  credit_specification.# = 1
+  credit_specification.0.cpu_credits = standard
+  disable_api_termination = false
+  ebs_block_device.# = 0
+  ebs_optimized = false
+  ephemeral_block_device.# = 0
+  get_password_data = false
+  hibernation = false
+  iam_instance_profile =
+  instance_state = running
+  instance_type = t2.micro
+  ipv6_address_count = 0
+  ipv6_addresses.# = 0
+  key_name = aruna_nvirg_key1
+  metadata_options.# = 1
+  metadata_options.0.http_endpoint = enabled
+  metadata_options.0.http_put_response_hop_limit = 1
+  metadata_options.0.http_tokens = optional
+  monitoring = false
+  network_interface.# = 0
+  outpost_arn =
+  password_data =
+  placement_group =
+  primary_network_interface_id = eni-0b431b6d264229256
+  private_dns = ip-172-31-27-137.ec2.internal
+  private_ip = 172.31.27.137
+  public_dns = ec2-54-146-245-13.compute-1.amazonaws.com
+  public_ip = 54.146.245.13
+  root_block_device.# = 1
+  root_block_device.0.delete_on_termination = true
+  root_block_device.0.device_name = /dev/xvda
+  root_block_device.0.encrypted = false
+  root_block_device.0.iops = 100
+  root_block_device.0.kms_key_id =
+  root_block_device.0.volume_id = vol-0850cc572d6bafea2
+  root_block_device.0.volume_size = 8
+  root_block_device.0.volume_type = gp2
+  security_groups.# = 1
+  security_groups.372965590 = Opentoworld
+  source_dest_check = true
+  subnet_id = subnet-cf745f82
+  tags.% = 1
+  tags.Name = Terr-server1
+  tenancy = default
+  volume_tags.% = 0
+  vpc_security_group_ids.# = 1
+  vpc_security_group_ids.255875290 = sg-0ebb8a5af331bd044
+
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]# terraform apply -auto-approve -var myservername="Terr-server1"
+aws_instance.myec2ref: Refreshing state... (ID: i-0bd906a8a1e1c4448)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+mypubip = 54.146.245.13
+[root@terraform terraformbasics]# terraform show
+aws_instance.myec2ref:
+  id = i-0bd906a8a1e1c4448
+  ami = ami-048f6ed62451373d9
+  arn = arn:aws:ec2:us-east-1:140770401787:instance/i-0bd906a8a1e1c4448
+  associate_public_ip_address = true
+  availability_zone = us-east-1a
+  cpu_core_count = 1
+  cpu_threads_per_core = 1
+  credit_specification.# = 1
+  credit_specification.0.cpu_credits = standard
+  disable_api_termination = false
+  ebs_block_device.# = 0
+  ebs_optimized = false
+  ephemeral_block_device.# = 0
+  get_password_data = false
+  hibernation = false
+  iam_instance_profile =
+  instance_state = running
+  instance_type = t2.micro
+  ipv6_address_count = 0
+  ipv6_addresses.# = 0
+  key_name = aruna_nvirg_key1
+  metadata_options.# = 1
+  metadata_options.0.http_endpoint = enabled
+  metadata_options.0.http_put_response_hop_limit = 1
+  metadata_options.0.http_tokens = optional
+  monitoring = false
+  network_interface.# = 0
+  outpost_arn =
+  password_data =
+  placement_group =
+  primary_network_interface_id = eni-0b431b6d264229256
+  private_dns = ip-172-31-27-137.ec2.internal
+  private_ip = 172.31.27.137
+  public_dns = ec2-54-146-245-13.compute-1.amazonaws.com
+  public_ip = 54.146.245.13
+  root_block_device.# = 1
+  root_block_device.0.delete_on_termination = true
+  root_block_device.0.device_name = /dev/xvda
+  root_block_device.0.encrypted = false
+  root_block_device.0.iops = 100
+  root_block_device.0.kms_key_id =
+  root_block_device.0.volume_id = vol-0850cc572d6bafea2
+  root_block_device.0.volume_size = 8
+  root_block_device.0.volume_type = gp2
+  security_groups.# = 1
+  security_groups.372965590 = Opentoworld
+  source_dest_check = true
+  subnet_id = subnet-cf745f82
+  tags.% = 1
+  tags.Name = Terr-server1
+  tenancy = default
+  volume_tags.% = 0
+  vpc_security_group_ids.# = 1
+  vpc_security_group_ids.255875290 = sg-0ebb8a5af331bd044
+
+
+Outputs:
+
+mypubip = 54.146.245.13
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "myservername" {
+
+        default  = "DvsBatch1"
+}
+variable "myservertype" {
+
+        default = "t2.micro"
+}
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "${var.myservertype}"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "${var.myservername}"
+  }
+}
+
+output "mypubip" {
+        value = "${aws_instance.myec2ref.public_ip}"
+}
+
+
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+variable "myservername" {
+
+        default  = "DvsBatch1"
+}
+variable "myservertype" {
+
+        default = "t2.micro"
+}
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "${var.myservertype}"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "${var.myservername}"
+  }
+}
+
+output "mypubip" {
+        value = "${aws_instance.myec2ref.public_ip}"
+}
+
+
+[root@terraform terraformbasics]#
+[root@terraform terraformbasics]# vi variables.tf
+[root@terraform terraformbasics]# vi outputs.tf
+[root@terraform terraformbasics]# vi main.tf
+[root@terraform terraformbasics]# ls -l
+total 32
+-rw-r--r-- 1 root root  297 Apr 29 03:13 main.tf
+-rw-r--r-- 1 root root   28 Apr 29 02:32 myvar.tfvars
+-rw-r--r-- 1 root root   74 Apr 29 03:13 outputs.tf
+-rw-r--r-- 1 root root 4745 Apr 29 03:01 terraform.tfstate
+-rw-r--r-- 1 root root 4562 Apr 29 03:01 terraform.tfstate.backup
+-rw-r--r-- 1 root root  118 Apr 29 03:13 variables.tf
+[root@terraform terraformbasics]# cat main.tf
+provider "aws" {
+  region     = "us-east-1"
+}
+
+resource "aws_instance" "myec2ref" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "${var.myservertype}"
+  security_groups = ["Opentoworld"]
+  key_name = "aruna_nvirg_key1"
+  count = 1
+
+  tags = {
+    Name = "${var.myservername}"
+  }
+}
+[root@terraform terraformbasics]# cat outputs.tf
+output "mypubip" {
+        value = "${aws_instance.myec2ref.public_ip}"
+}
+[root@terraform terraformbasics]# cat variables.tf
+variable "myservername" {
+
+        default  = "DvsBatch1"
+}
+variable "myservertype" {
+
+        default = "t2.micro"
+}
+(reverse-i-search)`a': cat vari^Cles.tf
+[root@terraform terraformbasics]# terraform apply -auto-approve -var myservername="Terr-server1"
+aws_instance.myec2ref: Refreshing state... (ID: i-0bd906a8a1e1c4448)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+mypubip = 54.146.245.13
+[root@terraform terraformbasics]# cat ~/.aws/config
+[default]
+output = json
+region = us-east-1
+[root@terraform terraformbasics]# cat ~/.aws/credentials
+[default]
+aws_access_key_id = AKIASBRUR3X5TQUXDVSL
+aws_secret_access_key = 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
+[root@terraform terraformbasics]#

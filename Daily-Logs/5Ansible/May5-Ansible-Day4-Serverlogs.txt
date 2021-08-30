@@ -1,0 +1,1479 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Tue May  4 01:42:27 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+2 package(s) needed for security, out of 5 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@controller ~]$
+[ec2-user@controller ~]$ vi mysecret.yaml
+[ec2-user@controller ~]$ cat mysecret.yaml
+---
+dbname: "dvsbatch1"
+dbpass: "dvsbatch1@123"
+[ec2-user@controller ~]$ ansible-vault create mydbsecrets.yaml
+New Vault password:
+Confirm New Vault password:
+[ec2-user@controller ~]$ cat mydbsecrets.yaml
+$ANSIBLE_VAULT;1.1;AES256
+35303462653338626330353264643930373232303633366163346332373039346364653531356565
+3761623032336130646465333361653231363862343334370a356136653164323639326263316563
+61363837363333336633306338323064366534626263366431356266656535323065303232323630
+3639313735663635350a396566353034613165633830613434396664336334636632626235353639
+65303037323030383833363233326537666361393631636362393537376536393239633935643335
+33636535653337363730636561363662393532396439653066626634363532366132646632616435
+363630323161366236623434393538316130
+[ec2-user@controller ~]$ ansible-vault view mydbsecrets.yaml
+Vault password:
+---
+dbname: "dvsbatch1"
+dbpass: "dvsbatch1@123"
+
+[ec2-user@controller ~]$ vi myvault.yaml
+[ec2-user@controller ~]$ cat my
+cat: my: No such file or directory
+[ec2-user@controller ~]$ cat myvault.yaml
+---
+- name: working with ansible vault
+  hosts: server1
+  vars_files:
+    - mydbsecrets.yaml
+  tasks:
+    - name: printing vault information
+      command: echo "dbname is {{dbname}}, dbpass is {{dbpass}}"
+[ec2-user@controller ~]$ ansible-playbook myvault.yaml
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match
+'all'
+[WARNING]: Could not match supplied host pattern, ignoring: server1
+ERROR! Attempting to decrypt but no vault secrets found
+[ec2-user@controller ~]$ ls -l
+total 12
+drwxrwxr-x 4 ec2-user ec2-user 285 May  4 03:29 myansible
+-rw------- 1 ec2-user ec2-user 549 May  5 01:43 mydbsecrets.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  48 May  5 01:42 mysecret.yaml
+-rw-rw-r-- 1 ec2-user ec2-user 206 May  5 01:46 myvault.yaml
+[ec2-user@controller ~]$ mv *yaml myansible/
+[ec2-user@controller ~]$ cd myansible/
+[ec2-user@controller myansible]$ ansible-playbook myvault.yaml
+ERROR! Attempting to decrypt but no vault secrets found
+[ec2-user@controller myansible]$ ansible-playbook -h|grep -i pass
+                        [--ask-vault-pass | --vault-password-file VAULT_PASSWORD_FILES]
+  --ask-vault-pass      ask for vault password
+  --vault-password-file VAULT_PASSWORD_FILES
+                        vault password file
+                        specify extra arguments to pass to scp only (e.g. -l)
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        specify extra arguments to pass to ssh only (e.g. -R)
+  -k, --ask-pass        ask for connection password
+  -K, --ask-become-pass
+                        ask for privilege escalation password
+  -b, --become          run operations with become (does not imply password
+[ec2-user@controller myansible]$ ansible-playbook --ask-vault-pass myvault.yaml
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook --ask-vault-pass myvault.yaml  -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "dbname is dvsbatch1, dbpass is dvsbatch1@123"], "delta": "0:00:00.038167", "end": "2021-05-05 01:48:35.873512", "rc": 0, "start": "2021-05-05 01:48:35.835345", "stderr": "", "stderr_lines": [], "stdout": "dbname is dvsbatch1, dbpass is dvsbatch1@123", "stdout_lines": ["dbname is dvsbatch1, dbpass is dvsbatch1@123"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat mydbsecrets.yaml
+$ANSIBLE_VAULT;1.1;AES256
+35303462653338626330353264643930373232303633366163346332373039346364653531356565
+3761623032336130646465333361653231363862343334370a356136653164323639326263316563
+61363837363333336633306338323064366534626263366431356266656535323065303232323630
+3639313735663635350a396566353034613165633830613434396664336334636632626235353639
+65303037323030383833363233326537666361393631636362393537376536393239633935643335
+33636535653337363730636561363662393532396439653066626634363532366132646632616435
+363630323161366236623434393538316130
+[ec2-user@controller myansible]$ #ansible-vault create mydbsecrets.yaml
+[ec2-user@controller myansible]$ ansible-vault create mytest.yaml
+New Vault password:
+Confirm New Vault password:
+[ec2-user@controller myansible]$ cat mytest.yaml
+$ANSIBLE_VAULT;1.1;AES256
+32653534623834313537393837373230663062383065313061366631313038323962353366313833
+3465303137353134616466343037363035626534343231340a313264656133303463633238393461
+33626534383338313066353230653562643362613531313962643965636336343965316631353862
+6463386438626164380a363632383238613562333335363234646662336433616665326666346665
+39633435363835386666633035316466313064373435373236333166376338323438
+[ec2-user@controller myansible]$ ansible-vault view mytest.yaml
+Vault password:
+---
+myvar1: 20
+myvar2: 30
+[ec2-user@controller myansible]$ ansible-vault edit mytest.yaml
+Vault password:
+[ec2-user@controller myansible]$ ansible-vault view mytest.yaml
+Vault password:
+---
+myvar1: 20
+myvar2: 30
+myvar3: 40
+[ec2-user@controller myansible]$ cat myvault.yaml
+---
+- name: working with ansible vault
+  hosts: server1
+  vars_files:
+    - mydbsecrets.yaml
+  tasks:
+    - name: printing vault information
+      command: echo "dbname is {{dbname}}, dbpass is {{dbpass}}"
+[ec2-user@controller myansible]$ #ansible-playbook --ask-vault-pass myvault.yaml  -v
+[ec2-user@controller myansible]$ ansible-playbook -h|grep pass
+                        [--ask-vault-pass | --vault-password-file VAULT_PASSWORD_FILES]
+  --ask-vault-pass      ask for vault password
+  --vault-password-file VAULT_PASSWORD_FILES
+                        vault password file
+                        specify extra arguments to pass to scp only (e.g. -l)
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        specify extra arguments to pass to ssh only (e.g. -R)
+  -k, --ask-pass        ask for connection password
+  -K, --ask-become-pass
+                        ask for privilege escalation password
+  -b, --become          run operations with become (does not imply password
+[ec2-user@controller myansible]$ ansible-vault -h
+usage: ansible-vault [-h] [--version] [-v]
+                     {create,decrypt,edit,view,encrypt,encrypt_string,rekey}
+                     ...
+
+encryption/decryption utility for Ansible data files
+
+positional arguments:
+  {create,decrypt,edit,view,encrypt,encrypt_string,rekey}
+    create              Create new vault encrypted file
+    decrypt             Decrypt vault encrypted file
+    edit                Edit vault encrypted file
+    view                View vault encrypted file
+    encrypt             Encrypt YAML file
+    encrypt_string      Encrypt a string
+    rekey               Re-key a vault encrypted file
+
+optional arguments:
+  --version             show program's version number, config file location,
+                        configured module search path, module location,
+                        executable location and exit
+  -h, --help            show this help message and exit
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+
+See 'ansible-vault <command> --help' for more information on a specific
+command.
+[ec2-user@controller myansible]$ ls -l mysecret.yaml
+-rw-rw-r-- 1 ec2-user ec2-user 48 May  5 01:42 mysecret.yaml
+[ec2-user@controller myansible]$ cat mysecret.yaml
+---
+dbname: "dvsbatch1"
+dbpass: "dvsbatch1@123"
+[ec2-user@controller myansible]$ ansible-vault encrypt mysecret.yaml
+New Vault password:
+Confirm New Vault password:
+Encryption successful
+[ec2-user@controller myansible]$ cat mysecret.yaml
+$ANSIBLE_VAULT;1.1;AES256
+37626235353531646531353238323536643433313861373236653837653263306530616532663035
+6331346339623739353935376364343965636531646266300a353637666637393938613533333065
+37626634616638343035326135643862303331323766653563373136623439353130616166636537
+3334653932396330620a343065306130663661306335383862613663633838383438303237646632
+32393130373136393762396138383236306332633362386435373461646230643530666335613262
+32373435633736623362383931373031636536353034386433383963653937383537373164313463
+623137633933376237336136613730366438
+[ec2-user@controller myansible]$
+(reverse-i-search)`as': ansible-playbook -h|grep p^Cs
+[ec2-user@controller myansible]$ vi myvault.yaml
+[ec2-user@controller myansible]$ #ansible-playbook --ask-vault-pass myvault.yaml  -v
+[ec2-user@controller myansible]$ ansible-playbook --ask-vault-pass myvault.yaml  -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "dbname is dvsbatch1, dbpass is dvsbatch1@123"], "delta": "0:00:00.038104", "end": "2021-05-05 01:59:56.977835", "rc": 0, "start": "2021-05-05 01:59:56.939731", "stderr": "", "stderr_lines": [], "stdout": "dbname is dvsbatch1, dbpass is dvsbatch1@123", "stdout_lines": ["dbname is dvsbatch1, dbpass is dvsbatch1@123"]}
+changed: [server2] => {"changed": true, "cmd": ["echo", "dbname is dvsbatch1, dbpass is dvsbatch1@123"], "delta": "0:00:00.038891", "end": "2021-05-05 01:59:56.979061", "rc": 0, "start": "2021-05-05 01:59:56.940170", "stderr": "", "stderr_lines": [], "stdout": "dbname is dvsbatch1, dbpass is dvsbatch1@123", "stdout_lines": ["dbname is dvsbatch1, dbpass is dvsbatch1@123"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook --ask-vault-pass myvault.yaml -l server1
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+server1
+[ec2-user@controller myansible]$ vi myansiblehosts
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+server1
+[test]
+server2
+[ec2-user@controller myansible]$ ansible-playbook --ask-vault-pass myvault.yaml -l test
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server2]
+
+PLAY RECAP ***************************************************************************************************************
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myfailedservers
+[ec2-user@controller myansible]$ cat myfailedservers
+server1
+[ec2-user@controller myansible]$ ansible-playbook -i myfailedservers --ask-vault-pass myvault.yaml
+Vault password:
+
+PLAY [working with ansible vault] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing vault information] ****************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myvault.yaml
+---
+- name: working with ansible vault
+  hosts: all
+  vars_files:
+    - mydbsecrets.yaml
+  tasks:
+    - name: printing vault information
+      command: echo "dbname is {{dbname}}, dbpass is {{dbpass}}"
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ls
+1            group_vars      mycode.py         mykey.pem       myplay.yaml    myvars.yaml   specialcases.yaml
+ansible.cfg  host_vars       mydbsecrets.yaml  myloop.yaml     mysecret.yaml  myvault.yaml  variables.yaml
+cond.yaml    myansiblehosts  myfailedservers   mymodules.yaml  mytest.yaml    prashanth
+[ec2-user@controller myansible]$ ansible-playbook --syntax-check mytest.yaml
+ERROR! Attempting to decrypt but no vault secrets found
+[ec2-user@controller myansible]$ ansible-playbook --syntax-check cond.yaml
+
+playbook: cond.yaml
+[ec2-user@controller myansible]$ ansible-playbook --list-hosts cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (server1): working with conditions    TAGS: []
+    pattern: [u'server1']
+    hosts (1):
+      server1
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: all
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+[ec2-user@controller myansible]$ ansible-playbook --list-hosts cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    pattern: [u'all']
+    hosts (2):
+      server1
+      server2
+[ec2-user@controller myansible]$ ansible-playbook --list-hosts cond.yaml -l test
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    pattern: [u'all']
+    hosts (1):
+      server2
+[ec2-user@controller myansible]$ ansible-playbook -C cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with or operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with > operator] *******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ #ansible-playbook -C cond.yaml
+[ec2-user@controller myansible]$ #ansible-playbook --step cond.yaml
+[ec2-user@controller myansible]$ ansible-playbook --step cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+Perform task: TASK: Gathering Facts (N)o/(y)es/(c)ontinue: y
+
+Perform task: TASK: Gathering Facts (N)o/(y)es/(c)ontinue: ***************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+Perform task: TASK: working with == operator (N)o/(y)es/(c)ontinue: y
+
+Perform task: TASK: working with == operator (N)o/(y)es/(c)ontinue: ******************************************************
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+Perform task: TASK: working with or operator (N)o/(y)es/(c)ontinue: y
+
+Perform task: TASK: working with or operator (N)o/(y)es/(c)ontinue: ******************************************************
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1]
+changed: [server2]
+Perform task: TASK: working with and operator (N)o/(y)es/(c)ontinue: n
+
+Perform task: TASK: working with and operator (N)o/(y)es/(c)ontinue: *****************************************************
+Perform task: TASK: working with > operator (N)o/(y)es/(c)ontinue: n
+
+Perform task: TASK: working with > operator (N)o/(y)es/(c)ontinue: *******************************************************
+Perform task: TASK: working with defined operator (N)o/(y)es/(c)ontinue: y
+
+Perform task: TASK: working with defined operator (N)o/(y)es/(c)ontinue: *************************************************
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ #ansible-playbook --step cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: all
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+[ec2-user@controller myansible]$ ansible-playbook --list-tasks cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    tasks:
+      working with == operator  TAGS: []
+      working with or operator  TAGS: []
+      working with and operator TAGS: []
+      working with > operator   TAGS: []
+      working with defined operator     TAGS: []
+[ec2-user@controller myansible]$ ansible-playbook --start-at-task "working with and operator" cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with > operator] *******************************************************************************************
+changed: [server1]
+changed: [server2]
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: all
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+      tags: t3
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+[ec2-user@controller myansible]$ ansible-playbook --list-tasks cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    tasks:
+      working with == operator  TAGS: []
+      working with or operator  TAGS: []
+      working with and operator TAGS: [t3]
+      working with > operator   TAGS: []
+      working with defined operator     TAGS: []
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: all
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+      tags: t1
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+      tags: t2
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+      tags: t3
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+      tags: t4
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+      tags: t5
+[ec2-user@controller myansible]$ ansible-playbook --list-tasks cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    tasks:
+      working with == operator  TAGS: [t1]
+      working with or operator  TAGS: [t2]
+      working with and operator TAGS: [t3]
+      working with > operator   TAGS: [t4]
+      working with defined operator     TAGS: [t5]
+[ec2-user@controller myansible]$ ansible-playbook -t "t3" cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook -t "t1" cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook -t "t1,t5" cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook --list-tasks cond.yaml
+
+playbook: cond.yaml
+
+  play #1 (all): working with conditions        TAGS: []
+    tasks:
+      working with == operator  TAGS: [t1]
+      working with or operator  TAGS: [t2]
+      working with and operator TAGS: [t3]
+      working with > operator   TAGS: [t4]
+      working with defined operator     TAGS: [t5]
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: all
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+      tags: t1
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+      tags: t2
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+      tags: t3
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+      tags: t4
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+      tags: t5
+[ec2-user@controller myansible]$ #ansible-playbook -t "t1,t5" cond.yaml
+[ec2-user@controller myansible]$ ansible-playbook -t "t1-t5" cond.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ #ansible-playbook -t "t1-t5" cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi final.yaml
+[ec2-user@controller myansible]$ ls
+1            final.yaml  myansiblehosts    myfailedservers  mymodules.yaml  mytest.yaml   prashanth
+ansible.cfg  group_vars  mycode.py         mykey.pem        myplay.yaml     myvars.yaml   specialcases.yaml
+cond.yaml    host_vars   mydbsecrets.yaml  myloop.yaml      mysecret.yaml   myvault.yaml  variables.yaml
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  vars:
+    - subject: "ansible"
+  tasks:
+    - name: printing variable value
+      command: echo "my environment is {{ env }},my subject is {{ subject }}"
+[ec2-user@controller myansible]$ vi final.yaml
+[ec2-user@controller myansible]$ cat final.yaml
+---
+- import_playbook: cond.yaml
+- import_playbook: myvars.yaml
+[ec2-user@controller myansible]$ ansible-playbook final.yaml
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1]
+changed: [server2]
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+TASK [working with > operator] *******************************************************************************************
+changed: [server1]
+changed: [server2]
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server2]
+skipping: [server1]
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server1]
+changed: [server2]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=5    changed=3    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+server2                    : ok=5    changed=3    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myapache.yaml
+[ec2-user@controller myansible]$ cat myapache.yaml
+---
+- name: working with apache installation
+  hosts: all
+  tasks:
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - debug: msg="{{ipdetails}}"
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+changed: [server2]
+
+TASK [debug] *************************************************************************************************************
+ok: [server2] => {
+    "msg": {
+        "changed": true,
+        "cmd": [
+            "curl",
+            "http://169.254.169.254/latest/meta-data/public-ipv4"
+        ],
+        "delta": "0:00:00.046569",
+        "end": "2021-05-05 02:39:24.142070",
+        "failed": false,
+        "rc": 0,
+        "start": "2021-05-05 02:39:24.095501",
+        "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    14  100    14    0     0   4666      0 --:--:-- --:--:-- --:--:--  4666",
+        "stderr_lines": [
+            "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current",
+            "                                 Dload  Upload   Total   Spent    Left  Speed",
+            "",
+            "  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0",
+            "100    14  100    14    0     0   4666      0 --:--:-- --:--:-- --:--:--  4666"
+        ],
+        "stdout": "100.26.249.207",
+        "stdout_lines": [
+            "100.26.249.207"
+        ],
+        "warnings": [
+            "Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message."
+        ]
+    }
+}
+ok: [server1] => {
+    "msg": {
+        "changed": true,
+        "cmd": [
+            "curl",
+            "http://169.254.169.254/latest/meta-data/public-ipv4"
+        ],
+        "delta": "0:00:00.046966",
+        "end": "2021-05-05 02:39:24.140802",
+        "failed": false,
+        "rc": 0,
+        "start": "2021-05-05 02:39:24.093836",
+        "stderr": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    13  100    13    0     0   3250      0 --:--:-- --:--:-- --:--:--  3250",
+        "stderr_lines": [
+            "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current",
+            "                                 Dload  Upload   Total   Spent    Left  Speed",
+            "",
+            "  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0",
+            "100    13  100    13    0     0   3250      0 --:--:-- --:--:-- --:--:--  3250"
+        ],
+        "stdout": "54.234.62.152",
+        "stdout_lines": [
+            "54.234.62.152"
+        ],
+        "warnings": [
+            "Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in ansible.cfg to get rid of this message."
+        ]
+    }
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myapache.yaml
+[ec2-user@controller myansible]$ cat myapache.yaml
+---
+- name: working with apache installation
+  hosts: all
+  tasks:
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - debug: msg="{{ipdetails.stdout_lines[0]}}"
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+changed: [server2]
+
+TASK [debug] *************************************************************************************************************
+ok: [server2] => {
+    "msg": "100.26.249.207"
+}
+ok: [server1] => {
+    "msg": "54.234.62.152"
+}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myapache.yaml
+[ec2-user@controller myansible]$ vi index.html
+[ec2-user@controller myansible]$ cat index.html
+<html>
+<h1>Hi Team welcome To Dvs devops Session </h1>
+</html>
+[ec2-user@controller myansible]$ vi mya
+[ec2-user@controller myansible]$ vi myapache.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myapache.yaml
+---
+- name: working with apache installation
+  hosts: all
+  tasks:
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - set_fact: mypubip="{{ipdetails.stdout_lines[0]}}"
+
+    - name: Installing apache package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Enable apache at run time
+      systemd:
+        name: httpd
+        enabled: yes
+
+    - name: copying index.html file
+      template:
+        src: index.html
+        dest: /var/www/html/
+      notify: apache restart
+
+    - name: modifying httpd.conf file
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^#ServerName www.example.com'
+        replace: 'ServerName {{mypubip}}'
+      notify: apache restart
+
+  handlers:
+    - name: apache restart
+      systemd:
+        name: httpd
+        state: restarted
+
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ansible-playbook --list-hosts myapache.yaml
+
+playbook: myapache.yaml
+
+  play #1 (all): working with apache installation       TAGS: []
+    pattern: [u'all']
+    hosts (2):
+      server1
+      server2
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml -l server1
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+
+TASK [set_fact] **********************************************************************************************************
+ok: [server1]
+
+TASK [Installing apache package] *****************************************************************************************
+changed: [server1]
+
+TASK [Enable apache at run time] *****************************************************************************************
+changed: [server1]
+
+TASK [copying index.html file] *******************************************************************************************
+changed: [server1]
+
+TASK [modifying httpd.conf file] *****************************************************************************************
+changed: [server1]
+
+RUNNING HANDLER [apache restart] *****************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=8    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ sudo vi /etc/hosts
+[ec2-user@controller myansible]$ vi myansiblehosts
+[ec2-user@controller myansible]$ cat myapache.yaml
+---
+- name: working with apache installation
+  hosts: all
+  tasks:
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - set_fact: mypubip="{{ipdetails.stdout_lines[0]}}"
+
+    - name: Installing apache package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Enable apache at run time
+      systemd:
+        name: httpd
+        enabled: yes
+
+    - name: copying index.html file
+      template:
+        src: index.html
+        dest: /var/www/html/
+      notify: apache restart
+
+    - name: modifying httpd.conf file
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^#ServerName www.example.com'
+        replace: 'ServerName {{mypubip}}'
+      notify: apache restart
+
+  handlers:
+    - name: apache restart
+      systemd:
+        name: httpd
+        state: restarted
+
+
+[ec2-user@controller myansible]$ sudo vi /etc/hosts
+[ec2-user@controller myansible]$ vi myansiblehosts
+[ec2-user@controller myansible]$ ssh server4
+The authenticity of host 'server4 (172.31.29.26)' can't be established.
+ECDSA key fingerprint is SHA256:A33ubbahkhI3tuTwc5xincmD51RSfndnDmH5lftEndM.
+ECDSA key fingerprint is MD5:6d:7a:70:4a:1d:0d:35:75:00:c4:c4:dc:21:84:8e:88.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server4,172.31.29.26' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml -l server4
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server4]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server4]
+
+TASK [set_fact] **********************************************************************************************************
+ok: [server4]
+
+TASK [Installing apache package] *****************************************************************************************
+changed: [server4]
+
+TASK [Enable apache at run time] *****************************************************************************************
+changed: [server4]
+
+TASK [copying index.html file] *******************************************************************************************
+changed: [server4]
+
+TASK [modifying httpd.conf file] *****************************************************************************************
+changed: [server4]
+
+RUNNING HANDLER [apache restart] *****************************************************************************************
+changed: [server4]
+
+PLAY RECAP ***************************************************************************************************************
+server4                    : ok=8    changed=6    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml -l server4
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server4]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server4]
+
+TASK [set_fact] **********************************************************************************************************
+ok: [server4]
+
+TASK [Installing apache package] *****************************************************************************************
+ok: [server4]
+
+TASK [Enable apache at run time] *****************************************************************************************
+ok: [server4]
+
+TASK [copying index.html file] *******************************************************************************************
+ok: [server4]
+
+TASK [modifying httpd.conf file] *****************************************************************************************
+ok: [server4]
+
+PLAY RECAP ***************************************************************************************************************
+server4                    : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myapache.yaml -l server4
+
+PLAY [working with apache installation] **********************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server4]
+
+TASK [Collecting server public ipaddress] ********************************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server4]
+
+TASK [set_fact] **********************************************************************************************************
+ok: [server4]
+
+TASK [Installing apache package] *****************************************************************************************
+ok: [server4]
+
+TASK [Enable apache at run time] *****************************************************************************************
+ok: [server4]
+
+TASK [copying index.html file] *******************************************************************************************
+ok: [server4]
+
+TASK [modifying httpd.conf file] *****************************************************************************************
+ok: [server4]
+
+PLAY RECAP ***************************************************************************************************************
+server4                    : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myapache.yaml
+---
+- name: working with apache installation
+  hosts: all
+  tasks:
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - set_fact: mypubip="{{ipdetails.stdout_lines[0]}}"
+
+    - name: Installing apache package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Enable apache at run time
+      systemd:
+        name: httpd
+        enabled: yes
+
+    - name: copying index.html file
+      template:
+        src: index.html
+        dest: /var/www/html/
+      notify: apache restart
+
+    - name: modifying httpd.conf file
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^#ServerName www.example.com'
+        replace: 'ServerName {{mypubip}}'
+      notify: apache restart
+
+  handlers:
+    - name: apache restart
+      systemd:
+        name: httpd
+        state: restarted
+
+
+[ec2-user@controller myansible]$ cat index.html
+<html>
+<h1>Hi Team welcome To Dvs devops Session </h1>
+</html>
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ mkdir myhttpd
+[ec2-user@controller myansible]$ mkdir roles
+[ec2-user@controller myansible]$ mkdir roles/myapache
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ mkdir roles/myapache/tasks
+[ec2-user@controller myansible]$ mkdir roles/myapache/handlers
+[ec2-user@controller myansible]$ mkdir roles/myapache/templates
+[ec2-user@controller myansible]$ vi roles/myapache/tasks/main.yaml
+[ec2-user@controller myansible]$ #cat roles/myapache/tasks/main.yaml
+[ec2-user@controller myansible]$ vi roles/myapache/handlers/main.yaml
+[ec2-user@controller myansible]$ cat roles/myapache/tasks/main.yaml
+---
+    - name: Collecting server public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: ipdetails
+
+    - set_fact: mypubip="{{ipdetails.stdout_lines[0]}}"
+
+    - name: Installing apache package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Enable apache at run time
+      systemd:
+        name: httpd
+        enabled: yes
+
+    - name: copying index.html file
+      template:
+        src: index.html
+        dest: /var/www/html/
+      notify: apache restart
+
+    - name: modifying httpd.conf file
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^#ServerName www.example.com'
+        replace: 'ServerName {{mypubip}}'
+      notify: apache restart
+[ec2-user@controller myansible]$ cp index.html roles/myapache/templates/
+[ec2-user@controller myansible]$ #cp index.html roles/myapache/file
+[ec2-user@controller myansible]$ sudo yum install tree -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+219 packages excluded due to repository priority protections
+Resolving Dependencies
+--> Running transaction check
+---> Package tree.x86_64 0:1.6.0-10.amzn2.0.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                Arch                     Version                               Repository                    Size
+==========================================================================================================================
+Installing:
+ tree                   x86_64                   1.6.0-10.amzn2.0.1                    amzn2-core                    47 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 47 k
+Installed size: 83 k
+Downloading packages:
+tree-1.6.0-10.amzn2.0.1.x86_64.rpm                                                                 |  47 kB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : tree-1.6.0-10.amzn2.0.1.x86_64                                                                         1/1
+  Verifying  : tree-1.6.0-10.amzn2.0.1.x86_64                                                                         1/1
+
+Installed:
+  tree.x86_64 0:1.6.0-10.amzn2.0.1
+
+Complete!
+[ec2-user@controller myansible]$ tree roles/
+roles/
+└── myapache
+    ├── handlers
+    │   └── main.yaml
+    ├── tasks
+    │   └── main.yaml
+    └── templates
+        └── index.html
+
+4 directories, 3 files
+[ec2-user@controller myansible]$ vi main.yaml
+[ec2-user@controller myansible]$ cat main.yaml
+---
+- name: working with roles
+  hosts: server1
+  roles:
+    - myapache
+[ec2-user@controller myansible]$ ls -l roles/
+total 0
+drwxrwxr-x 5 ec2-user ec2-user 52 May  5 03:22 myapache
+[ec2-user@controller myansible]$ cat main.yaml
+---
+- name: working with roles
+  hosts: server1
+  roles:
+    - myapache
+[ec2-user@controller myansible]$ vi main.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ls -l
+total 88
+-rw-rw-r-- 1 ec2-user ec2-user  237 May  3 02:18 1
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  3 02:27 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user  833 May  5 02:19 cond.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   64 May  5 02:24 final.yaml
+drwxrwxr-x 2 ec2-user ec2-user   23 May  4 01:44 group_vars
+drwxrwxr-x 2 ec2-user ec2-user   26 May  3 03:24 host_vars
+-rw-rw-r-- 1 ec2-user ec2-user   63 May  5 02:46 index.html
+-rw-rw-r-- 1 ec2-user ec2-user   89 May  5 03:34 main.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   76 May  5 03:06 myansiblehosts
+-rw-rw-r-- 1 ec2-user ec2-user  907 May  5 03:02 myapache.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   49 May  3 02:41 mycode.py
+-rw------- 1 ec2-user ec2-user  549 May  5 01:43 mydbsecrets.yaml
+-rw-rw-r-- 1 ec2-user ec2-user    8 May  5 02:02 myfailedservers
+drwxrwxr-x 2 ec2-user ec2-user    6 May  5 03:20 myhttpd
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  750 May  4 02:53 myloop.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  305 May  3 03:01 mymodules.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+-rw------- 1 ec2-user ec2-user  549 May  5 01:54 mysecret.yaml
+-rw------- 1 ec2-user ec2-user  484 May  5 01:51 mytest.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  204 May  4 01:49 myvars.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  202 May  5 01:59 myvault.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   13 May  4 02:21 prashanth
+drwxrwxr-x 3 ec2-user ec2-user   22 May  5 03:21 roles
+-rw-rw-r-- 1 ec2-user ec2-user  220 May  4 03:29 specialcases.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   35 May  3 03:10 variables.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat main.yaml
+---
+- name: application1
+  hosts: app1
+  roles:
+    - myapache
+    - nodejs
+    - mysql
+
+[ec2-user@controller myansible]$ vi main.yaml
+[ec2-user@controller myansible]$ ansible-playbook main.yaml
+
+PLAY [application1] ******************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [myapache : Collecting server public ipaddress] *********************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+
+TASK [myapache : set_fact] ***********************************************************************************************
+ok: [server1]
+
+TASK [myapache : Installing apache package] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : Enable apache at run time] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : copying index.html file] ********************************************************************************
+ok: [server1]
+
+TASK [myapache : modifying httpd.conf file] ******************************************************************************
+ok: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi roles/myapache/tasks/main.yaml
+[ec2-user@controller myansible]$ vi roles/myapache/handlers/main.yaml
+[ec2-user@controller myansible]$ ansible-playbook main.yaml
+
+PLAY [application1] ******************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [myapache : Collecting server public ipaddress] *********************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+
+TASK [myapache : set_fact] ***********************************************************************************************
+ok: [server1]
+
+TASK [myapache : Installing apache package] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : Enable apache at run time] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : copying index.html file] ********************************************************************************
+ok: [server1]
+
+TASK [myapache : modifying httpd.conf file] ******************************************************************************
+ok: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ssh -i mykey.pem server1
+Last login: Wed May  5 03:39:01 2021 from ip-172-31-57-41.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+2 package(s) needed for security, out of 3 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@server1 ~]$ sudo rm -f /var/www/html/index.html
+[ec2-user@server1 ~]$
+[ec2-user@server1 ~]$
+[ec2-user@server1 ~]$ logout
+Connection to server1 closed.
+[ec2-user@controller myansible]$ ansible-playbook main.yaml
+
+PLAY [application1] ******************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [myapache : Collecting server public ipaddress] *********************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+
+TASK [myapache : set_fact] ***********************************************************************************************
+ok: [server1]
+
+TASK [myapache : Installing apache package] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : Enable apache at run time] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : copying index.html file] ********************************************************************************
+changed: [server1]
+
+TASK [myapache : modifying httpd.conf file] ******************************************************************************
+ok: [server1]
+
+RUNNING HANDLER [myapache : apache restart] ******************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=8    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi roles/myapache/tasks/main.yaml
+[ec2-user@controller myansible]$ ssh -i mykey.pem server1
+Last login: Wed May  5 03:39:52 2021 from ip-172-31-57-41.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+2 package(s) needed for security, out of 3 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@server1 ~]$ sudo rm -f /var/www/html/index.html
+[ec2-user@server1 ~]$ logout
+Connection to server1 closed.
+[ec2-user@controller myansible]$ vi roles/myapache/tasks/main.yaml
+(reverse-i-search)`-l': ls ^C
+[ec2-user@controller myansible]$ ansible-playbook main.yaml
+
+PLAY [application1] ******************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [myapache : Collecting server public ipaddress] *********************************************************************
+[WARNING]: Consider using the get_url or uri module rather than running 'curl'.  If you need to use command because
+get_url or uri is insufficient you can add 'warn: false' to this command task or set 'command_warnings=False' in
+ansible.cfg to get rid of this message.
+changed: [server1]
+
+TASK [myapache : set_fact] ***********************************************************************************************
+ok: [server1]
+
+TASK [myapache : Installing apache package] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : Enable apache at run time] ******************************************************************************
+ok: [server1]
+
+TASK [myapache : copying index.html file] ********************************************************************************
+ERROR! The requested handler 't1' was not found in either the main handlers list nor in the listening handlers list
+[ec2-user@controller myansible]$

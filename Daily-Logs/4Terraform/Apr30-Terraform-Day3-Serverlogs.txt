@@ -1,0 +1,2887 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Thu Apr 29 01:41:23 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+1 package(s) needed for security, out of 15 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@terraform ~]$ sudo su -
+Last login: Thu Apr 29 01:41:25 UTC 2021 on pts/0
+[root@terraform ~]# mkdir myspaec
+[root@terraform ~]# mv myspaec myspace
+[root@terraform ~]# cd myspace/
+[root@terraform myspace]# cd mysp
+-bash: cd: mysp: No such file or directory
+[root@terraform myspace]#
+[root@terraform myspace]# ls  -l
+total 0
+[root@terraform myspace]# ls -al
+total 0
+drwxr-xr-x 2 root root   6 Apr 30 01:41 .
+dr-xr-x--- 7 root root 250 Apr 30 01:41 ..
+[root@terraform myspace]# touch {main.tf,variables.tf,outputs.tf,myvars.tfvars}
+[root@terraform myspace]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 30 01:42 main.tf
+-rw-r--r-- 1 root root 0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root 0 Apr 30 01:42 outputs.tf
+-rw-r--r-- 1 root root 0 Apr 30 01:42 variables.tf
+[root@terraform myspace]# vi main.tf
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+/*Variable declaration */
+
+variable "servername" {}
+variable "keyname" {}
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${var.keyname}"
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+[root@terraform myspace]# vi variables.tf
+[root@terraform myspace]# vi main.tf
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${var.keyname}"
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+[root@terraform myspace]# cat variables.tf
+/*Variable declaration */
+
+variable "servername" {}
+variable "keyname" {}
+
+[root@terraform myspace]# vi variables.tf
+[root@terraform myspace]# vi main.tf
+[root@terraform myspace]#
+[root@terraform myspace]# cat variables.tf
+/*Variable declaration */
+
+variable "env" {
+        description = "you can opt for dev or prod"
+}
+
+variable "servername" {
+        "dev" = "dev-server"
+        "prod" = "prod-server"
+
+}
+variable "keyname" {
+        "dev" = "dev-key"
+        "prod" = "prod-key"
+
+}
+
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${lookup(var.keyname,var.env)}"
+  tags = {
+    Name = "${lookup(var.servername,var.env}"
+  }
+}
+
+[root@terraform myspace]# terraform init .
+There are some problems with the configuration, described below.
+
+The Terraform configuration must be valid before initialization so that
+Terraform can determine which modules and providers need to be installed.
+
+Error: Error loading /root/myspace/main.tf: Error reading config for aws_instance[myec2]: parse error at 1:32: expected ")" but found "}"
+
+
+[root@terraform myspace]# vi main.tf
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${lookup(var.keyname,var.env)}"
+  tags = {
+    Name = "${lookup(var.servername,var.env)}"
+  }
+}
+
+[root@terraform myspace]# terraform init .
+There are some problems with the configuration, described below.
+
+The Terraform configuration must be valid before initialization so that
+Terraform can determine which modules and providers need to be installed.
+
+Error: Error loading /root/myspace/variables.tf: 2 error(s) occurred:
+
+* variable[servername]: invalid key: dev
+* variable[servername]: invalid key: prod
+
+
+[root@terraform myspace]# vi variables.tf
+[root@terraform myspace]#
+[root@terraform myspace]# terraform init .
+There are some problems with the configuration, described below.
+
+The Terraform configuration must be valid before initialization so that
+Terraform can determine which modules and providers need to be installed.
+
+Error: Error loading /root/myspace/variables.tf: 2 error(s) occurred:
+
+* variable[servername]: invalid key: dev
+* variable[servername]: invalid key: prod
+
+
+[root@terraform myspace]# cat variables.tf
+/*Variable declaration */
+
+variable "env" {
+        description = "you can opt for dev or prod"
+}
+
+variable "servername" {
+        dev = "dev-server"
+        prod = "prod-server"
+
+}
+variable "keyname" {
+        dev = "dev-key"
+        prod = "prod-key"
+
+}
+
+[root@terraform myspace]#
+[root@terraform myspace]# vi variables.tf
+[root@terraform myspace]#
+[root@terraform myspace]# cat variables.tf
+/*Variable declaration */
+
+variable "env" {
+        description = "you can opt for dev or prod"
+}
+
+variable "servername" {
+"default" = {
+        "dev" = "dev-server"
+        "prod" = "prod-server"
+}
+}
+variable "keyname" {
+"default" = {
+
+        "dev" = "dev-key"
+        "prod" = "prod-key"
+}
+}
+
+[root@terraform myspace]# terraform init .
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "aws" (2.70.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform myspace]# cat variables.tf
+/*Variable declaration */
+
+variable "env" {
+        description = "you can opt for dev or prod"
+}
+
+variable "servername" {
+"default" = {
+        "dev" = "dev-server"
+        "prod" = "prod-server"
+}
+}
+variable "keyname" {
+"default" = {
+
+        "dev" = "dev-key"
+        "prod" = "prod-key"
+}
+}
+
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${lookup(var.keyname,var.env)}"
+  tags = {
+    Name = "${lookup(var.servername,var.env)}"
+  }
+}
+
+[root@terraform myspace]# terraform plan -auto-approve -var env=dev
+Usage: terraform plan [options] [DIR-OR-PLAN]
+
+  Generates an execution plan for Terraform.
+
+  This execution plan can be reviewed prior to running apply to get a
+  sense for what Terraform will do. Optionally, the plan can be saved to
+  a Terraform plan file, and apply can take this plan file to execute
+  this plan exactly.
+
+  If a saved plan is passed as an argument, this command will output
+  the saved plan contents. It will not modify the given plan.
+
+Options:
+
+  -destroy            If set, a plan will be generated to destroy all resources
+                      managed by the given configuration and state.
+
+  -detailed-exitcode  Return detailed exit codes when the command exits. This
+                      will change the meaning of exit codes to:
+                      0 - Succeeded, diff is empty (no changes)
+                      1 - Errored
+                      2 - Succeeded, there is a diff
+
+  -input=true         Ask for input for variables if not directly set.
+
+  -lock=true          Lock the state file when locking is supported.
+
+  -lock-timeout=0s    Duration to retry a state lock.
+
+  -module-depth=n     Specifies the depth of modules to show in the output.
+                      This does not affect the plan itself, only the output
+                      shown. By default, this is -1, which will expand all.
+
+  -no-color           If specified, output won't contain any color.
+
+  -out=path           Write a plan file to the given path. This can be used as
+                      input to the "apply" command.
+
+  -parallelism=n      Limit the number of concurrent operations. Defaults to 10.
+
+  -refresh=true       Update state prior to checking for differences.
+
+  -state=statefile    Path to a Terraform state file to use to look
+                      up Terraform-managed resources. By default it will
+                      use the state "terraform.tfstate" if it exists.
+
+  -target=resource    Resource to target. Operation will be limited to this
+                      resource and its dependencies. This flag can be used
+                      multiple times.
+
+  -var 'foo=bar'      Set a variable in the Terraform configuration. This
+                      flag can be set multiple times.
+
+  -var-file=foo       Set variables in the Terraform configuration from
+                      a file. If "terraform.tfvars" or any ".auto.tfvars"
+                      files are present, they will be automatically loaded.
+[root@terraform myspace]# terraform plan -var env=dev
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_instance.myec2
+      id:                           <computed>
+      ami:                          "ami-048f6ed62451373d9"
+      arn:                          <computed>
+      associate_public_ip_address:  <computed>
+      availability_zone:            <computed>
+      cpu_core_count:               <computed>
+      cpu_threads_per_core:         <computed>
+      ebs_block_device.#:           <computed>
+      ephemeral_block_device.#:     <computed>
+      get_password_data:            "false"
+      host_id:                      <computed>
+      instance_state:               <computed>
+      instance_type:                "t2.micro"
+      ipv6_address_count:           <computed>
+      ipv6_addresses.#:             <computed>
+      key_name:                     "dev-key"
+      metadata_options.#:           <computed>
+      network_interface.#:          <computed>
+      network_interface_id:         <computed>
+      outpost_arn:                  <computed>
+      password_data:                <computed>
+      placement_group:              <computed>
+      primary_network_interface_id: <computed>
+      private_dns:                  <computed>
+      private_ip:                   <computed>
+      public_dns:                   <computed>
+      public_ip:                    <computed>
+      root_block_device.#:          <computed>
+      security_groups.#:            <computed>
+      source_dest_check:            "true"
+      subnet_id:                    <computed>
+      tags.%:                       "1"
+      tags.Name:                    "dev-server"
+      tenancy:                      <computed>
+      volume_tags.%:                <computed>
+      vpc_security_group_ids.#:     <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[root@terraform myspace]# #terraform plan -var env=dev
+[root@terraform myspace]# #terraform plan -var env=prod
+[root@terraform myspace]# terraform plan -var env=prod
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_instance.myec2
+      id:                           <computed>
+      ami:                          "ami-048f6ed62451373d9"
+      arn:                          <computed>
+      associate_public_ip_address:  <computed>
+      availability_zone:            <computed>
+      cpu_core_count:               <computed>
+      cpu_threads_per_core:         <computed>
+      ebs_block_device.#:           <computed>
+      ephemeral_block_device.#:     <computed>
+      get_password_data:            "false"
+      host_id:                      <computed>
+      instance_state:               <computed>
+      instance_type:                "t2.micro"
+      ipv6_address_count:           <computed>
+      ipv6_addresses.#:             <computed>
+      key_name:                     "prod-key"
+      metadata_options.#:           <computed>
+      network_interface.#:          <computed>
+      network_interface_id:         <computed>
+      outpost_arn:                  <computed>
+      password_data:                <computed>
+      placement_group:              <computed>
+      primary_network_interface_id: <computed>
+      private_dns:                  <computed>
+      private_ip:                   <computed>
+      public_dns:                   <computed>
+      public_ip:                    <computed>
+      root_block_device.#:          <computed>
+      security_groups.#:            <computed>
+      source_dest_check:            "true"
+      subnet_id:                    <computed>
+      tags.%:                       "1"
+      tags.Name:                    "prod-server"
+      tenancy:                      <computed>
+      volume_tags.%:                <computed>
+      vpc_security_group_ids.#:     <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[root@terraform myspace]# terraform apply -auto-approve -var env=dev
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "dev-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "dev-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Still creating... (30s elapsed)
+aws_instance.myec2: Creation complete after 32s (ID: i-0d29f74a0695a7b77)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform myspace]# terraform apply -auto-approve -var env=prod
+aws_instance.myec2: Refreshing state... (ID: i-0d29f74a0695a7b77)
+aws_instance.myec2: Destroying... (ID: i-0d29f74a0695a7b77)
+aws_instance.myec2: Still destroying... (ID: i-0d29f74a0695a7b77, 10s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0d29f74a0695a7b77, 20s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0d29f74a0695a7b77, 30s elapsed)
+aws_instance.myec2: Destruction complete after 39s
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "prod-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "prod-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Still creating... (30s elapsed)
+aws_instance.myec2: Creation complete after 32s (ID: i-0434609c153bca82f)
+
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+[root@terraform myspace]# ls -l
+total 24
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+-rw-r--r-- 1 root root 4540 Apr 30 02:05 terraform.tfstate
+-rw-r--r-- 1 root root 4536 Apr 30 02:04 terraform.tfstate.backup
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 2,
+    "lineage": "a6301620-8e74-f2fd-efd2-8a78736f87c7",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_instance.myec2": {
+                    "type": "aws_instance",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "i-0434609c153bca82f",
+                        "attributes": {
+                            "ami": "ami-048f6ed62451373d9",
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:instance/i-0434609c153bca82f",
+                            "associate_public_ip_address": "true",
+                            "availability_zone": "us-east-1a",
+                            "cpu_core_count": "1",
+                            "cpu_threads_per_core": "1",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "ephemeral_block_device.#": "0",
+                            "get_password_data": "false",
+                            "hibernation": "false",
+                            "iam_instance_profile": "",
+                            "id": "i-0434609c153bca82f",
+                            "instance_state": "running",
+                            "instance_type": "t2.micro",
+                            "ipv6_address_count": "0",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "prod-key",
+                            "metadata_options.#": "1",
+                            "metadata_options.0.http_endpoint": "enabled",
+                            "metadata_options.0.http_put_response_hop_limit": "1",
+                            "metadata_options.0.http_tokens": "optional",
+                            "monitoring": "false",
+                            "network_interface.#": "0",
+                            "outpost_arn": "",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-0a148232c3a2d2df8",
+                            "private_dns": "ip-172-31-26-170.ec2.internal",
+                            "private_ip": "172.31.26.170",
+                            "public_dns": "ec2-34-207-109-189.compute-1.amazonaws.com",
+                            "public_ip": "34.207.109.189",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.device_name": "/dev/xvda",
+                            "root_block_device.0.encrypted": "false",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.kms_key_id": "",
+                            "root_block_device.0.volume_id": "vol-0bd857b596493e0b6",
+                            "root_block_device.0.volume_size": "8",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "1",
+                            "security_groups.3814588639": "default",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-cf745f82",
+                            "tags.%": "1",
+                            "tags.Name": "prod-server",
+                            "tenancy": "default",
+                            "volume_tags.%": "0",
+                            "vpc_security_group_ids.#": "1",
+                            "vpc_security_group_ids.587548007": "sg-cc436dc0"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# terraform destroy -auto-approve -var env=prod
+aws_instance.myec2: Refreshing state... (ID: i-0434609c153bca82f)
+aws_instance.myec2: Destroying... (ID: i-0434609c153bca82f)
+aws_instance.myec2: Still destroying... (ID: i-0434609c153bca82f, 10s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0434609c153bca82f, 20s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0434609c153bca82f, 30s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0434609c153bca82f, 40s elapsed)
+aws_instance.myec2: Destruction complete after 50s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform myspace]#
+[root@terraform myspace]# terraform show
+
+[root@terraform myspace]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "a6301620-8e74-f2fd-efd2-8a78736f87c7",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {},
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# ls -al
+total 20
+drwxr-xr-x 3 root root  155 Apr 30 02:14 .
+dr-xr-x--- 7 root root  250 Apr 30 01:41 ..
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+drwxr-xr-x 3 root root   21 Apr 30 01:59 .terraform
+-rw-r--r-- 1 root root  318 Apr 30 02:14 terraform.tfstate
+-rw-r--r-- 1 root root 4540 Apr 30 02:14 terraform.tfstate.backup
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# terraform workspace list
+* default
+
+[root@terraform myspace]# terraform workspace -h
+Usage: terraform workspace
+
+  New, list, select and delete Terraform workspaces.
+
+Subcommands:
+    delete    Delete a workspace
+    list      List Workspaces
+    new       Create a new workspace
+    select    Select a workspace
+    show      Show the name of the current workspace
+[root@terraform myspace]# terraform workspace new dev
+Created and switched to workspace "dev"!
+
+You're now on a new, empty workspace. Workspaces isolate their state,
+so if you run "terraform plan" Terraform will not see any existing state
+for this configuration.
+[root@terraform myspace]# ls -al
+total 20
+drwxr-xr-x 4 root root  182 Apr 30 02:20 .
+dr-xr-x--- 7 root root  250 Apr 30 01:41 ..
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+drwxr-xr-x 3 root root   40 Apr 30 02:20 .terraform
+-rw-r--r-- 1 root root  318 Apr 30 02:14 terraform.tfstate
+-rw-r--r-- 1 root root 4540 Apr 30 02:14 terraform.tfstate.backup
+drwxr-xr-x 3 root root   17 Apr 30 02:20 terraform.tfstate.d
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# ls -l terraform.tfstate.d
+total 0
+drwxr-xr-x 2 root root 6 Apr 30 02:20 dev
+[root@terraform myspace]# terraform workspace new prod
+Created and switched to workspace "prod"!
+
+You're now on a new, empty workspace. Workspaces isolate their state,
+so if you run "terraform plan" Terraform will not see any existing state
+for this configuration.
+[root@terraform myspace]# ls -l terraform.tfstate.d
+total 0
+drwxr-xr-x 2 root root 6 Apr 30 02:20 dev
+drwxr-xr-x 2 root root 6 Apr 30 02:20 prod
+[root@terraform myspace]# terraform workspace  list
+  default
+  dev
+* prod
+
+[root@terraform myspace]# terraform workspace select dev
+Switched to workspace "dev".
+[root@terraform myspace]# terraform workspace list
+  default
+* dev
+  prod
+
+[root@terraform myspace]# terraform workspace -h
+Usage: terraform workspace
+
+  New, list, select and delete Terraform workspaces.
+
+Subcommands:
+    delete    Delete a workspace
+    list      List Workspaces
+    new       Create a new workspace
+    select    Select a workspace
+    show      Show the name of the current workspace
+[root@terraform myspace]# ls
+main.tf  myvars.tfvars  outputs.tf  terraform.tfstate  terraform.tfstate.backup  terraform.tfstate.d  variables.tf
+[root@terraform myspace]# ls -l terraform.tfstate.d/dev/
+total 0
+[root@terraform myspace]# terraform workspace list
+  default
+* dev
+  prod
+
+[root@terraform myspace]# terraform apply -auto-approve -var env=dev
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "dev-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "dev-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Still creating... (30s elapsed)
+aws_instance.myec2: Creation complete after 32s (ID: i-0bcde530d60b0f19d)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform myspace]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "a6301620-8e74-f2fd-efd2-8a78736f87c7",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {},
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# cat terraform.tfstate.d/dev/terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 1,
+    "lineage": "79f30050-74c5-6454-da5c-725416757837",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_instance.myec2": {
+                    "type": "aws_instance",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "i-0bcde530d60b0f19d",
+                        "attributes": {
+                            "ami": "ami-048f6ed62451373d9",
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:instance/i-0bcde530d60b0f19d",
+                            "associate_public_ip_address": "true",
+                            "availability_zone": "us-east-1e",
+                            "cpu_core_count": "1",
+                            "cpu_threads_per_core": "1",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "ephemeral_block_device.#": "0",
+                            "get_password_data": "false",
+                            "hibernation": "false",
+                            "iam_instance_profile": "",
+                            "id": "i-0bcde530d60b0f19d",
+                            "instance_state": "running",
+                            "instance_type": "t2.micro",
+                            "ipv6_address_count": "0",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "dev-key",
+                            "metadata_options.#": "1",
+                            "metadata_options.0.http_endpoint": "enabled",
+                            "metadata_options.0.http_put_response_hop_limit": "1",
+                            "metadata_options.0.http_tokens": "optional",
+                            "monitoring": "false",
+                            "network_interface.#": "0",
+                            "outpost_arn": "",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-08cd45d3630b101d5",
+                            "private_dns": "ip-172-31-50-106.ec2.internal",
+                            "private_ip": "172.31.50.106",
+                            "public_dns": "ec2-52-201-219-252.compute-1.amazonaws.com",
+                            "public_ip": "52.201.219.252",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.device_name": "/dev/xvda",
+                            "root_block_device.0.encrypted": "false",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.kms_key_id": "",
+                            "root_block_device.0.volume_id": "vol-0686c4965e81a2298",
+                            "root_block_device.0.volume_size": "8",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "1",
+                            "security_groups.3814588639": "default",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-5ab41b6b",
+                            "tags.%": "1",
+                            "tags.Name": "dev-server",
+                            "tenancy": "default",
+                            "volume_tags.%": "0",
+                            "vpc_security_group_ids.#": "1",
+                            "vpc_security_group_ids.587548007": "sg-cc436dc0"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]#
+[root@terraform myspace]# terraform workspace list
+  default
+* dev
+  prod
+
+[root@terraform myspace]# terraform workspace select prod
+Switched to workspace "prod".
+[root@terraform myspace]# terraform workspace list
+  default
+  dev
+* prod
+
+[root@terraform myspace]# terraform show
+No state.
+[root@terraform myspace]# terraform destroy -auto-approve -var env=prod
+
+Destroy complete! Resources: 0 destroyed.
+[root@terraform myspace]# ls -l
+total 20
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+-rw-r--r-- 1 root root  318 Apr 30 02:14 terraform.tfstate
+-rw-r--r-- 1 root root 4540 Apr 30 02:14 terraform.tfstate.backup
+drwxr-xr-x 4 root root   29 Apr 30 02:20 terraform.tfstate.d
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# terraform apply -auto-approve -var env=prod
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "prod-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "prod-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Still creating... (30s elapsed)
+aws_instance.myec2: Still creating... (40s elapsed)
+aws_instance.myec2: Creation complete after 47s (ID: i-0bab49d76d842fab4)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform myspace]# ls -l terraform.tfstate.d/dev/
+total 8
+-rw-r--r-- 1 root root 4538 Apr 30 02:23 terraform.tfstate
+[root@terraform myspace]# ls -l terraform.tfstate.d/prod/
+total 12
+-rw-r--r-- 1 root root 4536 Apr 30 02:26 terraform.tfstate
+-rw-r--r-- 1 root root  318 Apr 30 02:26 terraform.tfstate.backup
+[root@terraform myspace]# ls -l terraform.tfstate
+-rw-r--r-- 1 root root 318 Apr 30 02:14 terraform.tfstate
+[root@terraform myspace]# ls -l
+total 20
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+-rw-r--r-- 1 root root  318 Apr 30 02:14 terraform.tfstate
+-rw-r--r-- 1 root root 4540 Apr 30 02:14 terraform.tfstate.backup
+drwxr-xr-x 4 root root   29 Apr 30 02:20 terraform.tfstate.d
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# cat main.tf
+provider "aws" {
+
+        region = "us-east-1"
+}
+
+
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+  key_name = "${lookup(var.keyname,var.env)}"
+  tags = {
+    Name = "${lookup(var.servername,var.env)}"
+  }
+}
+
+[root@terraform myspace]#
+[root@terraform myspace]#
+[root@terraform myspace]#
+[root@terraform myspace]# cd ..
+[root@terraform ~]# ls -l
+total 20640
+drwxr-xr-x 4 root root      182 Apr 30 02:20 myspace
+-rw-r--r-- 1 root root 21128942 Apr 29 01:41 terraform_0.11.13_linux_amd64.zip
+drwxr-xr-x 3 root root      154 Apr 29 03:34 terraformbasics
+-rw-r--r-- 1 root root       29 Apr 28 03:22 test.sh
+[root@terraform ~]# mkdir modules
+[root@terraform ~]# cd modules/
+[root@terraform modules]# ls -l
+total 0
+[root@terraform modules]# pwd
+/root/modules
+[root@terraform modules]# mkdir s3
+[root@terraform modules]# cd s3
+[root@terraform s3]# ls -l
+total 0
+[root@terraform s3]#
+[root@terraform s3]#
+[root@terraform s3]#
+[root@terraform s3]# vi main.tf
+[root@terraform s3]# vi variables.tf
+[root@terraform s3]# cat main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+resource "random_id" "myrandomid" {
+  byte_length = 8
+}
+[root@terraform s3]# cat variables.tf
+/*Variables*/
+region = "us-east-1"
+[root@terraform s3]# terraform init .
+
+Error: Unknown root level key: region
+
+
+
+Error: provider config 'aws': unknown variable referenced: 'region'; define it with a 'variable' block
+
+
+[root@terraform s3]# vi variables.tf
+[root@terraform s3]# vi main.tf
+[root@terraform s3]# terraform init .
+
+Error: Unknown root level key: myregion
+
+
+
+Error: provider config 'aws': unknown variable referenced: 'myregion'; define it with a 'variable' block
+
+
+[root@terraform s3]# vi variables.tf
+[root@terraform s3]#
+[root@terraform s3]# terraform init .
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "random" (2.3.1)...
+- Downloading plugin for provider "aws" (2.70.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+* provider.random: version = "~> 2.3"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform s3]# terraform apply -auto-approve
+random_id.myrandomid: Creating...
+  b64:         "" => "<computed>"
+  b64_std:     "" => "<computed>"
+  b64_url:     "" => "<computed>"
+  byte_length: "" => "8"
+  dec:         "" => "<computed>"
+  hex:         "" => "<computed>"
+random_id.myrandomid: Creation complete after 0s (ID: 6NfOcHrboKM)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform s3]# terraform show
+random_id.myrandomid:
+  id = 6NfOcHrboKM
+  b64 = 6NfOcHrboKM
+  b64_std = 6NfOcHrboKM=
+  b64_url = 6NfOcHrboKM
+  byte_length = 8
+  dec = 16778105919284945059
+  hex = e8d7ce707adba0a3
+
+[root@terraform s3]# vi main.tf
+[root@terraform s3]# terraform apply -auto-approve
+random_id.myrandomid: Refreshing state... (ID: 6NfOcHrboKM)
+random_id.myrandomid: Destroying... (ID: 6NfOcHrboKM)
+random_id.myrandomid: Destruction complete after 0s
+random_id.myrandomid: Creating...
+  b64:         "" => "<computed>"
+  b64_std:     "" => "<computed>"
+  b64_url:     "" => "<computed>"
+  byte_length: "" => "2"
+  dec:         "" => "<computed>"
+  hex:         "" => "<computed>"
+random_id.myrandomid: Creation complete after 0s (ID: zKw)
+
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+[root@terraform s3]# terraform show
+random_id.myrandomid:
+  id = zKw
+  b64 = zKw
+  b64_std = zKw=
+  b64_url = zKw
+  byte_length = 2
+  dec = 52396
+  hex = ccac
+
+[root@terraform s3]# #"${random_id.myrandomid.dec}"
+[root@terraform s3]# vi main.tf
+[root@terraform s3]# vi variables.tf
+[root@terraform s3]# vi myvars.tfvars
+[root@terraform s3]# cat main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+resource "random_id" "myrandomid" {
+  byte_length = 2
+}
+
+resource "aws_s3_bucket" "mys3" {
+  bucket = "${var.bucket_name}-${random_id.myrandomid.dec}"
+
+  tags = {
+    Name        = "${var.bucket_name}-${random_id.myrandomid.dec}"
+
+  }
+}
+[root@terraform s3]# cat variables.tf
+/*Variables*/
+variable "region" {}
+variable "bucket_name" {}
+[root@terraform s3]# cat myvars.tfvars
+/*tfvars*/
+region="us-east-1"
+bucket_name="dvsbatch1"
+[root@terraform s3]# terraform plan
+var.bucket_name
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+Error: Error asking for user input: Error asking for bucket_name: interrupted
+
+
+[root@terraform s3]# terraform plan -var-file myvars.tfvars
+Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+random_id.myrandomid: Refreshing state... (ID: zKw)
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + aws_s3_bucket.mys3
+      id:                          <computed>
+      acceleration_status:         <computed>
+      acl:                         "private"
+      arn:                         <computed>
+      bucket:                      "dvsbatch1-52396"
+      bucket_domain_name:          <computed>
+      bucket_regional_domain_name: <computed>
+      force_destroy:               "false"
+      hosted_zone_id:              <computed>
+      region:                      <computed>
+      request_payer:               <computed>
+      tags.%:                      "1"
+      tags.Name:                   "dvsbatch1-52396"
+      versioning.#:                <computed>
+      website_domain:              <computed>
+      website_endpoint:            <computed>
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[root@terraform s3]# terraform apply -auto-approve -var-file myvars.tfvars
+random_id.myrandomid: Refreshing state... (ID: zKw)
+aws_s3_bucket.mys3: Creating...
+  acceleration_status:         "" => "<computed>"
+  acl:                         "" => "private"
+  arn:                         "" => "<computed>"
+  bucket:                      "" => "dvsbatch1-52396"
+  bucket_domain_name:          "" => "<computed>"
+  bucket_regional_domain_name: "" => "<computed>"
+  force_destroy:               "" => "false"
+  hosted_zone_id:              "" => "<computed>"
+  region:                      "" => "<computed>"
+  request_payer:               "" => "<computed>"
+  tags.%:                      "" => "1"
+  tags.Name:                   "" => "dvsbatch1-52396"
+  versioning.#:                "" => "<computed>"
+  website_domain:              "" => "<computed>"
+  website_endpoint:            "" => "<computed>"
+aws_s3_bucket.mys3: Creation complete after 1s (ID: dvsbatch1-52396)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform s3]# terraform show
+aws_s3_bucket.mys3:
+  id = dvsbatch1-52396
+  acceleration_status =
+  acl = private
+  arn = arn:aws:s3:::dvsbatch1-52396
+  bucket = dvsbatch1-52396
+  bucket_domain_name = dvsbatch1-52396.s3.amazonaws.com
+  bucket_regional_domain_name = dvsbatch1-52396.s3.amazonaws.com
+  cors_rule.# = 0
+  force_destroy = false
+  grant.# = 0
+  hosted_zone_id = Z3AQBSTGFYJSTF
+  lifecycle_rule.# = 0
+  logging.# = 0
+  object_lock_configuration.# = 0
+  region = us-east-1
+  replication_configuration.# = 0
+  request_payer = BucketOwner
+  server_side_encryption_configuration.# = 0
+  tags.% = 1
+  tags.Name = dvsbatch1-52396
+  versioning.# = 1
+  versioning.0.enabled = false
+  versioning.0.mfa_delete = false
+  website.# = 0
+random_id.myrandomid:
+  id = zKw
+  b64 = zKw
+  b64_std = zKw=
+  b64_url = zKw
+  byte_length = 2
+  dec = 52396
+  hex = ccac
+
+[root@terraform s3]# terraform destroy -auto-approve -var-file myvars.tfvars
+random_id.myrandomid: Refreshing state... (ID: zKw)
+aws_s3_bucket.mys3: Refreshing state... (ID: dvsbatch1-52396)
+aws_s3_bucket.mys3: Destroying... (ID: dvsbatch1-52396)
+aws_s3_bucket.mys3: Destruction complete after 0s
+random_id.myrandomid: Destroying... (ID: zKw)
+random_id.myrandomid: Destruction complete after 0s
+
+Destroy complete! Resources: 2 destroyed.
+[root@terraform s3]#
+[root@terraform s3]# pwd
+/root/modules/s3
+[root@terraform s3]# cd ..
+[root@terraform modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 137 Apr 30 02:57 s3
+[root@terraform modules]# mkdir vpc
+[root@terraform modules]# cd vpc/
+[root@terraform vpc]# pwd
+/root/modules/vpc
+[root@terraform vpc]#
+[root@terraform vpc]#
+[root@terraform vpc]#
+[root@terraform vpc]# vi main.tf
+[root@terraform vpc]# vi variables.tf
+[root@terraform vpc]# vi myvars.tfvars
+[root@terraform vpc]# cat main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+
+resource "aws_vpc" "myvpc" {
+  cidr_block       = "${var.vpc_cidr}"
+  tags = {
+    Name = "${var.vpc_name}"
+  }
+}
+
+[root@terraform vpc]# cat variables.tf
+/*Variables*/
+variable "region" {}
+variable "vpc_cidr" {}
+variable "vpc_name" {}
+[root@terraform vpc]# cat myvars.tfvars
+/*tfvars*
+region="us-east-1"
+vpc_cidr="192.170.0.0/16"
+vpc_name="dvs-vpc"
+[root@terraform vpc]#
+[root@terraform vpc]# terraform init .
+
+Initializing provider plugins...
+- Checking for available provider plugins on https://releases.hashicorp.com...
+- Downloading plugin for provider "aws" (2.70.0)...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]#
+[root@terraform vpc]# ls -l
+total 12
+-rw-r--r-- 1 root root 163 Apr 30 03:07 main.tf
+-rw-r--r-- 1 root root  74 Apr 30 03:07 myvars.tfvars
+-rw-r--r-- 1 root root  81 Apr 30 03:07 variables.tf
+[root@terraform vpc]# terraform apply -autoapprove -var-file myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]# terraform apply -autoapprove -var-file=myvars.tfvars
+[root@terraform vpc]# terraform apply -autoapprove -var-file=myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]# terraform apply -auto-approve -var-file=myvars.tfvars
+[root@terraform vpc]# terraform apply -auto-approve -var-file=myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]#
+[root@terraform vpc]# terraform apply -auto-approve
+var.region
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+Error: Error asking for user input: Error asking for region: interrupted
+
+
+[root@terraform vpc]# terraform apply -auto-approve -var-file=myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]# ls -l myvars.tfvars
+-rw-r--r-- 1 root root 74 Apr 30 03:07 myvars.tfvars
+[root@terraform vpc]# terraform apply -auto-approve -var-file=./myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]#
+[root@terraform vpc]#
+[root@terraform vpc]#
+[root@terraform vpc]#
+[root@terraform vpc]# terraform apply -auto-approve
+var.region
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+Error: Error asking for user input: Error asking for region: interrupted
+
+
+[root@terraform vpc]# history
+    1  vi test.sh
+    2  cat test.sh
+    3  bash test.sh
+    4  id -a testuser
+    5  bash test.sh
+    6  echo $?
+    7  sudo curl -O https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+    8  sudo yum install -y unzip
+    9  sudo unzip terraform_0.11.13_linux_amd64.zip -d /usr/bin/
+   10  terraform --version
+   11  aws configure
+   12  aws s3 ls
+   13  mkdir terraformbasics
+   14  cd terraformbasics/
+   15  ls -l
+   16  vi main.tf
+   17  cat main.tf
+   18  pwd
+   19  ls -al
+   20  mkdir .shan
+   21  ls -l
+   22  ls -al
+   23  rm -rf .shan/
+   24  ls -l
+   25  terraform init .
+   26  cat main.tf
+   27  ls -la
+   28  ls -l .terraform/plugins/
+   29  ls -l .terraform/plugins/linux_amd64/
+   30  terraform plan
+   31  terraform apply
+   32  terraform destroy
+   33  terraform apply
+   34  terraform apply -auto-approve
+   35  ls -l
+   36  cat terraform.tfstate
+   37  #cat terraform.tfstate
+   38  ls -l
+   39  terraform show
+   40  #cp terraform.tfstate.backup terraform.tfstate
+   41  vi main.tf
+   42  cat main.tf
+   43  terraform apply
+   44  vi main.tf
+   45  cat main.tf
+   46  terraform apply
+   47  terraform apply -var mykey_name="dvsbatch1-key1"
+   48  #terraform apply -var mykey_name="dvsbatch1-key1" -var var2=val2 -var var3=val3 -var  var4=val4 ..........
+   49  vi myvar.tfvars
+   50  cat myvar.tfvars
+   51  terraform apply -vars-file=myvar.tfvars
+   52  terraform apply -var-file=myvar.tfvars
+   53  #terraform apply -var-file=myvar.tfvars
+   54  terraform show
+   55  terraform destroy  -auto-appvoe
+   56  terraform destroy  -auto-approve
+   57  terraform show
+   58  cat terraform.tfstate
+   59  vi main.tf
+   60  cat main.tf
+   61  terraform plan
+   62  terraform apply
+   63  vi main.tf
+   64  cat main.tf
+   65  terraform apply -auto-approve
+   66  terraform apply -auto-approve -var myservername="Terr-server1"
+   67  cat main.tf
+   68  terraform show
+   69  vi main.tf
+   70  terraform apply -auto-approve -var myservername="Terr-server1"
+   71  terraform show
+   72  cat main.tf
+   73  vi main.tf
+   74  cat main.tf
+   75  vi variables.tf
+   76  vi outputs.tf
+   77  vi main.tf
+   78  ls -l
+   79  cat main.tf
+   80  cat outputs.tf
+   81  cat variables.tf
+   82  terraform apply -auto-approve -var myservername="Terr-server1"
+   83  cat ~/.aws/config
+   84  cat ~/.aws/credentials
+   85  ls -l
+   86  cat main.tf
+   87  terraform destroy -auto-approve -var myservername="Terr-server1"
+   88  init 0
+   89  hostnamectl set-hostname terraform
+   90  bash
+   91  mkdir myspaec
+   92  mv myspaec myspace
+   93  cd myspace/
+   94  cd mysp
+   95  ls  -l
+   96  ls -al
+   97  touch {main.tf,variables.tf,outputs.tf,myvars.tfvars}
+   98  ls -l
+   99  vi main.tf
+  100  cat main.tf
+  101  vi variables.tf
+  102  vi main.tf
+  103  cat main.tf
+  104  cat variables.tf
+  105  vi variables.tf
+  106  vi main.tf
+  107  cat variables.tf
+  108  cat main.tf
+  109  terraform init .
+  110  vi main.tf
+  111  cat main.tf
+  112  terraform init .
+  113  vi variables.tf
+  114  terraform init .
+  115  cat variables.tf
+  116  vi variables.tf
+  117  cat variables.tf
+  118  terraform init .
+  119  cat variables.tf
+  120  cat main.tf
+  121  terraform plan -auto-approve -var env=dev
+  122  terraform plan -var env=dev
+  123  #terraform plan -var env=dev
+  124  #terraform plan -var env=prod
+  125  terraform plan -var env=prod
+  126  terraform apply -auto-approve -var env=dev
+  127  terraform apply -auto-approve -var env=prod
+  128  ls -l
+  129  cat terraform.tfstate
+  130  terraform destroy -auto-approve -var env=prod
+  131  terraform show
+  132  cat terraform.tfstate
+  133  ls -al
+  134  terraform workspace list
+  135  terraform workspace -h
+  136  terraform workspace new dev
+  137  ls -al
+  138  ls -l terraform.tfstate.d
+  139  terraform workspace new prod
+  140  ls -l terraform.tfstate.d
+  141  terraform workspace  list
+  142  terraform workspace select dev
+  143  terraform workspace list
+  144  terraform workspace -h
+  145  ls
+  146  ls -l terraform.tfstate.d/dev/
+  147  terraform workspace list
+  148  terraform apply -auto-approve -var env=dev
+  149  cat terraform.tfstate
+  150  cat terraform.tfstate.d/dev/terraform.tfstate
+  151  terraform workspace list
+  152  terraform workspace select prod
+  153  terraform workspace list
+  154  terraform show
+  155  terraform destroy -auto-approve -var env=prod
+  156  ls -l
+  157  terraform apply -auto-approve -var env=prod
+  158  ls -l terraform.tfstate.d/dev/
+  159  ls -l terraform.tfstate.d/prod/
+  160  ls -l terraform.tfstate
+  161  ls -l
+  162  cat main.tf
+  163  cd ..
+  164  ls -l
+  165  mkdir modules
+  166  cd modules/
+  167  ls -l
+  168  pwd
+  169  mkdir s3
+  170  cd s3
+  171  ls -l
+  172  vi main.tf
+  173  vi variables.tf
+  174  cat main.tf
+  175  cat variables.tf
+  176  terraform init .
+  177  vi variables.tf
+  178  vi main.tf
+  179  terraform init .
+  180  vi variables.tf
+  181  terraform init .
+  182  terraform apply -auto-approve
+  183  terraform show
+  184  vi main.tf
+  185  terraform apply -auto-approve
+  186  terraform show
+  187  #"${random_id.myrandomid.dec}"
+  188  vi main.tf
+  189  vi variables.tf
+  190  vi myvars.tfvars
+  191  cat main.tf
+  192  cat variables.tf
+  193  cat myvars.tfvars
+  194  terraform plan
+  195  terraform plan -var-file myvars.tfvars
+  196  terraform apply -auto-approve -var-file myvars.tfvars
+  197  terraform show
+  198  terraform destroy -auto-approve -var-file myvars.tfvars
+  199  pwd
+  200  cd ..
+  201  ls -l
+  202  mkdir vpc
+  203  cd vpc/
+  204  pwd
+  205  vi main.tf
+  206  vi variables.tf
+  207  vi myvars.tfvars
+  208  cat main.tf
+  209  cat variables.tf
+  210  cat myvars.tfvars
+  211  terraform init .
+  212  terraform apply -auto-approve -var-file myvars.tfvars
+  213  ls -l
+  214  terraform apply -autoapprove -var-file myvars.tfvars
+  215  terraform apply -autoapprove -var-file=myvars.tfvars
+  216  terraform apply -auto-approve -var-file=myvars.tfvars
+  217  terraform apply -auto-approve
+  218  terraform apply -auto-approve -var-file=myvars.tfvars
+  219  ls -l myvars.tfvars
+  220  terraform apply -auto-approve -var-file=./myvars.tfvars
+  221  terraform apply -auto-approve
+  222  history
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+Usage: terraform apply [options] [DIR-OR-PLAN]
+
+  Builds or changes infrastructure according to Terraform configuration
+  files in DIR.
+
+  By default, apply scans the current directory for the configuration
+  and applies the changes appropriately. However, a path to another
+  configuration or an execution plan can be provided. Execution plans can be
+  used to only execute a pre-determined set of actions.
+
+Options:
+
+  -backup=path           Path to backup the existing state file before
+                         modifying. Defaults to the "-state-out" path with
+                         ".backup" extension. Set to "-" to disable backup.
+
+  -auto-approve          Skip interactive approval of plan before applying.
+
+  -lock=true             Lock the state file when locking is supported.
+
+  -lock-timeout=0s       Duration to retry a state lock.
+
+  -input=true            Ask for input for variables if not directly set.
+
+  -no-color              If specified, output won't contain any color.
+
+  -parallelism=n         Limit the number of parallel resource operations.
+                         Defaults to 10.
+
+  -refresh=true          Update state prior to checking for differences. This
+                         has no effect if a plan file is given to apply.
+
+  -state=path            Path to read and save state (unless state-out
+                         is specified). Defaults to "terraform.tfstate".
+
+  -state-out=path        Path to write state to that is different than
+                         "-state". This can be used to preserve the old
+                         state.
+
+  -target=resource       Resource to target. Operation will be limited to this
+                         resource and its dependencies. This flag can be used
+                         multiple times.
+
+  -var 'foo=bar'         Set a variable in the Terraform configuration. This
+                         flag can be set multiple times.
+
+  -var-file=foo          Set variables in the Terraform configuration from
+                         a file. If "terraform.tfvars" or any ".auto.tfvars"
+                         files are present, they will be automatically loaded.
+[root@terraform vpc]# cat myvars.tfvars
+/*tfvars*
+region="us-east-1"
+vpc_cidr="192.170.0.0/16"
+vpc_name="dvs-vpc"
+[root@terraform vpc]# cat ../s3/myvars.tfvars
+/*tfvars*/
+region="us-east-1"
+bucket_name="dvsbatch1"
+[root@terraform vpc]# vi myvars.tfvars
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Creating...
+  arn:                              "" => "<computed>"
+  assign_generated_ipv6_cidr_block: "" => "false"
+  cidr_block:                       "" => "192.170.0.0/16"
+  default_network_acl_id:           "" => "<computed>"
+  default_route_table_id:           "" => "<computed>"
+  default_security_group_id:        "" => "<computed>"
+  dhcp_options_id:                  "" => "<computed>"
+  enable_classiclink:               "" => "<computed>"
+  enable_classiclink_dns_support:   "" => "<computed>"
+  enable_dns_hostnames:             "" => "<computed>"
+  enable_dns_support:               "" => "true"
+  instance_tenancy:                 "" => "default"
+  ipv6_association_id:              "" => "<computed>"
+  ipv6_cidr_block:                  "" => "<computed>"
+  main_route_table_id:              "" => "<computed>"
+  owner_id:                         "" => "<computed>"
+  tags.%:                           "" => "1"
+  tags.Name:                        "" => "dvs-vpc"
+aws_vpc.myvpc: Creation complete after 2s (ID: vpc-0ff077339b4c22bde)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform vpc]# terraform show
+aws_vpc.myvpc:
+  id = vpc-0ff077339b4c22bde
+  arn = arn:aws:ec2:us-east-1:140770401787:vpc/vpc-0ff077339b4c22bde
+  assign_generated_ipv6_cidr_block = false
+  cidr_block = 192.170.0.0/16
+  default_network_acl_id = acl-0b720e129bb614579
+  default_route_table_id = rtb-0b15188af0105c020
+  default_security_group_id = sg-0d478b2811865bc15
+  dhcp_options_id = dopt-b292c3c8
+  enable_classiclink = false
+  enable_classiclink_dns_support = false
+  enable_dns_hostnames = false
+  enable_dns_support = true
+  instance_tenancy = default
+  ipv6_association_id =
+  ipv6_cidr_block =
+  main_route_table_id = rtb-0b15188af0105c020
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-vpc
+
+[root@terraform vpc]# #${aws_vpc.myvpc.id}
+[root@terraform vpc]# vi main.tf
+[root@terraform vpc]# vi variables.tf
+[root@terraform vpc]# vi myvars.tfvars
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... (ID: vpc-0ff077339b4c22bde)
+aws_internet_gateway.myigw: Creating...
+  arn:       "" => "<computed>"
+  owner_id:  "" => "<computed>"
+  tags.%:    "0" => "1"
+  tags.Name: "" => "dvs-igw"
+  vpc_id:    "" => "vpc-0ff077339b4c22bde"
+aws_internet_gateway.myigw: Creation complete after 0s (ID: igw-0c076909855e996ea)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform vpc]# terraform show
+aws_internet_gateway.myigw:
+  id = igw-0c076909855e996ea
+  arn = arn:aws:ec2:us-east-1:140770401787:internet-gateway/igw-0c076909855e996ea
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-igw
+  vpc_id = vpc-0ff077339b4c22bde
+aws_vpc.myvpc:
+  id = vpc-0ff077339b4c22bde
+  arn = arn:aws:ec2:us-east-1:140770401787:vpc/vpc-0ff077339b4c22bde
+  assign_generated_ipv6_cidr_block = false
+  cidr_block = 192.170.0.0/16
+  default_network_acl_id = acl-0b720e129bb614579
+  default_route_table_id = rtb-0b15188af0105c020
+  default_security_group_id = sg-0d478b2811865bc15
+  dhcp_options_id = dopt-b292c3c8
+  enable_classiclink = false
+  enable_classiclink_dns_support = false
+  enable_dns_hostnames = false
+  enable_dns_support = true
+  instance_tenancy = default
+  ipv6_association_id =
+  ipv6_cidr_block =
+  main_route_table_id = rtb-0b15188af0105c020
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-vpc
+
+[root@terraform vpc]# vi main.tf
+[root@terraform vpc]# vi variables.tf
+[root@terraform vpc]# vi myvars.tfvars
+[root@terraform vpc]# terraform init .
+There are some problems with the configuration, described below.
+
+The Terraform configuration must be valid before initialization so that
+Terraform can determine which modules and providers need to be installed.
+
+Error: Error parsing /root/modules/vpc/main.tf: At 41:14: illegal char
+
+
+[root@terraform vpc]# vi /root/modules/vpc/main.tf
+[root@terraform vpc]# terraform init .
+
+Initializing provider plugins...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... (ID: vpc-0ff077339b4c22bde)
+aws_internet_gateway.myigw: Refreshing state... (ID: igw-0c076909855e996ea)
+aws_subnet.mysub: Creating...
+  arn:                             "" => "<computed>"
+  assign_ipv6_address_on_creation: "" => "false"
+  availability_zone:               "" => "<computed>"
+  availability_zone_id:            "" => "<computed>"
+  cidr_block:                      "" => "192.170.5.0/24"
+  ipv6_cidr_block:                 "" => "<computed>"
+  ipv6_cidr_block_association_id:  "" => "<computed>"
+  map_public_ip_on_launch:         "" => "false"
+  owner_id:                        "" => "<computed>"
+  tags.%:                          "" => "1"
+  tags.Name:                       "" => "dvs-sub1"
+  vpc_id:                          "" => "vpc-0ff077339b4c22bde"
+aws_route_table.myroute: Creating...
+  owner_id:                                   "" => "<computed>"
+  propagating_vgws.#:                         "" => "<computed>"
+  route.#:                                    "" => "1"
+  route.2195890796.cidr_block:                "" => "0.0.0.0/0"
+  route.2195890796.egress_only_gateway_id:    "" => ""
+  route.2195890796.gateway_id:                "" => "igw-0c076909855e996ea"
+  route.2195890796.instance_id:               "" => ""
+  route.2195890796.ipv6_cidr_block:           "" => ""
+  route.2195890796.nat_gateway_id:            "" => ""
+  route.2195890796.network_interface_id:      "" => ""
+  route.2195890796.transit_gateway_id:        "" => ""
+  route.2195890796.vpc_peering_connection_id: "" => ""
+  tags.%:                                     "" => "1"
+  tags.Name:                                  "" => "dvs-route"
+  vpc_id:                                     "" => "vpc-0ff077339b4c22bde"
+aws_subnet.mysub: Creation complete after 1s (ID: subnet-0d9a980c5d42da21f)
+aws_route_table.myroute: Creation complete after 1s (ID: rtb-0d2b33616fb2b21fe)
+aws_route_table_association.routeassoc: Creating...
+  route_table_id: "" => "rtb-0d2b33616fb2b21fe"
+  subnet_id:      "" => "subnet-0d9a980c5d42da21f"
+aws_route_table_association.routeassoc: Creation complete after 0s (ID: rtbassoc-02bd52e9aa61724c8)
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+[root@terraform vpc]# ls -l
+total 24
+-rw-r--r-- 1 root root  807 Apr 30 03:28 main.tf
+-rw-r--r-- 1 root root  165 Apr 30 03:27 myvars.tfvars
+-rw-r--r-- 1 root root 7202 Apr 30 03:28 terraform.tfstate
+-rw-r--r-- 1 root root 3046 Apr 30 03:28 terraform.tfstate.backup
+-rw-r--r-- 1 root root  177 Apr 30 03:27 variables.tf
+[root@terraform vpc]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "6fe9d82f-5521-795f-bb00-4519ffff8490",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_internet_gateway.myigw": {
+                    "type": "aws_internet_gateway",
+                    "depends_on": [
+                        "aws_vpc.myvpc"
+                    ],
+                    "primary": {
+                        "id": "igw-0c076909855e996ea",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:internet-gateway/igw-0c076909855e996ea",
+                            "id": "igw-0c076909855e996ea",
+                            "owner_id": "140770401787",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-igw",
+                            "vpc_id": "vpc-0ff077339b4c22bde"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table.myroute": {
+                    "type": "aws_route_table",
+                    "depends_on": [
+                        "aws_internet_gateway.myigw",
+                        "aws_vpc.myvpc"
+                    ],
+                    "primary": {
+                        "id": "rtb-0d2b33616fb2b21fe",
+                        "attributes": {
+                            "id": "rtb-0d2b33616fb2b21fe",
+                            "owner_id": "140770401787",
+                            "propagating_vgws.#": "0",
+                            "route.#": "1",
+                            "route.2195890796.cidr_block": "0.0.0.0/0",
+                            "route.2195890796.egress_only_gateway_id": "",
+                            "route.2195890796.gateway_id": "igw-0c076909855e996ea",
+                            "route.2195890796.instance_id": "",
+                            "route.2195890796.ipv6_cidr_block": "",
+                            "route.2195890796.nat_gateway_id": "",
+                            "route.2195890796.network_interface_id": "",
+                            "route.2195890796.transit_gateway_id": "",
+                            "route.2195890796.vpc_peering_connection_id": "",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-route",
+                            "vpc_id": "vpc-0ff077339b4c22bde"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_route_table_association.routeassoc": {
+                    "type": "aws_route_table_association",
+                    "depends_on": [
+                        "aws_route_table.myroute",
+                        "aws_subnet.mysub"
+                    ],
+                    "primary": {
+                        "id": "rtbassoc-02bd52e9aa61724c8",
+                        "attributes": {
+                            "id": "rtbassoc-02bd52e9aa61724c8",
+                            "route_table_id": "rtb-0d2b33616fb2b21fe",
+                            "subnet_id": "subnet-0d9a980c5d42da21f"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_subnet.mysub": {
+                    "type": "aws_subnet",
+                    "depends_on": [
+                        "aws_vpc.myvpc"
+                    ],
+                    "primary": {
+                        "id": "subnet-0d9a980c5d42da21f",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:subnet/subnet-0d9a980c5d42da21f",
+                            "assign_ipv6_address_on_creation": "false",
+                            "availability_zone": "us-east-1d",
+                            "availability_zone_id": "use1-az2",
+                            "cidr_block": "192.170.5.0/24",
+                            "id": "subnet-0d9a980c5d42da21f",
+                            "ipv6_cidr_block": "",
+                            "ipv6_cidr_block_association_id": "",
+                            "map_public_ip_on_launch": "false",
+                            "outpost_arn": "",
+                            "owner_id": "140770401787",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-sub1",
+                            "vpc_id": "vpc-0ff077339b4c22bde"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_vpc.myvpc": {
+                    "type": "aws_vpc",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "vpc-0ff077339b4c22bde",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:vpc/vpc-0ff077339b4c22bde",
+                            "assign_generated_ipv6_cidr_block": "false",
+                            "cidr_block": "192.170.0.0/16",
+                            "default_network_acl_id": "acl-0b720e129bb614579",
+                            "default_route_table_id": "rtb-0b15188af0105c020",
+                            "default_security_group_id": "sg-0d478b2811865bc15",
+                            "dhcp_options_id": "dopt-b292c3c8",
+                            "enable_classiclink": "false",
+                            "enable_classiclink_dns_support": "false",
+                            "enable_dns_hostnames": "false",
+                            "enable_dns_support": "true",
+                            "id": "vpc-0ff077339b4c22bde",
+                            "instance_tenancy": "default",
+                            "ipv6_association_id": "",
+                            "ipv6_cidr_block": "",
+                            "main_route_table_id": "rtb-0b15188af0105c020",
+                            "owner_id": "140770401787",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-vpc"
+                        },
+                        "meta": {
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform vpc]#
+[root@terraform vpc]# cat terraform.tfstate.backup
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "6fe9d82f-5521-795f-bb00-4519ffff8490",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_internet_gateway.myigw": {
+                    "type": "aws_internet_gateway",
+                    "depends_on": [
+                        "aws_vpc.myvpc"
+                    ],
+                    "primary": {
+                        "id": "igw-0c076909855e996ea",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:internet-gateway/igw-0c076909855e996ea",
+                            "id": "igw-0c076909855e996ea",
+                            "owner_id": "140770401787",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-igw",
+                            "vpc_id": "vpc-0ff077339b4c22bde"
+                        },
+                        "meta": {},
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                },
+                "aws_vpc.myvpc": {
+                    "type": "aws_vpc",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "vpc-0ff077339b4c22bde",
+                        "attributes": {
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:vpc/vpc-0ff077339b4c22bde",
+                            "assign_generated_ipv6_cidr_block": "false",
+                            "cidr_block": "192.170.0.0/16",
+                            "default_network_acl_id": "acl-0b720e129bb614579",
+                            "default_route_table_id": "rtb-0b15188af0105c020",
+                            "default_security_group_id": "sg-0d478b2811865bc15",
+                            "dhcp_options_id": "dopt-b292c3c8",
+                            "enable_classiclink": "false",
+                            "enable_classiclink_dns_support": "false",
+                            "enable_dns_hostnames": "false",
+                            "enable_dns_support": "true",
+                            "id": "vpc-0ff077339b4c22bde",
+                            "instance_tenancy": "default",
+                            "ipv6_association_id": "",
+                            "ipv6_cidr_block": "",
+                            "main_route_table_id": "rtb-0b15188af0105c020",
+                            "owner_id": "140770401787",
+                            "tags.%": "1",
+                            "tags.Name": "dvs-vpc"
+                        },
+                        "meta": {
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform vpc]#  cp terraform.tfstate terraform.tfstate.backup
+cp: overwrite ‘terraform.tfstate.backup’? y
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... (ID: vpc-0ff077339b4c22bde)
+aws_subnet.mysub: Refreshing state... (ID: subnet-0d9a980c5d42da21f)
+aws_internet_gateway.myigw: Refreshing state... (ID: igw-0c076909855e996ea)
+aws_route_table.myroute: Refreshing state... (ID: rtb-0d2b33616fb2b21fe)
+aws_route_table_association.routeassoc: Refreshing state... (ID: rtbassoc-02bd52e9aa61724c8)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform vpc]# terraform show
+aws_internet_gateway.myigw:
+  id = igw-0c076909855e996ea
+  arn = arn:aws:ec2:us-east-1:140770401787:internet-gateway/igw-0c076909855e996ea
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-igw
+  vpc_id = vpc-0ff077339b4c22bde
+aws_route_table.myroute:
+  id = rtb-0d2b33616fb2b21fe
+  owner_id = 140770401787
+  propagating_vgws.# = 0
+  route.# = 1
+  route.2195890796.cidr_block = 0.0.0.0/0
+  route.2195890796.egress_only_gateway_id =
+  route.2195890796.gateway_id = igw-0c076909855e996ea
+  route.2195890796.instance_id =
+  route.2195890796.ipv6_cidr_block =
+  route.2195890796.nat_gateway_id =
+  route.2195890796.network_interface_id =
+  route.2195890796.transit_gateway_id =
+  route.2195890796.vpc_peering_connection_id =
+  tags.% = 1
+  tags.Name = dvs-route
+  vpc_id = vpc-0ff077339b4c22bde
+aws_route_table_association.routeassoc:
+  id = rtbassoc-02bd52e9aa61724c8
+  route_table_id = rtb-0d2b33616fb2b21fe
+  subnet_id = subnet-0d9a980c5d42da21f
+aws_subnet.mysub:
+  id = subnet-0d9a980c5d42da21f
+  arn = arn:aws:ec2:us-east-1:140770401787:subnet/subnet-0d9a980c5d42da21f
+  assign_ipv6_address_on_creation = false
+  availability_zone = us-east-1d
+  availability_zone_id = use1-az2
+  cidr_block = 192.170.5.0/24
+  ipv6_cidr_block =
+  ipv6_cidr_block_association_id =
+  map_public_ip_on_launch = false
+  outpost_arn =
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-sub1
+  vpc_id = vpc-0ff077339b4c22bde
+aws_vpc.myvpc:
+  id = vpc-0ff077339b4c22bde
+  arn = arn:aws:ec2:us-east-1:140770401787:vpc/vpc-0ff077339b4c22bde
+  assign_generated_ipv6_cidr_block = false
+  cidr_block = 192.170.0.0/16
+  default_network_acl_id = acl-0b720e129bb614579
+  default_route_table_id = rtb-0b15188af0105c020
+  default_security_group_id = sg-0d478b2811865bc15
+  dhcp_options_id = dopt-b292c3c8
+  enable_classiclink = false
+  enable_classiclink_dns_support = false
+  enable_dns_hostnames = false
+  enable_dns_support = true
+  instance_tenancy = default
+  ipv6_association_id =
+  ipv6_cidr_block =
+  main_route_table_id = rtb-0b15188af0105c020
+  owner_id = 140770401787
+  tags.% = 1
+  tags.Name = dvs-vpc
+
+[root@terraform vpc]# terraform init .
+
+Initializing provider plugins...
+
+The following providers do not have any version constraints in configuration,
+so the latest version was installed.
+
+To prevent automatic upgrades to new major versions that may contain breaking
+changes, it is recommended to add version = "..." constraints to the
+corresponding provider blocks in configuration, with the constraint strings
+suggested below.
+
+* provider.aws: version = "~> 2.70"
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@terraform vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... (ID: vpc-0ff077339b4c22bde)
+aws_internet_gateway.myigw: Refreshing state... (ID: igw-0c076909855e996ea)
+aws_subnet.mysub: Refreshing state... (ID: subnet-0d9a980c5d42da21f)
+aws_route_table.myroute: Refreshing state... (ID: rtb-0d2b33616fb2b21fe)
+aws_route_table_association.routeassoc: Refreshing state... (ID: rtbassoc-02bd52e9aa61724c8)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+[root@terraform vpc]# cd ..
+[root@terraform modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 137 Apr 30 02:57 s3
+drwxr-xr-x 3 root root 137 Apr 30 03:34 vpc
+[root@terraform modules]# cd ..
+[root@terraform ~]# ls -l
+total 20640
+drwxr-xr-x 4 root root       27 Apr 30 03:01 modules
+drwxr-xr-x 4 root root      182 Apr 30 02:20 myspace
+-rw-r--r-- 1 root root 21128942 Apr 29 01:41 terraform_0.11.13_linux_amd64.zip
+drwxr-xr-x 3 root root      154 Apr 29 03:34 terraformbasics
+-rw-r--r-- 1 root root       29 Apr 28 03:22 test.sh
+[root@terraform ~]# cd myspace/
+[root@terraform myspace]# ls -l
+total 20
+-rw-r--r-- 1 root root  267 Apr 30 01:57 main.tf
+-rw-r--r-- 1 root root    0 Apr 30 01:42 myvars.tfvars
+-rw-r--r-- 1 root root    0 Apr 30 01:42 outputs.tf
+-rw-r--r-- 1 root root  318 Apr 30 02:14 terraform.tfstate
+-rw-r--r-- 1 root root 4540 Apr 30 02:14 terraform.tfstate.backup
+drwxr-xr-x 4 root root   29 Apr 30 02:20 terraform.tfstate.d
+-rw-r--r-- 1 root root  261 Apr 30 01:59 variables.tf
+[root@terraform myspace]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "a6301620-8e74-f2fd-efd2-8a78736f87c7",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {},
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# terraform apply -auto-approve -var env=dev
+aws_instance.myec2: Refreshing state... (ID: i-0bab49d76d842fab4)
+aws_instance.myec2: Destroying... (ID: i-0bab49d76d842fab4)
+aws_instance.myec2: Still destroying... (ID: i-0bab49d76d842fab4, 10s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0bab49d76d842fab4, 20s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0bab49d76d842fab4, 30s elapsed)
+aws_instance.myec2: Destruction complete after 39s
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "dev-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "dev-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Still creating... (30s elapsed)
+aws_instance.myec2: Creation complete after 32s (ID: i-0736732e6d493db20)
+
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+[root@terraform myspace]# cat terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "a6301620-8e74-f2fd-efd2-8a78736f87c7",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {},
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# terraform workspace list
+  default
+  dev
+* prod
+
+[root@terraform myspace]# cat terraform.tfstate.d/prod/terraform.tfstate
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "b195d5d3-4b7c-9327-8831-cfa4fa427a69",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_instance.myec2": {
+                    "type": "aws_instance",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "i-0736732e6d493db20",
+                        "attributes": {
+                            "ami": "ami-048f6ed62451373d9",
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:instance/i-0736732e6d493db20",
+                            "associate_public_ip_address": "true",
+                            "availability_zone": "us-east-1a",
+                            "cpu_core_count": "1",
+                            "cpu_threads_per_core": "1",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "ephemeral_block_device.#": "0",
+                            "get_password_data": "false",
+                            "hibernation": "false",
+                            "iam_instance_profile": "",
+                            "id": "i-0736732e6d493db20",
+                            "instance_state": "running",
+                            "instance_type": "t2.micro",
+                            "ipv6_address_count": "0",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "dev-key",
+                            "metadata_options.#": "1",
+                            "metadata_options.0.http_endpoint": "enabled",
+                            "metadata_options.0.http_put_response_hop_limit": "1",
+                            "metadata_options.0.http_tokens": "optional",
+                            "monitoring": "false",
+                            "network_interface.#": "0",
+                            "outpost_arn": "",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-0a54d049b9c443e6f",
+                            "private_dns": "ip-172-31-22-65.ec2.internal",
+                            "private_ip": "172.31.22.65",
+                            "public_dns": "ec2-34-224-61-116.compute-1.amazonaws.com",
+                            "public_ip": "34.224.61.116",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.device_name": "/dev/xvda",
+                            "root_block_device.0.encrypted": "false",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.kms_key_id": "",
+                            "root_block_device.0.volume_id": "vol-0c136d098695463bc",
+                            "root_block_device.0.volume_size": "8",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "1",
+                            "security_groups.3814588639": "default",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-cf745f82",
+                            "tags.%": "1",
+                            "tags.Name": "dev-server",
+                            "tenancy": "default",
+                            "volume_tags.%": "0",
+                            "vpc_security_group_ids.#": "1",
+                            "vpc_security_group_ids.587548007": "sg-cc436dc0"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# cat terraform.tfstate.d/prod/terraform.tfstate.backup
+{
+    "version": 3,
+    "terraform_version": "0.11.13",
+    "serial": 3,
+    "lineage": "b195d5d3-4b7c-9327-8831-cfa4fa427a69",
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {},
+            "resources": {
+                "aws_instance.myec2": {
+                    "type": "aws_instance",
+                    "depends_on": [],
+                    "primary": {
+                        "id": "i-0bab49d76d842fab4",
+                        "attributes": {
+                            "ami": "ami-048f6ed62451373d9",
+                            "arn": "arn:aws:ec2:us-east-1:140770401787:instance/i-0bab49d76d842fab4",
+                            "associate_public_ip_address": "true",
+                            "availability_zone": "us-east-1e",
+                            "cpu_core_count": "1",
+                            "cpu_threads_per_core": "1",
+                            "credit_specification.#": "1",
+                            "credit_specification.0.cpu_credits": "standard",
+                            "disable_api_termination": "false",
+                            "ebs_block_device.#": "0",
+                            "ebs_optimized": "false",
+                            "ephemeral_block_device.#": "0",
+                            "get_password_data": "false",
+                            "hibernation": "false",
+                            "iam_instance_profile": "",
+                            "id": "i-0bab49d76d842fab4",
+                            "instance_state": "running",
+                            "instance_type": "t2.micro",
+                            "ipv6_address_count": "0",
+                            "ipv6_addresses.#": "0",
+                            "key_name": "prod-key",
+                            "metadata_options.#": "1",
+                            "metadata_options.0.http_endpoint": "enabled",
+                            "metadata_options.0.http_put_response_hop_limit": "1",
+                            "metadata_options.0.http_tokens": "optional",
+                            "monitoring": "false",
+                            "network_interface.#": "0",
+                            "outpost_arn": "",
+                            "password_data": "",
+                            "placement_group": "",
+                            "primary_network_interface_id": "eni-0f8230aed3087250b",
+                            "private_dns": "ip-172-31-55-32.ec2.internal",
+                            "private_ip": "172.31.55.32",
+                            "public_dns": "ec2-34-232-76-231.compute-1.amazonaws.com",
+                            "public_ip": "34.232.76.231",
+                            "root_block_device.#": "1",
+                            "root_block_device.0.delete_on_termination": "true",
+                            "root_block_device.0.device_name": "/dev/xvda",
+                            "root_block_device.0.encrypted": "false",
+                            "root_block_device.0.iops": "100",
+                            "root_block_device.0.kms_key_id": "",
+                            "root_block_device.0.volume_id": "vol-08321ebb27eead5b9",
+                            "root_block_device.0.volume_size": "8",
+                            "root_block_device.0.volume_type": "gp2",
+                            "security_groups.#": "1",
+                            "security_groups.3814588639": "default",
+                            "source_dest_check": "true",
+                            "subnet_id": "subnet-5ab41b6b",
+                            "tags.%": "1",
+                            "tags.Name": "prod-server",
+                            "tenancy": "default",
+                            "volume_tags.%": "0",
+                            "vpc_security_group_ids.#": "1",
+                            "vpc_security_group_ids.587548007": "sg-cc436dc0"
+                        },
+                        "meta": {
+                            "e2bfb730-ecaa-11e6-8f88-34363bc7c4c0": {
+                                "create": 600000000000,
+                                "delete": 1200000000000,
+                                "update": 600000000000
+                            },
+                            "schema_version": "1"
+                        },
+                        "tainted": false
+                    },
+                    "deposed": [],
+                    "provider": "provider.aws"
+                }
+            },
+            "depends_on": []
+        }
+    ]
+}
+[root@terraform myspace]# cp terraform.tfstate.d/prod/terraform.tfstate.backup terraform.tfstate.d/prod/terraform.tfstate
+cp: overwrite ‘terraform.tfstate.d/prod/terraform.tfstate’? ^C
+[root@terraform myspace]# cp terraform.tfstate.d/prod/terraform.tfstate /tmp/
+[root@terraform myspace]# cp terraform.tfstate.d/prod/terraform.tfstate.backup terraform.tfstate.d/prod/terraform.tfstate
+cp: overwrite ‘terraform.tfstate.d/prod/terraform.tfstate’? y
+[root@terraform myspace]# terraform apply -auto-approve -var env=prod
+aws_instance.myec2: Refreshing state... (ID: i-0bab49d76d842fab4)
+aws_instance.myec2: Creating...
+  ami:                          "" => "ami-048f6ed62451373d9"
+  arn:                          "" => "<computed>"
+  associate_public_ip_address:  "" => "<computed>"
+  availability_zone:            "" => "<computed>"
+  cpu_core_count:               "" => "<computed>"
+  cpu_threads_per_core:         "" => "<computed>"
+  ebs_block_device.#:           "" => "<computed>"
+  ephemeral_block_device.#:     "" => "<computed>"
+  get_password_data:            "" => "false"
+  host_id:                      "" => "<computed>"
+  instance_state:               "" => "<computed>"
+  instance_type:                "" => "t2.micro"
+  ipv6_address_count:           "" => "<computed>"
+  ipv6_addresses.#:             "" => "<computed>"
+  key_name:                     "" => "prod-key"
+  metadata_options.#:           "" => "<computed>"
+  network_interface.#:          "" => "<computed>"
+  network_interface_id:         "" => "<computed>"
+  outpost_arn:                  "" => "<computed>"
+  password_data:                "" => "<computed>"
+  placement_group:              "" => "<computed>"
+  primary_network_interface_id: "" => "<computed>"
+  private_dns:                  "" => "<computed>"
+  private_ip:                   "" => "<computed>"
+  public_dns:                   "" => "<computed>"
+  public_ip:                    "" => "<computed>"
+  root_block_device.#:          "" => "<computed>"
+  security_groups.#:            "" => "<computed>"
+  source_dest_check:            "" => "true"
+  subnet_id:                    "" => "<computed>"
+  tags.%:                       "" => "1"
+  tags.Name:                    "" => "prod-server"
+  tenancy:                      "" => "<computed>"
+  volume_tags.%:                "" => "<computed>"
+  vpc_security_group_ids.#:     "" => "<computed>"
+aws_instance.myec2: Still creating... (10s elapsed)
+aws_instance.myec2: Still creating... (20s elapsed)
+aws_instance.myec2: Creation complete after 22s (ID: i-0fb2843e86292ec13)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform myspace]# terraform destroy -auto-approve -var env=prod
+aws_instance.myec2: Refreshing state... (ID: i-0fb2843e86292ec13)
+aws_instance.myec2: Destroying... (ID: i-0fb2843e86292ec13)
+aws_instance.myec2: Still destroying... (ID: i-0fb2843e86292ec13, 10s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0fb2843e86292ec13, 20s elapsed)
+aws_instance.myec2: Destruction complete after 30s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform myspace]# cp /tmp/terraform.tfstate terraform.tfstate.d/prod/
+cp: overwrite ‘terraform.tfstate.d/prod/terraform.tfstate’? y
+[root@terraform myspace]# terraform destroy -auto-approve -var env=dev
+aws_instance.myec2: Refreshing state... (ID: i-0736732e6d493db20)
+aws_instance.myec2: Destroying... (ID: i-0736732e6d493db20)
+aws_instance.myec2: Still destroying... (ID: i-0736732e6d493db20, 10s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0736732e6d493db20, 20s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0736732e6d493db20, 30s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0736732e6d493db20, 40s elapsed)
+aws_instance.myec2: Still destroying... (ID: i-0736732e6d493db20, 50s elapsed)
+aws_instance.myec2: Destruction complete after 1m0s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform myspace]# cd ../modules/
+[root@terraform modules]# cd vpc/
+[root@terraform vpc]# des^C
+[root@terraform vpc]# terraform destroy -auto-approve
+var.igw_name
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+Error: Error asking for user input: Error asking for igw_name: interrupted
+
+
+[root@terraform vpc]# terraform destroy -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... (ID: vpc-0ff077339b4c22bde)
+aws_internet_gateway.myigw: Refreshing state... (ID: igw-0c076909855e996ea)
+aws_subnet.mysub: Refreshing state... (ID: subnet-0d9a980c5d42da21f)
+aws_route_table.myroute: Refreshing state... (ID: rtb-0d2b33616fb2b21fe)
+aws_route_table_association.routeassoc: Refreshing state... (ID: rtbassoc-02bd52e9aa61724c8)
+aws_route_table_association.routeassoc: Destroying... (ID: rtbassoc-02bd52e9aa61724c8)
+aws_route_table_association.routeassoc: Destruction complete after 0s
+aws_subnet.mysub: Destroying... (ID: subnet-0d9a980c5d42da21f)
+aws_route_table.myroute: Destroying... (ID: rtb-0d2b33616fb2b21fe)
+aws_route_table.myroute: Destruction complete after 0s
+aws_internet_gateway.myigw: Destroying... (ID: igw-0c076909855e996ea)
+aws_subnet.mysub: Destruction complete after 1s
+aws_internet_gateway.myigw: Still destroying... (ID: igw-0c076909855e996ea, 10s elapsed)
+aws_internet_gateway.myigw: Destruction complete after 11s
+aws_vpc.myvpc: Destroying... (ID: vpc-0ff077339b4c22bde)
+aws_vpc.myvpc: Destruction complete after 0s
+
+Destroy complete! Resources: 5 destroyed.
+[root@terraform vpc]#

@@ -1,0 +1,79 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 10 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$
+[ec2-user@ip-10-10-11-120 ~]$ ssh 10.10.20.120
+The authenticity of host '10.10.20.120 (10.10.20.120)' can't be established.
+ECDSA key fingerprint is SHA256:aTIFCTnk9F9Mr/NlFqz6mk6+5v0zRVyF552zAfww1/E.
+ECDSA key fingerprint is MD5:da:dd:fc:2e:b1:a6:f0:44:24:a2:3d:9f:b2:8a:e5:d2.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '10.10.20.120' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[ec2-user@ip-10-10-11-120 ~]$ echo "-----BEGIN RSA PRIVATE KEY-----
+> MIIEogIBAAKCAQEAmdBWA43Fns7NH/Abzvbk3GcKiU65D/BqFEBrkKpyqe8P4mW8
+> vn1nrj54T7g6f0jhOn3xGBOJkdjzuKSHdCLGdz6WrxIcCHYJYAfayTpYSQ5XUIiM
+> yGC1AQswzb1Cw66bNfH4VdWfpul+iRJKP9xTw0+Xg7nZmALHQ+Vf6pptkej6/y6n
+> RhMWnB55qXy2kMGJjc6ptx8k+jIKgNDXMR71y9Qxre7A9KWgEB2dWmuo/fcHSsFM
+> uqI2DHPs/noSNUe9Vlj0oUHwk42btnqC9FU4zGi6JeXpSeEWLRP0UDCrsxbbw0Gv
+> U9vbFLiaAQ3FiNeMhPM81eV0PWWjZCHe7Msk/wIDAQABAoIBAG1Bp1du5OkhTGNb
+> UuV4SqikKL/Pw3Sm+TLZb46bBEfhIA9Y5PEKcxM6HIvD+Qlg41uBCjhn6FhJGxYV
+> CIJeEUuykaZZ3r/D2HT2H1rAruV14l+6HwZWazwKjugVf88vv+BZuGSAEZ+mS9Nh
+> wowKHRWm+6D96qonjxOTYsZqW1pAYHFj+LkcPYbJB/zyyu7Vdt9kapZzDS24WVmE
+> ogExe02eqfT3CIJdATjzgvgcIQVf/9jLgB7v+ZbsNfDNkafkqX4e9FbmwSqSUhDl
+> RHNi0PrV0LN0ble2nmmhg4JCfwjsszdtZGZke6k81LXn4vT8VZjT52m72WHcZjHS
+> xIClroECgYEA24SH8bUvvAVW9UwhGxNz0tOBlourBLAyj5KJ8YHj1wKTfG24v7Pd
+> iY44y5nGNblvIHPpppDU4nXSvJyY8dk7Y1c6CVUXAh8u74NtjElmiOFspHKpMgwQ
+> LAuHozO+vS0K0xwValvU5xzCy3b/MzSMgsSHnLKkpYvYdF1HrGWK1qcCgYEAs2Bo
+> GCwSK7gL7yYWGQnzGWEQQ7kgbhDdFQfkdrM3F5N7RB9uHGO58jlHKv79kEubttZt
+> kzBExE597FcgJ/DBr7mm7zmKktom/rbQ1q48ZnYOR1y3lKO48sChUU9x4XBLJGPy
+> cMQQy9vYbiJAD1U4i+akjV2G6pklqnux0fyz4ekCgYAoVptQnFXwPB71po6y1glD
+> paA7lODRVLuFzIzSt2ax3QRTKip398pu+5aOO2zD9JZqJUK7XAPytWoLRM+KKbwT
+> DjVY/6zhs+9BDiq0S8yuvJXlRji3PKZAIcJECD81rjA+CPwadlOSQKO/FdfhhfeI
+> FCtDbUR6M0+MWpPQJzyzIwKBgGRKSKkLKvWqp3GEl+JT/8l2zYMv5IPlhdaWXRRI
+> y0qxOMAz2nqg/3wArlvJybd9roghh4499JTVVe5oICB0qbY4VK94OpQ0yIytZkJB
+> lJ+s7frUSggfKe7/6LHvezqScFDeWNTXqpRwTKf3Gl34Re9ieypW2nIcQkT5d8hy
+> Q5jRAoGAZvfWMYva+M7XghgpPgx1/ocPfkEMVRIL8hxZcN0GToyN3gosrfRD0UZL
+> C0OMZg6pkA8VpUJ8cnL7fTVXowHdhrw8CtUYdOGpZweHdIN4wt6Py1S4/ZfM/pBQ
+> hkSNJ1pcgAMhdf5+PWrRXpXl6BDwINV9f27nM5jftQcn3yQTeMg=
+> -----END RSA PRIVATE KEY-----" > mykey.pem
+[ec2-user@ip-10-10-11-120 ~]$ chmod 600 mykey.pem
+[ec2-user@ip-10-10-11-120 ~]$ ssh -i mykey.pem ec2-user@10.10.20.120
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-10-20-120 ~]$ ^C
+[ec2-user@ip-10-10-20-120 ~]$ logout
+Connection to 10.10.20.120 closed.
+[ec2-user@ip-10-10-11-120 ~]$ ssh saikrishna
+ssh: Could not resolve hostname saikrishna: Name or service not known
+[ec2-user@ip-10-10-11-120 ~]$ sudo vi /etc/hosts
+[ec2-user@ip-10-10-11-120 ~]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+10.10.20.120    saikrishna
+[ec2-user@ip-10-10-11-120 ~]$ ssh saikrishna
+The authenticity of host 'saikrishna (10.10.20.120)' can't be established.
+ECDSA key fingerprint is SHA256:aTIFCTnk9F9Mr/NlFqz6mk6+5v0zRVyF552zAfww1/E.
+ECDSA key fingerprint is MD5:da:dd:fc:2e:b1:a6:f0:44:24:a2:3d:9f:b2:8a:e5:d2.
+Are you sure you want to continue connecting (yes/no)? ^C
+[ec2-user@ip-10-10-11-120 ~]$

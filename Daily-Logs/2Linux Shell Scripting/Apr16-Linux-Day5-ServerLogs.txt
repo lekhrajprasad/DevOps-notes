@@ -1,0 +1,464 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-61-172 ~]$ sudo su -
+[root@ip-172-31-61-172 ~]# hostnamectl set-hostname linuxserver
+[root@ip-172-31-61-172 ~]# bash
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# yum install jenkins
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+No package jenkins available.
+Error: Nothing to do
+[root@linuxserver ~]# yum list all|grep -i jenkins
+[root@linuxserver ~]# yum list all|grep -i httpd
+generic-logos-httpd.noarch             18.0.0-4.amzn2                 amzn2-core
+httpd.x86_64                           2.4.46-1.amzn2                 amzn2-core
+httpd-devel.x86_64                     2.4.46-1.amzn2                 amzn2-core
+httpd-filesystem.noarch                2.4.46-1.amzn2                 amzn2-core
+httpd-manual.noarch                    2.4.46-1.amzn2                 amzn2-core
+httpd-tools.x86_64                     2.4.46-1.amzn2                 amzn2-core
+keycloak-httpd-client-install.noarch   0.8-1.amzn2                    amzn2-core
+libmicrohttpd.i686                     0.9.33-2.amzn2.0.2             amzn2-core
+libmicrohttpd.x86_64                   0.9.33-2.amzn2.0.2             amzn2-core
+libmicrohttpd-devel.x86_64             0.9.33-2.amzn2.0.2             amzn2-core
+libmicrohttpd-doc.noarch               0.9.33-2.amzn2.0.2             amzn2-core
+python2-keycloak-httpd-client-install.noarch
+[root@linuxserver ~]# ls -l /etc/yum.repos.d/
+total 8
+-rw-r--r-- 1 root root 1003 Dec  8 00:40 amzn2-core.repo
+-rw-r--r-- 1 root root 1105 Mar 26 17:36 amzn2-extras.repo
+[root@linuxserver ~]# vi /etc/yum.repos.d/jenkins.repo
+[root@linuxserver ~]# yum list all|wc -l
+8876
+[root@linuxserver ~]# yum repo list
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+No such command: repo. Please use /usr/bin/yum --help
+[root@linuxserver ~]# yum repolist
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+repo id                                                 repo name                                                   status
+amzn2-core/2/x86_64                                     Amazon Linux 2 core repository                              24,086
+amzn2extra-docker/2/x86_64                              Amazon Extras repo for docker                                   40
+jenkins                                                 Jenkins                                                        614
+repolist: 24,740
+[root@linuxserver ~]# yum clean all
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Cleaning repos: amzn2-core amzn2extra-docker jenkins
+Cleaning up everything
+Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
+[root@linuxserver ~]# yum list all|wc -l
+8876
+[root@linuxserver ~]# yum list all|grep -i jenkins
+hudson.noarch                          1.395-1.1                      jenkins
+jenkins.noarch                         2.288-1.1                      jenkins
+[root@linuxserver ~]# yum install jenkins
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Resolving Dependencies
+--> Running transaction check
+---> Package jenkins.noarch 0:2.288-1.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                     Arch                       Version                         Repository                   Size
+==========================================================================================================================
+Installing:
+ jenkins                     noarch                     2.288-1.1                       jenkins                      71 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 71 M
+Installed size: 71 M
+Is this ok [y/d/N]: n
+Exiting on user command
+Your transaction was saved, rerun it with:
+ yum load-transaction /tmp/yum_save_tx.2021-04-16.02-23.KFjFp9.yumtx
+[root@linuxserver ~]#
+[root@linuxserver ~]# ssh server2
+ssh: Could not resolve hostname server2: Name or service not known
+[root@linuxserver ~]# vi /etc/hosts
+[root@linuxserver ~]# ssh server2
+The authenticity of host 'server2 (172.31.61.81)' can't be established.
+ECDSA key fingerprint is SHA256:NordgNFgj1v/ii2dLZfVSTx+wFRNDUQ8ID7NaSOiER8.
+ECDSA key fingerprint is MD5:5a:bf:56:f0:d0:8a:d7:cf:76:3d:56:71:a2:ae:56:26.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server2,172.31.61.81' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@linuxserver ~]# ssh server3
+The authenticity of host 'server3 (172.31.57.58)' can't be established.
+ECDSA key fingerprint is SHA256:repvxY9dzvPl0jsns+4ZNbSBUmL3Z7HnaF9ksSoS8EU.
+ECDSA key fingerprint is MD5:b0:2e:18:2d:29:be:6a:6b:2f:16:67:57:44:4b:d0:8d.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server3,172.31.57.58' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@linuxserver ~]# ssh dvsbatch1@server2
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@linuxserver ~]# ssh dvsbatch1@server3
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@linuxserver ~]# useradd dvsbatch1
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# id -a dvsbatch1
+uid=1001(dvsbatch1) gid=1001(dvsbatch1) groups=1001(dvsbatch1)
+[root@linuxserver ~]# ssh dvsbatch1@server2
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@linuxserver ~]# su - dvsbatch1
+[dvsbatch1@linuxserver ~]$ whoami
+dvsbatch1
+[dvsbatch1@linuxserver ~]$ ls -l /home/dvsbatch1/ -a
+total 12
+drwx------ 2 dvsbatch1 dvsbatch1  62 Apr 16 02:34 .
+drwxr-xr-x 4 root      root       39 Apr 16 02:34 ..
+-rw-r--r-- 1 dvsbatch1 dvsbatch1  18 Jul 15  2020 .bash_logout
+-rw-r--r-- 1 dvsbatch1 dvsbatch1 193 Jul 15  2020 .bash_profile
+-rw-r--r-- 1 dvsbatch1 dvsbatch1 231 Jul 15  2020 .bashrc
+[dvsbatch1@linuxserver ~]$ ssh-keygen -t  rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/dvsbatch1/.ssh/id_rsa):
+Created directory '/home/dvsbatch1/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/dvsbatch1/.ssh/id_rsa.
+Your public key has been saved in /home/dvsbatch1/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:QoldcNo374FQfJkropx/zQR0E8LEaT6uG+AEJ7RbXFQ dvsbatch1@linuxserver
+The key's randomart image is:
++---[RSA 2048]----+
+|    . .o=*E..+   |
+|   . = B .B.*    |
+|    = O o+oo o   |
+|     B  .o=+.    |
+|    ..+oSo.+o    |
+|     o+o  ....   |
+|      .... +.    |
+|        o.. o    |
+|        .o       |
++----[SHA256]-----+
+[dvsbatch1@linuxserver ~]$ ls -la /home/dvsbatch1/
+total 12
+drwx------ 3 dvsbatch1 dvsbatch1  74 Apr 16 02:41 .
+drwxr-xr-x 4 root      root       39 Apr 16 02:34 ..
+-rw-r--r-- 1 dvsbatch1 dvsbatch1  18 Jul 15  2020 .bash_logout
+-rw-r--r-- 1 dvsbatch1 dvsbatch1 193 Jul 15  2020 .bash_profile
+-rw-r--r-- 1 dvsbatch1 dvsbatch1 231 Jul 15  2020 .bashrc
+drwx------ 2 dvsbatch1 dvsbatch1  38 Apr 16 02:41 .ssh
+[dvsbatch1@linuxserver ~]$ ls -la /home/dvsbatch1/.ssh
+total 8
+drwx------ 2 dvsbatch1 dvsbatch1   38 Apr 16 02:41 .
+drwx------ 3 dvsbatch1 dvsbatch1   74 Apr 16 02:41 ..
+-rw------- 1 dvsbatch1 dvsbatch1 1675 Apr 16 02:41 id_rsa
+-rw-r--r-- 1 dvsbatch1 dvsbatch1  403 Apr 16 02:41 id_rsa.pub
+[dvsbatch1@linuxserver ~]$
+[dvsbatch1@linuxserver ~]$ whoami
+dvsbatch1
+[dvsbatch1@linuxserver ~]$ cat /home/dvsbatch1/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfAsiDD1P9m5TuTt1OWwGWusPkknlZkqYqJZNtl3th13LRs7MAVb95OXADm+X4J+qIETFqkFwje3TIh3XrRYW5LbYs+BQn6LhGXCO/buhPtyoBUljtAkD6zvdaeIB/Dv9EiCqFVTQwAWTVjj9xVJYxjvqlgrSXtk09HCjJbKAU8lejYsQoyylnjNupeDox3K8CAoZ1Zo0bOb3rtvqZlgAmu51J5/dPebRyIOa1e/4Dbm16pPYzoojN8/pbTMrLOt34ZwS9JlI9FIxw6p1UBLT2cnKzPAI1IszZDYblQc5PEuIleybjoxlp+yLecvjSIf/a7D0HFLbZwtpaeT/8iTuZ dvsbatch1@linuxserver
+[dvsbatch1@linuxserver ~]$ ssh dvsbatch1@server2
+The authenticity of host 'server2 (172.31.61.81)' can't be established.
+ECDSA key fingerprint is SHA256:NordgNFgj1v/ii2dLZfVSTx+wFRNDUQ8ID7NaSOiER8.
+ECDSA key fingerprint is MD5:5a:bf:56:f0:d0:8a:d7:cf:76:3d:56:71:a2:ae:56:26.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server2,172.31.61.81' (ECDSA) to the list of known hosts.
+Last failed login: Fri Apr 16 02:32:56 UTC 2021 from ip-172-31-61-172.ec2.internal on ssh:notty
+There was 1 failed login attempt since the last successful login.
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[dvsbatch1@server2 ~]$ logout
+Connection to server2 closed.
+[dvsbatch1@linuxserver ~]$
+[dvsbatch1@linuxserver ~]$ ssh dvsbatch1@server3
+The authenticity of host 'server3 (172.31.57.58)' can't be established.
+ECDSA key fingerprint is SHA256:repvxY9dzvPl0jsns+4ZNbSBUmL3Z7HnaF9ksSoS8EU.
+ECDSA key fingerprint is MD5:b0:2e:18:2d:29:be:6a:6b:2f:16:67:57:44:4b:d0:8d.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server3,172.31.57.58' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[dvsbatch1@linuxserver ~]$ cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfAsiDD1P9m5TuTt1OWwGWusPkknlZkqYqJZNtl3th13LRs7MAVb95OXADm+X4J+qIETFqkFwje3TIh3XrRYW5LbYs+BQn6LhGXCO/buhPtyoBUljtAkD6zvdaeIB/Dv9EiCqFVTQwAWTVjj9xVJYxjvqlgrSXtk09HCjJbKAU8lejYsQoyylnjNupeDox3K8CAoZ1Zo0bOb3rtvqZlgAmu51J5/dPebRyIOa1e/4Dbm16pPYzoojN8/pbTMrLOt34ZwS9JlI9FIxw6p1UBLT2cnKzPAI1IszZDYblQc5PEuIleybjoxlp+yLecvjSIf/a7D0HFLbZwtpaeT/8iTuZ dvsbatch1@linuxserver
+[dvsbatch1@linuxserver ~]$ ssh dvsbatch1@server3
+Last failed login: Fri Apr 16 02:33:04 UTC 2021 from ip-172-31-61-172.ec2.internal on ssh:notty
+There was 1 failed login attempt since the last successful login.
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[dvsbatch1@server3 ~]$ logout
+Connection to server3 closed.
+[dvsbatch1@linuxserver ~]$
+[dvsbatch1@linuxserver ~]$ history
+    1  whoami
+    2  ls -l /home/dvsbatch1/ -a
+    3  ssh-keygen -t  rsa
+    4  ls -la /home/dvsbatch1/
+    5  ls -la /home/dvsbatch1/.ssh
+    6  whoami
+    7  cat /home/dvsbatch1/.ssh/id_rsa.pub
+    8  ssh dvsbatch1@server2
+    9  ssh dvsbatch1@server3
+   10  cat ~/.ssh/id_rsa.pub
+   11  ssh dvsbatch1@server3
+   12  history
+[dvsbatch1@linuxserver ~]$ logout
+[root@linuxserver ~]# history
+    1  yum install jenkins
+    2  yum list all|grep -i jenkins
+    3  yum list all|grep -i httpd
+    4  ls -l /etc/yum.repos.d/
+    5  vi /etc/yum.repos.d/jenkins.repo
+    6  yum list all|wc -l
+    7  yum repo list
+    8  yum repolist
+    9  yum clean all
+   10  yum list all|wc -l
+   11  yum list all|grep -i jenkins
+   12  yum install jenkins
+   13  ssh server2
+   14  vi /etc/hosts
+   15  ssh server2
+   16  ssh server3
+   17  ssh dvsbatch1@server2
+   18  ssh dvsbatch1@server3
+   19  useradd dvsbatch1
+   20  id -a dvsbatch1
+   21  ssh dvsbatch1@server2
+   22  su - dvsbatch1
+   23  history
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# ifconfig -a
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.61.172  netmask 255.255.240.0  broadcast 172.31.63.255
+        inet6 fe80::460:dbff:fe02:df8f  prefixlen 64  scopeid 0x20<link>
+        ether 06:60:db:02:df:8f  txqueuelen 1000  (Ethernet)
+        RX packets 79136  bytes 112163351 (106.9 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 33892  bytes 2048403 (1.9 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 8  bytes 648 (648.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 8  bytes 648 (648.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@linuxserver ~]# ls -l /etc/system
+systemd/            system-release      system-release-cpe
+[root@linuxserver ~]# ls -l /etc/sysctl.
+sysctl.conf  sysctl.d/
+[root@linuxserver ~]# ls -l /etc/sysctl.
+sysctl.conf  sysctl.d/
+[root@linuxserver ~]# ls -l /etc/sysctl.d/
+00-defaults.conf  99-amazon.conf    99-sysctl.conf
+[root@linuxserver ~]# ls -l /etc/sysconfig/
+acpid            console/         init             netconsole       rdisc            rsyslog          sysstat.ioconf
+atd              cpupower         irqbalance       network          readonly-root    run-parts
+authconfig       crond            keyboard         network-scripts/ rpcbind          selinux
+chronyd          grub             man-db           nfs              rpc-rquotad      sshd
+clock            i18n             modules/         raid-check       rsyncd           sysstat
+[root@linuxserver ~]# ls -l /etc/sysconfig/net
+[root@linuxserver ~]# ls -l /etc/sysconfig/network-scripts/
+total 256
+-rw-r--r-- 1 root root 13431 Mar 17 18:20 ec2net-functions
+-rwxr-xr-x 1 root root   631 Mar 17 18:20 ec2net.hotplug
+-rw-r--r-- 1 root root   185 Mar 26 17:36 ifcfg-eth0
+-rw-r--r-- 1 root root   254 Mar 29  2019 ifcfg-lo
+lrwxrwxrwx 1 root root    24 Mar 26 17:36 ifdown -> ../../../usr/sbin/ifdown
+-rwxr-xr-x 1 root root   654 Mar 29  2019 ifdown-bnep
+-rwxr-xr-x 1 root root  6532 Mar 29  2019 ifdown-eth
+ 1836 Mar 29  2019 ifup-wireless
+-rwxr-xr-x 1 root root  5419 Mar 29  2019 init.ipv6-global
+-rw-r--r-- 1 root root 21170 Oct  2  2019 network-functions
+-rw-r--r-- 1 root root 31027 Mar 29  2019 network-functions-ipv6
+-rw-r--r-- 1 root root    73 Mar 26 17:36 route-eth0
+[root@linuxserver ~]#
+[root@linuxserver ~]# ls /etc/sysconfig/network-scripts/
+ec2net-functions  ifdown-eth   ifdown-routes    ifup-aliases  ifup-plip    ifup-Team          network-functions-ipv6
+ec2net.hotplug    ifdown-ippp  ifdown-sit       ifup-bnep     ifup-plusb   ifup-TeamPort      route-eth0
+ifcfg-eth0        ifdown-ipv6  ifdown-Team      ifup-eth      ifup-post    ifup-tunnel
+ifcfg-lo          ifdown-isdn  ifdown-TeamPort  ifup-ippp     ifup-ppp     ifup-wireless
+ifdown            ifdown-post  ifdown-tunnel    ifup-ipv6     ifup-routes  init.ipv6-global
+ifdown-bnep       ifdown-ppp   ifup             ifup-isdn     ifup-sit     network-functions
+[root@linuxserver ~]# ifconfig -a
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.61.172  netmask 255.255.240.0  broadcast 172.31.63.255
+        inet6 fe80::460:dbff:fe02:df8f  prefixlen 64  scopeid 0x20<link>
+        ether 06:60:db:02:df:8f  txqueuelen 1000  (Ethernet)
+        RX packets 79387  bytes 112181620 (106.9 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 34072  bytes 2076078 (1.9 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 8  bytes 648 (648.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 8  bytes 648 (648.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@linuxserver ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+BOOTPROTO=dhcp
+ONBOOT=yes
+TYPE=Ethernet
+USERCTL=yes
+PEERDNS=yes
+DHCPV6C=yes
+DHCPV6C_OPTIONS=-nw
+PERSISTENT_DHCLIENT=yes
+RES_OPTIONS="timeout:2 attempts:5"
+DHCP_ARP_CHECK=no
+[root@linuxserver ~]# systemctl status network
+● network.service - LSB: Bring up/down networking
+   Loaded: loaded (/etc/rc.d/init.d/network; bad; vendor preset: disabled)
+   Active: active (running) since Fri 2021-04-16 02:15:30 UTC; 1h 1min ago
+     Docs: man:systemd-sysv-generator(8)
+  Process: 2534 ExecStart=/etc/rc.d/init.d/network start (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/network.service
+           ├─2725 /sbin/dhclient -q -lf /var/lib/dhclient/dhclient--eth0.lease -pf /var/run/dhclient-eth0.pid eth0
+           └─2776 /sbin/dhclient -6 -nw -lf /var/lib/dhclient/dhclient6--eth0.lease -pf /var/run/dhclient6-eth0.pid eth...
+
+Apr 16 03:08:48 linuxserver dhclient[2725]: DHCPACK from 172.31.48.1 (xid=0xf217993)
+Apr 16 03:08:48 linuxserver dhclient[2725]: bound to 172.31.61.172 -- renewal in 1733 seconds.
+Apr 16 03:08:48 linuxserver ec2net[3738]: [get_meta] Querying IMDS for meta-data/network/interfaces/macs/06:60:db:...ipv4s
+Apr 16 03:08:48 linuxserver ec2net[3739]: [get_meta] Getting token for IMDSv2.
+Apr 16 03:08:48 linuxserver ec2net[3742]: [get_meta] Trying to get http://169.254.169.254/latest/meta-data/network...ipv4s
+Apr 16 03:08:48 linuxserver ec2net[3745]: [rewrite_aliases] Rewriting aliases of eth0
+Apr 16 03:10:35 linuxserver dhclient[2776]: XMT: Solicit on eth0, interval 120410ms.
+Apr 16 03:12:35 linuxserver dhclient[2776]: XMT: Solicit on eth0, interval 114110ms.
+Apr 16 03:14:29 linuxserver dhclient[2776]: XMT: Solicit on eth0, interval 114440ms.
+Apr 16 03:16:24 linuxserver dhclient[2776]: XMT: Solicit on eth0, interval 117000ms.
+Hint: Some lines were ellipsized, use -l to show in full.
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 06:60:db:02:df:8f brd ff:ff:ff:ff:ff:ff
+    inet 172.31.61.172/20 brd 172.31.63.255 scope global dynamic eth0
+       valid_lft 3024sec preferred_lft 3024sec
+    inet6 fe80::460:dbff:fe02:df8f/64 scope link
+       valid_lft forever preferred_lft forever
+[root@linuxserver ~]# ifconfig -a
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.61.172  netmask 255.255.240.0  broadcast 172.31.63.255
+        inet6 fe80::460:dbff:fe02:df8f  prefixlen 64  scopeid 0x20<link>
+        ether 06:60:db:02:df:8f  txqueuelen 1000  (Ethernet)
+        RX packets 79735  bytes 112210549 (107.0 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 34397  bytes 2119872 (2.0 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 8  bytes 648 (648.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 8  bytes 648 (648.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# touch dvsbatch1.txt
+[root@linuxserver ~]# scp dvsbatch1.txt ec2-user@server2:/tmp/
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+lost connection
+[root@linuxserver ~]# #scp -i pemkey dvsbatch1.txt ec2-user@server2:/tmp
+[root@linuxserver ~]# su - dvsbatch1
+Last login: Fri Apr 16 02:40:29 UTC 2021 on pts/0
+[dvsbatch1@linuxserver ~]$ ssh server2
+Last login: Fri Apr 16 02:58:12 2021 from ip-172-31-61-172.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[dvsbatch1@server2 ~]$ logout
+Connection to server2 closed.
+[dvsbatch1@linuxserver ~]$ touch test.txt
+[dvsbatch1@linuxserver ~]$ scp test.txt dvsbatch1@server2:/tmp/test.txt
+test.txt                                                                                100%    0     0.0KB/s   00:00
+[dvsbatch1@linuxserver ~]$ logout
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]#
+[root@linuxserver ~]# mkdir /tmp/lekharaj/
+[root@linuxserver ~]# vi /tmp/lekharaj/test.txt
+[root@linuxserver ~]# pwd
+/root
+[root@linuxserver ~]# ln -s /tmp/lekharaj/test.txt mydata
+[root@linuxserver ~]# ls -l mydata
+lrwxrwxrwx 1 root root 22 Apr 16 03:27 mydata -> /tmp/lekharaj/test.txt
+[root@linuxserver ~]# cat mydata
+I am lekhraj working as developer
+[root@linuxserver ~]# vi mydata
+[root@linuxserver ~]# cat /tmp/lekharaj/test.txt
+I am lekhraj working as developer
+HI I am second line
+[root@linuxserver ~]# rpm -qa
+libfastjson-0.99.4-3.amzn2.x86_64
+kbd-misc-1.15.5-15.amzn2.noarch
+libyaml-0.1.4-11.amzn2.0.2.x86_64
+basesystem-10.0-7.amzn2.0.1.noarch
+coreutils-8.22-24.amzn2.x86_64
+libsepol-2.5-8.1.amzn2.0.2.x86_64
+shared-mime-info-1.8-4.amzn2.x86_64
+chkconfig-1.7.4-1.amzn2.0.2.x86_64
+libpwquality-1.2.3-5.amzn2.x86_64
+libdb-5.3.21-24.amzn2.0.3.x86_64
+bind-libs-lite-9.11.4-26.P2.amzn2.4.x86_64
+gawk-4.0.2-4.amzn2.1.2.x86_64
+gettext-0.19.8.1-3.amzn2.x86_64
+
+libdb-utils-5.3.21-24.amzn2.0.3.x86_64
+freetype-2.8-14.amzn2.1.x86_64
+libsmartcols-2.30.2-2.amzn2.0.4.x86_64
+[root@linuxserver ~]#
+[root@linuxserver ~]# #rpm -e pkgname
+[root@linuxserver ~]#

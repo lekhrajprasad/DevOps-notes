@@ -1,0 +1,2069 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-172-31-59-102 ~]$ sudo su -
+[root@ip-172-31-59-102 ~]# hostnamectl set-hostname linuxserver
+[root@ip-172-31-59-102 ~]# bash
+[root@linuxserver ~]#
+[root@linuxserver ~]# pwd
+/root
+[root@linuxserver ~]# cd /tmp/
+[root@linuxserver tmp]# pwd
+/tmp
+[root@linuxserver tmp]# mkdir /tmp/batch1
+[root@linuxserver tmp]# ls -ld /tmp/batch1
+drwxr-xr-x 2 root root 6 Apr 13 01:43 /tmp/batch1
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# touch /tmp/batch1/file1
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 01:54 file1
+[root@linuxserver tmp]# ls -l /tmp/batch1/ -d
+drwxr-xr-x 2 root root 19 Apr 13 01:54 /tmp/batch1/
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 01:54 file1
+[root@linuxserver tmp]# touch /tmp/batch1/file{2..4}
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 01:54 file1
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file2
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file3
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file4
+[root@linuxserver tmp]# chmod 700 /tmp/batch1/
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 01:54 file1
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file2
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file3
+-rw-r--r-- 1 root root 0 Apr 13 01:55 file4
+[root@linuxserver tmp]# ls -ld /tmp/batch1/
+drwx------ 2 root root 58 Apr 13 01:55 /tmp/batch1/
+[root@linuxserver tmp]# chmod 700 /tmp/batch1/ -R
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rwx------ 1 root root 0 Apr 13 01:54 file1
+-rwx------ 1 root root 0 Apr 13 01:55 file2
+-rwx------ 1 root root 0 Apr 13 01:55 file3
+-rwx------ 1 root root 0 Apr 13 01:55 file4
+[root@linuxserver tmp]# useradd linux
+[root@linuxserver tmp]# groupadd dvsbatch1
+[root@linuxserver tmp]# ls -ld /tmp/batch1/
+drwx------ 2 root root 58 Apr 13 01:55 /tmp/batch1/
+[root@linuxserver tmp]# chown linux:dvsbatch1 /tmp/batch1
+[root@linuxserver tmp]# ls -ld /tmp/batch1/
+drwx------ 2 linux dvsbatch1 58 Apr 13 01:55 /tmp/batch1/
+[root@linuxserver tmp]# chmod 775 /tmp/batch1/
+[root@linuxserver tmp]# ls -ld /tmp/batch1/
+drwxrwxr-x 2 linux dvsbatch1 58 Apr 13 01:55 /tmp/batch1/
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rwx------ 1 root root 0 Apr 13 01:54 file1
+-rwx------ 1 root root 0 Apr 13 01:55 file2
+-rwx------ 1 root root 0 Apr 13 01:55 file3
+-rwx------ 1 root root 0 Apr 13 01:55 file4
+[root@linuxserver tmp]# ls -l /tmp/batch1/ -d
+drwxrwxr-x 2 linux dvsbatch1 58 Apr 13 01:55 /tmp/batch1/
+[root@linuxserver tmp]# chown -R linux:dvsbatch1 /tmp/batch1/
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:54 file1
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file2
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file3
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file4
+[root@linuxserver tmp]# #touch /tmp/batch1/file5 /tmp/batch1/file6 /tmp/batch1/file7
+[root@linuxserver tmp]# touch /tmp/batch1/file{5..7}
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:54 file1
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file2
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file3
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file4
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file5
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file6
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file7
+[root@linuxserver tmp]# ls -l /tmp/batch1/ -d
+drwxrwxr-x 2 linux dvsbatch1 97 Apr 13 02:06 /tmp/batch1/
+[root@linuxserver tmp]# ls -l /tmp/batch1/
+total 0
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:54 file1
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file2
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file3
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file4
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file5
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file6
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file7
+[root@linuxserver tmp]# ls -ld /tmp/batch1/
+drwxrwxr-x 2 linux dvsbatch1 97 Apr 13 02:06 /tmp/batch1/
+[root@linuxserver tmp]# useradd murali
+[root@linuxserver tmp]# su - murali
+[murali@linuxserver ~]$ ls -l  /tmp/batch1/
+total 0
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:54 file1
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file2
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file3
+-rwx------ 1 linux dvsbatch1 0 Apr 13 01:55 file4
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file5
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file6
+-rw-r--r-- 1 root  root      0 Apr 13 02:06 file7
+[murali@linuxserver ~]$ ls -ld /tmp/batch1/
+drwxrwxr-x 2 linux dvsbatch1 97 Apr 13 02:06 /tmp/batch1/
+[murali@linuxserver ~]$ logout
+[root@linuxserver tmp]# chmod 750 /tmp/batch1/
+[root@linuxserver tmp]# su - murali
+Last login: Tue Apr 13 02:08:18 UTC 2021 on pts/0
+[murali@linuxserver ~]$ ls -l /tmp/batch1/
+ls: cannot open directory /tmp/batch1/: Permission denied
+[murali@linuxserver ~]$ logout
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# history
+    1  pwd
+    2  cd /tmp/
+    3  pwd
+    4  mkdir /tmp/batch1
+    5  ls -ld /tmp/batch1
+    6  touch /tmp/batch1/file1
+    7  ls -l /tmp/batch1/
+    8  ls -l /tmp/batch1/ -d
+    9  ls -l /tmp/batch1/
+   10  touch /tmp/batch1/file{2..4}
+   11  ls -l /tmp/batch1/
+   12  chmod 700 /tmp/batch1/
+   13  ls -l /tmp/batch1/
+   14  ls -ld /tmp/batch1/
+   15  chmod 700 /tmp/batch1/ -R
+   16  ls -l /tmp/batch1/
+   17  useradd linux
+   18  groupadd dvsbatch1
+   19  ls -ld /tmp/batch1/
+   20  chown linux:dvsbatch1 /tmp/batch1
+   21  ls -ld /tmp/batch1/
+   22  chmod 775 /tmp/batch1/
+   23  ls -ld /tmp/batch1/
+   24  ls -l /tmp/batch1/
+   25  ls -l /tmp/batch1/ -d
+   26  chown -R linux:dvsbatch1 /tmp/batch1/
+   27  ls -l /tmp/batch1/
+   28  #touch /tmp/batch1/file5 /tmp/batch1/file6 /tmp/batch1/file7
+   29  touch /tmp/batch1/file{5..7}
+   30  ls -l /tmp/batch1/
+   31  ls -l /tmp/batch1/ -d
+   32  ls -l /tmp/batch1/
+   33  ls -ld /tmp/batch1/
+   34  useradd murali
+   35  su - murali
+   36  chmod 750 /tmp/batch1/
+   37  su - murali
+   38  history
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# touch /tmp/batch1/testfile
+[root@linuxserver tmp]# ls -l /tmp/batch1/testfile
+-rw-r--r-- 1 root root 0 Apr 13 02:14 /tmp/batch1/testfile
+[root@linuxserver tmp]# vi /tmp/batch1/testfile
+[root@linuxserver tmp]# cat /tmp/batch1/testfile
+line1
+asdfas
+dfas
+df
+asd
+f
+sadfas
+df
+s
+df
+s
+df
+asdf
+
+asdf
+s
+df
+as
+df
+sadf
+
+[root@linuxserver tmp]# cat -n /tmp/batch1/testfile
+     1  line1
+     2  asdfas
+     3  dfas
+     4  df
+     5  asd
+     6  f
+     7  sadfas
+     8  df
+     9  s
+    10  df
+    11  s
+    12  df
+    13  asdf
+    14
+    15  asdf
+    16  s
+    17  df
+    18  as
+    19  df
+    20  sadf
+    21
+[root@linuxserver tmp]#
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# vi /tmp/batch1/testfile
+[root@linuxserver tmp]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+[root@linuxserver tmp]# cat /tmp/batch1/testfile|grep chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+[root@linuxserver tmp]# cat /tmp/batch1/testfile | grep chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+[root@linuxserver tmp]# cat -n /tmp/batch1/testfile | grep chennai
+     1  Hi I am 4m chennai
+     8  Hi I am 4m chennai
+     9  Hi I am 4m chennai
+    10  Hi I am 4m chennai
+[root@linuxserver tmp]# vi /tmp/batch1/testfile
+[root@linuxserver tmp]# cat -n /tmp/batch1/testfile | grep chennai
+     1  Hi I am 4m chennai
+     8  Hi I am 4m chennai
+     9  Hi I am 4m chennai
+    10  Hi I am 4m chennai
+[root@linuxserver tmp]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+[root@linuxserver tmp]# cat -n /tmp/batch1/testfile | grep -i chennai
+     1  Hi I am 4m chennai
+     8  Hi I am 4m chennai
+     9  Hi I am 4m chennai
+    10  Hi I am 4m chennai
+    11  Hi I am 4m Chennai
+    12  Hi I am 4m Chennai
+[root@linuxserver tmp]# find / -iname file1
+/tmp/batch1/file1
+[root@linuxserver tmp]# touch /tmp/file1
+[root@linuxserver tmp]# find / -iname file1
+/tmp/batch1/file1
+/tmp/file1
+[root@linuxserver tmp]# touch /tmp/File1
+[root@linuxserver tmp]# find / -name file1
+/tmp/batch1/file1
+/tmp/file1
+[root@linuxserver tmp]# find / -iname file1
+/tmp/batch1/file1
+/tmp/file1
+/tmp/File1
+[root@linuxserver tmp]# ^C
+[root@linuxserver tmp]# ^M
+bash: $'\r': command not found
+[root@linuxserver tmp]#
+[root@linuxserver tmp]# mkdir /tmp/src
+[root@linuxserver tmp]# mkdir /tmp/dest
+[root@linuxserver tmp]# ls -l /tmp/src/
+total 0
+[root@linuxserver tmp]# ls -l /tmp/dest/
+total 0
+[root@linuxserver tmp]# touch /tmp/src/file1 /tmp/src/file2
+[root@linuxserver tmp]# ls -l /tmp/src/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file1
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file2
+[root@linuxserver tmp]# cp /tmp/src/file1 /tmp/dest/
+[root@linuxserver tmp]# ls -l /tmp/dest/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file1
+[root@linuxserver tmp]# ls -l /tmp/src/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file1
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file2
+[root@linuxserver tmp]# mv /tmp/src/file2 /tmp/dest/
+[root@linuxserver tmp]# ls -l /tmp/src/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file1
+[root@linuxserver tmp]# ls -l /tmp/dest/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file1
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file2
+[root@linuxserver tmp]# rm /tmp/dest/file1
+rm: remove regular empty file ‘/tmp/dest/file1’? y
+[root@linuxserver tmp]# ls -l /tmp/dest/
+total 0
+-rw-r--r-- 1 root root 0 Apr 13 02:34 file2
+[root@linuxserver tmp]# touch /tmp/dest/file{3..10000}
+[root@linuxserver tmp]# ls /tmp/dest/
+file10     file175   file250   file3250  file4000  file4752  file5502  file6253  file7003  file7755  file8505  file9256
+file100    file1750  file2500  file3251  file4001  file4753  file5503  file6254  file7004  file7756  file8506  file9257
+file1000   file1751  file2501  file3252  file4002  file4754  file5504  file6255  file7005  file7757  file8507  file9258
+file10000  file1752  file2502  file3253  file4003  file4755  file5505  file6256  file7006  file7758  file8508  file9259
+file1001   file1753  file2503  file3254  file4004  file4756  file5506  file6257  file7007  file7759  file8509  file926
+file1002   file1754  file2504  file3255  file4005  file4757  file5507  file6258  file7008  file776   file851   file9260
+file1003   file1755  file2505  file3256  file4006  file4758  file5508  file6259  file7009  file7760  file8510  file9261
+file1004   file1756  file2506  file3257  file4007  file4759  file5509  file626   file701   file7761  file8511  file9262
+file1005   file1757  file2507  file3258  file4008  file476   file551   file6260  file7010  file7762  file8512  file9263
+file1006   file1758  file2508  file3259  file4009  file4760  file5510  file6261  file7011  file7763  file8513  file9264
+file1007   file1759  file2509  file326   file401   file4761  file5511  file6262  file7012  file7764  file8514  file9265
+file1008   file176   file251   file3260  file4010  file4762  file5512  file6263  file7013  file7765  file8515  file9266
+file1009   file1760  file2510  file3261  file4011  file4763  file5513  file6264  file7014  file7766  file8516  file9267
+file101    file1761  file2511  file3262  file4012  file4764  file5514  file6265  file7015  file7767  file8517  file9268
+file1010   file1762  file2512  file3263  file4013  file4765  file5515  file6266  file7016  file7768  file8518  file9269
+file1011   file1763  file2513  file3264  file4014  file4766  file5516  file6267  file7017  file7769  file8519  file927
+file1012   file1764  file2514  file3265  file4015  file4767  file5517  file6268  file7018  file777   file852   file9270
+file1013   file1765  file2515  file3266  file4016  file4768  file5518  file6269  file7019  file7770  file8520  file9271
+file1014   file1766  file2516  file3267  file4017  file4769  file5519  file627   file702   file7771  file8521  file9272
+file1015   file1767  file2517  file3268  file4018  file477   file552   file6270  file7020  file7772  file8522  file9273
+file1016   file1768  file2518  file3269  file4019  file4770  file5520  file6271  file7021  file7773  file8523  file9274
+file1017   file1769  file2519  file327   file402   file4771  file5521  file6272  file7022  file7774  file8524  file9275
+file1018   file177   file252   file3270  file4020  file4772  file5522  file6273  file7023  file7775  file8525  file9276
+file1019   file1770  file2520  file3271  file4021  file4773  file5523  file6274  file7024  file7776  file8526  file9277
+file102    file1771  file2521  file3272  file4022  file4774  file5524  file6275  file7025  file7777  file8527  file9278
+file1020   file1772  file2522  file3273  file4023  file4775  file5525  file6276  file7026  file7778  file8528  file9279
+file1021   file1773  file2523  file3274  file4024  file4776  file5526  file6277  file7027  file7779  file8529  file928
+file1022   file1774  file2524  file3275  file4025  file4777  file5527  file6278  file7028  file778   file853   file9280
+file1023   file1775  file2525  file3276  file4026  file4778  file5528  file6279  file7029  file7780  file8530  file9281
+file1024   file1776  file2526  file3277  file4027  file4779  file5529  file628   file703   file7781  file8531  file9282
+file1025   file1777  file2527  file3278  file4028  file478   file553   file6280  file7030  file7782  file8532  file9283
+file1026   file1778  file2528  file3279  file4029  file4780  file5530  file6281  file7031  file7783  file8533  file9284
+file1027   file1779  file2529  file328   file403   file4781  file5531  file6282  file7032  file7784  file8534  file9285
+file1028   file178   file253   file3280  file4030  file4782  file5532  file6283  file7033  file7785  file8535  file9286
+file1029   file1780  file2530  file3281  file4031  file4783  file5533  file6284  file7034  file7786  file8536  file9287
+file103    file1781  file2531  file3282  file4032  file4784  file5534  file6285  file7035  file7787  file8537  file9288
+file1030   file1782  file2532  file3283  file4033  file4785  file5535  file6286  file7036  file7788  file8538  file9289
+file1031   file1783  file2533  file3284  file4034  file4786  file5536  file6287  file7037  file7789  file8539  file929
+file1032   file1784  file2534  file3285  file4035  file4787  file5537  file6288  file7038  file779   file854   file9290
+file1033   file1785  file2535  file3286  file4036  file4788  file5538  file6289  file7039  file7790  file8540  file9291
+file1034   file1786  file2536  file3287  file4037  file4789  file5539  file629   file704   file7791  file8541  file9292
+file1035   file1787  file2537  file3288  file4038  file479   file554   file6290  file7040  file7792  file8542  file9293
+file1036   file1788  file2538  file3289  file4039  file4790  file5540  file6291  file7041  file7793  file8543  file9294
+file1037   file1789  file2539  file329   file404   file4791  file5541  file6292  file7042  file7794  file8544  file9295
+file1038   file179   file254   file3290  file4040  file4792  file5542  file6293  file7043  file7795  file8545  file9296
+file1039   file1790  file2540  file3291  file4041  file4793  file5543  file6294  file7044  file7796  file8546  file9297
+file104    file1791  file2541  file3292  file4042  file4794  file5544  file6295  file7045  file7797  file8547  file9298
+file1040   file1792  file2542  file3293  file4043  file4795  file5545  file6296  file7046  file7798  file8548  file9299
+file1041   file1793  file2543  file3294  file4044  file4796  file5546  file6297  file7047  file7799  file8549  file93
+file1042   file1794  file2544  file3295  file4045  file4797  file5547  file6298  file7048  file78    file855   file930
+file1043   file1795  file2545  file3296  file4046  file4798  file5548  file6299  file7049  file780   file8550  file9300
+file1044   file1796  file2546  file3297  file4047  file4799  file5549  file63    file705   file7800  file8551  file9301
+file1045   file1797  file2547  file3298  file4048  file48    file555   file630   file7050  file7801  file8552  file9302
+file1046   file1798  file2548  file3299  file4049  file480   file5550  file6300  file7051  file7802  file8553  file9303
+file1047   file1799  file2549  file33    file405   file4800  file5551  file6301  file7052  file7803  file8554  file9304
+file1048   file18    file255   file330   file4050  file4801  file5552  file6302  file7053  file7804  file8555  file9305
+file1049   file180   file2550  file3300  file4051  file4802  file5553  file6303  file7054  file7805  file8556  file9306
+file105    file1800  file2551  file3301  file4052  file4803  file5554  file6304  file7055  file7806  file8557  file9307
+file1050   file1801  file2552  file3302  file4053  file4804  file5555  file6305  file7056  file7807  file8558  file9308
+file1051   file1802  file2553  file3303  file4054  file4805  file5556  file6306  file7057  file7808  file8559  file9309
+file1052   file1803  file2554  file3304  file4055  file4806  file5557  file6307  file7058  file7809  file856   file931
+file1053   file1804  file2555  file3305  file4056  file4807  file5558  file6308  file7059  file781   file8560  file9310
+file1054   file1805  file2556  file3306  file4057  file4808  file5559  file6309  file706   file7810  file8561  file9311
+file1055   file1806  file2557  file3307  file4058  file4809  file556   file631   file7060  file7811  file8562  file9312
+file1056   file1807  file2558  file3308  file4059  file481   file5560  file6310  file7061  file7812  file8563  file9313
+file1057   file1808  file2559  file3309  file406   file4810  file5561  file6311  file7062  file7813  file8564  file9314
+file1058   file1809  file256   file331   file4060  file4811  file5562  file6312  file7063  file7814  file8565  file9315
+file1059   file181   file2560  file3310  file4061  file4812  file5563  file6313  file7064  file7815  file8566  file9316
+file106    file1810  file2561  file3311  file4062  file4813  file5564  file6314  file7065  file7816  file8567  file9317
+file1060   file1811  file2562  file3312  file4063  file4814  file5565  file6315  file7066  file7817  file8568  file9318
+file1061   file1812  file2563  file3313  file4064  file4815  file5566  file6316  file7067  file7818  file8569  file9319
+file1062   file1813  file2564  file3314  file4065  file4816  file5567  file6317  file7068  file7819  file857   file932
+file1063   file1814  file2565  file3315  file4066  file4817  file5568  file6318  file7069  file782   file8570  file9320
+file1064   file1815  file2566  file3316  file4067  file4818  file5569  file6319  file707   file7820  file8571  file9321
+file1065   file1816  file2567  file3317  file4068  file4819  file557   file632   file7070  file7821  file8572  file9322
+file1066   file1817  file2568  file3318  file4069  file482   file5570  file6320  file7071  file7822  file8573  file9323
+file1067   file1818  file2569  file3319  file407   file4820  file5571  file6321  file7072  file7823  file8574  file9324
+file1068   file1819  file257   file332   file4070  file4821  file5572  file6322  file7073  file7824  file8575  file9325
+file1069   file182   file2570  file3320  file4071  file4822  file5573  file6323  file7074  file7825  file8576  file9326
+file107    file1820  file2571  file3321  file4072  file4823  file5574  file6324  file7075  file7826  file8577  file9327
+file1070   file1821  file2572  file3322  file4073  file4824  file5575  file6325  file7076  file7827  file8578  file9328
+file1071   file1822  file2573  file3323  file4074  file4825  file5576  file6326  file7077  file7828  file8579  file9329
+file1072   file1823  file2574  file3324  file4075  file4826  file5577  file6327  file7078  file7829  file858   file933
+file1073   file1824  file2575  file3325  file4076  file4827  file5578  file6328  file7079  file783   file8580  file9330
+file1074   file1825  file2576  file3326  file4077  file4828  file5579  file6329  file708   file7830  file8581  file9331
+file1075   file1826  file2577  file3327  file4078  file4829  file558   file633   file7080  file7831  file8582  file9332
+file1076   file1827  file2578  file3328  file4079  file483   file5580  file6330  file7081  file7832  file8583  file9333
+file1077   file1828  file2579  file3329  file408   file4830  file5581  file6331  file7082  file7833  file8584  file9334
+file1078   file1829  file258   file333   file4080  file4831  file5582  file6332  file7083  file7834  file8585  file9335
+file1079   file183   file2580  file3330  file4081  file4832  file5583  file6333  file7084  file7835  file8586  file9336
+file108    file1830  file2581  file3331  file4082  file4833  file5584  file6334  file7085  file7836  file8587  file9337
+file1080   file1831  file2582  file3332  file4083  file4834  file5585  file6335  file7086  file7837  file8588  file9338
+file1081   file1832  file2583  file3333  file4084  file4835  file5586  file6336  file7087  file7838  file8589  file9339
+file1082   file1833  file2584  file3334  file4085  file4836  file5587  file6337  file7088  file7839  file859   file934
+file1083   file1834  file2585  file3335  file4086  file4837  file5588  file6338  file7089  file784   file8590  file9340
+file1084   file1835  file2586  file3336  file4087  file4838  file5589  file6339  file709   file7840  file8591  file9341
+file1085   file1836  file2587  file3337  file4088  file4839  file559   file634   file7090  file7841  file8592  file9342
+file1086   file1837  file2588  file3338  file4089  file484   file5590  file6340  file7091  file7842  file8593  file9343
+file1087   file1838  file2589  file3339  file409   file4840  file5591  file6341  file7092  file7843  file8594  file9344
+file1088   file1839  file259   file334   file4090  file4841  file5592  file6342  file7093  file7844  file8595  file9345
+file1089   file184   file2590  file3340  file4091  file4842  file5593  file6343  file7094  file7845  file8596  file9346
+file109    file1840  file2591  file3341  file4092  file4843  file5594  file6344  file7095  file7846  file8597  file9347
+file1090   file1841  file2592  file3342  file4093  file4844  file5595  file6345  file7096  file7847  file8598  file9348
+file1091   file1842  file2593  file3343  file4094  file4845  file5596  file6346  file7097  file7848  file8599  file9349
+file1092   file1843  file2594  file3344  file4095  file4846  file5597  file6347  file7098  file7849  file86    file935
+file1093   file1844  file2595  file3345  file4096  file4847  file5598  file6348  file7099  file785   file860   file9350
+file1094   file1845  file2596  file3346  file4097  file4848  file5599  file6349  file71    file7850  file8600  file9351
+file1095   file1846  file2597  file3347  file4098  file4849  file56    file635   file710   file7851  file8601  file9352
+file1096   file1847  file2598  file3348  file4099  file485   file560   file6350  file7100  file7852  file8602  file9353
+file1097   file1848  file2599  file3349  file41    file4850  file5600  file6351  file7101  file7853  file8603  file9354
+file1098   file1849  file26    file335   file410   file4851  file5601  file6352  file7102  file7854  file8604  file9355
+file1099   file185   file260   file3350  file4100  file4852  file5602  file6353  file7103  file7855  file8605  file9356
+file11     file1850  file2600  file3351  file4101  file4853  file5603  file6354  file7104  file7856  file8606  file9357
+file110    file1851  file2601  file3352  file4102  file4854  file5604  file6355  file7105  file7857  file8607  file9358
+file1100   file1852  file2602  file3353  file4103  file4855  file5605  file6356  file7106  file7858  file8608  file9359
+file1101   file1853  file2603  file3354  file4104  file4856  file5606  file6357  file7107  file7859  file8609  file936
+file1102   file1854  file2604  file3355  file4105  file4857  file5607  file6358  file7108  file786   file861   file9360
+file1103   file1855  file2605  file3356  file4106  file4858  file5608  file6359  file7109  file7860  file8610  file9361
+file1104   file1856  file2606  file3357  file4107  file4859  file5609  file636   file711   file7861  file8611  file9362
+file1105   file1857  file2607  file3358  file4108  file486   file561   file6360  file7110  file7862  file8612  file9363
+file1106   file1858  file2608  file3359  file4109  file4860  file5610  file6361  file7111  file7863  file8613  file9364
+file1107   file1859  file2609  file336   file411   file4861  file5611  file6362  file7112  file7864  file8614  file9365
+file1108   file186   file261   file3360  file4110  file4862  file5612  file6363  file7113  file7865  file8615  file9366
+file1109   file1860  file2610  file3361  file4111  file4863  file5613  file6364  file7114  file7866  file8616  file9367
+file111    file1861  file2611  file3362  file4112  file4864  file5614  file6365  file7115  file7867  file8617  file9368
+file1110   file1862  file2612  file3363  file4113  file4865  file5615  file6366  file7116  file7868  file8618  file9369
+file1111   file1863  file2613  file3364  file4114  file4866  file5616  file6367  file7117  file7869  file8619  file937
+file1112   file1864  file2614  file3365  file4115  file4867  file5617  file6368  file7118  file787   file862   file9370
+file1113   file1865  file2615  file3366  file4116  file4868  file5618  file6369  file7119  file7870  file8620  file9371
+file1114   file1866  file2616  file3367  file4117  file4869  file5619  file637   file712   file7871  file8621  file9372
+file1115   file1867  file2617  file3368  file4118  file487   file562   file6370  file7120  file7872  file8622  file9373
+file1116   file1868  file2618  file3369  file4119  file4870  file5620  file6371  file7121  file7873  file8623  file9374
+file1117   file1869  file2619  file337   file412   file4871  file5621  file6372  file7122  file7874  file8624  file9375
+file1118   file187   file262   file3370  file4120  file4872  file5622  file6373  file7123  file7875  file8625  file9376
+file1119   file1870  file2620  file3371  file4121  file4873  file5623  file6374  file7124  file7876  file8626  file9377
+file112    file1871  file2621  file3372  file4122  file4874  file5624  file6375  file7125  file7877  file8627  file9378
+file1120   file1872  file2622  file3373  file4123  file4875  file5625  file6376  file7126  file7878  file8628  file9379
+file1121   file1873  file2623  file3374  file4124  file4876  file5626  file6377  file7127  file7879  file8629  file938
+file1122   file1874  file2624  file3375  file4125  file4877  file5627  file6378  file7128  file788   file863   file9380
+file1123   file1875  file2625  file3376  file4126  file4878  file5628  file6379  file7129  file7880  file8630  file9381
+file1124   file1876  file2626  file3377  file4127  file4879  file5629  file638   file713   file7881  file8631  file9382
+file1125   file1877  file2627  file3378  file4128  file488   file563   file6380  file7130  file7882  file8632  file9383
+file1126   file1878  file2628  file3379  file4129  file4880  file5630  file6381  file7131  file7883  file8633  file9384
+file1127   file1879  file2629  file338   file413   file4881  file5631  file6382  file7132  file7884  file8634  file9385
+file1128   file188   file263   file3380  file4130  file4882  file5632  file6383  file7133  file7885  file8635  file9386
+file1129   file1880  file2630  file3381  file4131  file4883  file5633  file6384  file7134  file7886  file8636  file9387
+file113    file1881  file2631  file3382  file4132  file4884  file5634  file6385  file7135  file7887  file8637  file9388
+file1130   file1882  file2632  file3383  file4133  file4885  file5635  file6386  file7136  file7888  file8638  file9389
+file1131   file1883  file2633  file3384  file4134  file4886  file5636  file6387  file7137  file7889  file8639  file939
+file1132   file1884  file2634  file3385  file4135  file4887  file5637  file6388  file7138  file789   file864   file9390
+file1133   file1885  file2635  file3386  file4136  file4888  file5638  file6389  file7139  file7890  file8640  file9391
+file1134   file1886  file2636  file3387  file4137  file4889  file5639  file639   file714   file7891  file8641  file9392
+file1135   file1887  file2637  file3388  file4138  file489   file564   file6390  file7140  file7892  file8642  file9393
+file1136   file1888  file2638  file3389  file4139  file4890  file5640  file6391  file7141  file7893  file8643  file9394
+file1137   file1889  file2639  file339   file414   file4891  file5641  file6392  file7142  file7894  file8644  file9395
+file1138   file189   file264   file3390  file4140  file4892  file5642  file6393  file7143  file7895  file8645  file9396
+file1139   file1890  file2640  file3391  file4141  file4893  file5643  file6394  file7144  file7896  file8646  file9397
+file114    file1891  file2641  file3392  file4142  file4894  file5644  file6395  file7145  file7897  file8647  file9398
+file1140   file1892  file2642  file3393  file4143  file4895  file5645  file6396  file7146  file7898  file8648  file9399
+file1141   file1893  file2643  file3394  file4144  file4896  file5646  file6397  file7147  file7899  file8649  file94
+file1142   file1894  file2644  file3395  file4145  file4897  file5647  file6398  file7148  file79    file865   file940
+file1143   file1895  file2645  file3396  file4146  file4898  file5648  file6399  file7149  file790   file8650  file9400
+file1144   file1896  file2646  file3397  file4147  file4899  file5649  file64    file715   file7900  file8651  file9401
+file1145   file1897  file2647  file3398  file4148  file49    file565   file640   file7150  file7901  file8652  file9402
+file1146   file1898  file2648  file3399  file4149  file490   file5650  file6400  file7151  file7902  file8653  file9403
+file1147   file1899  file2649  file34    file415   file4900  file5651  file6401  file7152  file7903  file8654  file9404
+file1148   file19    file265   file340   file4150  file4901  file5652  file6402  file7153  file7904  file8655  file9405
+file1149   file190   file2650  file3400  file4151  file4902  file5653  file6403  file7154  file7905  file8656  file9406
+file115    file1900  file2651  file3401  file4152  file4903  file5654  file6404  file7155  file7906  file8657  file9407
+file1150   file1901  file2652  file3402  file4153  file4904  file5655  file6405  file7156  file7907  file8658  file9408
+file1151   file1902  file2653  file3403  file4154  file4905  file5656  file6406  file7157  file7908  file8659  file9409
+file1152   file1903  file2654  file3404  file4155  file4906  file5657  file6407  file7158  file7909  file866   file941
+file1153   file1904  file2655  file3405  file4156  file4907  file5658  file6408  file7159  file791   file8660  file9410
+file1154   file1905  file2656  file3406  file4157  file4908  file5659  file6409  file716   file7910  file8661  file9411
+file1155   file1906  file2657  file3407  file4158  file4909  file566   file641   file7160  file7911  file8662  file9412
+file1156   file1907  file2658  file3408  file4159  file491   file5660  file6410  file7161  file7912  file8663  file9413
+file1157   file1908  file2659  file3409  file416   file4910  file5661  file6411  file7162  file7913  file8664  file9414
+file1158   file1909  file266   file341   file4160  file4911  file5662  file6412  file7163  file7914  file8665  file9415
+file1159   file191   file2660  file3410  file4161  file4912  file5663  file6413  file7164  file7915  file8666  file9416
+file116    file1910  file2661  file3411  file4162  file4913  file5664  file6414  file7165  file7916  file8667  file9417
+file1160   file1911  file2662  file3412  file4163  file4914  file5665  file6415  file7166  file7917  file8668  file9418
+file1161   file1912  file2663  file3413  file4164  file4915  file5666  file6416  file7167  file7918  file8669  file9419
+file1162   file1913  file2664  file3414  file4165  file4916  file5667  file6417  file7168  file7919  file867   file942
+file1163   file1914  file2665  file3415  file4166  file4917  file5668  file6418  file7169  file792   file8670  file9420
+file1164   file1915  file2666  file3416  file4167  file4918  file5669  file6419  file717   file7920  file8671  file9421
+file1165   file1916  file2667  file3417  file4168  file4919  file567   file642   file7170  file7921  file8672  file9422
+file1166   file1917  file2668  file3418  file4169  file492   file5670  file6420  file7171  file7922  file8673  file9423
+file1167   file1918  file2669  file3419  file417   file4920  file5671  file6421  file7172  file7923  file8674  file9424
+file1168   file1919  file267   file342   file4170  file4921  file5672  file6422  file7173  file7924  file8675  file9425
+file1169   file192   file2670  file3420  file4171  file4922  file5673  file6423  file7174  file7925  file8676  file9426
+file117    file1920  file2671  file3421  file4172  file4923  file5674  file6424  file7175  file7926  file8677  file9427
+file1170   file1921  file2672  file3422  file4173  file4924  file5675  file6425  file7176  file7927  file8678  file9428
+file1171   file1922  file2673  file3423  file4174  file4925  file5676  file6426  file7177  file7928  file8679  file9429
+file1172   file1923  file2674  file3424  file4175  file4926  file5677  file6427  file7178  file7929  file868   file943
+file1173   file1924  file2675  file3425  file4176  file4927  file5678  file6428  file7179  file793   file8680  file9430
+file1174   file1925  file2676  file3426  file4177  file4928  file5679  file6429  file718   file7930  file8681  file9431
+file1175   file1926  file2677  file3427  file4178  file4929  file568   file643   file7180  file7931  file8682  file9432
+file1176   file1927  file2678  file3428  file4179  file493   file5680  file6430  file7181  file7932  file8683  file9433
+file1177   file1928  file2679  file3429  file418   file4930  file5681  file6431  file7182  file7933  file8684  file9434
+file1178   file1929  file268   file343   file4180  file4931  file5682  file6432  file7183  file7934  file8685  file9435
+file1179   file193   file2680  file3430  file4181  file4932  file5683  file6433  file7184  file7935  file8686  file9436
+file118    file1930  file2681  file3431  file4182  file4933  file5684  file6434  file7185  file7936  file8687  file9437
+file1180   file1931  file2682  file3432  file4183  file4934  file5685  file6435  file7186  file7937  file8688  file9438
+file1181   file1932  file2683  file3433  file4184  file4935  file5686  file6436  file7187  file7938  file8689  file9439
+file1182   file1933  file2684  file3434  file4185  file4936  file5687  file6437  file7188  file7939  file869   file944
+file1183   file1934  file2685  file3435  file4186  file4937  file5688  file6438  file7189  file794   file8690  file9440
+file1184   file1935  file2686  file3436  file4187  file4938  file5689  file6439  file719   file7940  file8691  file9441
+file1185   file1936  file2687  file3437  file4188  file4939  file569   file644   file7190  file7941  file8692  file9442
+file1186   file1937  file2688  file3438  file4189  file494   file5690  file6440  file7191  file7942  file8693  file9443
+file1187   file1938  file2689  file3439  file419   file4940  file5691  file6441  file7192  file7943  file8694  file9444
+file1188   file1939  file269   file344   file4190  file4941  file5692  file6442  file7193  file7944  file8695  file9445
+file1189   file194   file2690  file3440  file4191  file4942  file5693  file6443  file7194  file7945  file8696  file9446
+file119    file1940  file2691  file3441  file4192  file4943  file5694  file6444  file7195  file7946  file8697  file9447
+file1190   file1941  file2692  file3442  file4193  file4944  file5695  file6445  file7196  file7947  file8698  file9448
+file1191   file1942  file2693  file3443  file4194  file4945  file5696  file6446  file7197  file7948  file8699  file9449
+file1192   file1943  file2694  file3444  file4195  file4946  file5697  file6447  file7198  file7949  file87    file945
+file1193   file1944  file2695  file3445  file4196  file4947  file5698  file6448  file7199  file795   file870   file9450
+file1194   file1945  file2696  file3446  file4197  file4948  file5699  file6449  file72    file7950  file8700  file9451
+file1195   file1946  file2697  file3447  file4198  file4949  file57    file645   file720   file7951  file8701  file9452
+file1196   file1947  file2698  file3448  file4199  file495   file570   file6450  file7200  file7952  file8702  file9453
+file1197   file1948  file2699  file3449  file42    file4950  file5700  file6451  file7201  file7953  file8703  file9454
+file1198   file1949  file27    file345   file420   file4951  file5701  file6452  file7202  file7954  file8704  file9455
+file1199   file195   file270   file3450  file4200  file4952  file5702  file6453  file7203  file7955  file8705  file9456
+file12     file1950  file2700  file3451  file4201  file4953  file5703  file6454  file7204  file7956  file8706  file9457
+file120    file1951  file2701  file3452  file4202  file4954  file5704  file6455  file7205  file7957  file8707  file9458
+file1200   file1952  file2702  file3453  file4203  file4955  file5705  file6456  file7206  file7958  file8708  file9459
+file1201   file1953  file2703  file3454  file4204  file4956  file5706  file6457  file7207  file7959  file8709  file946
+file1202   file1954  file2704  file3455  file4205  file4957  file5707  file6458  file7208  file796   file871   file9460
+file1203   file1955  file2705  file3456  file4206  file4958  file5708  file6459  file7209  file7960  file8710  file9461
+file1204   file1956  file2706  file3457  file4207  file4959  file5709  file646   file721   file7961  file8711  file9462
+file1205   file1957  file2707  file3458  file4208  file496   file571   file6460  file7210  file7962  file8712  file9463
+file1206   file1958  file2708  file3459  file4209  file4960  file5710  file6461  file7211  file7963  file8713  file9464
+file1207   file1959  file2709  file346   file421   file4961  file5711  file6462  file7212  file7964  file8714  file9465
+file1208   file196   file271   file3460  file4210  file4962  file5712  file6463  file7213  file7965  file8715  file9466
+file1209   file1960  file2710  file3461  file4211  file4963  file5713  file6464  file7214  file7966  file8716  file9467
+file121    file1961  file2711  file3462  file4212  file4964  file5714  file6465  file7215  file7967  file8717  file9468
+file1210   file1962  file2712  file3463  file4213  file4965  file5715  file6466  file7216  file7968  file8718  file9469
+file1211   file1963  file2713  file3464  file4214  file4966  file5716  file6467  file7217  file7969  file8719  file947
+file1212   file1964  file2714  file3465  file4215  file4967  file5717  file6468  file7218  file797   file872   file9470
+file1213   file1965  file2715  file3466  file4216  file4968  file5718  file6469  file7219  file7970  file8720  file9471
+file1214   file1966  file2716  file3467  file4217  file4969  file5719  file647   file722   file7971  file8721  file9472
+file1215   file1967  file2717  file3468  file4218  file497   file572   file6470  file7220  file7972  file8722  file9473
+file1216   file1968  file2718  file3469  file4219  file4970  file5720  file6471  file7221  file7973  file8723  file9474
+file1217   file1969  file2719  file347   file422   file4971  file5721  file6472  file7222  file7974  file8724  file9475
+file1218   file197   file272   file3470  file4220  file4972  file5722  file6473  file7223  file7975  file8725  file9476
+file1219   file1970  file2720  file3471  file4221  file4973  file5723  file6474  file7224  file7976  file8726  file9477
+file122    file1971  file2721  file3472  file4222  file4974  file5724  file6475  file7225  file7977  file8727  file9478
+file1220   file1972  file2722  file3473  file4223  file4975  file5725  file6476  file7226  file7978  file8728  file9479
+file1221   file1973  file2723  file3474  file4224  file4976  file5726  file6477  file7227  file7979  file8729  file948
+file1222   file1974  file2724  file3475  file4225  file4977  file5727  file6478  file7228  file798   file873   file9480
+file1223   file1975  file2725  file3476  file4226  file4978  file5728  file6479  file7229  file7980  file8730  file9481
+file1224   file1976  file2726  file3477  file4227  file4979  file5729  file648   file723   file7981  file8731  file9482
+file1225   file1977  file2727  file3478  file4228  file498   file573   file6480  file7230  file7982  file8732  file9483
+file1226   file1978  file2728  file3479  file4229  file4980  file5730  file6481  file7231  file7983  file8733  file9484
+file1227   file1979  file2729  file348   file423   file4981  file5731  file6482  file7232  file7984  file8734  file9485
+file1228   file198   file273   file3480  file4230  file4982  file5732  file6483  file7233  file7985  file8735  file9486
+file1229   file1980  file2730  file3481  file4231  file4983  file5733  file6484  file7234  file7986  file8736  file9487
+file123    file1981  file2731  file3482  file4232  file4984  file5734  file6485  file7235  file7987  file8737  file9488
+file1230   file1982  file2732  file3483  file4233  file4985  file5735  file6486  file7236  file7988  file8738  file9489
+file1231   file1983  file2733  file3484  file4234  file4986  file5736  file6487  file7237  file7989  file8739  file949
+file1232   file1984  file2734  file3485  file4235  file4987  file5737  file6488  file7238  file799   file874   file9490
+file1233   file1985  file2735  file3486  file4236  file4988  file5738  file6489  file7239  file7990  file8740  file9491
+file1234   file1986  file2736  file3487  file4237  file4989  file5739  file649   file724   file7991  file8741  file9492
+file1235   file1987  file2737  file3488  file4238  file499   file574   file6490  file7240  file7992  file8742  file9493
+file1236   file1988  file2738  file3489  file4239  file4990  file5740  file6491  file7241  file7993  file8743  file9494
+file1237   file1989  file2739  file349   file424   file4991  file5741  file6492  file7242  file7994  file8744  file9495
+file1238   file199   file274   file3490  file4240  file4992  file5742  file6493  file7243  file7995  file8745  file9496
+file1239   file1990  file2740  file3491  file4241  file4993  file5743  file6494  file7244  file7996  file8746  file9497
+file124    file1991  file2741  file3492  file4242  file4994  file5744  file6495  file7245  file7997  file8747  file9498
+file1240   file1992  file2742  file3493  file4243  file4995  file5745  file6496  file7246  file7998  file8748  file9499
+file1241   file1993  file2743  file3494  file4244  file4996  file5746  file6497  file7247  file7999  file8749  file95
+file1242   file1994  file2744  file3495  file4245  file4997  file5747  file6498  file7248  file8     file875   file950
+file1243   file1995  file2745  file3496  file4246  file4998  file5748  file6499  file7249  file80    file8750  file9500
+file1244   file1996  file2746  file3497  file4247  file4999  file5749  file65    file725   file800   file8751  file9501
+file1245   file1997  file2747  file3498  file4248  file5     file575   file650   file7250  file8000  file8752  file9502
+file1246   file1998  file2748  file3499  file4249  file50    file5750  file6500  file7251  file8001  file8753  file9503
+file1247   file1999  file2749  file35    file425   file500   file5751  file6501  file7252  file8002  file8754  file9504
+file1248   file2     file275   file350   file4250  file5000  file5752  file6502  file7253  file8003  file8755  file9505
+file1249   file20    file2750  file3500  file4251  file5001  file5753  file6503  file7254  file8004  file8756  file9506
+file125    file200   file2751  file3501  file4252  file5002  file5754  file6504  file7255  file8005  file8757  file9507
+file1250   file2000  file2752  file3502  file4253  file5003  file5755  file6505  file7256  file8006  file8758  file9508
+file1251   file2001  file2753  file3503  file4254  file5004  file5756  file6506  file7257  file8007  file8759  file9509
+file1252   file2002  file2754  file3504  file4255  file5005  file5757  file6507  file7258  file8008  file876   file951
+file1253   file2003  file2755  file3505  file4256  file5006  file5758  file6508  file7259  file8009  file8760  file9510
+file1254   file2004  file2756  file3506  file4257  file5007  file5759  file6509  file726   file801   file8761  file9511
+file1255   file2005  file2757  file3507  file4258  file5008  file576   file651   file7260  file8010  file8762  file9512
+file1256   file2006  file2758  file3508  file4259  file5009  file5760  file6510  file7261  file8011  file8763  file9513
+file1257   file2007  file2759  file3509  file426   file501   file5761  file6511  file7262  file8012  file8764  file9514
+file1258   file2008  file276   file351   file4260  file5010  file5762  file6512  file7263  file8013  file8765  file9515
+file1259   file2009  file2760  file3510  file4261  file5011  file5763  file6513  file7264  file8014  file8766  file9516
+file126    file201   file2761  file3511  file4262  file5012  file5764  file6514  file7265  file8015  file8767  file9517
+file1260   file2010  file2762  file3512  file4263  file5013  file5765  file6515  file7266  file8016  file8768  file9518
+file1261   file2011  file2763  file3513  file4264  file5014  file5766  file6516  file7267  file8017  file8769  file9519
+file1262   file2012  file2764  file3514  file4265  file5015  file5767  file6517  file7268  file8018  file877   file952
+file1263   file2013  file2765  file3515  file4266  file5016  file5768  file6518  file7269  file8019  file8770  file9520
+file1264   file2014  file2766  file3516  file4267  file5017  file5769  file6519  file727   file802   file8771  file9521
+file1265   file2015  file2767  file3517  file4268  file5018  file577   file652   file7270  file8020  file8772  file9522
+file1266   file2016  file2768  file3518  file4269  file5019  file5770  file6520  file7271  file8021  file8773  file9523
+file1267   file2017  file2769  file3519  file427   file502   file5771  file6521  file7272  file8022  file8774  file9524
+file1268   file2018  file277   file352   file4270  file5020  file5772  file6522  file7273  file8023  file8775  file9525
+file1269   file2019  file2770  file3520  file4271  file5021  file5773  file6523  file7274  file8024  file8776  file9526
+file127    file202   file2771  file3521  file4272  file5022  file5774  file6524  file7275  file8025  file8777  file9527
+file1270   file2020  file2772  file3522  file4273  file5023  file5775  file6525  file7276  file8026  file8778  file9528
+file1271   file2021  file2773  file3523  file4274  file5024  file5776  file6526  file7277  file8027  file8779  file9529
+file1272   file2022  file2774  file3524  file4275  file5025  file5777  file6527  file7278  file8028  file878   file953
+file1273   file2023  file2775  file3525  file4276  file5026  file5778  file6528  file7279  file8029  file8780  file9530
+file1274   file2024  file2776  file3526  file4277  file5027  file5779  file6529  file728   file803   file8781  file9531
+file1275   file2025  file2777  file3527  file4278  file5028  file578   file653   file7280  file8030  file8782  file9532
+file1276   file2026  file2778  file3528  file4279  file5029  file5780  file6530  file7281  file8031  file8783  file9533
+file1277   file2027  file2779  file3529  file428   file503   file5781  file6531  file7282  file8032  file8784  file9534
+file1278   file2028  file278   file353   file4280  file5030  file5782  file6532  file7283  file8033  file8785  file9535
+file1279   file2029  file2780  file3530  file4281  file5031  file5783  file6533  file7284  file8034  file8786  file9536
+file128    file203   file2781  file3531  file4282  file5032  file5784  file6534  file7285  file8035  file8787  file9537
+file1280   file2030  file2782  file3532  file4283  file5033  file5785  file6535  file7286  file8036  file8788  file9538
+file1281   file2031  file2783  file3533  file4284  file5034  file5786  file6536  file7287  file8037  file8789  file9539
+file1282   file2032  file2784  file3534  file4285  file5035  file5787  file6537  file7288  file8038  file879   file954
+file1283   file2033  file2785  file3535  file4286  file5036  file5788  file6538  file7289  file8039  file8790  file9540
+file1284   file2034  file2786  file3536  file4287  file5037  file5789  file6539  file729   file804   file8791  file9541
+file1285   file2035  file2787  file3537  file4288  file5038  file579   file654   file7290  file8040  file8792  file9542
+file1286   file2036  file2788  file3538  file4289  file5039  file5790  file6540  file7291  file8041  file8793  file9543
+file1287   file2037  file2789  file3539  file429   file504   file5791  file6541  file7292  file8042  file8794  file9544
+file1288   file2038  file279   file354   file4290  file5040  file5792  file6542  file7293  file8043  file8795  file9545
+file1289   file2039  file2790  file3540  file4291  file5041  file5793  file6543  file7294  file8044  file8796  file9546
+file129    file204   file2791  file3541  file4292  file5042  file5794  file6544  file7295  file8045  file8797  file9547
+file1290   file2040  file2792  file3542  file4293  file5043  file5795  file6545  file7296  file8046  file8798  file9548
+file1291   file2041  file2793  file3543  file4294  file5044  file5796  file6546  file7297  file8047  file8799  file9549
+file1292   file2042  file2794  file3544  file4295  file5045  file5797  file6547  file7298  file8048  file88    file955
+file1293   file2043  file2795  file3545  file4296  file5046  file5798  file6548  file7299  file8049  file880   file9550
+file1294   file2044  file2796  file3546  file4297  file5047  file5799  file6549  file73    file805   file8800  file9551
+file1295   file2045  file2797  file3547  file4298  file5048  file58    file655   file730   file8050  file8801  file9552
+file1296   file2046  file2798  file3548  file4299  file5049  file580   file6550  file7300  file8051  file8802  file9553
+file1297   file2047  file2799  file3549  file43    file505   file5800  file6551  file7301  file8052  file8803  file9554
+file1298   file2048  file28    file355   file430   file5050  file5801  file6552  file7302  file8053  file8804  file9555
+file1299   file2049  file280   file3550  file4300  file5051  file5802  file6553  file7303  file8054  file8805  file9556
+file13     file205   file2800  file3551  file4301  file5052  file5803  file6554  file7304  file8055  file8806  file9557
+file130    file2050  file2801  file3552  file4302  file5053  file5804  file6555  file7305  file8056  file8807  file9558
+file1300   file2051  file2802  file3553  file4303  file5054  file5805  file6556  file7306  file8057  file8808  file9559
+file1301   file2052  file2803  file3554  file4304  file5055  file5806  file6557  file7307  file8058  file8809  file956
+file1302   file2053  file2804  file3555  file4305  file5056  file5807  file6558  file7308  file8059  file881   file9560
+file1303   file2054  file2805  file3556  file4306  file5057  file5808  file6559  file7309  file806   file8810  file9561
+file1304   file2055  file2806  file3557  file4307  file5058  file5809  file656   file731   file8060  file8811  file9562
+file1305   file2056  file2807  file3558  file4308  file5059  file581   file6560  file7310  file8061  file8812  file9563
+file1306   file2057  file2808  file3559  file4309  file506   file5810  file6561  file7311  file8062  file8813  file9564
+file1307   file2058  file2809  file356   file431   file5060  file5811  file6562  file7312  file8063  file8814  file9565
+file1308   file2059  file281   file3560  file4310  file5061  file5812  file6563  file7313  file8064  file8815  file9566
+file1309   file206   file2810  file3561  file4311  file5062  file5813  file6564  file7314  file8065  file8816  file9567
+file131    file2060  file2811  file3562  file4312  file5063  file5814  file6565  file7315  file8066  file8817  file9568
+file1310   file2061  file2812  file3563  file4313  file5064  file5815  file6566  file7316  file8067  file8818  file9569
+file1311   file2062  file2813  file3564  file4314  file5065  file5816  file6567  file7317  file8068  file8819  file957
+file1312   file2063  file2814  file3565  file4315  file5066  file5817  file6568  file7318  file8069  file882   file9570
+file1313   file2064  file2815  file3566  file4316  file5067  file5818  file6569  file7319  file807   file8820  file9571
+file1314   file2065  file2816  file3567  file4317  file5068  file5819  file657   file732   file8070  file8821  file9572
+file1315   file2066  file2817  file3568  file4318  file5069  file582   file6570  file7320  file8071  file8822  file9573
+file1316   file2067  file2818  file3569  file4319  file507   file5820  file6571  file7321  file8072  file8823  file9574
+file1317   file2068  file2819  file357   file432   file5070  file5821  file6572  file7322  file8073  file8824  file9575
+file1318   file2069  file282   file3570  file4320  file5071  file5822  file6573  file7323  file8074  file8825  file9576
+file1319   file207   file2820  file3571  file4321  file5072  file5823  file6574  file7324  file8075  file8826  file9577
+file132    file2070  file2821  file3572  file4322  file5073  file5824  file6575  file7325  file8076  file8827  file9578
+file1320   file2071  file2822  file3573  file4323  file5074  file5825  file6576  file7326  file8077  file8828  file9579
+file1321   file2072  file2823  file3574  file4324  file5075  file5826  file6577  file7327  file8078  file8829  file958
+file1322   file2073  file2824  file3575  file4325  file5076  file5827  file6578  file7328  file8079  file883   file9580
+file1323   file2074  file2825  file3576  file4326  file5077  file5828  file6579  file7329  file808   file8830  file9581
+file1324   file2075  file2826  file3577  file4327  file5078  file5829  file658   file733   file8080  file8831  file9582
+file1325   file2076  file2827  file3578  file4328  file5079  file583   file6580  file7330  file8081  file8832  file9583
+file1326   file2077  file2828  file3579  file4329  file508   file5830  file6581  file7331  file8082  file8833  file9584
+file1327   file2078  file2829  file358   file433   file5080  file5831  file6582  file7332  file8083  file8834  file9585
+file1328   file2079  file283   file3580  file4330  file5081  file5832  file6583  file7333  file8084  file8835  file9586
+file1329   file208   file2830  file3581  file4331  file5082  file5833  file6584  file7334  file8085  file8836  file9587
+file133    file2080  file2831  file3582  file4332  file5083  file5834  file6585  file7335  file8086  file8837  file9588
+file1330   file2081  file2832  file3583  file4333  file5084  file5835  file6586  file7336  file8087  file8838  file9589
+file1331   file2082  file2833  file3584  file4334  file5085  file5836  file6587  file7337  file8088  file8839  file959
+file1332   file2083  file2834  file3585  file4335  file5086  file5837  file6588  file7338  file8089  file884   file9590
+file1333   file2084  file2835  file3586  file4336  file5087  file5838  file6589  file7339  file809   file8840  file9591
+file1334   file2085  file2836  file3587  file4337  file5088  file5839  file659   file734   file8090  file8841  file9592
+file1335   file2086  file2837  file3588  file4338  file5089  file584   file6590  file7340  file8091  file8842  file9593
+file1336   file2087  file2838  file3589  file4339  file509   file5840  file6591  file7341  file8092  file8843  file9594
+file1337   file2088  file2839  file359   file434   file5090  file5841  file6592  file7342  file8093  file8844  file9595
+file1338   file2089  file284   file3590  file4340  file5091  file5842  file6593  file7343  file8094  file8845  file9596
+file1339   file209   file2840  file3591  file4341  file5092  file5843  file6594  file7344  file8095  file8846  file9597
+file134    file2090  file2841  file3592  file4342  file5093  file5844  file6595  file7345  file8096  file8847  file9598
+file1340   file2091  file2842  file3593  file4343  file5094  file5845  file6596  file7346  file8097  file8848  file9599
+file1341   file2092  file2843  file3594  file4344  file5095  file5846  file6597  file7347  file8098  file8849  file96
+file1342   file2093  file2844  file3595  file4345  file5096  file5847  file6598  file7348  file8099  file885   file960
+file1343   file2094  file2845  file3596  file4346  file5097  file5848  file6599  file7349  file81    file8850  file9600
+file1344   file2095  file2846  file3597  file4347  file5098  file5849  file66    file735   file810   file8851  file9601
+file1345   file2096  file2847  file3598  file4348  file5099  file585   file660   file7350  file8100  file8852  file9602
+file1346   file2097  file2848  file3599  file4349  file51    file5850  file6600  file7351  file8101  file8853  file9603
+file1347   file2098  file2849  file36    file435   file510   file5851  file6601  file7352  file8102  file8854  file9604
+file1348   file2099  file285   file360   file4350  file5100  file5852  file6602  file7353  file8103  file8855  file9605
+file1349   file21    file2850  file3600  file4351  file5101  file5853  file6603  file7354  file8104  file8856  file9606
+file135    file210   file2851  file3601  file4352  file5102  file5854  file6604  file7355  file8105  file8857  file9607
+file1350   file2100  file2852  file3602  file4353  file5103  file5855  file6605  file7356  file8106  file8858  file9608
+file1351   file2101  file2853  file3603  file4354  file5104  file5856  file6606  file7357  file8107  file8859  file9609
+file1352   file2102  file2854  file3604  file4355  file5105  file5857  file6607  file7358  file8108  file886   file961
+file1353   file2103  file2855  file3605  file4356  file5106  file5858  file6608  file7359  file8109  file8860  file9610
+file1354   file2104  file2856  file3606  file4357  file5107  file5859  file6609  file736   file811   file8861  file9611
+file1355   file2105  file2857  file3607  file4358  file5108  file586   file661   file7360  file8110  file8862  file9612
+file1356   file2106  file2858  file3608  file4359  file5109  file5860  file6610  file7361  file8111  file8863  file9613
+file1357   file2107  file2859  file3609  file436   file511   file5861  file6611  file7362  file8112  file8864  file9614
+file1358   file2108  file286   file361   file4360  file5110  file5862  file6612  file7363  file8113  file8865  file9615
+file1359   file2109  file2860  file3610  file4361  file5111  file5863  file6613  file7364  file8114  file8866  file9616
+file136    file211   file2861  file3611  file4362  file5112  file5864  file6614  file7365  file8115  file8867  file9617
+file1360   file2110  file2862  file3612  file4363  file5113  file5865  file6615  file7366  file8116  file8868  file9618
+file1361   file2111  file2863  file3613  file4364  file5114  file5866  file6616  file7367  file8117  file8869  file9619
+file1362   file2112  file2864  file3614  file4365  file5115  file5867  file6617  file7368  file8118  file887   file962
+file1363   file2113  file2865  file3615  file4366  file5116  file5868  file6618  file7369  file8119  file8870  file9620
+file1364   file2114  file2866  file3616  file4367  file5117  file5869  file6619  file737   file812   file8871  file9621
+file1365   file2115  file2867  file3617  file4368  file5118  file587   file662   file7370  file8120  file8872  file9622
+file1366   file2116  file2868  file3618  file4369  file5119  file5870  file6620  file7371  file8121  file8873  file9623
+file1367   file2117  file2869  file3619  file437   file512   file5871  file6621  file7372  file8122  file8874  file9624
+file1368   file2118  file287   file362   file4370  file5120  file5872  file6622  file7373  file8123  file8875  file9625
+file1369   file2119  file2870  file3620  file4371  file5121  file5873  file6623  file7374  file8124  file8876  file9626
+file137    file212   file2871  file3621  file4372  file5122  file5874  file6624  file7375  file8125  file8877  file9627
+file1370   file2120  file2872  file3622  file4373  file5123  file5875  file6625  file7376  file8126  file8878  file9628
+file1371   file2121  file2873  file3623  file4374  file5124  file5876  file6626  file7377  file8127  file8879  file9629
+file1372   file2122  file2874  file3624  file4375  file5125  file5877  file6627  file7378  file8128  file888   file963
+file1373   file2123  file2875  file3625  file4376  file5126  file5878  file6628  file7379  file8129  file8880  file9630
+file1374   file2124  file2876  file3626  file4377  file5127  file5879  file6629  file738   file813   file8881  file9631
+file1375   file2125  file2877  file3627  file4378  file5128  file588   file663   file7380  file8130  file8882  file9632
+file1376   file2126  file2878  file3628  file4379  file5129  file5880  file6630  file7381  file8131  file8883  file9633
+file1377   file2127  file2879  file3629  file438   file513   file5881  file6631  file7382  file8132  file8884  file9634
+file1378   file2128  file288   file363   file4380  file5130  file5882  file6632  file7383  file8133  file8885  file9635
+file1379   file2129  file2880  file3630  file4381  file5131  file5883  file6633  file7384  file8134  file8886  file9636
+file138    file213   file2881  file3631  file4382  file5132  file5884  file6634  file7385  file8135  file8887  file9637
+file1380   file2130  file2882  file3632  file4383  file5133  file5885  file6635  file7386  file8136  file8888  file9638
+file1381   file2131  file2883  file3633  file4384  file5134  file5886  file6636  file7387  file8137  file8889  file9639
+file1382   file2132  file2884  file3634  file4385  file5135  file5887  file6637  file7388  file8138  file889   file964
+file1383   file2133  file2885  file3635  file4386  file5136  file5888  file6638  file7389  file8139  file8890  file9640
+file1384   file2134  file2886  file3636  file4387  file5137  file5889  file6639  file739   file814   file8891  file9641
+file1385   file2135  file2887  file3637  file4388  file5138  file589   file664   file7390  file8140  file8892  file9642
+file1386   file2136  file2888  file3638  file4389  file5139  file5890  file6640  file7391  file8141  file8893  file9643
+file1387   file2137  file2889  file3639  file439   file514   file5891  file6641  file7392  file8142  file8894  file9644
+file1388   file2138  file289   file364   file4390  file5140  file5892  file6642  file7393  file8143  file8895  file9645
+file1389   file2139  file2890  file3640  file4391  file5141  file5893  file6643  file7394  file8144  file8896  file9646
+file139    file214   file2891  file3641  file4392  file5142  file5894  file6644  file7395  file8145  file8897  file9647
+file1390   file2140  file2892  file3642  file4393  file5143  file5895  file6645  file7396  file8146  file8898  file9648
+file1391   file2141  file2893  file3643  file4394  file5144  file5896  file6646  file7397  file8147  file8899  file9649
+file1392   file2142  file2894  file3644  file4395  file5145  file5897  file6647  file7398  file8148  file89    file965
+file1393   file2143  file2895  file3645  file4396  file5146  file5898  file6648  file7399  file8149  file890   file9650
+file1394   file2144  file2896  file3646  file4397  file5147  file5899  file6649  file74    file815   file8900  file9651
+file1395   file2145  file2897  file3647  file4398  file5148  file59    file665   file740   file8150  file8901  file9652
+file1396   file2146  file2898  file3648  file4399  file5149  file590   file6650  file7400  file8151  file8902  file9653
+file1397   file2147  file2899  file3649  file44    file515   file5900  file6651  file7401  file8152  file8903  file9654
+file1398   file2148  file29    file365   file440   file5150  file5901  file6652  file7402  file8153  file8904  file9655
+file1399   file2149  file290   file3650  file4400  file5151  file5902  file6653  file7403  file8154  file8905  file9656
+file14     file215   file2900  file3651  file4401  file5152  file5903  file6654  file7404  file8155  file8906  file9657
+file140    file2150  file2901  file3652  file4402  file5153  file5904  file6655  file7405  file8156  file8907  file9658
+file1400   file2151  file2902  file3653  file4403  file5154  file5905  file6656  file7406  file8157  file8908  file9659
+file1401   file2152  file2903  file3654  file4404  file5155  file5906  file6657  file7407  file8158  file8909  file966
+file1402   file2153  file2904  file3655  file4405  file5156  file5907  file6658  file7408  file8159  file891   file9660
+file1403   file2154  file2905  file3656  file4406  file5157  file5908  file6659  file7409  file816   file8910  file9661
+file1404   file2155  file2906  file3657  file4407  file5158  file5909  file666   file741   file8160  file8911  file9662
+file1405   file2156  file2907  file3658  file4408  file5159  file591   file6660  file7410  file8161  file8912  file9663
+file1406   file2157  file2908  file3659  file4409  file516   file5910  file6661  file7411  file8162  file8913  file9664
+file1407   file2158  file2909  file366   file441   file5160  file5911  file6662  file7412  file8163  file8914  file9665
+file1408   file2159  file291   file3660  file4410  file5161  file5912  file6663  file7413  file8164  file8915  file9666
+file1409   file216   file2910  file3661  file4411  file5162  file5913  file6664  file7414  file8165  file8916  file9667
+file141    file2160  file2911  file3662  file4412  file5163  file5914  file6665  file7415  file8166  file8917  file9668
+file1410   file2161  file2912  file3663  file4413  file5164  file5915  file6666  file7416  file8167  file8918  file9669
+file1411   file2162  file2913  file3664  file4414  file5165  file5916  file6667  file7417  file8168  file8919  file967
+file1412   file2163  file2914  file3665  file4415  file5166  file5917  file6668  file7418  file8169  file892   file9670
+file1413   file2164  file2915  file3666  file4416  file5167  file5918  file6669  file7419  file817   file8920  file9671
+file1414   file2165  file2916  file3667  file4417  file5168  file5919  file667   file742   file8170  file8921  file9672
+file1415   file2166  file2917  file3668  file4418  file5169  file592   file6670  file7420  file8171  file8922  file9673
+file1416   file2167  file2918  file3669  file4419  file517   file5920  file6671  file7421  file8172  file8923  file9674
+file1417   file2168  file2919  file367   file442   file5170  file5921  file6672  file7422  file8173  file8924  file9675
+file1418   file2169  file292   file3670  file4420  file5171  file5922  file6673  file7423  file8174  file8925  file9676
+file1419   file217   file2920  file3671  file4421  file5172  file5923  file6674  file7424  file8175  file8926  file9677
+file142    file2170  file2921  file3672  file4422  file5173  file5924  file6675  file7425  file8176  file8927  file9678
+file1420   file2171  file2922  file3673  file4423  file5174  file5925  file6676  file7426  file8177  file8928  file9679
+file1421   file2172  file2923  file3674  file4424  file5175  file5926  file6677  file7427  file8178  file8929  file968
+file1422   file2173  file2924  file3675  file4425  file5176  file5927  file6678  file7428  file8179  file893   file9680
+file1423   file2174  file2925  file3676  file4426  file5177  file5928  file6679  file7429  file818   file8930  file9681
+file1424   file2175  file2926  file3677  file4427  file5178  file5929  file668   file743   file8180  file8931  file9682
+file1425   file2176  file2927  file3678  file4428  file5179  file593   file6680  file7430  file8181  file8932  file9683
+file1426   file2177  file2928  file3679  file4429  file518   file5930  file6681  file7431  file8182  file8933  file9684
+file1427   file2178  file2929  file368   file443   file5180  file5931  file6682  file7432  file8183  file8934  file9685
+file1428   file2179  file293   file3680  file4430  file5181  file5932  file6683  file7433  file8184  file8935  file9686
+file1429   file218   file2930  file3681  file4431  file5182  file5933  file6684  file7434  file8185  file8936  file9687
+file143    file2180  file2931  file3682  file4432  file5183  file5934  file6685  file7435  file8186  file8937  file9688
+file1430   file2181  file2932  file3683  file4433  file5184  file5935  file6686  file7436  file8187  file8938  file9689
+file1431   file2182  file2933  file3684  file4434  file5185  file5936  file6687  file7437  file8188  file8939  file969
+file1432   file2183  file2934  file3685  file4435  file5186  file5937  file6688  file7438  file8189  file894   file9690
+file1433   file2184  file2935  file3686  file4436  file5187  file5938  file6689  file7439  file819   file8940  file9691
+file1434   file2185  file2936  file3687  file4437  file5188  file5939  file669   file744   file8190  file8941  file9692
+file1435   file2186  file2937  file3688  file4438  file5189  file594   file6690  file7440  file8191  file8942  file9693
+file1436   file2187  file2938  file3689  file4439  file519   file5940  file6691  file7441  file8192  file8943  file9694
+file1437   file2188  file2939  file369   file444   file5190  file5941  file6692  file7442  file8193  file8944  file9695
+file1438   file2189  file294   file3690  file4440  file5191  file5942  file6693  file7443  file8194  file8945  file9696
+file1439   file219   file2940  file3691  file4441  file5192  file5943  file6694  file7444  file8195  file8946  file9697
+file144    file2190  file2941  file3692  file4442  file5193  file5944  file6695  file7445  file8196  file8947  file9698
+file1440   file2191  file2942  file3693  file4443  file5194  file5945  file6696  file7446  file8197  file8948  file9699
+file1441   file2192  file2943  file3694  file4444  file5195  file5946  file6697  file7447  file8198  file8949  file97
+file1442   file2193  file2944  file3695  file4445  file5196  file5947  file6698  file7448  file8199  file895   file970
+file1443   file2194  file2945  file3696  file4446  file5197  file5948  file6699  file7449  file82    file8950  file9700
+file1444   file2195  file2946  file3697  file4447  file5198  file5949  file67    file745   file820   file8951  file9701
+file1445   file2196  file2947  file3698  file4448  file5199  file595   file670   file7450  file8200  file8952  file9702
+file1446   file2197  file2948  file3699  file4449  file52    file5950  file6700  file7451  file8201  file8953  file9703
+file1447   file2198  file2949  file37    file445   file520   file5951  file6701  file7452  file8202  file8954  file9704
+file1448   file2199  file295   file370   file4450  file5200  file5952  file6702  file7453  file8203  file8955  file9705
+file1449   file22    file2950  file3700  file4451  file5201  file5953  file6703  file7454  file8204  file8956  file9706
+file145    file220   file2951  file3701  file4452  file5202  file5954  file6704  file7455  file8205  file8957  file9707
+file1450   file2200  file2952  file3702  file4453  file5203  file5955  file6705  file7456  file8206  file8958  file9708
+file1451   file2201  file2953  file3703  file4454  file5204  file5956  file6706  file7457  file8207  file8959  file9709
+file1452   file2202  file2954  file3704  file4455  file5205  file5957  file6707  file7458  file8208  file896   file971
+file1453   file2203  file2955  file3705  file4456  file5206  file5958  file6708  file7459  file8209  file8960  file9710
+file1454   file2204  file2956  file3706  file4457  file5207  file5959  file6709  file746   file821   file8961  file9711
+file1455   file2205  file2957  file3707  file4458  file5208  file596   file671   file7460  file8210  file8962  file9712
+file1456   file2206  file2958  file3708  file4459  file5209  file5960  file6710  file7461  file8211  file8963  file9713
+file1457   file2207  file2959  file3709  file446   file521   file5961  file6711  file7462  file8212  file8964  file9714
+file1458   file2208  file296   file371   file4460  file5210  file5962  file6712  file7463  file8213  file8965  file9715
+file1459   file2209  file2960  file3710  file4461  file5211  file5963  file6713  file7464  file8214  file8966  file9716
+file146    file221   file2961  file3711  file4462  file5212  file5964  file6714  file7465  file8215  file8967  file9717
+file1460   file2210  file2962  file3712  file4463  file5213  file5965  file6715  file7466  file8216  file8968  file9718
+file1461   file2211  file2963  file3713  file4464  file5214  file5966  file6716  file7467  file8217  file8969  file9719
+file1462   file2212  file2964  file3714  file4465  file5215  file5967  file6717  file7468  file8218  file897   file972
+file1463   file2213  file2965  file3715  file4466  file5216  file5968  file6718  file7469  file8219  file8970  file9720
+file1464   file2214  file2966  file3716  file4467  file5217  file5969  file6719  file747   file822   file8971  file9721
+file1465   file2215  file2967  file3717  file4468  file5218  file597   file672   file7470  file8220  file8972  file9722
+file1466   file2216  file2968  file3718  file4469  file5219  file5970  file6720  file7471  file8221  file8973  file9723
+file1467   file2217  file2969  file3719  file447   file522   file5971  file6721  file7472  file8222  file8974  file9724
+file1468   file2218  file297   file372   file4470  file5220  file5972  file6722  file7473  file8223  file8975  file9725
+file1469   file2219  file2970  file3720  file4471  file5221  file5973  file6723  file7474  file8224  file8976  file9726
+file147    file222   file2971  file3721  file4472  file5222  file5974  file6724  file7475  file8225  file8977  file9727
+file1470   file2220  file2972  file3722  file4473  file5223  file5975  file6725  file7476  file8226  file8978  file9728
+file1471   file2221  file2973  file3723  file4474  file5224  file5976  file6726  file7477  file8227  file8979  file9729
+file1472   file2222  file2974  file3724  file4475  file5225  file5977  file6727  file7478  file8228  file898   file973
+file1473   file2223  file2975  file3725  file4476  file5226  file5978  file6728  file7479  file8229  file8980  file9730
+file1474   file2224  file2976  file3726  file4477  file5227  file5979  file6729  file748   file823   file8981  file9731
+file1475   file2225  file2977  file3727  file4478  file5228  file598   file673   file7480  file8230  file8982  file9732
+file1476   file2226  file2978  file3728  file4479  file5229  file5980  file6730  file7481  file8231  file8983  file9733
+file1477   file2227  file2979  file3729  file448   file523   file5981  file6731  file7482  file8232  file8984  file9734
+file1478   file2228  file298   file373   file4480  file5230  file5982  file6732  file7483  file8233  file8985  file9735
+file1479   file2229  file2980  file3730  file4481  file5231  file5983  file6733  file7484  file8234  file8986  file9736
+file148    file223   file2981  file3731  file4482  file5232  file5984  file6734  file7485  file8235  file8987  file9737
+file1480   file2230  file2982  file3732  file4483  file5233  file5985  file6735  file7486  file8236  file8988  file9738
+file1481   file2231  file2983  file3733  file4484  file5234  file5986  file6736  file7487  file8237  file8989  file9739
+file1482   file2232  file2984  file3734  file4485  file5235  file5987  file6737  file7488  file8238  file899   file974
+file1483   file2233  file2985  file3735  file4486  file5236  file5988  file6738  file7489  file8239  file8990  file9740
+file1484   file2234  file2986  file3736  file4487  file5237  file5989  file6739  file749   file824   file8991  file9741
+file1485   file2235  file2987  file3737  file4488  file5238  file599   file674   file7490  file8240  file8992  file9742
+file1486   file2236  file2988  file3738  file4489  file5239  file5990  file6740  file7491  file8241  file8993  file9743
+file1487   file2237  file2989  file3739  file449   file524   file5991  file6741  file7492  file8242  file8994  file9744
+file1488   file2238  file299   file374   file4490  file5240  file5992  file6742  file7493  file8243  file8995  file9745
+file1489   file2239  file2990  file3740  file4491  file5241  file5993  file6743  file7494  file8244  file8996  file9746
+file149    file224   file2991  file3741  file4492  file5242  file5994  file6744  file7495  file8245  file8997  file9747
+file1490   file2240  file2992  file3742  file4493  file5243  file5995  file6745  file7496  file8246  file8998  file9748
+file1491   file2241  file2993  file3743  file4494  file5244  file5996  file6746  file7497  file8247  file8999  file9749
+file1492   file2242  file2994  file3744  file4495  file5245  file5997  file6747  file7498  file8248  file9     file975
+file1493   file2243  file2995  file3745  file4496  file5246  file5998  file6748  file7499  file8249  file90    file9750
+file1494   file2244  file2996  file3746  file4497  file5247  file5999  file6749  file75    file825   file900   file9751
+file1495   file2245  file2997  file3747  file4498  file5248  file6     file675   file750   file8250  file9000  file9752
+file1496   file2246  file2998  file3748  file4499  file5249  file60    file6750  file7500  file8251  file9001  file9753
+file1497   file2247  file2999  file3749  file45    file525   file600   file6751  file7501  file8252  file9002  file9754
+file1498   file2248  file3     file375   file450   file5250  file6000  file6752  file7502  file8253  file9003  file9755
+file1499   file2249  file30    file3750  file4500  file5251  file6001  file6753  file7503  file8254  file9004  file9756
+file15     file225   file300   file3751  file4501  file5252  file6002  file6754  file7504  file8255  file9005  file9757
+file150    file2250  file3000  file3752  file4502  file5253  file6003  file6755  file7505  file8256  file9006  file9758
+file1500   file2251  file3001  file3753  file4503  file5254  file6004  file6756  file7506  file8257  file9007  file9759
+file1501   file2252  file3002  file3754  file4504  file5255  file6005  file6757  file7507  file8258  file9008  file976
+file1502   file2253  file3003  file3755  file4505  file5256  file6006  file6758  file7508  file8259  file9009  file9760
+file1503   file2254  file3004  file3756  file4506  file5257  file6007  file6759  file7509  file826   file901   file9761
+file1504   file2255  file3005  file3757  file4507  file5258  file6008  file676   file751   file8260  file9010  file9762
+file1505   file2256  file3006  file3758  file4508  file5259  file6009  file6760  file7510  file8261  file9011  file9763
+file1506   file2257  file3007  file3759  file4509  file526   file601   file6761  file7511  file8262  file9012  file9764
+file1507   file2258  file3008  file376   file451   file5260  file6010  file6762  file7512  file8263  file9013  file9765
+file1508   file2259  file3009  file3760  file4510  file5261  file6011  file6763  file7513  file8264  file9014  file9766
+file1509   file226   file301   file3761  file4511  file5262  file6012  file6764  file7514  file8265  file9015  file9767
+file151    file2260  file3010  file3762  file4512  file5263  file6013  file6765  file7515  file8266  file9016  file9768
+file1510   file2261  file3011  file3763  file4513  file5264  file6014  file6766  file7516  file8267  file9017  file9769
+file1511   file2262  file3012  file3764  file4514  file5265  file6015  file6767  file7517  file8268  file9018  file977
+file1512   file2263  file3013  file3765  file4515  file5266  file6016  file6768  file7518  file8269  file9019  file9770
+file1513   file2264  file3014  file3766  file4516  file5267  file6017  file6769  file7519  file827   file902   file9771
+file1514   file2265  file3015  file3767  file4517  file5268  file6018  file677   file752   file8270  file9020  file9772
+file1515   file2266  file3016  file3768  file4518  file5269  file6019  file6770  file7520  file8271  file9021  file9773
+file1516   file2267  file3017  file3769  file4519  file527   file602   file6771  file7521  file8272  file9022  file9774
+file1517   file2268  file3018  file377   file452   file5270  file6020  file6772  file7522  file8273  file9023  file9775
+file1518   file2269  file3019  file3770  file4520  file5271  file6021  file6773  file7523  file8274  file9024  file9776
+file1519   file227   file302   file3771  file4521  file5272  file6022  file6774  file7524  file8275  file9025  file9777
+file152    file2270  file3020  file3772  file4522  file5273  file6023  file6775  file7525  file8276  file9026  file9778
+file1520   file2271  file3021  file3773  file4523  file5274  file6024  file6776  file7526  file8277  file9027  file9779
+file1521   file2272  file3022  file3774  file4524  file5275  file6025  file6777  file7527  file8278  file9028  file978
+file1522   file2273  file3023  file3775  file4525  file5276  file6026  file6778  file7528  file8279  file9029  file9780
+file1523   file2274  file3024  file3776  file4526  file5277  file6027  file6779  file7529  file828   file903   file9781
+file1524   file2275  file3025  file3777  file4527  file5278  file6028  file678   file753   file8280  file9030  file9782
+file1525   file2276  file3026  file3778  file4528  file5279  file6029  file6780  file7530  file8281  file9031  file9783
+file1526   file2277  file3027  file3779  file4529  file528   file603   file6781  file7531  file8282  file9032  file9784
+file1527   file2278  file3028  file378   file453   file5280  file6030  file6782  file7532  file8283  file9033  file9785
+file1528   file2279  file3029  file3780  file4530  file5281  file6031  file6783  file7533  file8284  file9034  file9786
+file1529   file228   file303   file3781  file4531  file5282  file6032  file6784  file7534  file8285  file9035  file9787
+file153    file2280  file3030  file3782  file4532  file5283  file6033  file6785  file7535  file8286  file9036  file9788
+file1530   file2281  file3031  file3783  file4533  file5284  file6034  file6786  file7536  file8287  file9037  file9789
+file1531   file2282  file3032  file3784  file4534  file5285  file6035  file6787  file7537  file8288  file9038  file979
+file1532   file2283  file3033  file3785  file4535  file5286  file6036  file6788  file7538  file8289  file9039  file9790
+file1533   file2284  file3034  file3786  file4536  file5287  file6037  file6789  file7539  file829   file904   file9791
+file1534   file2285  file3035  file3787  file4537  file5288  file6038  file679   file754   file8290  file9040  file9792
+file1535   file2286  file3036  file3788  file4538  file5289  file6039  file6790  file7540  file8291  file9041  file9793
+file1536   file2287  file3037  file3789  file4539  file529   file604   file6791  file7541  file8292  file9042  file9794
+file1537   file2288  file3038  file379   file454   file5290  file6040  file6792  file7542  file8293  file9043  file9795
+file1538   file2289  file3039  file3790  file4540  file5291  file6041  file6793  file7543  file8294  file9044  file9796
+file1539   file229   file304   file3791  file4541  file5292  file6042  file6794  file7544  file8295  file9045  file9797
+file154    file2290  file3040  file3792  file4542  file5293  file6043  file6795  file7545  file8296  file9046  file9798
+file1540   file2291  file3041  file3793  file4543  file5294  file6044  file6796  file7546  file8297  file9047  file9799
+file1541   file2292  file3042  file3794  file4544  file5295  file6045  file6797  file7547  file8298  file9048  file98
+file1542   file2293  file3043  file3795  file4545  file5296  file6046  file6798  file7548  file8299  file9049  file980
+file1543   file2294  file3044  file3796  file4546  file5297  file6047  file6799  file7549  file83    file905   file9800
+file1544   file2295  file3045  file3797  file4547  file5298  file6048  file68    file755   file830   file9050  file9801
+file1545   file2296  file3046  file3798  file4548  file5299  file6049  file680   file7550  file8300  file9051  file9802
+file1546   file2297  file3047  file3799  file4549  file53    file605   file6800  file7551  file8301  file9052  file9803
+file1547   file2298  file3048  file38    file455   file530   file6050  file6801  file7552  file8302  file9053  file9804
+file1548   file2299  file3049  file380   file4550  file5300  file6051  file6802  file7553  file8303  file9054  file9805
+file1549   file23    file305   file3800  file4551  file5301  file6052  file6803  file7554  file8304  file9055  file9806
+file155    file230   file3050  file3801  file4552  file5302  file6053  file6804  file7555  file8305  file9056  file9807
+file1550   file2300  file3051  file3802  file4553  file5303  file6054  file6805  file7556  file8306  file9057  file9808
+file1551   file2301  file3052  file3803  file4554  file5304  file6055  file6806  file7557  file8307  file9058  file9809
+file1552   file2302  file3053  file3804  file4555  file5305  file6056  file6807  file7558  file8308  file9059  file981
+file1553   file2303  file3054  file3805  file4556  file5306  file6057  file6808  file7559  file8309  file906   file9810
+file1554   file2304  file3055  file3806  file4557  file5307  file6058  file6809  file756   file831   file9060  file9811
+file1555   file2305  file3056  file3807  file4558  file5308  file6059  file681   file7560  file8310  file9061  file9812
+file1556   file2306  file3057  file3808  file4559  file5309  file606   file6810  file7561  file8311  file9062  file9813
+file1557   file2307  file3058  file3809  file456   file531   file6060  file6811  file7562  file8312  file9063  file9814
+file1558   file2308  file3059  file381   file4560  file5310  file6061  file6812  file7563  file8313  file9064  file9815
+file1559   file2309  file306   file3810  file4561  file5311  file6062  file6813  file7564  file8314  file9065  file9816
+file156    file231   file3060  file3811  file4562  file5312  file6063  file6814  file7565  file8315  file9066  file9817
+file1560   file2310  file3061  file3812  file4563  file5313  file6064  file6815  file7566  file8316  file9067  file9818
+file1561   file2311  file3062  file3813  file4564  file5314  file6065  file6816  file7567  file8317  file9068  file9819
+file1562   file2312  file3063  file3814  file4565  file5315  file6066  file6817  file7568  file8318  file9069  file982
+file1563   file2313  file3064  file3815  file4566  file5316  file6067  file6818  file7569  file8319  file907   file9820
+file1564   file2314  file3065  file3816  file4567  file5317  file6068  file6819  file757   file832   file9070  file9821
+file1565   file2315  file3066  file3817  file4568  file5318  file6069  file682   file7570  file8320  file9071  file9822
+file1566   file2316  file3067  file3818  file4569  file5319  file607   file6820  file7571  file8321  file9072  file9823
+file1567   file2317  file3068  file3819  file457   file532   file6070  file6821  file7572  file8322  file9073  file9824
+file1568   file2318  file3069  file382   file4570  file5320  file6071  file6822  file7573  file8323  file9074  file9825
+file1569   file2319  file307   file3820  file4571  file5321  file6072  file6823  file7574  file8324  file9075  file9826
+file157    file232   file3070  file3821  file4572  file5322  file6073  file6824  file7575  file8325  file9076  file9827
+file1570   file2320  file3071  file3822  file4573  file5323  file6074  file6825  file7576  file8326  file9077  file9828
+file1571   file2321  file3072  file3823  file4574  file5324  file6075  file6826  file7577  file8327  file9078  file9829
+file1572   file2322  file3073  file3824  file4575  file5325  file6076  file6827  file7578  file8328  file9079  file983
+file1573   file2323  file3074  file3825  file4576  file5326  file6077  file6828  file7579  file8329  file908   file9830
+file1574   file2324  file3075  file3826  file4577  file5327  file6078  file6829  file758   file833   file9080  file9831
+file1575   file2325  file3076  file3827  file4578  file5328  file6079  file683   file7580  file8330  file9081  file9832
+file1576   file2326  file3077  file3828  file4579  file5329  file608   file6830  file7581  file8331  file9082  file9833
+file1577   file2327  file3078  file3829  file458   file533   file6080  file6831  file7582  file8332  file9083  file9834
+file1578   file2328  file3079  file383   file4580  file5330  file6081  file6832  file7583  file8333  file9084  file9835
+file1579   file2329  file308   file3830  file4581  file5331  file6082  file6833  file7584  file8334  file9085  file9836
+file158    file233   file3080  file3831  file4582  file5332  file6083  file6834  file7585  file8335  file9086  file9837
+file1580   file2330  file3081  file3832  file4583  file5333  file6084  file6835  file7586  file8336  file9087  file9838
+file1581   file2331  file3082  file3833  file4584  file5334  file6085  file6836  file7587  file8337  file9088  file9839
+file1582   file2332  file3083  file3834  file4585  file5335  file6086  file6837  file7588  file8338  file9089  file984
+file1583   file2333  file3084  file3835  file4586  file5336  file6087  file6838  file7589  file8339  file909   file9840
+file1584   file2334  file3085  file3836  file4587  file5337  file6088  file6839  file759   file834   file9090  file9841
+file1585   file2335  file3086  file3837  file4588  file5338  file6089  file684   file7590  file8340  file9091  file9842
+file1586   file2336  file3087  file3838  file4589  file5339  file609   file6840  file7591  file8341  file9092  file9843
+file1587   file2337  file3088  file3839  file459   file534   file6090  file6841  file7592  file8342  file9093  file9844
+file1588   file2338  file3089  file384   file4590  file5340  file6091  file6842  file7593  file8343  file9094  file9845
+file1589   file2339  file309   file3840  file4591  file5341  file6092  file6843  file7594  file8344  file9095  file9846
+file159    file234   file3090  file3841  file4592  file5342  file6093  file6844  file7595  file8345  file9096  file9847
+file1590   file2340  file3091  file3842  file4593  file5343  file6094  file6845  file7596  file8346  file9097  file9848
+file1591   file2341  file3092  file3843  file4594  file5344  file6095  file6846  file7597  file8347  file9098  file9849
+file1592   file2342  file3093  file3844  file4595  file5345  file6096  file6847  file7598  file8348  file9099  file985
+file1593   file2343  file3094  file3845  file4596  file5346  file6097  file6848  file7599  file8349  file91    file9850
+file1594   file2344  file3095  file3846  file4597  file5347  file6098  file6849  file76    file835   file910   file9851
+file1595   file2345  file3096  file3847  file4598  file5348  file6099  file685   file760   file8350  file9100  file9852
+file1596   file2346  file3097  file3848  file4599  file5349  file61    file6850  file7600  file8351  file9101  file9853
+file1597   file2347  file3098  file3849  file46    file535   file610   file6851  file7601  file8352  file9102  file9854
+file1598   file2348  file3099  file385   file460   file5350  file6100  file6852  file7602  file8353  file9103  file9855
+file1599   file2349  file31    file3850  file4600  file5351  file6101  file6853  file7603  file8354  file9104  file9856
+file16     file235   file310   file3851  file4601  file5352  file6102  file6854  file7604  file8355  file9105  file9857
+file160    file2350  file3100  file3852  file4602  file5353  file6103  file6855  file7605  file8356  file9106  file9858
+file1600   file2351  file3101  file3853  file4603  file5354  file6104  file6856  file7606  file8357  file9107  file9859
+file1601   file2352  file3102  file3854  file4604  file5355  file6105  file6857  file7607  file8358  file9108  file986
+file1602   file2353  file3103  file3855  file4605  file5356  file6106  file6858  file7608  file8359  file9109  file9860
+file1603   file2354  file3104  file3856  file4606  file5357  file6107  file6859  file7609  file836   file911   file9861
+file1604   file2355  file3105  file3857  file4607  file5358  file6108  file686   file761   file8360  file9110  file9862
+file1605   file2356  file3106  file3858  file4608  file5359  file6109  file6860  file7610  file8361  file9111  file9863
+file1606   file2357  file3107  file3859  file4609  file536   file611   file6861  file7611  file8362  file9112  file9864
+file1607   file2358  file3108  file386   file461   file5360  file6110  file6862  file7612  file8363  file9113  file9865
+file1608   file2359  file3109  file3860  file4610  file5361  file6111  file6863  file7613  file8364  file9114  file9866
+file1609   file236   file311   file3861  file4611  file5362  file6112  file6864  file7614  file8365  file9115  file9867
+file161    file2360  file3110  file3862  file4612  file5363  file6113  file6865  file7615  file8366  file9116  file9868
+file1610   file2361  file3111  file3863  file4613  file5364  file6114  file6866  file7616  file8367  file9117  file9869
+file1611   file2362  file3112  file3864  file4614  file5365  file6115  file6867  file7617  file8368  file9118  file987
+file1612   file2363  file3113  file3865  file4615  file5366  file6116  file6868  file7618  file8369  file9119  file9870
+file1613   file2364  file3114  file3866  file4616  file5367  file6117  file6869  file7619  file837   file912   file9871
+file1614   file2365  file3115  file3867  file4617  file5368  file6118  file687   file762   file8370  file9120  file9872
+file1615   file2366  file3116  file3868  file4618  file5369  file6119  file6870  file7620  file8371  file9121  file9873
+file1616   file2367  file3117  file3869  file4619  file537   file612   file6871  file7621  file8372  file9122  file9874
+file1617   file2368  file3118  file387   file462   file5370  file6120  file6872  file7622  file8373  file9123  file9875
+file1618   file2369  file3119  file3870  file4620  file5371  file6121  file6873  file7623  file8374  file9124  file9876
+file1619   file237   file312   file3871  file4621  file5372  file6122  file6874  file7624  file8375  file9125  file9877
+file162    file2370  file3120  file3872  file4622  file5373  file6123  file6875  file7625  file8376  file9126  file9878
+file1620   file2371  file3121  file3873  file4623  file5374  file6124  file6876  file7626  file8377  file9127  file9879
+file1621   file2372  file3122  file3874  file4624  file5375  file6125  file6877  file7627  file8378  file9128  file988
+file1622   file2373  file3123  file3875  file4625  file5376  file6126  file6878  file7628  file8379  file9129  file9880
+file1623   file2374  file3124  file3876  file4626  file5377  file6127  file6879  file7629  file838   file913   file9881
+file1624   file2375  file3125  file3877  file4627  file5378  file6128  file688   file763   file8380  file9130  file9882
+file1625   file2376  file3126  file3878  file4628  file5379  file6129  file6880  file7630  file8381  file9131  file9883
+file1626   file2377  file3127  file3879  file4629  file538   file613   file6881  file7631  file8382  file9132  file9884
+file1627   file2378  file3128  file388   file463   file5380  file6130  file6882  file7632  file8383  file9133  file9885
+file1628   file2379  file3129  file3880  file4630  file5381  file6131  file6883  file7633  file8384  file9134  file9886
+file1629   file238   file313   file3881  file4631  file5382  file6132  file6884  file7634  file8385  file9135  file9887
+file163    file2380  file3130  file3882  file4632  file5383  file6133  file6885  file7635  file8386  file9136  file9888
+file1630   file2381  file3131  file3883  file4633  file5384  file6134  file6886  file7636  file8387  file9137  file9889
+file1631   file2382  file3132  file3884  file4634  file5385  file6135  file6887  file7637  file8388  file9138  file989
+file1632   file2383  file3133  file3885  file4635  file5386  file6136  file6888  file7638  file8389  file9139  file9890
+file1633   file2384  file3134  file3886  file4636  file5387  file6137  file6889  file7639  file839   file914   file9891
+file1634   file2385  file3135  file3887  file4637  file5388  file6138  file689   file764   file8390  file9140  file9892
+file1635   file2386  file3136  file3888  file4638  file5389  file6139  file6890  file7640  file8391  file9141  file9893
+file1636   file2387  file3137  file3889  file4639  file539   file614   file6891  file7641  file8392  file9142  file9894
+file1637   file2388  file3138  file389   file464   file5390  file6140  file6892  file7642  file8393  file9143  file9895
+file1638   file2389  file3139  file3890  file4640  file5391  file6141  file6893  file7643  file8394  file9144  file9896
+file1639   file239   file314   file3891  file4641  file5392  file6142  file6894  file7644  file8395  file9145  file9897
+file164    file2390  file3140  file3892  file4642  file5393  file6143  file6895  file7645  file8396  file9146  file9898
+file1640   file2391  file3141  file3893  file4643  file5394  file6144  file6896  file7646  file8397  file9147  file9899
+file1641   file2392  file3142  file3894  file4644  file5395  file6145  file6897  file7647  file8398  file9148  file99
+file1642   file2393  file3143  file3895  file4645  file5396  file6146  file6898  file7648  file8399  file9149  file990
+file1643   file2394  file3144  file3896  file4646  file5397  file6147  file6899  file7649  file84    file915   file9900
+file1644   file2395  file3145  file3897  file4647  file5398  file6148  file69    file765   file840   file9150  file9901
+file1645   file2396  file3146  file3898  file4648  file5399  file6149  file690   file7650  file8400  file9151  file9902
+file1646   file2397  file3147  file3899  file4649  file54    file615   file6900  file7651  file8401  file9152  file9903
+file1647   file2398  file3148  file39    file465   file540   file6150  file6901  file7652  file8402  file9153  file9904
+file1648   file2399  file3149  file390   file4650  file5400  file6151  file6902  file7653  file8403  file9154  file9905
+file1649   file24    file315   file3900  file4651  file5401  file6152  file6903  file7654  file8404  file9155  file9906
+file165    file240   file3150  file3901  file4652  file5402  file6153  file6904  file7655  file8405  file9156  file9907
+file1650   file2400  file3151  file3902  file4653  file5403  file6154  file6905  file7656  file8406  file9157  file9908
+file1651   file2401  file3152  file3903  file4654  file5404  file6155  file6906  file7657  file8407  file9158  file9909
+file1652   file2402  file3153  file3904  file4655  file5405  file6156  file6907  file7658  file8408  file9159  file991
+file1653   file2403  file3154  file3905  file4656  file5406  file6157  file6908  file7659  file8409  file916   file9910
+file1654   file2404  file3155  file3906  file4657  file5407  file6158  file6909  file766   file841   file9160  file9911
+file1655   file2405  file3156  file3907  file4658  file5408  file6159  file691   file7660  file8410  file9161  file9912
+file1656   file2406  file3157  file3908  file4659  file5409  file616   file6910  file7661  file8411  file9162  file9913
+file1657   file2407  file3158  file3909  file466   file541   file6160  file6911  file7662  file8412  file9163  file9914
+file1658   file2408  file3159  file391   file4660  file5410  file6161  file6912  file7663  file8413  file9164  file9915
+file1659   file2409  file316   file3910  file4661  file5411  file6162  file6913  file7664  file8414  file9165  file9916
+file166    file241   file3160  file3911  file4662  file5412  file6163  file6914  file7665  file8415  file9166  file9917
+file1660   file2410  file3161  file3912  file4663  file5413  file6164  file6915  file7666  file8416  file9167  file9918
+file1661   file2411  file3162  file3913  file4664  file5414  file6165  file6916  file7667  file8417  file9168  file9919
+file1662   file2412  file3163  file3914  file4665  file5415  file6166  file6917  file7668  file8418  file9169  file992
+file1663   file2413  file3164  file3915  file4666  file5416  file6167  file6918  file7669  file8419  file917   file9920
+file1664   file2414  file3165  file3916  file4667  file5417  file6168  file6919  file767   file842   file9170  file9921
+file1665   file2415  file3166  file3917  file4668  file5418  file6169  file692   file7670  file8420  file9171  file9922
+file1666   file2416  file3167  file3918  file4669  file5419  file617   file6920  file7671  file8421  file9172  file9923
+file1667   file2417  file3168  file3919  file467   file542   file6170  file6921  file7672  file8422  file9173  file9924
+file1668   file2418  file3169  file392   file4670  file5420  file6171  file6922  file7673  file8423  file9174  file9925
+file1669   file2419  file317   file3920  file4671  file5421  file6172  file6923  file7674  file8424  file9175  file9926
+file167    file242   file3170  file3921  file4672  file5422  file6173  file6924  file7675  file8425  file9176  file9927
+file1670   file2420  file3171  file3922  file4673  file5423  file6174  file6925  file7676  file8426  file9177  file9928
+file1671   file2421  file3172  file3923  file4674  file5424  file6175  file6926  file7677  file8427  file9178  file9929
+file1672   file2422  file3173  file3924  file4675  file5425  file6176  file6927  file7678  file8428  file9179  file993
+file1673   file2423  file3174  file3925  file4676  file5426  file6177  file6928  file7679  file8429  file918   file9930
+file1674   file2424  file3175  file3926  file4677  file5427  file6178  file6929  file768   file843   file9180  file9931
+file1675   file2425  file3176  file3927  file4678  file5428  file6179  file693   file7680  file8430  file9181  file9932
+file1676   file2426  file3177  file3928  file4679  file5429  file618   file6930  file7681  file8431  file9182  file9933
+file1677   file2427  file3178  file3929  file468   file543   file6180  file6931  file7682  file8432  file9183  file9934
+file1678   file2428  file3179  file393   file4680  file5430  file6181  file6932  file7683  file8433  file9184  file9935
+file1679   file2429  file318   file3930  file4681  file5431  file6182  file6933  file7684  file8434  file9185  file9936
+file168    file243   file3180  file3931  file4682  file5432  file6183  file6934  file7685  file8435  file9186  file9937
+file1680   file2430  file3181  file3932  file4683  file5433  file6184  file6935  file7686  file8436  file9187  file9938
+file1681   file2431  file3182  file3933  file4684  file5434  file6185  file6936  file7687  file8437  file9188  file9939
+file1682   file2432  file3183  file3934  file4685  file5435  file6186  file6937  file7688  file8438  file9189  file994
+file1683   file2433  file3184  file3935  file4686  file5436  file6187  file6938  file7689  file8439  file919   file9940
+file1684   file2434  file3185  file3936  file4687  file5437  file6188  file6939  file769   file844   file9190  file9941
+file1685   file2435  file3186  file3937  file4688  file5438  file6189  file694   file7690  file8440  file9191  file9942
+file1686   file2436  file3187  file3938  file4689  file5439  file619   file6940  file7691  file8441  file9192  file9943
+file1687   file2437  file3188  file3939  file469   file544   file6190  file6941  file7692  file8442  file9193  file9944
+file1688   file2438  file3189  file394   file4690  file5440  file6191  file6942  file7693  file8443  file9194  file9945
+file1689   file2439  file319   file3940  file4691  file5441  file6192  file6943  file7694  file8444  file9195  file9946
+file169    file244   file3190  file3941  file4692  file5442  file6193  file6944  file7695  file8445  file9196  file9947
+file1690   file2440  file3191  file3942  file4693  file5443  file6194  file6945  file7696  file8446  file9197  file9948
+file1691   file2441  file3192  file3943  file4694  file5444  file6195  file6946  file7697  file8447  file9198  file9949
+file1692   file2442  file3193  file3944  file4695  file5445  file6196  file6947  file7698  file8448  file9199  file995
+file1693   file2443  file3194  file3945  file4696  file5446  file6197  file6948  file7699  file8449  file92    file9950
+file1694   file2444  file3195  file3946  file4697  file5447  file6198  file6949  file77    file845   file920   file9951
+file1695   file2445  file3196  file3947  file4698  file5448  file6199  file695   file770   file8450  file9200  file9952
+file1696   file2446  file3197  file3948  file4699  file5449  file62    file6950  file7700  file8451  file9201  file9953
+file1697   file2447  file3198  file3949  file47    file545   file620   file6951  file7701  file8452  file9202  file9954
+file1698   file2448  file3199  file395   file470   file5450  file6200  file6952  file7702  file8453  file9203  file9955
+file1699   file2449  file32    file3950  file4700  file5451  file6201  file6953  file7703  file8454  file9204  file9956
+file17     file245   file320   file3951  file4701  file5452  file6202  file6954  file7704  file8455  file9205  file9957
+file170    file2450  file3200  file3952  file4702  file5453  file6203  file6955  file7705  file8456  file9206  file9958
+file1700   file2451  file3201  file3953  file4703  file5454  file6204  file6956  file7706  file8457  file9207  file9959
+file1701   file2452  file3202  file3954  file4704  file5455  file6205  file6957  file7707  file8458  file9208  file996
+file1702   file2453  file3203  file3955  file4705  file5456  file6206  file6958  file7708  file8459  file9209  file9960
+file1703   file2454  file3204  file3956  file4706  file5457  file6207  file6959  file7709  file846   file921   file9961
+file1704   file2455  file3205  file3957  file4707  file5458  file6208  file696   file771   file8460  file9210  file9962
+file1705   file2456  file3206  file3958  file4708  file5459  file6209  file6960  file7710  file8461  file9211  file9963
+file1706   file2457  file3207  file3959  file4709  file546   file621   file6961  file7711  file8462  file9212  file9964
+file1707   file2458  file3208  file396   file471   file5460  file6210  file6962  file7712  file8463  file9213  file9965
+file1708   file2459  file3209  file3960  file4710  file5461  file6211  file6963  file7713  file8464  file9214  file9966
+file1709   file246   file321   file3961  file4711  file5462  file6212  file6964  file7714  file8465  file9215  file9967
+file171    file2460  file3210  file3962  file4712  file5463  file6213  file6965  file7715  file8466  file9216  file9968
+file1710   file2461  file3211  file3963  file4713  file5464  file6214  file6966  file7716  file8467  file9217  file9969
+file1711   file2462  file3212  file3964  file4714  file5465  file6215  file6967  file7717  file8468  file9218  file997
+file1712   file2463  file3213  file3965  file4715  file5466  file6216  file6968  file7718  file8469  file9219  file9970
+file1713   file2464  file3214  file3966  file4716  file5467  file6217  file6969  file7719  file847   file922   file9971
+file1714   file2465  file3215  file3967  file4717  file5468  file6218  file697   file772   file8470  file9220  file9972
+file1715   file2466  file3216  file3968  file4718  file5469  file6219  file6970  file7720  file8471  file9221  file9973
+file1716   file2467  file3217  file3969  file4719  file547   file622   file6971  file7721  file8472  file9222  file9974
+file1717   file2468  file3218  file397   file472   file5470  file6220  file6972  file7722  file8473  file9223  file9975
+file1718   file2469  file3219  file3970  file4720  file5471  file6221  file6973  file7723  file8474  file9224  file9976
+file1719   file247   file322   file3971  file4721  file5472  file6222  file6974  file7724  file8475  file9225  file9977
+file172    file2470  file3220  file3972  file4722  file5473  file6223  file6975  file7725  file8476  file9226  file9978
+file1720   file2471  file3221  file3973  file4723  file5474  file6224  file6976  file7726  file8477  file9227  file9979
+file1721   file2472  file3222  file3974  file4724  file5475  file6225  file6977  file7727  file8478  file9228  file998
+file1722   file2473  file3223  file3975  file4725  file5476  file6226  file6978  file7728  file8479  file9229  file9980
+file1723   file2474  file3224  file3976  file4726  file5477  file6227  file6979  file7729  file848   file923   file9981
+file1724   file2475  file3225  file3977  file4727  file5478  file6228  file698   file773   file8480  file9230  file9982
+file1725   file2476  file3226  file3978  file4728  file5479  file6229  file6980  file7730  file8481  file9231  file9983
+file1726   file2477  file3227  file3979  file4729  file548   file623   file6981  file7731  file8482  file9232  file9984
+file1727   file2478  file3228  file398   file473   file5480  file6230  file6982  file7732  file8483  file9233  file9985
+file1728   file2479  file3229  file3980  file4730  file5481  file6231  file6983  file7733  file8484  file9234  file9986
+file1729   file248   file323   file3981  file4731  file5482  file6232  file6984  file7734  file8485  file9235  file9987
+file173    file2480  file3230  file3982  file4732  file5483  file6233  file6985  file7735  file8486  file9236  file9988
+file1730   file2481  file3231  file3983  file4733  file5484  file6234  file6986  file7736  file8487  file9237  file9989
+file1731   file2482  file3232  file3984  file4734  file5485  file6235  file6987  file7737  file8488  file9238  file999
+file1732   file2483  file3233  file3985  file4735  file5486  file6236  file6988  file7738  file8489  file9239  file9990
+file1733   file2484  file3234  file3986  file4736  file5487  file6237  file6989  file7739  file849   file924   file9991
+file1734   file2485  file3235  file3987  file4737  file5488  file6238  file699   file774   file8490  file9240  file9992
+file1735   file2486  file3236  file3988  file4738  file5489  file6239  file6990  file7740  file8491  file9241  file9993
+file1736   file2487  file3237  file3989  file4739  file549   file624   file6991  file7741  file8492  file9242  file9994
+file1737   file2488  file3238  file399   file474   file5490  file6240  file6992  file7742  file8493  file9243  file9995
+file1738   file2489  file3239  file3990  file4740  file5491  file6241  file6993  file7743  file8494  file9244  file9996
+file1739   file249   file324   file3991  file4741  file5492  file6242  file6994  file7744  file8495  file9245  file9997
+file174    file2490  file3240  file3992  file4742  file5493  file6243  file6995  file7745  file8496  file9246  file9998
+file1740   file2491  file3241  file3993  file4743  file5494  file6244  file6996  file7746  file8497  file9247  file9999
+file1741   file2492  file3242  file3994  file4744  file5495  file6245  file6997  file7747  file8498  file9248
+file1742   file2493  file3243  file3995  file4745  file5496  file6246  file6998  file7748  file8499  file9249
+file1743   file2494  file3244  file3996  file4746  file5497  file6247  file6999  file7749  file85    file925
+file1744   file2495  file3245  file3997  file4747  file5498  file6248  file7     file775   file850   file9250
+file1745   file2496  file3246  file3998  file4748  file5499  file6249  file70    file7750  file8500  file9251
+file1746   file2497  file3247  file3999  file4749  file55    file625   file700   file7751  file8501  file9252
+file1747   file2498  file3248  file4     file475   file550   file6250  file7000  file7752  file8502  file9253
+file1748   file2499  file3249  file40    file4750  file5500  file6251  file7001  file7753  file8503  file9254
+file1749   file25    file325   file400   file4751  file5501  file6252  file7002  file7754  file8504  file9255
+[root@linuxserver tmp]# rm /tmp/dest/file*
+rm: remove regular empty file ‘/tmp/dest/file10’? y
+rm: remove regular empty file ‘/tmp/dest/file100’? y
+rm: remove regular empty file ‘/tmp/dest/file1000’? y
+rm: remove regular empty file ‘/tmp/dest/file10000’? y
+rm: remove regular empty file ‘/tmp/dest/file1001’? y
+rm: remove regular empty file ‘/tmp/dest/file1002’? y
+rm: remove regular empty file ‘/tmp/dest/file1003’? y
+rm: remove regular empty file ‘/tmp/dest/file1004’? y
+rm: remove regular empty file ‘/tmp/dest/file1005’? y
+rm: remove regular empty file ‘/tmp/dest/file1006’? ^C
+[root@linuxserver tmp]# rm -f /tmp/dest/file*
+[root@linuxserver tmp]# ls -l /tmp/dest/
+total 0
+[root@linuxserver tmp]# #rm -rf /
+[root@linuxserver tmp]# #rm -rf / tmp/destcd^C
+[root@linuxserver tmp]# cd /tmp/dest/
+[root@linuxserver dest]# pwd
+/tmp/dest
+[root@linuxserver dest]# rm -rf *
+[root@linuxserver dest]# pwd
+/tmp/dest
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# #cat -n /tmp/batch1/testfile | grep -i chennai
+[root@linuxserver dest]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+[root@linuxserver dest]# vi /tmp/batch1/testfile
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile | wc -l
+132
+[root@linuxserver dest]# cat /tmp/batch1/testfile | head -10
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+[root@linuxserver dest]# cat /tmp/batch1/testfile | tail -10
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+[root@linuxserver dest]# cat -n /tmp/batch1/testfile | grep 7
+     7  Hi I am 4m us
+    17  Hi I am 4m delhi
+    27  Hi I am 4m delhi
+    37  Hi I am 4m bangalore
+    47  Hi I am 4m us
+    57  Hi I am 4m bangalore
+    67  Hi I am 4m us
+    70  Hi I am 4m uk
+    71  Hi I am 4m us
+    72  Hi I am 4m chennai
+    73  Hi I am 4m bangalore
+    74  Hi I am 4m uk
+    75  Hi I am 4m us
+    76  Hi I am 4m chennai
+    77  Hi I am 4m bangalore
+    78  Hi I am 4m uk
+    79  Hi I am 4m us
+    87  Hi I am 4m us
+    97  Hi I am 4m bangalore
+   107  Hi I am 4m us
+   117  Hi I am 4m bangalore
+   127  Hi I am 4m us
+[root@linuxserver dest]# cat -n /tmp/batch1/testfile | grep -w 7
+     7  Hi I am 4m us
+[root@linuxserver dest]# cat /tmp/batch1/testfile | head -7|tail -1
+Hi I am 4m us
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile|head -7
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+[root@linuxserver dest]# cat /tmp/batch1/testfile|head -7|tail -1
+Hi I am 4m us
+[root@linuxserver dest]# cat /tmp/batch1/testfile|head -7|tail -2
+Hi I am 4m uk
+Hi I am 4m us
+[root@linuxserver dest]# cat -n /tmp/batch1/testfile|head -7|tail -2
+     6  Hi I am 4m uk
+     7  Hi I am 4m us
+[root@linuxserver dest]# cat /tmp/batch1/testfile|wc -c
+2258
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+[root@linuxserver dest]#
+[root@linuxserver dest]# more /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+[root@linuxserver dest]# #more /tmp/batch1/testfile
+[root@linuxserver dest]# #cat /tmp/batch1/testfile
+[root@linuxserver dest]#
+[root@linuxserver dest]# man ls
+[root@linuxserver dest]# man wc
+[root@linuxserver dest]# cat /tmp/batch1/testfile |wc -w
+660
+[root@linuxserver dest]# #man wc
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]# cat /tmp/batch1/editorcmds
+hi team welcome to Dvs linux session
+lets learn our editor
+lets learn our editor
+lets learn our editor
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech
+hope this is useful  in dvstech asdfasdfasdfasdfsadf
+hope this is useful  in dvstech
+lets learn our editor
+lets learn our editor
+lets learn our editor
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]# cat /tmp/batch1/editorcmds
+[root@linuxserver dest]# vi /tmp/batch1/editorcmds
+[root@linuxserver dest]# vi /tmp/batch1/editorcmds
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# vim /tmp/batch1/editorcmds
+[root@linuxserver dest]#
+[root@linuxserver dest]# vi test
+[root@linuxserver dest]# cat test
+blr
+hyd
+chn
+[root@linuxserver dest]# cat test|grep chn
+chn
+[root@linuxserver dest]# cat test|grep -v chn
+blr
+hyd
+[root@linuxserver dest]# vi test
+[root@linuxserver dest]# cat test|grep -v chn
+blr
+hyd
+[root@linuxserver dest]# cat test|grep chn
+chn
+chn1
+[root@linuxserver dest]# cat test|grep -w chn
+chn
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us
+Hi I am 4m chennai
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat -n /tmp/batch1/testfile
+     1  Hi I am 4m chennai
+     2  Hi I am 4m hyderabad
+     3  Hi I am 4m noida
+     4  Hi I am 4m delhi
+     5  Hi I am 4m bangalore
+     6  Hi I am 4m uk
+     7  Hi I am 4m us
+     8  Hi I am 4m chennai
+     9  Hi I am 4m chennai
+    10  Hi I am 4m chennai
+    11  Hi I am 4m Chennai
+    12  Hi I am 4m Chennai
+    13  Hi I am 4m delhi
+    14  Hi I am 4m delhi
+    15  Hi I am 4m delhi
+    16  Hi I am 4m delhi
+    17  Hi I am 4m delhi
+    18  Hi I am 4m delhi
+    19  Hi I am 4m delhi
+    20  Hi I am 4m delhi
+    21  Hi I am 4m delhi
+    22  Hi I am 4m delhi
+    23  Hi I am 4m delhi
+    24  Hi I am 4m delhi
+    25  Hi I am 4m delhi
+    26  Hi I am 4m delhi
+    27  Hi I am 4m delhi
+    28  Hi I am 4m delhi
+    29  Hi I am 4m delhi
+    30  Hi I am 4m delhi
+    31  Hi I am 4m delhi
+    32  Hi I am 4m delhi
+    33  Hi I am 4m delhi
+    34  Hi I am 4m delhi
+    35  Hi I am 4m delhi
+    36  Hi I am 4m delhi
+    37  Hi I am 4m bangalore
+    38  Hi I am 4m uk
+    39  Hi I am 4m us
+    40  Hi I am 4m chennai
+    41  Hi I am 4m bangalore
+    42  Hi I am 4m uk
+    43  Hi I am 4m us
+    44  Hi I am 4m chennai
+    45  Hi I am 4m bangalore
+    46  Hi I am 4m uk
+    47  Hi I am 4m us
+    48  Hi I am 4m chennai
+    49  Hi I am 4m bangalore
+    50  Hi I am 4m uk
+    51  Hi I am 4m us
+    52  Hi I am 4m chennai
+    53  Hi I am 4m bangalore
+    54  Hi I am 4m uk
+    55  Hi I am 4m us
+    56  Hi I am 4m chennai
+    57  Hi I am 4m bangalore
+    58  Hi I am 4m uk
+    59  Hi I am 4m us
+    60  Hi I am 4m chennai
+    61  Hi I am 4m bangalore
+    62  Hi I am 4m uk
+    63  Hi I am 4m us
+    64  Hi I am 4m chennai
+    65  Hi I am 4m bangalore
+    66  Hi I am 4m uk
+    67  Hi I am 4m us
+    68  Hi I am 4m chennai
+    69  Hi I am 4m bangalore
+    70  Hi I am 4m uk
+    71  Hi I am 4m us
+    72  Hi I am 4m chennai
+    73  Hi I am 4m bangalore
+    74  Hi I am 4m uk
+    75  Hi I am 4m us
+    76  Hi I am 4m chennai
+    77  Hi I am 4m bangalore
+    78  Hi I am 4m uk
+    79  Hi I am 4m us
+    80  Hi I am 4m chennai
+    81  Hi I am 4m bangalore
+    82  Hi I am 4m uk
+    83  Hi I am 4m us
+    84  Hi I am 4m chennai
+    85  Hi I am 4m bangalore
+    86  Hi I am 4m uk
+    87  Hi I am 4m us
+    88  Hi I am 4m chennai
+    89  Hi I am 4m bangalore
+    90  Hi I am 4m uk
+    91  Hi I am 4m us
+    92  Hi I am 4m chennai
+    93  Hi I am 4m bangalore
+    94  Hi I am 4m uk
+    95  Hi I am 4m us
+    96  Hi I am 4m chennai
+    97  Hi I am 4m bangalore
+    98  Hi I am 4m uk
+    99  Hi I am 4m us
+   100  Hi I am 4m chennai
+   101  Hi I am 4m bangalore
+   102  Hi I am 4m uk
+   103  Hi I am 4m us
+   104  Hi I am 4m chennai
+   105  Hi I am 4m bangalore
+   106  Hi I am 4m uk
+   107  Hi I am 4m us
+   108  Hi I am 4m chennai
+   109  Hi I am 4m bangalore
+   110  Hi I am 4m uk
+   111  Hi I am 4m us
+   112  Hi I am 4m chennai
+   113  Hi I am 4m bangalore
+   114  Hi I am 4m uk
+   115  Hi I am 4m us
+   116  Hi I am 4m chennai
+   117  Hi I am 4m bangalore
+   118  Hi I am 4m uk
+   119  Hi I am 4m us
+   120  Hi I am 4m chennai
+   121  Hi I am 4m bangalore
+   122  Hi I am 4m uk
+   123  Hi I am 4m us
+   124  Hi I am 4m chennai
+   125  Hi I am 4m bangalore
+   126  Hi I am 4m uk
+   127  Hi I am 4m us
+   128  Hi I am 4m chennai
+   129  Hi I am 4m bangalore
+   130  Hi I am 4m uk
+   131  Hi I am 4m us
+   132  Hi I am 4m chennai
+[root@linuxserver dest]# vi /tmp/batch1/testfile
+[root@linuxserver dest]#
+[root@linuxserver dest]# cat /tmp/batch1/testfile |grep lalitha
+Hi I am 4m us lalitha
+[root@linuxserver dest]# cat /tmp/batch1/testfile |grep lalitha -A10
+Hi I am 4m us lalitha
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+[root@linuxserver dest]# cat /tmp/batch1/testfile |grep lalitha -A10|wc -l
+11
+[root@linuxserver dest]# cat /tmp/batch1/testfile |grep lalitha -A10 -B10
+Hi I am 4m chennai
+Hi I am 4m hyderabad
+Hi I am 4m noida
+Hi I am 4m delhi
+Hi I am 4m bangalore
+Hi I am 4m uk
+Hi I am 4m us lalitha
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m chennai
+Hi I am 4m Chennai
+Hi I am 4m Chennai
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+Hi I am 4m delhi
+[root@linuxserver dest]# man grep
+[root@linuxserver dest]#
+[root@linuxserver dest]# vi godwin
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# ^C
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]#
+[root@linuxserver dest]# curl http://failover.mylearn.xyz
+Hi, Welcom to Autoscaling
+[root@linuxserver dest]#

@@ -1,0 +1,299 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Mon Apr 26 01:45:07 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+3 package(s) needed for security, out of 17 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@python ~]$ sudo su -
+Last login: Mon Apr 26 01:45:09 UTC 2021 on pts/0
+[root@python ~]#
+[root@python ~]# vi vol_data.py
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print mydict_data["Volumes"][0]["VolumeId"]
+print mydict_data["Volumes"][0]["Size"]
+
+[root@python ~]# python vol_data.py
+vol-025807c850b5b8049
+8
+[root@python ~]# vi vol_data.py
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "Volume Id\tSize"
+print mydict_data["Volumes"][0]["VolumeId"],"\t",mydict_data["Volumes"][0]["Size"]
+
+[root@python ~]# python vol_data.py
+Volume Id       Size
+vol-025807c850b5b8049   8
+[root@python ~]# vi vol_data.py
+[root@python ~]# python vol_data.py
+Volume Id                       Size
+vol-025807c850b5b8049   8
+[root@python ~]# vi vol_data.py
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "Volume Id\t\tSize"
+print mydict_data["Volumes"][0]["VolumeId"],"\t",mydict_data["Volumes"][0]["Size"]
+
+[root@python ~]# vi vol_data.py
+[root@python ~]# python vol_data.py
+Volume Id               Size
+vol-025807c850b5b8049   8
+[root@python ~]# vi vol_data.py
+[root@python ~]# python vol_data.py
+Volume Id               Size
+vol-025807c850b5b8049   8
+vol-0ced293ff1432af0c   8
+vol-0c1d36b443a02c749   10
+vol-0fb82a3a465655015   10
+vol-0fc58d7a900454b6f   5
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "Volume Id\t\tSize"
+print mydict_data["Volumes"][0]["VolumeId"],"\t",mydict_data["Volumes"][0]["Size"]
+print mydict_data["Volumes"][1]["VolumeId"],"\t",mydict_data["Volumes"][1]["Size"]
+print mydict_data["Volumes"][2]["VolumeId"],"\t",mydict_data["Volumes"][2]["Size"]
+print mydict_data["Volumes"][3]["VolumeId"],"\t",mydict_data["Volumes"][3]["Size"]
+print mydict_data["Volumes"][4]["VolumeId"],"\t",mydict_data["Volumes"][4]["Size"]
+
+[root@python ~]# vi vol_data.py
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "Volume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+Volume Id               Size
+vol-025807c850b5b8049   8
+vol-0ced293ff1432af0c   8
+vol-0c1d36b443a02c749   10
+vol-0fb82a3a465655015   10
+vol-0fc58d7a900454b6f   5
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "Volume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# vi vol_data.py
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print vol,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+0       vol-025807c850b5b8049   8
+1       vol-0ced293ff1432af0c   8
+2       vol-0c1d36b443a02c749   10
+3       vol-0fb82a3a465655015   10
+4       vol-0fc58d7a900454b6f   5
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print vol,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# vi vol_data.py
+[root@python ~]#
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print vol+1,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]# vi vol_data.py
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+  print vol+1,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]# vi vol_data.py
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]#
+[root@python ~]# vi vol_data.py
+[root@python ~]#
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print vol+1,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]# vi vol_data.py
+[root@python ~]#
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+file=open("dvsbatch1.txt","w")
+
+print "S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print >> file,vol+1,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# python vol_data.py
+S.No    Volume Id               Size
+[root@python ~]# cat dvsbatch1.txt
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]# rm -f dvsbatch1.txt
+[root@python ~]# vi vol_data.py
+[root@python ~]#
+[root@python ~]# cat vol_data.py
+#!/usr/bin/python
+import os
+import json
+
+mydata=os.popen("aws ec2 describe-volumes").read()
+#Converting json to dict
+mydict_data=json.loads(str(mydata))
+file=open("dvsbatch1.txt","w")
+
+print >> file,"S.No\tVolume Id\t\tSize"
+for vol in range(len(mydict_data["Volumes"])):
+    print >> file,vol+1,"\t",mydict_data["Volumes"][vol]["VolumeId"],"\t",mydict_data["Volumes"][vol]["Size"]
+
+[root@python ~]# ls -l dvsbatch1.txt
+ls: cannot access dvsbatch1.txt: No such file or directory
+[root@python ~]# python vol_data.py
+[root@python ~]# ls -l dvsbatch1.txt
+-rw-r--r-- 1 root root 163 Apr 26 02:39 dvsbatch1.txt
+[root@python ~]# cat dvsbatch1.txt
+S.No    Volume Id               Size
+1       vol-025807c850b5b8049   8
+2       vol-0ced293ff1432af0c   8
+3       vol-0c1d36b443a02c749   10
+4       vol-0fb82a3a465655015   10
+5       vol-0fc58d7a900454b6f   5
+[root@python ~]# ipython
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.10.0 -- An enhanced Interactive Python.
+?         -> Introduction and overview of IPython's features.
+%quickref -> Quick reference.
+help      -> Python's own help system.
+object?   -> Details about 'object', use 'object??' for extra details.
+
+In [1]:

@@ -1,0 +1,1000 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Mon Apr 19 01:45:06 2021 from 2.50.238.164
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@shellscripting ~]$ sudo su -
+Last login: Mon Apr 19 02:42:00 UTC 2021 on pts/0
+[root@shellscripting ~]#
+[root@shellscripting ~]# vi /etc/hosts
+[root@shellscripting ~]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+172.31.31.38    server2
+172.31.17.132   server3
+[root@shellscripting ~]# ssh server2
+The authenticity of host 'server2 (172.31.31.38)' can't be established.
+ECDSA key fingerprint is SHA256:T8Ej665utCe51Zafj5QKBYaD9j6QA8TPAHZ91IQVHYE.
+ECDSA key fingerprint is MD5:6f:5a:4a:7c:fc:13:7e:2a:6c:82:b8:48:cc:6f:93:cf.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server2,172.31.31.38' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@shellscripting ~]# ssh server3
+The authenticity of host 'server3 (172.31.17.132)' can't be established.
+ECDSA key fingerprint is SHA256:MPTa1h/zSZrfUEWJSeCyBieZhf0psHLc7n0iPObmkcE.
+ECDSA key fingerprint is MD5:8b:89:a4:5c:ce:f4:60:ff:84:86:31:47:ca:f1:c3:68.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'server3,172.31.17.132' (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@shellscripting ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:X3/EhC3CbucnGGtrE75tbWg6ZP34ySuhHdR7+Tahn0s root@shellscripting
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|           .   o |
+|            o + o|
+|           . o = |
+|        S   *.. =|
+|         . o+X.=.|
+|          .+*.BE*|
+|           o=*B=O|
+|           .+B+@=|
++----[SHA256]-----+
+[root@shellscripting ~]# ls -l ~/.ssh/id_rsa*
+-rw------- 1 root root 1679 Apr 20 01:42 /root/.ssh/id_rsa
+-rw-r--r-- 1 root root  401 Apr 20 01:42 /root/.ssh/id_rsa.pub
+[root@shellscripting ~]# cat /root/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6NMqPmpWs0x3sgA0ZRsx482BEMrMDQSgwK/+8tVFPKy8TapwjQSlkpWbpA5dPB+n1kbCaJ0iacuJjBjjEZR1jBTTE3gc7yMVAXEEYdEKA2hpJ8Y6Z8Q2zheSgDS7oK9rNTP4QyBFV2c7gwL361QBuYywumYVaDMMuNZsgdiQKOpLyo9jqIMCH837jqgLjy7sQn9aa3m019YcgBAihjkv68z7j71YXgzMl00RUurKFVOwBb+JGrNXUHZFSMwz5/sg1t+9l+8nnyrVB3VB4zJyzRELxxjJF+5NFoAP6vDPJPxC50vHH8V5FjeDGgHrlcVtL5AiLBOE0yIZFUMoq0Xnf root@shellscripting
+[root@shellscripting ~]# ssh server2
+Last login: Tue Apr 20 01:43:21 2021
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[root@server2 ~]# logout
+Connection to server2 closed.
+[root@shellscripting ~]#
+[root@shellscripting ~]# ssh server3
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[root@shellscripting ~]# cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6NMqPmpWs0x3sgA0ZRsx4                                                              82BEMrMDQSgwK/+8tVFPKy8TapwjQSlkpWbpA5dPB+n1kbCaJ0iacuJjBjjE                                                              ZR1jBTTE3gc7yMVAXEEYdEKA2hpJ8Y6Z8Q2zheSgDS7oK9rNTP4QyBFV2c7g                                                              wL361QBuYywumYVaDMMuNZsgdiQKOpLyo9jqIMCH837jqgLjy7sQn9aa3m01                                                              9YcgBAihjkv68z7j71YXgzMl00RUurKFVOwBb+JGrNXUHZFSMwz5/sg1t+9l                                                              +8nnyrVB3VB4zJyzRELxxjJF+5NFoAP6vDPJPxC50vHH8V5FjeDGgHrlcVtL                                                              5AiLBOE0yIZFUMoq0Xnf root@shellscripting
+[root@shellscripting ~]# ssh server3
+Last login: Tue Apr 20 01:47:11 2021
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[root@server3 ~]# logout
+Connection to server3 closed.
+[root@shellscripting ~]# cat ~/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6NMqPmpWs0x3sgA0ZRsx482BEMrMDQSgwK/+8tVFPKy8TapwjQSlkpWbpA5dPB+n1kbCaJ0iacuJjBjjEZR1jBTTE3gc7yMVAXEEYdEKA2hpJ8Y6Z8Q2zheSgDS7oK9rNTP4QyBFV2c7gwL361QBuYywumYVaDMMuNZsgdiQKOpLyo9jqIMCH837jqgLjy7sQn9aa3m019YcgBAihjkv68z7j71YXgzMl00RUurKFVOwBb+JGrNXUHZFSMwz5/sg1t+9l+8nnyrVB3VB4zJyzRELxxjJF+5NFoAP6vDPJPxC50vHH8V5FjeDGgHrlcVtL5AiLBOE0yIZFUMoq0Xnf root@shellscripting
+[root@shellscripting ~]# ssh server3
+Last login: Tue Apr 20 01:48:31 2021 from ip-172-31-36-21.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[root@server3 ~]# logout
+Connection to server3 closed.
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# for i in server2 server3
+> do
+> echo "======== $ ========"
+> ssh $i "uname -a"
+> done
+======== $ ========
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+======== $ ========
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+[root@shellscripting ~]# for i in server2 server3; do echo "======== $i ========"; ssh $i "uname -a"; done
+======== server2 ========
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+======== server3 ========
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+[root@shellscripting ~]#
+[root@shellscripting ~]# for svr in server{2..3}
+> do
+> echo "===========$i=================="
+> ssh $i "uname -a;df -hT;uptime"
+> done
+===========server3==================
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  456K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+ 01:54:45 up 18 min,  1 user,  load average: 0.00, 0.00, 0.00
+===========server3==================
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  456K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+ 01:54:46 up 18 min,  1 user,  load average: 0.00, 0.00, 0.00
+[root@shellscripting ~]# for svr in server{2..3}; do echo "===========$svr=================="; ssh $svr "uname -a;df -hT;uptime"; done
+===========server2==================
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+ 01:55:24 up 18 min,  0 users,  load average: 0.00, 0.00, 0.00
+===========server3==================
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  456K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+ 01:55:25 up 18 min,  1 user,  load average: 0.00, 0.00, 0.00
+[root@shellscripting ~]# vi serverslist
+[root@shellscripting ~]#
+[root@shellscripting ~]# cat serverslist
+server2
+server3
+[root@shellscripting ~]# echo $(cat serverslist )
+server2 server3
+[root@shellscripting ~]# for i in $(cat serverslist)
+> do
+> echo $i
+> done
+server2
+server3
+[root@shellscripting ~]# vi mycode.sh
+[root@shellscripting ~]# cat mycode.sh
+#!/bin/bash
+hostname -i
+uname -a
+df -hT
+[root@shellscripting ~]# for i in $(cat serverslist)
+> do
+> echo "======$i======="
+> ssh $i "/bin/bash -s" <./mycode.sh
+> done
+======server2=======
+fe80::882:28ff:fe48:5419%eth0 172.31.31.38
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  400K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+======server3=======
+fe80::831:99ff:fe4a:4217%eth0 172.31.17.132
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  456K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+[root@shellscripting ~]# vi final-code.sh
+[root@shellscripting ~]#
+[root@shellscripting ~]# cat final-code.sh
+#!/bin/bash
+for i in $(cat serverslist)
+do
+echo "========$i========"
+ssh $i "/bin/bash -s" <./mycode.sh
+done
+[root@shellscripting ~]# cat mycode.sh
+#!/bin/bash
+hostname -i
+uname -a
+df -hT
+[root@shellscripting ~]# bash final-code.sh
+========server2========
+fe80::882:28ff:fe48:5419%eth0 172.31.31.38
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  432K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+========server3========
+fe80::831:99ff:fe4a:4217%eth0 172.31.17.132
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  488K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+[root@shellscripting ~]#
+[root@shellscripting ~]# #ssh server2 "/bin/bash -s" <./mycode.sh
+[root@shellscripting ~]# ssh server2
+Last login: Tue Apr 20 01:44:45 2021 from ip-172-31-36-21.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[root@server2 ~]# echo $0
+-bash
+[root@server2 ~]# logout
+Connection to server2 closed.
+[root@shellscripting ~]# aws s3 ls
+Unable to locate credentials. You can configure credentials by running "aws configure".
+[root@shellscripting ~]# aws configure
+AWS Access Key ID [None]: AKIASBRUR3X57UL32SCW
+AWS Secret Access Key [None]: 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
+Default region name [None]: json
+Default output format [None]: json
+[root@shellscripting ~]# aws s3 ls
+^C
+[root@shellscripting ~]# aws configure
+AWS Access Key ID [****************2SCW]:
+AWS Secret Access Key [****************F7n6]:
+Default region name [json]: us-east-1
+Default output format [json]: json
+[root@shellscripting ~]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting ~]# mkdir testdata
+[root@shellscripting ~]# cd testdata/
+[root@shellscripting testdata]# touch file{1..5}
+[root@shellscripting testdata]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 20 02:11 file1
+-rw-r--r-- 1 root root 0 Apr 20 02:11 file2
+-rw-r--r-- 1 root root 0 Apr 20 02:11 file3
+-rw-r--r-- 1 root root 0 Apr 20 02:11 file4
+-rw-r--r-- 1 root root 0 Apr 20 02:11 file5
+[root@shellscripting testdata]# aws s3 cp --recursive . s3://mysrc1/
+upload: ./file4 to s3://mysrc1/file4
+upload: ./file3 to s3://mysrc1/file3
+upload: ./file2 to s3://mysrc1/file2
+upload: ./file5 to s3://mysrc1/file5
+upload: ./file1 to s3://mysrc1/file1
+[root@shellscripting testdata]# aws s3 ls s3://mysrc1/
+2021-04-20 02:12:26          0 file1
+2021-04-20 02:12:26          0 file2
+2021-04-20 02:12:26          0 file3
+2021-04-20 02:12:26          0 file4
+2021-04-20 02:12:26          0 file5
+[root@shellscripting testdata]# aws s3 ls s3://mydest1/
+[root@shellscripting testdata]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting testdata]# aws s3 ls|awk '{print $3}'
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+mydest1
+mysrc1
+static.shaans.in
+[root@shellscripting testdata]# aws s3 ls|awk '{print $3,$1}'
+dvs-batch1 2021-03-31
+dvs-blr1 2021-03-18
+dvs-hyd1 2021-03-18
+dvs-nvirg 2021-04-03
+dvs-ohio1 2021-04-03
+dvs.shaans.in 2021-04-07
+mydest1 2021-04-20
+mysrc1 2021-04-20
+static.shaans.in 2021-04-07
+[root@shellscripting testdata]# aws s3 ls|awk '{print $3,"\t",$1}'
+dvs-batch1       2021-03-31
+dvs-blr1         2021-03-18
+dvs-hyd1         2021-03-18
+dvs-nvirg        2021-04-03
+dvs-ohio1        2021-04-03
+dvs.shaans.in    2021-04-07
+mydest1          2021-04-20
+mysrc1   2021-04-20
+static.shaans.in         2021-04-07
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting testdata]# aws s3 ls|awk '{print $3}'
+dvs-batch1
+dvs-blr1
+dvs-hyd1
+dvs-nvirg
+dvs-ohio1
+dvs.shaans.in
+mydest1
+mysrc1
+static.shaans.in
+[root@shellscripting testdata]# aws s3 ls|awk '{print $2}'
+02:50:04
+03:04:54
+03:05:10
+03:55:32
+03:56:18
+03:07:37
+02:07:53
+02:07:40
+02:57:21
+[root@shellscripting testdata]# aws s3 ls|awk '{print $2,$3}'
+02:50:04 dvs-batch1
+03:04:54 dvs-blr1
+03:05:10 dvs-hyd1
+03:55:32 dvs-nvirg
+03:56:18 dvs-ohio1
+03:07:37 dvs.shaans.in
+02:07:53 mydest1
+02:07:40 mysrc1
+02:57:21 static.shaans.in
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin
+chrony:x:996:994::/var/lib/chrony:/sbin/nologin
+tcpdump:x:72:72::/:/sbin/nologin
+ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash
+trinadh:x:1001:1001::/home/trinadh:/bin/bash
+[root@shellscripting testdata]# cat /etc/passwd|awk -F':' '{print $1}'
+root
+bin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+operator
+games
+ftp
+nobody
+systemd-network
+dbus
+rpc
+libstoragemgmt
+sshd
+rpcuser
+nfsnobody
+ec2-instance-connect
+postfix
+rngd
+chrony
+tcpdump
+ec2-user
+trinadh
+[root@shellscripting testdata]# cat /etc/passwd|awk -F':' '{print $1,$5}'
+root root
+bin bin
+daemon daemon
+adm adm
+lp lp
+sync sync
+shutdown shutdown
+halt halt
+mail mail
+operator operator
+games games
+ftp FTP User
+nobody Nobody
+systemd-network systemd Network Management
+dbus System message bus
+rpc Rpcbind Daemon
+libstoragemgmt daemon account for libstoragemgmt
+sshd Privilege-separated SSH
+rpcuser RPC Service User
+nfsnobody Anonymous NFS User
+ec2-instance-connect
+postfix
+rngd Random Number Generator Daemon
+chrony
+tcpdump
+ec2-user EC2 Default User
+trinadh
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting testdata]# aws s3 ls|grep "dvs"
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+[root@shellscripting testdata]# aws s3 ls|grep -w "dvs"
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+[root@shellscripting testdata]# aws s3 ls|grep -w "mysrc1"
+2021-04-20 02:07:40 mysrc1
+[root@shellscripting testdata]# aws s3 ls|grep -w "mysrc1"|awk '{print $3}'
+mysrc1
+[root@shellscripting testdata]# echo $?
+0
+[root@shellscripting testdata]# aws s3 ls|grep -w "mysrc11"|awk '{print $3}'
+[root@shellscripting testdata]# echo $?
+0
+[root@shellscripting testdata]# aws s3 ls|grep -w "mysrc11"
+[root@shellscripting testdata]# echo $?
+1
+[root@shellscripting testdata]# aws s3 ls|grep -w "mysrc1"
+2021-04-20 02:07:40 mysrc1
+[root@shellscripting testdata]# echo $?
+0
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# vi mys3sync.sh
+[root@shellscripting testdata]# cat mys3sync.sh
+#!/bin/bash
+
+if [[ $# != 2 ]]
+then
+  echo -e "Hi Please make sure that you are passing two arguments\nex: bash $0 srcbktname destbktname"
+  exit 120
+fi
+
+src=$1
+dest=$2
+
+# Validate the buckets
+
+for bkt in $src $dest
+do
+  result=$(aws s3 ls|grep -w $bkt)
+  if [[ $? != 0 ]]
+  then
+    echo "$bkt not exists, please make sure you are giving right bucketname"
+    exit 120
+  fi
+done
+
+sync=$(aws s3 cp s3://$src/ s3://$dest/ --recursive)
+if [[ $? == 0 ]]
+then
+  echo "Sync from $src ==> $dest is succesfull"
+  exit 0
+else
+  echo -e "There is some issue with sync error message\n$sync"
+fi
+
+[root@shellscripting testdata]# bash mys3sync.sh
+Hi Please make sure that you are passing two arguments
+ex: bash mys3sync.sh srcbktname destbktname
+[root@shellscripting testdata]# bash mys3sync.sh dvsbatch1 dvsbatch2
+dvsbatch1 not exists, please make sure you are giving right bucketname
+[root@shellscripting testdata]# bash mys3sync.sh mysrc1 dvsbatch2
+dvsbatch2 not exists, please make sure you are giving right bucketname
+[root@shellscripting testdata]# bash mys3sync.sh mysrc1 mydest1
+Sync from mysrc1 ==> mydest1 is succesfull
+[root@shellscripting testdata]#
+[root@shellscripting testdata]# cd ..
+[root@shellscripting ~]# cat mycode.sh
+#!/bin/bash
+hostname -i
+uname -a
+df -hT
+[root@shellscripting ~]# cat final-code.sh
+#!/bin/bash
+for i in $(cat serverslist)
+do
+echo "========$i========"
+ssh $i "/bin/bash -s" <./mycode.sh
+done
+[root@shellscripting ~]# bash final-code.sh
+========server2========
+fe80::882:28ff:fe48:5419%eth0 172.31.31.38
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  432K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+========server3========
+fe80::831:99ff:fe4a:4217%eth0 172.31.17.132
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  488K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+[root@shellscripting ~]# vi final-code.sh
+[root@shellscripting ~]# cat final-code.sh
+#!/bin/bash
+for i in $(cat serverslist)
+do
+echo "========$i========"
+ssh $i "/bin/bash -s" <./mycode.sh
+done > /tmp/myappstatus.log
+[root@shellscripting ~]# bash final-code.sh
+[root@shellscripting ~]# cat /tmp/myappstatus.log
+========server2========
+fe80::882:28ff:fe48:5419%eth0 172.31.31.38
+Linux server2 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  432K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+========server3========
+fe80::831:99ff:fe4a:4217%eth0 172.31.17.132
+Linux server3 4.14.225-169.362.amzn2.x86_64 #1 SMP Mon Mar 22 20:14:50 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  482M     0  482M   0% /dev
+tmpfs          tmpfs     492M     0  492M   0% /dev/shm
+tmpfs          tmpfs     492M  488K  492M   1% /run
+tmpfs          tmpfs     492M     0  492M   0% /sys/fs/cgroup
+/dev/xvda1     xfs       8.0G  1.4G  6.7G  18% /
+tmpfs          tmpfs      99M     0   99M   0% /run/user/1000
+tmpfs          tmpfs      99M     0   99M   0% /run/user/0
+[root@shellscripting ~]#
+[root@shellscripting ~]# #aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:353664852275:Billing" --message "serverinformation"
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# #aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:353664852275:Billing" --message "serverinformation"
+[root@shellscripting ~]# #arn:aws:sns:us-east-1:140770401787:myappstatus
+[root@shellscripting ~]# aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:140770401787:myappstatus" --message "Hi Team welcome to ShellScripting"
+
+An error occurred (AuthorizationError) when calling the Publish operation: User: arn:aws:iam::140770401787:user/shellautomation is not authorized to perform: SNS:Publish on resource: arn:aws:sns:us-east-1:140770401787:myappstatus
+[root@shellscripting ~]# aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:140770401787:myappstatus" --message "Hi Team welcome to ShellScripting"
+{
+    "MessageId": "b5b218bd-836b-5598-bd5e-4045c1d494b8"
+}
+[root@shellscripting ~]# vi final-code.sh
+[root@shellscripting ~]# cat final-code.sh
+#!/bin/bash
+for i in $(cat serverslist)
+do
+echo "========$i========"
+ssh $i "/bin/bash -s" <./mycode.sh
+done > /tmp/myappstatus.log
+
+# Sending appstatus to email
+
+aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:140770401787:myappstatus" --message file:///tmp/myappstatus.log
+[root@shellscripting ~]# bash final-code.sh
+{
+    "MessageId": "dd5e5575-c0db-503d-bb9d-0d8d83fa2cda"
+}
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]#
+[root@shellscripting ~]# crontab -l
+no crontab for root
+[root@shellscripting ~]# cat /etc/crontab
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+[root@shellscripting ~]# vi logsync.sh
+[root@shellscripting ~]# cat logsync.sh
+#!/bin/bash
+aws s3 cp --recursive /var/log/myapp/* s3://dest1/
+[root@shellscripting ~]# mkdir -p /var/log/myapp/
+[root@shellscripting ~]# touch /var/log/myapp/dvstest{1..20}
+[root@shellscripting ~]# ls -l /var/log/myapp/
+total 0
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest1
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest10
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest11
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest12
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest13
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest14
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest15
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest16
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest17
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest18
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest19
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest2
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest20
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest3
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest4
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest5
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest6
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest7
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest8
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest9
+[root@shellscripting ~]# cat logsync.sh
+#!/bin/bash
+aws s3 cp --recursive /var/log/myapp/* s3://dest1/
+[root@shellscripting ~]# pwd
+/root
+[root@shellscripting ~]# ls -l /root/logsync.sh
+-rw-r--r-- 1 root root 63 Apr 20 03:15 /root/logsync.sh
+[root@shellscripting ~]# chmod +x /root/logsync.sh
+[root@shellscripting ~]# date
+Tue Apr 20 03:16:40 UTC 2021
+[root@shellscripting ~]# crontab -e
+no crontab for root - using an empty one
+crontab: installing new crontab
+[root@shellscripting ~]# crontab -l
+20 03 * * * /root/logsync.sh > /dev/null
+[root@shellscripting ~]# date
+Tue Apr 20 03:17:54 UTC 2021
+[root@shellscripting ~]# tail -f /var/log/cron
+Apr 20 03:01:01 shellscripting anacron[5762]: Anacron started on 2021-04-20
+Apr 20 03:01:01 shellscripting anacron[5762]: Will run job `cron.daily' in 26 min.
+Apr 20 03:01:01 shellscripting anacron[5762]: Jobs will be executed sequentially
+Apr 20 03:01:01 shellscripting run-parts(/etc/cron.hourly)[5764]: finished 0anacron
+Apr 20 03:04:05 shellscripting crontab[5769]: (root) LIST (root)
+Apr 20 03:10:01 shellscripting CROND[5783]: (root) CMD (/usr/lib64/sa/sa1 1 1)
+Apr 20 03:17:01 shellscripting crontab[5812]: (root) BEGIN EDIT (root)
+Apr 20 03:17:42 shellscripting crontab[5812]: (root) REPLACE (root)
+Apr 20 03:17:42 shellscripting crontab[5812]: (root) END EDIT (root)
+Apr 20 03:17:45 shellscripting crontab[5815]: (root) LIST (root)
+Apr 20 03:20:01 shellscripting CROND[5831]: (root) CMD (/root/logsync.sh > /dev/null)
+Apr 20 03:20:01 shellscripting CROND[5832]: (root) CMD (/usr/lib64/sa/sa1 1 1)
+^C
+You have mail in /var/spool/mail/root
+[root@shellscripting ~]# /root/logsync.sh
+
+Unknown options: /var/log/myapp/dvstest11,/var/log/myapp/dvstest12,/var/log/myapp/dvstest13,/var/log/myapp/dvstest14,/var/log/myapp/dvstest15,/var/log/myapp/dvstest16,/var/log/myapp/dvstest17,/var/log/myapp/dvstest18,/var/log/myapp/dvstest19,/var/log/myapp/dvstest2,/var/log/myapp/dvstest20,/var/log/myapp/dvstest3,/var/log/myapp/dvstest4,/var/log/myapp/dvstest5,/var/log/myapp/dvstest6,/var/log/myapp/dvstest7,/var/log/myapp/dvstest8,/var/log/myapp/dvstest9,s3://dest1/
+[root@shellscripting ~]# vi /root/logsync.sh
+[root@shellscripting ~]# cat /root/logsync.sh
+#!/bin/bash
+cd /var/log/myapp/
+aws s3 cp --recursive . s3://dest1/
+[root@shellscripting ~]# /root/logsync.sh
+upload failed: ./dvstest1 to s3://dest1/dvstest1 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest2 to s3://dest1/dvstest2 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest18 to s3://dest1/dvstest18 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest12 to s3://dest1/dvstest12 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest11 to s3://dest1/dvstest11 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest13 to s3://dest1/dvstest13 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest10 to s3://dest1/dvstest10 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest20 to s3://dest1/dvstest20 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest19 to s3://dest1/dvstest19 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest3 to s3://dest1/dvstest3 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest4 to s3://dest1/dvstest4 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest5 to s3://dest1/dvstest5 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest17 to s3://dest1/dvstest17 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest16 to s3://dest1/dvstest16 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest6 to s3://dest1/dvstest6 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest8 to s3://dest1/dvstest8 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest15 to s3://dest1/dvstest15 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest14 to s3://dest1/dvstest14 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest9 to s3://dest1/dvstest9 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest7 to s3://dest1/dvstest7 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+[root@shellscripting ~]# cat /root/logsync.sh
+#!/bin/bash
+cd /var/log/myapp/
+aws s3 cp --recursive . s3://dest1/
+[root@shellscripting ~]# cd /var/log/myapp/
+[root@shellscripting myapp]# aws s3 cp --recursive . s3://dest1/
+upload failed: ./dvstest10 to s3://dest1/dvstest10 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest12 to s3://dest1/dvstest12 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest1 to s3://dest1/dvstest1 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest19 to s3://dest1/dvstest19 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest3 to s3://dest1/dvstest3 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest2 to s3://dest1/dvstest2 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest11 to s3://dest1/dvstest11 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest20 to s3://dest1/dvstest20 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest18 to s3://dest1/dvstest18 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest17 to s3://dest1/dvstest17 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest4 to s3://dest1/dvstest4 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest5 to s3://dest1/dvstest5 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest15 to s3://dest1/dvstest15 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest13 to s3://dest1/dvstest13 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest7 to s3://dest1/dvstest7 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest16 to s3://dest1/dvstest16 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest8 to s3://dest1/dvstest8 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest9 to s3://dest1/dvstest9 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest14 to s3://dest1/dvstest14 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+upload failed: ./dvstest6 to s3://dest1/dvstest6 An error occurred (AccessDenied) when calling the PutObject operation: Access Denied
+[root@shellscripting myapp]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest1
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest10
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest11
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest12
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest13
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest14
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest15
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest16
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest17
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest18
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest19
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest2
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest20
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest3
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest4
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest5
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest6
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest7
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest8
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest9
+[root@shellscripting myapp]# aws s3 ls
+2021-03-31 02:50:04 dvs-batch1
+2021-03-18 03:04:54 dvs-blr1
+2021-03-18 03:05:10 dvs-hyd1
+2021-04-03 03:55:32 dvs-nvirg
+2021-04-03 03:56:18 dvs-ohio1
+2021-04-07 03:07:37 dvs.shaans.in
+2021-04-20 02:07:53 mydest1
+2021-04-20 02:07:40 mysrc1
+2021-04-07 02:57:21 static.shaans.in
+[root@shellscripting myapp]# vi /root/logsync.sh
+[root@shellscripting myapp]# aws s3 cp --recursive dvstes1 s3://dest1/
+
+The user-provided path dvstes1 does not exist.
+[root@shellscripting myapp]# aws s3 cp --recursive dvstest1 s3://dest1/
+warning: Skipping file /var/log/myapp/dvstest1/. File does not exist.
+
+[root@shellscripting myapp]# aws s3 cp --recursive ./dvstest1 s3://mydest1/
+warning: Skipping file /var/log/myapp/dvstest1/. File does not exist.
+
+[root@shellscripting myapp]# ls -l dvstest1
+-rw-r--r-- 1 root root 0 Apr 20 03:15 dvstest1
+[root@shellscripting myapp]# aws s3 cp --recursive dvstest1 s3://mydest1/
+warning: Skipping file /var/log/myapp/dvstest1/. File does not exist.
+
+[root@shellscripting myapp]# aws s3 cp --recursive . s3://mydest1/
+upload: ./dvstest1 to s3://mydest1/dvstest1
+upload: ./dvstest11 to s3://mydest1/dvstest11
+upload: ./dvstest4 to s3://mydest1/dvstest4
+upload: ./dvstest12 to s3://mydest1/dvstest12
+upload: ./dvstest5 to s3://mydest1/dvstest5
+upload: ./dvstest10 to s3://mydest1/dvstest10
+upload: ./dvstest13 to s3://mydest1/dvstest13
+upload: ./dvstest18 to s3://mydest1/dvstest18
+upload: ./dvstest6 to s3://mydest1/dvstest6
+upload: ./dvstest14 to s3://mydest1/dvstest14
+upload: ./dvstest7 to s3://mydest1/dvstest7
+upload: ./dvstest2 to s3://mydest1/dvstest2
+upload: ./dvstest9 to s3://mydest1/dvstest9
+upload: ./dvstest8 to s3://mydest1/dvstest8
+upload: ./dvstest19 to s3://mydest1/dvstest19
+upload: ./dvstest17 to s3://mydest1/dvstest17
+upload: ./dvstest15 to s3://mydest1/dvstest15
+upload: ./dvstest16 to s3://mydest1/dvstest16
+upload: ./dvstest3 to s3://mydest1/dvstest3
+upload: ./dvstest20 to s3://mydest1/dvstest20
+[root@shellscripting myapp]# aws s3 rm --recursive s3://mydest1/
+delete: s3://mydest1/dvstest1
+delete: s3://mydest1/dvstest4
+delete: s3://mydest1/dvstest10
+delete: s3://mydest1/dvstest11
+delete: s3://mydest1/dvstest18
+delete: s3://mydest1/dvstest12
+delete: s3://mydest1/dvstest19
+delete: s3://mydest1/dvstest17
+delete: s3://mydest1/dvstest2
+delete: s3://mydest1/dvstest6
+delete: s3://mydest1/dvstest7
+delete: s3://mydest1/dvstest20
+delete: s3://mydest1/dvstest5
+delete: s3://mydest1/dvstest8
+delete: s3://mydest1/dvstest9
+delete: s3://mydest1/file1
+delete: s3://mydest1/file3
+delete: s3://mydest1/file2
+delete: s3://mydest1/file4
+delete: s3://mydest1/dvstest16
+delete: s3://mydest1/dvstest15
+delete: s3://mydest1/file5
+delete: s3://mydest1/dvstest13
+delete: s3://mydest1/dvstest14
+delete: s3://mydest1/dvstest3
+[root@shellscripting myapp]# /root/logsync.sh
+upload: ./dvstest10 to s3://mydest1/dvstest10
+upload: ./dvstest11 to s3://mydest1/dvstest11
+upload: ./dvstest1 to s3://mydest1/dvstest1
+upload: ./dvstest5 to s3://mydest1/dvstest5
+upload: ./dvstest6 to s3://mydest1/dvstest6
+upload: ./dvstest18 to s3://mydest1/dvstest18
+upload: ./dvstest4 to s3://mydest1/dvstest4
+upload: ./dvstest17 to s3://mydest1/dvstest17
+upload: ./dvstest12 to s3://mydest1/dvstest12
+upload: ./dvstest2 to s3://mydest1/dvstest2
+upload: ./dvstest19 to s3://mydest1/dvstest19
+upload: ./dvstest20 to s3://mydest1/dvstest20
+upload: ./dvstest3 to s3://mydest1/dvstest3
+upload: ./dvstest7 to s3://mydest1/dvstest7
+upload: ./dvstest14 to s3://mydest1/dvstest14
+upload: ./dvstest13 to s3://mydest1/dvstest13
+upload: ./dvstest16 to s3://mydest1/dvstest16
+upload: ./dvstest15 to s3://mydest1/dvstest15
+upload: ./dvstest9 to s3://mydest1/dvstest9
+upload: ./dvstest8 to s3://mydest1/dvstest8
+[root@shellscripting myapp]# aws s3 rm --recursive s3://mydest1/
+delete: s3://mydest1/dvstest11
+delete: s3://mydest1/dvstest3
+delete: s3://mydest1/dvstest5
+delete: s3://mydest1/dvstest1
+delete: s3://mydest1/dvstest10
+delete: s3://mydest1/dvstest12
+delete: s3://mydest1/dvstest17
+delete: s3://mydest1/dvstest6
+delete: s3://mydest1/dvstest7
+delete: s3://mydest1/dvstest18
+delete: s3://mydest1/dvstest8
+delete: s3://mydest1/dvstest16
+delete: s3://mydest1/dvstest15
+delete: s3://mydest1/dvstest20
+delete: s3://mydest1/dvstest13
+delete: s3://mydest1/dvstest19
+delete: s3://mydest1/dvstest2
+delete: s3://mydest1/dvstest9
+delete: s3://mydest1/dvstest14
+delete: s3://mydest1/dvstest4
+[root@shellscripting myapp]# date
+Tue Apr 20 03:26:00 UTC 2021
+[root@shellscripting myapp]# date
+Tue Apr 20 03:26:04 UTC 2021
+[root@shellscripting myapp]# crontab -e
+crontab: installing new crontab
+[root@shellscripting myapp]#
+[root@shellscripting myapp]#
+[root@shellscripting myapp]# crontab -l
+27 03 * * * /root/logsync.sh > /dev/null
+(reverse-i-search)`': ^C
+[root@shellscripting myapp]# date
+Tue Apr 20 03:26:20 UTC 2021
+[root@shellscripting myapp]# tail -f /var/log/cron
+Apr 20 03:17:01 shellscripting crontab[5812]: (root) BEGIN EDIT (root)
+Apr 20 03:17:42 shellscripting crontab[5812]: (root) REPLACE (root)
+Apr 20 03:17:42 shellscripting crontab[5812]: (root) END EDIT (root)
+Apr 20 03:17:45 shellscripting crontab[5815]: (root) LIST (root)
+Apr 20 03:20:01 shellscripting CROND[5831]: (root) CMD (/root/logsync.sh > /dev/null)
+Apr 20 03:20:01 shellscripting CROND[5832]: (root) CMD (/usr/lib64/sa/sa1 1 1)
+Apr 20 03:26:06 shellscripting crontab[6076]: (root) BEGIN EDIT (root)
+Apr 20 03:26:14 shellscripting crontab[6076]: (root) REPLACE (root)
+Apr 20 03:26:14 shellscripting crontab[6076]: (root) END EDIT (root)
+Apr 20 03:26:16 shellscripting crontab[6078]: (root) LIST (root)
+
+
+
+
+Apr 20 03:27:01 shellscripting anacron[5762]: Job `cron.daily' started
+Apr 20 03:27:01 shellscripting run-parts(/etc/cron.daily)[6082]: starting logrotate
+Apr 20 03:27:01 shellscripting run-parts(/etc/cron.daily)[6090]: finished logrotate
+Apr 20 03:27:01 shellscripting run-parts(/etc/cron.daily)[6082]: starting man-db.cron
+Apr 20 03:27:01 shellscripting crond[3034]: (root) RELOAD (/var/spool/cron/root)
+Apr 20 03:27:01 shellscripting CROND[6100]: (root) CMD (/root/logsync.sh > /dev/null)
+Apr 20 03:27:02 shellscripting run-parts(/etc/cron.daily)[6125]: finished man-db.cron
+Apr 20 03:27:02 shellscripting run-parts(/etc/cron.daily)[6082]: starting mlocate
+Apr 20 03:27:03 shellscripting run-parts(/etc/cron.daily)[6136]: finished mlocate
+Apr 20 03:27:03 shellscripting anacron[5762]: Job `cron.daily' terminated
+Apr 20 03:27:03 shellscripting anacron[5762]: Normal exit (1 job run)
+^C
+[root@shellscripting myapp]# vi fn.sh
+[root@shellscripting myapp]# cat fn.sh
+#!/bin/bash
+function sai {
+
+        echo "Hi"
+}
+
+sai
+[root@shellscripting myapp]# bash fn.sh
+Hi
+[root@shellscripting myapp]#
+[root@shellscripting myapp]#
+[root@shellscripting myapp]#

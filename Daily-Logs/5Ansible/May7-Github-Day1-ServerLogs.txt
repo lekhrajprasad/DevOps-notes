@@ -1,0 +1,210 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Fri May  7 02:30:48 2021
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@packer ~]$ sudo su -
+Last login: Fri May  7 01:54:23 UTC 2021 on pts/0
+[root@packer ~]#
+[root@packer ~]# hostnamectl set-hostname git
+[root@packer ~]# bash
+[root@git ~]#
+[root@git ~]# yum install git -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package git.x86_64 0:2.23.4-1.amzn2.0.1 will be installed
+--> Processing Dependency: perl-Git = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: git-core-doc = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: git-core = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: emacs-filesystem >= 25.3 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Term::ReadKey) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Git::I18N) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Git) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: libsecret-1.so.0()(64bit) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Running transaction check
+---> Package emacs-filesystem.noarch 1:25.3-3.amzn2.0.2 will be installed
+---> Package git-core.x86_64 0:2.23.4-1.amzn2.0.1 will be installed
+---> Package git-core-doc.noarch 0:2.23.4-1.amzn2.0.1 will be installed
+---> Package libsecret.x86_64 0:0.18.5-2.amzn2.0.2 will be installed
+---> Package perl-Git.noarch 0:2.23.4-1.amzn2.0.1 will be installed
+--> Processing Dependency: perl(Error) for package: perl-Git-2.23.4-1.amzn2.0.1.noarch
+---> Package perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2 will be installed
+--> Running transaction check
+---> Package perl-Error.noarch 1:0.17020-2.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                         Arch                  Version                            Repository                 Size
+==========================================================================================================================
+Installing:
+ git                             x86_64                2.23.4-1.amzn2.0.1                 amzn2-core                135 k
+Installing for dependencies:
+ emacs-filesystem                noarch                1:25.3-3.amzn2.0.2                 amzn2-core                 64 k
+ git-core                        x86_64                2.23.4-1.amzn2.0.1                 amzn2-core                5.0 M
+ git-core-doc                    noarch                2.23.4-1.amzn2.0.1                 amzn2-core                2.4 M
+ libsecret                       x86_64                0.18.5-2.amzn2.0.2                 amzn2-core                153 k
+ perl-Error                      noarch                1:0.17020-2.amzn2                  amzn2-core                 32 k
+ perl-Git                        noarch                2.23.4-1.amzn2.0.1                 amzn2-core                 47 k
+ perl-TermReadKey                x86_64                2.30-20.amzn2.0.2                  amzn2-core                 31 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+7 Dependent packages)
+
+Total download size: 7.9 M
+Installed size: 41 M
+Downloading packages:
+(1/8): git-2.23.4-1.amzn2.0.1.x86_64.rpm                                                           | 135 kB  00:00:00
+(2/8): emacs-filesystem-25.3-3.amzn2.0.2.noarch.rpm                                                |  64 kB  00:00:00
+(3/8): git-core-doc-2.23.4-1.amzn2.0.1.noarch.rpm                                                  | 2.4 MB  00:00:00
+(4/8): git-core-2.23.4-1.amzn2.0.1.x86_64.rpm                                                      | 5.0 MB  00:00:00
+(5/8): libsecret-0.18.5-2.amzn2.0.2.x86_64.rpm                                                     | 153 kB  00:00:00
+(6/8): perl-Git-2.23.4-1.amzn2.0.1.noarch.rpm                                                      |  47 kB  00:00:00
+(7/8): perl-Error-0.17020-2.amzn2.noarch.rpm                                                       |  32 kB  00:00:00
+(8/8): perl-TermReadKey-2.30-20.amzn2.0.2.x86_64.rpm                                               |  31 kB  00:00:00
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      19 MB/s | 7.9 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : git-core-2.23.4-1.amzn2.0.1.x86_64                                                                     1/8
+  Installing : git-core-doc-2.23.4-1.amzn2.0.1.noarch                                                                 2/8
+  Installing : 1:emacs-filesystem-25.3-3.amzn2.0.2.noarch                                                             3/8
+  Installing : 1:perl-Error-0.17020-2.amzn2.noarch                                                                    4/8
+  Installing : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                              5/8
+  Installing : libsecret-0.18.5-2.amzn2.0.2.x86_64                                                                    6/8
+  Installing : perl-Git-2.23.4-1.amzn2.0.1.noarch                                                                     7/8
+  Installing : git-2.23.4-1.amzn2.0.1.x86_64                                                                          8/8
+  Verifying  : libsecret-0.18.5-2.amzn2.0.2.x86_64                                                                    1/8
+  Verifying  : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                              2/8
+  Verifying  : git-2.23.4-1.amzn2.0.1.x86_64                                                                          3/8
+  Verifying  : git-core-doc-2.23.4-1.amzn2.0.1.noarch                                                                 4/8
+  Verifying  : perl-Git-2.23.4-1.amzn2.0.1.noarch                                                                     5/8
+  Verifying  : git-core-2.23.4-1.amzn2.0.1.x86_64                                                                     6/8
+  Verifying  : 1:perl-Error-0.17020-2.amzn2.noarch                                                                    7/8
+  Verifying  : 1:emacs-filesystem-25.3-3.amzn2.0.2.noarch                                                             8/8
+
+Installed:
+  git.x86_64 0:2.23.4-1.amzn2.0.1
+
+Dependency Installed:
+  emacs-filesystem.noarch 1:25.3-3.amzn2.0.2                     git-core.x86_64 0:2.23.4-1.amzn2.0.1
+  git-core-doc.noarch 0:2.23.4-1.amzn2.0.1                       libsecret.x86_64 0:0.18.5-2.amzn2.0.2
+  perl-Error.noarch 1:0.17020-2.amzn2                            perl-Git.noarch 0:2.23.4-1.amzn2.0.1
+  perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2
+
+Complete!
+[root@git ~]#
+[root@git ~]#
+[root@git ~]#
+[root@git ~]# mkdir myproject
+[root@git ~]# cd myproject/
+[root@git myproject]# ls -l
+total 0
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 2 root root   6 May  7 03:15 .
+dr-xr-x--- 6 root root 294 May  7 03:15 ..
+[root@git myproject]# touch test1
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 2 root root  19 May  7 03:16 .
+dr-xr-x--- 6 root root 294 May  7 03:15 ..
+-rw-r--r-- 1 root root   0 May  7 03:16 test1
+[root@git myproject]# rm -f test1
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 2 root root   6 May  7 03:16 .
+dr-xr-x--- 6 root root 294 May  7 03:15 ..
+[root@git myproject]# git init .
+Initialized empty Git repository in /root/myproject/.git/
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 3 root root  18 May  7 03:17 .
+dr-xr-x--- 6 root root 294 May  7 03:15 ..
+drwxr-xr-x 7 root root 119 May  7 03:17 .git
+[root@git myproject]# touch test1
+[root@git myproject]# ls -la
+total 0
+drwxr-xr-x 3 root root  31 May  7 03:18 .
+dr-xr-x--- 6 root root 294 May  7 03:15 ..
+drwxr-xr-x 7 root root 119 May  7 03:17 .git
+-rw-r--r-- 1 root root   0 May  7 03:18 test1
+[root@git myproject]# git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        test1
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@git myproject]# git add test1
+[root@git myproject]# git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   test1
+
+[root@git myproject]# git commit -m "testing my git repo"
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'root@git.(none)')
+[root@git myproject]# git config --global user.email shahan.aix@gmail.com
+[root@git myproject]# git config --global user.name shan5a6
+[root@git myproject]# git commit -m "testing my git repo"
+[master (root-commit) a38bc0d] testing my git repo
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 test1
+[root@git myproject]# git status
+On branch master
+nothing to commit, working tree clean
+[root@git myproject]# git log
+commit a38bc0d39506d3cae3ec07ebcb10d03dfc762a04 (HEAD -> master)
+Author: shan5a6 <shahan.aix@gmail.com>
+Date:   Fri May 7 03:20:47 2021 +0000
+
+    testing my git repo
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 3 root root  31 May  7 03:18 .
+dr-xr-x--- 6 root root 312 May  7 03:20 ..
+drwxr-xr-x 8 root root 166 May  7 03:20 .git
+-rw-r--r-- 1 root root   0 May  7 03:18 test1
+[root@git myproject]# rm -f test1
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 3 root root  18 May  7 03:21 .
+dr-xr-x--- 6 root root 312 May  7 03:20 ..
+drwxr-xr-x 8 root root 166 May  7 03:20 .git
+[root@git myproject]# git checkout a38bc0d39506d3cae3ec07ebcb10d03dfc762a04 .
+Updated 1 path from e0f402d
+[root@git myproject]# ls -al
+total 0
+drwxr-xr-x 3 root root  31 May  7 03:22 .
+dr-xr-x--- 6 root root 312 May  7 03:20 ..
+drwxr-xr-x 8 root root 166 May  7 03:22 .git
+-rw-r--r-- 1 root root   0 May  7 03:22 test1
+[root@git myproject]#

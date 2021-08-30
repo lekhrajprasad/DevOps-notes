@@ -1,0 +1,378 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-26-253 ~]$ sudo su -
+[root@ip-172-31-26-253 ~]#
+[root@ip-172-31-26-253 ~]# hostnamectl set-hostname python
+[root@ip-172-31-26-253 ~]# bash
+[root@python ~]#
+[root@python ~]# python -version
+Unknown option: -e
+usage: python [option] ... [-c cmd | -m mod | file | -] [arg] ...
+Try `python -h' for more information.
+[root@python ~]# python -v
+# installing zipimport hook
+import zipimport # builtin
+# installed zipimport hook
+# /usr/lib64/python2.7/site.pyc matches /usr/lib64/python2.7/site.py
+import site # precompiled from /usr/lib64/python2.7/site.pyc
+# /usr/lib64/python2.7/os.pyc matches /usr/lib64/python2.7/os.py
+import os # precompiled from /usr/lib64/python2.7/os.pyc
+import errno # builtin
+import posix # builtin
+# /usr/lib64/python2.7/posixpath.pyc matches /usr/lib64/python2.7/posixpath.py
+import posixpath # precompiled from /usr/lib64/python2.7/posixpath.pyc
+# /usr/lib64/python2.7/stat.pyc matches /usr/lib64/python2.7/stat.py
+import stat # precompiled from /usr/lib64/python2.7/stat.pyc
+# /usr/lib64/python2.7/genericpath.pyc matches /usr/lib64/python2.7/genericpath.py
+import genericpath # precompiled from /usr/lib64/python2.7/genericpath.pyc
+# /usr/lib64/python2.7/warnings.pyc matches /usr/lib64/python2.7/warnings.py
+import warnings # precompiled from /usr/lib64/python2.7/warnings.pyc
+# /usr/lib64/python2.7/linecache.pyc matches /usr/lib64/python2.7/linecache.py
+import linecache # precompiled from /usr/lib64/python2.7/linecache.pyc
+# /usr/lib64/python2.7/types.pyc matches /usr/lib64/python2.7/types.py
+import types # precompiled from /usr/lib64/python2.7/types.pyc
+# /usr/lib64/python2.7/UserDict.pyc matches /usr/lib64/python2.7/UserDict.py
+import UserDict # precompiled from /usr/lib64/python2.7/UserDict.pyc
+# /usr/lib64/python2.7/_abcoll.pyc matches /usr/lib64/python2.7/_abcoll.py
+import _abcoll # precompiled from /usr/lib64/python2.7/_abcoll.pyc
+# /usr/lib64/python2.7/abc.pyc matches /usr/lib64/python2.7/abc.py
+import abc # precompiled from /usr/lib64/python2.7/abc.pyc
+# /usr/lib64/python2.7/_weakrefset.pyc matches /usr/lib64/python2.7/_weakrefset.py
+import _weakrefset # precompiled from /usr/lib64/python2.7/_weakrefset.pyc
+import _weakref # builtin
+# /usr/lib64/python2.7/copy_reg.pyc matches /usr/lib64/python2.7/copy_reg.py
+import copy_reg # precompiled from /usr/lib64/python2.7/copy_reg.pyc
+# /usr/lib64/python2.7/traceback.pyc matches /usr/lib64/python2.7/traceback.py
+import traceback # precompiled from /usr/lib64/python2.7/traceback.pyc
+# /usr/lib64/python2.7/sysconfig.pyc matches /usr/lib64/python2.7/sysconfig.py
+import sysconfig # precompiled from /usr/lib64/python2.7/sysconfig.pyc
+# /usr/lib64/python2.7/re.pyc matches /usr/lib64/python2.7/re.py
+import re # precompiled from /usr/lib64/python2.7/re.pyc
+# /usr/lib64/python2.7/sre_compile.pyc matches /usr/lib64/python2.7/sre_compile.py
+import sre_compile # precompiled from /usr/lib64/python2.7/sre_compile.pyc
+import _sre # builtin
+# /usr/lib64/python2.7/sre_parse.pyc matches /usr/lib64/python2.7/sre_parse.py
+import sre_parse # precompiled from /usr/lib64/python2.7/sre_parse.pyc
+# /usr/lib64/python2.7/sre_constants.pyc matches /usr/lib64/python2.7/sre_constants.py
+import sre_constants # precompiled from /usr/lib64/python2.7/sre_constants.pyc
+dlopen("/usr/lib64/python2.7/lib-dynload/_localemodule.so", 2);
+import _locale # dynamically loaded from /usr/lib64/python2.7/lib-dynload/_localemodule.so
+# /usr/lib64/python2.7/_sysconfigdata.pyc matches /usr/lib64/python2.7/_sysconfigdata.py
+import _sysconfigdata # precompiled from /usr/lib64/python2.7/_sysconfigdata.pyc
+import encodings # directory /usr/lib64/python2.7/encodings
+# /usr/lib64/python2.7/encodings/__init__.pyc matches /usr/lib64/python2.7/encodings/__init__.py
+import encodings # precompiled from /usr/lib64/python2.7/encodings/__init__.pyc
+# /usr/lib64/python2.7/codecs.pyc matches /usr/lib64/python2.7/codecs.py
+import codecs # precompiled from /usr/lib64/python2.7/codecs.pyc
+import _codecs # builtin
+# /usr/lib64/python2.7/encodings/aliases.pyc matches /usr/lib64/python2.7/encodings/aliases.py
+import encodings.aliases # precompiled from /usr/lib64/python2.7/encodings/aliases.pyc
+# /usr/lib64/python2.7/encodings/utf_8.pyc matches /usr/lib64/python2.7/encodings/utf_8.py
+import encodings.utf_8 # precompiled from /usr/lib64/python2.7/encodings/utf_8.pyc
+Python 2.7.18 (default, Feb 18 2021, 06:07:59)
+[GCC 7.3.1 20180712 (Red Hat 7.3.1-12)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+dlopen("/usr/lib64/python2.7/lib-dynload/readline.so", 2);
+import readline # dynamically loaded from /usr/lib64/python2.7/lib-dynload/readline.so
+>>>
+# clear __builtin__._
+# clear sys.path
+# clear sys.argv
+# clear sys.ps1
+# clear sys.ps2
+# clear sys.exitfunc
+# clear sys.exc_type
+# clear sys.exc_value
+# clear sys.exc_traceback
+# clear sys.last_type
+# clear sys.last_value
+# clear sys.last_traceback
+# clear sys.path_hooks
+# clear sys.path_importer_cache
+# clear sys.meta_path
+# clear sys.flags
+# clear sys.float_info
+# restore sys.stdin
+# restore sys.stdout
+# restore sys.stderr
+# cleanup __main__
+# cleanup[1] encodings
+# cleanup[1] site
+# cleanup[1] sysconfig
+# cleanup[1] abc
+# cleanup[1] _weakrefset
+# cleanup[1] sre_constants
+# cleanup[1] re
+# cleanup[1] _codecs
+# cleanup[1] _warnings
+# cleanup[1] zipimport
+# cleanup[1] _sysconfigdata
+# cleanup[1] encodings.utf_8
+# cleanup[1] repoze
+# cleanup[1] readline
+# cleanup[1] _locale
+# cleanup[1] signal
+# cleanup[1] traceback
+# cleanup[1] posix
+# cleanup[1] encodings.aliases
+# cleanup[1] exceptions
+# cleanup[1] _weakref
+# cleanup[1] sre_compile
+# cleanup[1] _sre
+# cleanup[1] codecs
+# cleanup[1] sre_parse
+# cleanup[2] copy_reg
+# cleanup[2] posixpath
+# cleanup[2] errno
+# cleanup[2] _abcoll
+# cleanup[2] types
+# cleanup[2] genericpath
+# cleanup[2] stat
+# cleanup[2] warnings
+# cleanup[2] UserDict
+# cleanup[2] os.path
+# cleanup[2] linecache
+# cleanup[2] os
+# cleanup sys
+# cleanup __builtin__
+# cleanup ints: 19 unfreed ints
+# cleanup floats
+[root@python ~]# python -V
+Python 2.7.18
+[root@python ~]#
+[root@python ~]# vi prg1.py
+[root@python ~]# which python
+/usr/bin/python
+[root@python ~]# vi prg1.py
+[root@python ~]# cat prg1.py
+#!/usr/bin/python
+
+# Single line comment
+
+"""I am multiline
+comment section
+"""
+
+var1=10
+str1="DvsTech"
+
+print var1
+print str1
+[root@python ~]# chmod +x prg1.py
+[root@python ~]# ./prg1.py
+10
+DvsTech
+[root@python ~]# python prg1.py
+10
+DvsTech
+[root@python ~]# vi
+[root@python ~]# vi prg1.py
+[root@python ~]# cat prg1.py
+#!/usr/bin/python
+
+# Single line comment
+
+"""I am multiline
+comment section
+"""
+a=10,b=20
+
+#my a value is 10 and my b value is 20
+print "my a value is",a,"and my b value is",b
+[root@python ~]# python prg1.py
+  File "prg1.py", line 8
+    a=10,b=20
+SyntaxError: can't assign to literal
+[root@python ~]# vi prg1.py
+[root@python ~]#
+[root@python ~]# cat prg1.py
+#!/usr/bin/python
+
+# Single line comment
+
+"""I am multiline
+comment section
+"""
+a=10;b=20
+
+#my a value is 10 and my b value is 20
+print "my a value is",a,"and my b value is",b
+[root@python ~]# python prg1.py
+my a value is 10 and my b value is 20
+[root@python ~]# vi prg1.py
+[root@python ~]# python prg1.py
+my a value is 10 and my b value is 20
+('my a value is', 10, 'and my b value is', 20)
+[root@python ~]# vi prg2.py
+[root@python ~]#
+[root@python ~]# cat prg2.py
+#!/usr/bin/python
+
+# Defining list element
+
+lis1=[10,20,30,40]
+
+print "my list element data is",lis1
+print "my first ele is ",lis1[0]
+print "my last ele is ",lis1[-1],lis1[3]
+
+
+# Defining tuple
+
+tup1=('a','b','c','d')
+print "my tuple elemets are",tup1
+print "my tup first ele is",tup1[0]
+print "my tup last ele is ",tup1[-1],tup1[3]
+
+
+# Defining dictionary
+
+dict1= {"batchno": 1, "year": 2021, "subject": "python"}
+print "my dict data is",dict1
+print "my subject name is",dict1["subject"]
+print "my year is",dict1["year"]
+print "my batch no is",dict1["batchno"]
+
+[root@python ~]# python prg2.py
+my list element data is [10, 20, 30, 40]
+my first ele is  10
+my last ele is  40 40
+my tuple elemets are ('a', 'b', 'c', 'd')
+my tup first ele is a
+my tup last ele is  d d
+my dict data is {'batchno': 1, 'subject': 'python', 'year': 2021}
+my subject name is python
+my year is 2021
+my batch no is 1
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]#
+[root@python ~]# vi prg3.py
+[root@python ~]# cat prg3.py
+#!/usr/bin/python
+
+a=10
+b=20
+
+if a>b:
+  print "a is big",a
+else:
+  print "b is big,b
+[root@python ~]# python prg3.py
+  File "prg3.py", line 9
+    print "b is big,b
+                    ^
+SyntaxError: EOL while scanning string literal
+[root@python ~]# vi prg3.py
+[root@python ~]#
+[root@python ~]# cat prg3.py
+#!/usr/bin/python
+
+a=10
+b=20
+
+if a>b:
+  print "a is big",a
+else:
+  print "b is big",b
+[root@python ~]# python prg3.py
+b is big 20
+[root@python ~]# vi prg3.py
+[root@python ~]# cat prg3.py
+#!/usr/bin/python
+
+a=input("please enter a value:")
+b=input("please enter b value:")
+
+if a>b:
+  print "a is big",a
+else:
+  print "b is big",b
+[root@python ~]# python prg3.py
+please enter a value:200
+please enter b value:100
+a is big 200
+[root@python ~]#
+[root@python ~]# vi prg4.py
+[root@python ~]# cat prg4.py
+#!/usr/bin/python
+
+score = input("Please enter student score:")
+if score <= 100 and score >= 80:
+  print "grade A"
+elif score <= 79 and score >= 60:
+  print "grade B"
+elif score <= 59 and score >= 35:
+  print "grade C"
+else:
+  print failed
+
+[root@python ~]# python prg4.py
+Please enter student score:35
+grade C
+[root@python ~]# python prg4.py
+Please enter student score:80
+grade A
+[root@python ~]# python prg4.py
+Please enter student score:34
+Traceback (most recent call last):
+  File "prg4.py", line 11, in <module>
+    print failed
+NameError: name 'failed' is not defined
+[root@python ~]# vi prg4.py
+[root@python ~]# cat prg4.py
+[root@python ~]# cat prg4.py
+#!/usr/bin/python
+
+score = input("Please enter student score:")
+if score <= 100 and score >= 80:
+  print "grade A"
+elif score <= 79 and score >= 60:
+  print "grade B"
+elif score <= 59 and score >= 35:
+  print "grade C"
+else:
+  print "failed"
+
+[root@python ~]# python prg4.py
+Please enter student score:34
+failed
+[root@python ~]# cat prg2.py
+#!/usr/bin/python
+
+# Defining list element
+
+lis1=[10,20,30,40]
+
+print "my list element data is",lis1
+print "my first ele is ",lis1[0]
+print "my last ele is ",lis1[-1],lis1[3]
+
+
+# Defining tuple
+
+tup1=('a','b','c','d')
+print "my tuple elemets are",tup1
+print "my tup first ele is",tup1[0]
+print "my tup last ele is ",tup1[-1],tup1[3]
+
+
+# Defining dictionary
+
+dict1= {"batchno": 1, "year": 2021, "subject": "python"}
+print "my dict data is",dict1
+print "my subject name is",dict1["subject"]
+print "my year is",dict1["year"]
+print "my batch no is",dict1["batchno"]
+
+[root@python ~]#

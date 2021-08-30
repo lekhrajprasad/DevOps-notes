@@ -1,0 +1,645 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+No packages needed for security; 2 packages available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-36-21 ~]$ sudo su -
+[root@ip-172-31-36-21 ~]#
+[root@ip-172-31-36-21 ~]#
+[root@ip-172-31-36-21 ~]#
+[root@ip-172-31-36-21 ~]#
+[root@ip-172-31-36-21 ~]# hostnamectl set-hostname shellscripting
+[root@ip-172-31-36-21 ~]#
+[root@ip-172-31-36-21 ~]# bash
+[root@shellscripting ~]#
+[root@shellscripting ~]# mkdir day1
+[root@shellscripting ~]# cd day1
+[root@shellscripting day1]# ls -l
+total 0
+[root@shellscripting day1]# vi mycode.sh
+[root@shellscripting day1]# cat mycode.sh
+#!/bin/bash
+var1=10
+string1="DvsTech"
+
+# Hi Team I am printing the content
+echo $var1
+echo $string1
+[root@shellscripting day1]# ls -l mycode.sh
+-rw-r--r-- 1 root root 100 Apr 17 04:01 mycode.sh
+[root@shellscripting day1]# chmod +x mycode.sh
+[root@shellscripting day1]# ls -l mycode.sh
+-rwxr-xr-x 1 root root 100 Apr 17 04:01 mycode.sh
+[root@shellscripting day1]# ./mycode.sh
+10
+DvsTech
+[root@shellscripting day1]# bash mycode.sh
+10
+DvsTech
+[root@shellscripting day1]# chmod -x mycode.sh
+[root@shellscripting day1]# ls -l mycode.sh
+-rw-r--r-- 1 root root 100 Apr 17 04:01 mycode.sh
+[root@shellscripting day1]# bash mycode.sh
+10
+DvsTech
+[root@shellscripting day1]# ls -l mycode.sh
+-rw-r--r-- 1 root root 100 Apr 17 04:01 mycode.sh
+[root@shellscripting day1]# cat /etc/shells
+/bin/sh
+/bin/bash
+/usr/bin/sh
+/usr/bin/bash
+/bin/tcsh
+/bin/csh
+[root@shellscripting day1]# #sh mycode.sh
+[root@shellscripting day1]# cat mycode.sh
+#!/bin/bash
+var1=10
+string1="DvsTech"
+
+# Hi Team I am printing the content
+echo $var1
+echo $string1
+[root@shellscripting day1]# bash mycode.sh
+10
+DvsTech
+[root@shellscripting day1]# vi mycode.sh
+[root@shellscripting day1]# cat mycode.sh
+#!/bin/bash
+var1=10
+string1="DvsTech"
+
+# Hi Team I am printing the content
+echo "Hi my var1 value  is $var1"
+echo "Hi my string1 value  is $string1"
+[root@shellscripting day1]# bash mycode.sh
+Hi my var1 value  is 10
+Hi my string1 value  is DvsTech
+[root@shellscripting day1]# echo $HOME
+/root
+[root@shellscripting day1]# echo $HOSTNAME
+ip-172-31-36-21.ec2.internal
+[root@shellscripting day1]# echo $HISTSIZE
+1000
+[root@shellscripting day1]#
+[root@shellscripting day1]# env|more
+XDG_SESSION_ID=3
+HOSTNAME=ip-172-31-36-21.ec2.internal
+TERM=xterm
+SHELL=/bin/bash
+HISTSIZE=1000
+USER=root
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37
+;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lh
+a=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;
+31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.t
+z=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=
+01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01
+;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01
+;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01
+;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;3
+5:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.
+anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.m
+pc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+MAIL=/var/spool/mail/root
+PWD=/root/day1
+LANG=en_US.UTF-8
+HISTCONTROL=ignoredups
+HOME=/root
+SHLVL=2
+LOGNAME=root
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+_=/usr/bin/env
+OLDPWD=/root
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# var1=20
+[root@shellscripting day1]# echo $var1
+20
+[root@shellscripting day1]# sh
+sh-4.2# echo $0
+sh
+sh-4.2# echo $var1
+
+sh-4.2# exit
+[root@shellscripting day1]# echo $0
+bash
+[root@shellscripting day1]# export var1=1000
+[root@shellscripting day1]# sh
+sh-4.2# echo $0
+sh
+sh-4.2# echo $var1
+1000
+sh-4.2# echo $var1
+1000
+sh-4.2# exit
+[root@shellscripting day1]# vi ~/.bashrc
+[root@shellscripting day1]# cat ~/.bashrc
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+export var1=10000
+[root@shellscripting day1]# echo $var1
+1000
+[root@shellscripting day1]# source ~/.bashrc
+[root@shellscripting day1]# echo $var1
+10000
+[root@shellscripting day1]# env
+var1=10000
+XDG_SESSION_ID=3
+HOSTNAME=ip-172-31-36-21.ec2.internal
+TERM=xterm
+SHELL=/bin/bash
+HISTSIZE=1000
+OLDPWD=/root
+USER=root
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+MAIL=/var/spool/mail/root
+PWD=/root/day1
+LANG=en_US.UTF-8
+HISTCONTROL=ignoredups
+HOME=/root
+SHLVL=2
+LOGNAME=root
+LESSOPEN=||/usr/bin/lesspipe.sh %s
+_=/usr/bin/env
+[root@shellscripting day1]#
+[root@shellscripting day1]# ls -l
+total 4
+-rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh
+[root@shellscripting day1]# touch test{1..4}
+[root@shellscripting day1]# ls -l
+total 4
+-rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test1
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test2
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test3
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test4
+[root@shellscripting day1]# myvar1=$(ls -l)
+[root@shellscripting day1]# echo $myvar1
+total 4 -rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh -rw-r--r-- 1 root root 0 Apr 17 04:26 test1 -rw-r--r-- 1 root root 0 Apr 17 04:26 test2 -rw-r--r-- 1 root root 0 Apr 17 04:26 test3 -rw-r--r-- 1 root root 0 Apr 17 04:26 test4
+[root@shellscripting day1]#
+[root@shellscripting day1]# vi ex2.sh
+[root@shellscripting day1]# cat ex2.sh
+#!/bin/bash
+echo "Hi please enter val1 value"
+read val1
+echo "Hi please enter val2 value"
+read val2
+
+echo "my val1 value is $val1,my val2 value is $val2"
+[root@shellscripting day1]# bash ex2.sh
+Hi please enter val1 value
+200
+Hi please enter val2 value
+100
+my val1 value is 200,my val2 value is 100
+[root@shellscripting day1]# vi ex2.sh
+[root@shellscripting day1]# cat ex2.sh
+#!/bin/bash
+read -p "Hi please enter val1 value:" val1
+read -p "Hi please enter val2 value:" val2
+
+echo "my val1 value is $val1,my val2 value is $val2"
+[root@shellscripting day1]# bash ex2.sh
+Hi please enter val1 value:200
+Hi please enter val2 value:1000
+my val1 value is 200,my val2 value is 1000
+[root@shellscripting day1]# vi ex2.sh
+[root@shellscripting day1]# cat ex2.sh
+#!/bin/bash
+read -p "Hi please enter val1 value:" val1
+read -p "Hi please enter val2 value:" val2
+
+echo -e "my val1 value is $val1\nmy val2 value is $val2"
+[root@shellscripting day1]# bash ex2.sh
+Hi please enter val1 value:200
+Hi please enter val2 value:100
+my val1 value is 200
+my val2 value is 100
+[root@shellscripting day1]# vi ex2.sh
+[root@shellscripting day1]# cat ex2.sh
+#!/bin/bash
+read -p "Hi please enter val1 value:" val1
+read -p "Hi please enter val2 value:" val2
+
+echo -e "my val1 value is $val1\t\t\t\tmy val2 value is $val2"
+[root@shellscripting day1]# bash ex2.sh
+Hi please enter val1 value:100
+Hi please enter val2 value:200
+my val1 value is 100                            my val2 value is 200
+[root@shellscripting day1]#
+[root@shellscripting day1]# vi myif.sh
+[root@shellscripting day1]#
+[root@shellscripting day1]# cat myif.sh
+#!/bin/bash
+
+read -p "enter a value:" a
+read -p "enter b value:" b
+
+if (( a > b ))
+then
+echo "a is big,$a"
+else
+  echo "b is big,$b"
+fi
+[root@shellscripting day1]# bash myif.sh
+enter a value:20
+enter b value:10
+a is big,20
+[root@shellscripting day1]# vi myif.sh
+[root@shellscripting day1]# bash myif.sh
+enter a value:20
+enter b value:100
+myif.sh: line 6: 20: command not found
+b is big,100
+[root@shellscripting day1]# vi myif.sh
+[root@shellscripting day1]#
+[root@shellscripting day1]# cat myif.sh
+#!/bin/bash
+
+read -p "enter a value:" a
+read -p "enter b value:" b
+
+if (( a > b ))
+then
+echo "a is big,$a"
+else
+  echo "b is big,$b"
+fi
+[root@shellscripting day1]# bash myfi
+bash: myfi: No such file or directory
+[root@shellscripting day1]# bash myif.sh
+enter a value:100
+enter b value:200
+b is big,200
+[root@shellscripting day1]# bc
+bc 1.06.95
+Copyright 1991-1994, 1997, 1998, 2000, 2004, 2006 Free Software Foundation, Inc.
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type `warranty'.
+^C
+(interrupt) Exiting bc.
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# ls -l
+total 12
+-rw-r--r-- 1 root root   0 Apr 17 05:01 100
+-rw-r--r-- 1 root root 162 Apr 17 04:37 ex2.sh
+-rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh
+-rw-r--r-- 1 root root 136 Apr 17 05:03 myif.sh
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test1
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test2
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test3
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test4
+[root@shellscripting day1]# rm -f 100
+[root@shellscripting day1]#
+[root@shellscripting day1]# ls -l
+total 12
+-rw-r--r-- 1 root root 162 Als -lpr 17 04:37 ex2.sh
+-rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh
+-rw-r--r-- 1 root root 136 Apr 17 05:03 myif.sh
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test1
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test2
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test3
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test4
+[root@shellscripting day1]# vi ex3.sh
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# ls -l
+total 16
+-rw-r--r-- 1 root root 162 Apr 17 04:37 ex2.sh
+-rw-r--r-- 1 root root  13 Apr 17 05:13 ex3.sh
+-rw-r--r-- 1 root root 149 Apr 17 04:08 mycode.sh
+-rw-r--r-- 1 root root 136 Apr 17 05:03 myif.sh
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test1
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test2
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test3
+-rw-r--r-- 1 root root   0 Apr 17 04:26 test4
+[root@shellscripting day1]# touch dvsbatch1
+[root@shellscripting day1]# vi ex3.sh
+[root@shellscripting day1]# pwd
+/root/day1
+[root@shellscripting day1]# vi ex3.sh
+[root@shellscripting day1]# cat ex3.sh
+#!/bin/bash
+if [ -f /root/day1/dvsbatch1 ]
+then
+  echo "File exists"
+else
+  echo "File not exists"
+fi
+
+[root@shellscripting day1]# bash ex3.sh
+File exists
+[root@shellscripting day1]# rm -f /root/day1/dvsbatch1
+[root@shellscripting day1]# bash ex3.sh
+File not exists
+[root@shellscripting day1]# ls -l /root/day1/dvsbatch1
+ls: cannot access /root/day1/dvsbatch1: No such file or directory
+[root@shellscripting day1]# mkdir /tmp/mydir
+[root@shellscripting day1]# vi ex3.sh
+[root@shellscripting day1]# bash ex3.sh
+File not exists
+/tmp/mydir exists
+[root@shellscripting day1]# rmdir /tmp/mydir
+[root@shellscripting day1]# bash ex3.sh
+File not exists
+/tmp/mydir not exist
+[root@shellscripting day1]# vi myfor.sh
+[root@shellscripting day1]# cat myfor.sh
+#!/bin/bash
+
+for batch1 in 1 2 3 4 5 6 7 8 9 10
+do
+  echo $batch1
+done
+[root@shellscripting day1]# bash myfor.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+[root@shellscripting day1]# vi myfor.sh
+[root@shellscripting day1]# bash myfor.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+[root@shellscripting day1]# cat myfor.sh
+#!/bin/bash
+
+for batch1 in {1..20}
+do
+  echo $batch1
+done
+[root@shellscripting day1]# vi myfor.sh
+[root@shellscripting day1]#
+[root@shellscripting day1]# cat myfor.sh
+#!/bin/bash
+
+for batch1 in {1..20}
+do
+  echo "my value is $batch1"
+done
+[root@shellscripting day1]# bash my
+bash: my: No such file or directory
+[root@shellscripting day1]# bash myfor.sh
+my value is 1
+my value is 2
+my value is 3
+my value is 4
+my value is 5
+my value is 6
+my value is 7
+my value is 8
+my value is 9
+my value is 10
+my value is 11
+my value is 12
+my value is 13
+my value is 14
+my value is 15
+my value is 16
+my value is 17
+my value is 18
+my value is 19
+my value is 20
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# vi mywhile.sh
+[root@shellscripting day1]# bash mywhile.sh
+1
+1
+
+1
+1
+1
+^C
+[root@shellscripting day1]# cat mywhile.sh
+#!/bin/bash
+i=1
+
+while (( i <= 10 ))
+do
+  echo $i
+done
+
+[root@shellscripting day1]#
+[root@shellscripting day1]# cat mywhile.sh
+#!/bin/bash
+i=1
+
+while (( i <= 10 ))
+do
+  echo $i
+done
+
+[root@shellscripting day1]# vi mywhile.sh
+[root@shellscripting day1]# cat mywhile.sh
+#!/bin/bash
+i=1
+
+while (( i <= 10 ))
+do
+  echo $i
+  (( i = i + 1 ))
+done
+
+[root@shellscripting day1]# bash mywhile.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+[root@shellscripting day1]# vi myinfinetloop.sh
+[root@shellscripting day1]# cat myinfinetloop.sh
+#!/bin/bash
+while true
+do
+  echo "Welcome to Dvs Technlogies"
+done
+[root@shellscripting day1]# bash myinfinetloop.sh
+Welcome to Dvs Technlogies
+Welcome to Dvs Technlogies
+Welco^C
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# vi serverslist
+[root@shellscripting day1]# cat serverslist
+server1
+server2
+server3
+server4
+server5
+[root@shellscripting day1]# var=$(cat serverslist)
+[root@shellscripting day1]# echo $var
+server1 server2 server3 server4 server5
+[root@shellscripting day1]# for svr in server1 server2 server3 server4 server5
+> do
+> echo "server name is $svr"
+> done
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]# for svr in $(cat serverslist)
+> do
+> echo "server name is $svr"
+> done
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]# for svr in $var; do echo "server name is $svr"; done
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]# for svr in $var; do echo "server name is $svr"; done > /tmp/mylog
+[root@shellscripting day1]# cat /tmp/mylog
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# for svr in $var; do echo "server name is $svr"; done > /tmp/mylog
+[root@shellscripting day1]# cat /tmp/mylog
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]# for svr in $var; do echo "server name is $svr"; done > /tmp/mylog
+[root@shellscripting day1]# cat /tmp/mylog
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]# for svr in $var; do echo "server name is $svr"; done >> /tmp/mylog
+[root@shellscripting day1]# cat /tmp/mylog
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+server name is server1
+server name is server2
+server name is server3
+server name is server4
+server name is server5
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# val1=10
+[root@shellscripting day1]# echo $val1
+10
+[root@shellscripting day1]# while read val1
+> do
+> echo $val
+> done < 10
+bash: 10: No such file or directory
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# echo 20 |while read val1
+> do
+> echo $val1
+> done
+20
+[root@shellscripting day1]# cat serverslist
+server1
+server2
+server3
+server4
+server5
+[root@shellscripting day1]# while read servername
+> do
+> echo $servername
+> done < cat serverslist
+bash: syntax error near unexpected token `serverslist'
+[root@shellscripting day1]# while read servername; do echo $servername; done < serverslist
+server1
+server2
+server3
+server4
+server5
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# #for svr in $(cat serverslist); do echo "server name is $svr"; done
+[root@shellscripting day1]#
+[root@shellscripting day1]#
+[root@shellscripting day1]# cat serverslist
+server1
+server2
+server3
+server4
+server5
+[root@shellscripting day1]# while read myvar
+> do
+> echo $myvar
+> done < serverslist
+server1
+server2
+server3
+server4
+server5
+[root@shellscripting day1]#

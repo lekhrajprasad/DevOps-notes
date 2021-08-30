@@ -1,0 +1,1815 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Mon May  3 01:41:26 2021 from bba308746.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@controller ~]$ sudo su -
+Last login: Sat May  1 05:19:47 UTC 2021 on pts/0
+[root@controller ~]#
+[root@controller ~]# logout
+[ec2-user@controller ~]$
+[ec2-user@controller ~]$
+[ec2-user@controller ~]$
+[ec2-user@controller ~]$ ls -l
+total 0
+drwxrwxr-x 3 ec2-user ec2-user 189 May  3 03:25 myansible
+[ec2-user@controller ~]$ cd myansible/
+[ec2-user@controller myansible]$ ls -l
+total 36
+-rw-rw-r-- 1 ec2-user ec2-user  237 May  3 02:18 1
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  3 02:27 ansible.cfg
+drwxrwxr-x 2 ec2-user ec2-user   26 May  3 03:24 host_vars
+-rw-rw-r-- 1 ec2-user ec2-user   37 May  1 05:40 myansiblehosts
+-rw-rw-r-- 1 ec2-user ec2-user   49 May  3 02:41 mycode.py
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  305 May  3 03:01 mymodules.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  156 May  3 03:25 myvars.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   35 May  3 03:10 variables.yaml
+[ec2-user@controller myansible]$ cat host_vars/server1.yaml
+---
+apacheversion: "3.0"
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  tasks:
+    - name: printing variable value
+      command: echo "my apache version is {{ apacheversion }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+fatal: [server2]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'apacheversion' is undefined\n\nThe error appears to be in '/home/ec2-user/myansible/myvars.yaml': line 5, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: printing variable value\n      ^ here\n"}
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+[ec2-user@controller myansible]$ mkdir group_vars
+[ec2-user@controller myansible]$ vi group_vars/prod.yaml
+[ec2-user@controller myansible]$ cat group_vars/prod.yaml
+---
+env: "production"
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  tasks:
+    - name: printing variable value
+      command: echo "my environment is {{ env }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+fatal: [server1]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'env' is undefined\n\nThe error appears to be in '/home/ec2-user/myansible/myvars.yaml': line 5, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n  tasks:\n    - name: printing variable value\n      ^ here\n"}
+changed: [server2]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myansiblehosts
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+server1
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server1]
+changed: [server2]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myvars.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myvars.yaml
+---
+- name: working with variables
+  hosts: all
+  vars:
+    - subject: "ansible"
+  tasks:
+    - name: printing variable value
+      command: echo "my environment is {{ env }},my subject is {{ subject }}"
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server2] => {"changed": true, "cmd": ["echo", "my environment is production,my subject is ansible"], "delta": "0:00:00.038507", "end": "2021-05-04 01:49:51.822120", "rc": 0, "start": "2021-05-04 01:49:51.783613", "stderr": "", "stderr_lines": [], "stdout": "my environment is production,my subject is ansible", "stdout_lines": ["my environment is production,my subject is ansible"]}
+changed: [server1] => {"changed": true, "cmd": ["echo", "my environment is production,my subject is ansible"], "delta": "0:00:00.038807", "end": "2021-05-04 01:49:51.820326", "rc": 0, "start": "2021-05-04 01:49:51.781519", "stderr": "", "stderr_lines": [], "stdout": "my environment is production,my subject is ansible", "stdout_lines": ["my environment is production,my subject is ansible"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook myvars.yaml -e "subject=jenkins" -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with variables] ********************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing variable value] *******************************************************************************************
+changed: [server2] => {"changed": true, "cmd": ["echo", "my environment is production,my subject is jenkins"], "delta": "0:00:00.038279", "end": "2021-05-04 01:50:47.851710", "rc": 0, "start": "2021-05-04 01:50:47.813431", "stderr": "", "stderr_lines": [], "stdout": "my environment is production,my subject is jenkins", "stdout_lines": ["my environment is production,my subject is jenkins"]}
+changed: [server1] => {"changed": true, "cmd": ["echo", "my environment is production,my subject is jenkins"], "delta": "0:00:00.038171", "end": "2021-05-04 01:50:47.852369", "rc": 0, "start": "2021-05-04 01:50:47.814198", "stderr": "", "stderr_lines": [], "stdout": "my environment is production,my subject is jenkins", "stdout_lines": ["my environment is production,my subject is jenkins"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost6 localhost6.localdomain6
+172.31.62.207   server1
+172.31.62.255   server2
+[ec2-user@controller myansible]$ cat myansiblehosts
+[dev]
+server1
+server2
+[prod]
+server2
+server1
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ansible -m setup server1
+server1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "172.31.62.207"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::41b:56ff:fe18:ec13"
+        ],
+        "ansible_apparmor": {
+            "status": "disabled"
+        },
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "08/24/2006",
+        "ansible_bios_version": "4.2.amazon",
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64",
+            "biosdevname": "0",
+            "console": "ttyS0,115200n8",
+            "net.ifnames": "0",
+            "nvme_core.io_timeout": "4294967295",
+            "rd.emergency": "poweroff",
+            "rd.shell": "0",
+            "ro": true,
+            "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55"
+        },
+        "ansible_date_time": {
+            "date": "2021-05-04",
+            "day": "04",
+            "epoch": "1620093544",
+            "hour": "01",
+            "iso8601": "2021-05-04T01:59:04Z",
+            "iso8601_basic": "20210504T015904152055",
+            "iso8601_basic_short": "20210504T015904",
+            "iso8601_micro": "2021-05-04T01:59:04.152055Z",
+            "minute": "59",
+            "month": "05",
+            "second": "04",
+            "time": "01:59:04",
+            "tz": "UTC",
+            "tz_offset": "+0000",
+            "weekday": "Tuesday",
+            "weekday_number": "2",
+            "weeknumber": "18",
+            "year": "2021"
+        },
+        "ansible_default_ipv4": {
+            "address": "172.31.62.207",
+            "alias": "eth0",
+            "broadcast": "172.31.63.255",
+            "gateway": "172.31.48.1",
+            "interface": "eth0",
+            "macaddress": "06:1b:56:18:ec:13",
+            "mtu": 9001,
+            "netmask": "255.255.240.0",
+            "network": "172.31.48.0",
+            "type": "ether"
+        },
+        "ansible_default_ipv6": {},
+        "ansible_device_links": {
+            "ids": {},
+            "labels": {
+                "xvda1": [
+                    "\\x2f"
+                ]
+            },
+            "masters": {},
+            "uuids": {
+                "xvda1": [
+                    "2753b570-611a-44cb-8bd2-888283108b55"
+                ]
+            }
+        },
+        "ansible_devices": {
+            "xvda": {
+                "holders": [],
+                "host": "",
+                "links": {
+                    "ids": [],
+                    "labels": [],
+                    "masters": [],
+                    "uuids": []
+                },
+                "model": null,
+                "partitions": {
+                    "xvda1": {
+                        "holders": [],
+                        "links": {
+                            "ids": [],
+                            "labels": [
+                                "\\x2f"
+                            ],
+                            "masters": [],
+                            "uuids": [
+                                "2753b570-611a-44cb-8bd2-888283108b55"
+                            ]
+                        },
+                        "sectors": "16773087",
+                        "sectorsize": 512,
+                        "size": "8.00 GB",
+                        "start": "4096",
+                        "uuid": "2753b570-611a-44cb-8bd2-888283108b55"
+                    }
+                },
+                "removable": "0",
+                "rotational": "0",
+                "sas_address": null,
+                "sas_device_handle": null,
+                "scheduler_mode": "noop",
+                "sectors": "16777216",
+                "sectorsize": "512",
+                "size": "8.00 GB",
+                "support_discard": "0",
+                "vendor": null,
+                "virtual": 1
+            }
+        },
+        "ansible_distribution": "Amazon",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/system-release",
+        "ansible_distribution_file_variety": "Amazon",
+        "ansible_distribution_major_version": "2",
+        "ansible_distribution_release": "NA",
+        "ansible_distribution_version": "2",
+        "ansible_dns": {
+            "nameservers": [
+                "172.31.0.2"
+            ],
+            "options": {
+                "attempts": "5",
+                "timeout": "2"
+            },
+            "search": [
+                "ec2.internal"
+            ]
+        },
+        "ansible_domain": "",
+        "ansible_effective_group_id": 0,
+        "ansible_effective_user_id": 0,
+        "ansible_env": {
+            "HOME": "/root",
+            "LANG": "en_US.UTF-8",
+            "LOGNAME": "root",
+            "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:",
+            "MAIL": "/var/mail/ec2-user",
+            "PATH": "/sbin:/bin:/usr/sbin:/usr/bin",
+            "PWD": "/home/ec2-user",
+            "SHELL": "/bin/bash",
+            "SHLVL": "1",
+            "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-tcjcokoejymhnvdtmfxsmpvnqgkpwlcq ; /usr/bin/python /home/ec2-user/.ansible/tmp/ansible-tmp-1620093542.58-3665-196585495936542/AnsiballZ_setup.py",
+            "SUDO_GID": "1000",
+            "SUDO_UID": "1000",
+            "SUDO_USER": "ec2-user",
+            "TERM": "xterm",
+            "USER": "root",
+            "USERNAME": "root",
+            "XDG_SESSION_ID": "6",
+            "_": "/usr/bin/python"
+        },
+        "ansible_eth0": {
+            "active": true,
+            "device": "eth0",
+            "features": {
+                "esp_hw_offload": "off [fixed]",
+                "esp_tx_csum_hw_offload": "off [fixed]",
+                "fcoe_mtu": "off [fixed]",
+                "generic_receive_offload": "on",
+                "generic_segmentation_offload": "on",
+                "highdma": "off [fixed]",
+                "hw_tc_offload": "off [fixed]",
+                "l2_fwd_offload": "off [fixed]",
+                "large_receive_offload": "off [fixed]",
+                "loopback": "off [fixed]",
+                "netns_local": "off [fixed]",
+                "ntuple_filters": "off [fixed]",
+                "receive_hashing": "off [fixed]",
+                "rx_all": "off [fixed]",
+                "rx_checksumming": "on [fixed]",
+                "rx_fcs": "off [fixed]",
+                "rx_udp_tunnel_port_offload": "off [fixed]",
+                "rx_vlan_filter": "off [fixed]",
+                "rx_vlan_offload": "off [fixed]",
+                "rx_vlan_stag_filter": "off [fixed]",
+                "rx_vlan_stag_hw_parse": "off [fixed]",
+                "scatter_gather": "on",
+                "tcp_segmentation_offload": "on",
+                "tx_checksum_fcoe_crc": "off [fixed]",
+                "tx_checksum_ip_generic": "off [fixed]",
+                "tx_checksum_ipv4": "on [fixed]",
+                "tx_checksum_ipv6": "on",
+                "tx_checksum_sctp": "off [fixed]",
+                "tx_checksumming": "on",
+                "tx_esp_segmentation": "off [fixed]",
+                "tx_fcoe_segmentation": "off [fixed]",
+                "tx_gre_csum_segmentation": "off [fixed]",
+                "tx_gre_segmentation": "off [fixed]",
+                "tx_gso_partial": "off [fixed]",
+                "tx_gso_robust": "on [fixed]",
+                "tx_ipxip4_segmentation": "off [fixed]",
+                "tx_ipxip6_segmentation": "off [fixed]",
+                "tx_lockless": "off [fixed]",
+                "tx_nocache_copy": "off",
+                "tx_scatter_gather": "on",
+                "tx_scatter_gather_fraglist": "off [fixed]",
+                "tx_sctp_segmentation": "off [fixed]",
+                "tx_tcp6_segmentation": "on",
+                "tx_tcp_ecn_segmentation": "off [fixed]",
+                "tx_tcp_mangleid_segmentation": "off",
+                "tx_tcp_segmentation": "on",
+                "tx_udp_tnl_csum_segmentation": "off [fixed]",
+                "tx_udp_tnl_segmentation": "off [fixed]",
+                "tx_vlan_offload": "off [fixed]",
+                "tx_vlan_stag_hw_insert": "off [fixed]",
+                "udp_fragmentation_offload": "off",
+                "vlan_challenged": "off [fixed]"
+            },
+            "hw_timestamp_filters": [],
+            "ipv4": {
+                "address": "172.31.62.207",
+                "broadcast": "172.31.63.255",
+                "netmask": "255.255.240.0",
+                "network": "172.31.48.0"
+            },
+            "ipv6": [
+                {
+                    "address": "fe80::41b:56ff:fe18:ec13",
+                    "prefix": "64",
+                    "scope": "link"
+                }
+            ],
+            "macaddress": "06:1b:56:18:ec:13",
+            "module": "xen_netfront",
+            "mtu": 9001,
+            "pciid": "vif-0",
+            "promisc": false,
+            "timestamping": [
+                "rx_software",
+                "software"
+            ],
+            "type": "ether"
+        },
+        "ansible_fibre_channel_wwn": [],
+        "ansible_fips": false,
+        "ansible_form_factor": "Other",
+        "ansible_fqdn": "server1",
+        "ansible_hostname": "server1",
+        "ansible_hostnqn": "",
+        "ansible_interfaces": [
+            "lo",
+            "eth0"
+        ],
+        "ansible_is_chroot": false,
+        "ansible_iscsi_iqn": "",
+        "ansible_kernel": "4.14.231-173.360.amzn2.x86_64",
+        "ansible_kernel_version": "#1 SMP Mon Apr 19 23:20:22 UTC 2021",
+        "ansible_lo": {
+            "active": true,
+            "device": "lo",
+            "features": {
+                "esp_hw_offload": "off [fixed]",
+                "esp_tx_csum_hw_offload": "off [fixed]",
+                "fcoe_mtu": "off [fixed]",
+                "generic_receive_offload": "on",
+                "generic_segmentation_offload": "on",
+                "highdma": "on [fixed]",
+                "hw_tc_offload": "off [fixed]",
+                "l2_fwd_offload": "off [fixed]",
+                "large_receive_offload": "off [fixed]",
+                "loopback": "on [fixed]",
+                "netns_local": "on [fixed]",
+                "ntuple_filters": "off [fixed]",
+                "receive_hashing": "off [fixed]",
+                "rx_all": "off [fixed]",
+                "rx_checksumming": "on [fixed]",
+                "rx_fcs": "off [fixed]",
+                "rx_udp_tunnel_port_offload": "off [fixed]",
+                "rx_vlan_filter": "off [fixed]",
+                "rx_vlan_offload": "off [fixed]",
+                "rx_vlan_stag_filter": "off [fixed]",
+                "rx_vlan_stag_hw_parse": "off [fixed]",
+                "scatter_gather": "on",
+                "tcp_segmentation_offload": "on",
+                "tx_checksum_fcoe_crc": "off [fixed]",
+                "tx_checksum_ip_generic": "on [fixed]",
+                "tx_checksum_ipv4": "off [fixed]",
+                "tx_checksum_ipv6": "off [fixed]",
+                "tx_checksum_sctp": "on [fixed]",
+                "tx_checksumming": "on",
+                "tx_esp_segmentation": "off [fixed]",
+                "tx_fcoe_segmentation": "off [fixed]",
+                "tx_gre_csum_segmentation": "off [fixed]",
+                "tx_gre_segmentation": "off [fixed]",
+                "tx_gso_partial": "off [fixed]",
+                "tx_gso_robust": "off [fixed]",
+                "tx_ipxip4_segmentation": "off [fixed]",
+                "tx_ipxip6_segmentation": "off [fixed]",
+                "tx_lockless": "on [fixed]",
+                "tx_nocache_copy": "off [fixed]",
+                "tx_scatter_gather": "on [fixed]",
+                "tx_scatter_gather_fraglist": "on [fixed]",
+                "tx_sctp_segmentation": "on",
+                "tx_tcp6_segmentation": "on",
+                "tx_tcp_ecn_segmentation": "on",
+                "tx_tcp_mangleid_segmentation": "on",
+                "tx_tcp_segmentation": "on",
+                "tx_udp_tnl_csum_segmentation": "off [fixed]",
+                "tx_udp_tnl_segmentation": "off [fixed]",
+                "tx_vlan_offload": "off [fixed]",
+                "tx_vlan_stag_hw_insert": "off [fixed]",
+                "udp_fragmentation_offload": "off",
+                "vlan_challenged": "on [fixed]"
+            },
+            "hw_timestamp_filters": [],
+            "ipv4": {
+                "address": "127.0.0.1",
+                "broadcast": "",
+                "netmask": "255.0.0.0",
+                "network": "127.0.0.0"
+            },
+            "ipv6": [
+                {
+                    "address": "::1",
+                    "prefix": "128",
+                    "scope": "host"
+                }
+            ],
+            "mtu": 65536,
+            "promisc": false,
+            "timestamping": [
+                "tx_software",
+                "rx_software",
+                "software"
+            ],
+            "type": "loopback"
+        },
+        "ansible_local": {},
+        "ansible_lsb": {},
+        "ansible_lvm": {
+            "lvs": {},
+            "pvs": {},
+            "vgs": {}
+        },
+        "ansible_machine": "x86_64",
+        "ansible_machine_id": "ec21c666732bae56d044984babbf58d8",
+        "ansible_memfree_mb": 490,
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 864,
+                "used": 119
+            },
+            "real": {
+                "free": 490,
+                "total": 983,
+                "used": 493
+            },
+            "swap": {
+                "cached": 0,
+                "free": 0,
+                "total": 0,
+                "used": 0
+            }
+        },
+        "ansible_memtotal_mb": 983,
+        "ansible_mounts": [
+            {
+                "block_available": 1719584,
+                "block_size": 4096,
+                "block_total": 2094075,
+                "block_used": 374491,
+                "device": "/dev/xvda1",
+                "fstype": "xfs",
+                "inode_available": 4145971,
+                "inode_total": 4193216,
+                "inode_used": 47245,
+                "mount": "/",
+                "options": "rw,noatime,attr2,inode64,noquota",
+                "size_available": 7043416064,
+                "size_total": 8577331200,
+                "uuid": "2753b570-611a-44cb-8bd2-888283108b55"
+            }
+        ],
+        "ansible_nodename": "server1",
+        "ansible_os_family": "RedHat",
+        "ansible_pkg_mgr": "yum",
+        "ansible_proc_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-4.14.231-173.360.amzn2.x86_64",
+            "biosdevname": "0",
+            "console": [
+                "tty0",
+                "ttyS0,115200n8"
+            ],
+            "net.ifnames": "0",
+            "nvme_core.io_timeout": "4294967295",
+            "rd.emergency": "poweroff",
+            "rd.shell": "0",
+            "ro": true,
+            "root": "UUID=2753b570-611a-44cb-8bd2-888283108b55"
+        },
+        "ansible_processor": [
+            "0",
+            "GenuineIntel",
+            "Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz"
+        ],
+        "ansible_processor_cores": 1,
+        "ansible_processor_count": 1,
+        "ansible_processor_threads_per_core": 1,
+        "ansible_processor_vcpus": 1,
+        "ansible_product_name": "HVM domU",
+        "ansible_product_serial": "ec2f285d-781b-48e9-ec7e-6cf9be4e0fe5",
+        "ansible_product_uuid": "EC2F285D-781B-48E9-EC7E-6CF9BE4E0FE5",
+        "ansible_product_version": "4.2.amazon",
+        "ansible_python": {
+            "executable": "/usr/bin/python",
+            "has_sslcontext": true,
+            "type": "CPython",
+            "version": {
+                "major": 2,
+                "micro": 18,
+                "minor": 7,
+                "releaselevel": "final",
+                "serial": 0
+            },
+            "version_info": [
+                2,
+                7,
+                18,
+                "final",
+                0
+            ]
+        },
+        "ansible_python_version": "2.7.18",
+        "ansible_real_group_id": 0,
+        "ansible_real_user_id": 0,
+        "ansible_selinux": {
+            "status": "Missing selinux Python library"
+        },
+        "ansible_selinux_python_present": false,
+        "ansible_service_mgr": "systemd",
+        "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEKLkoexPudzDekmVV6JS106BMji87tPuQrpoPmttEoP25mGWK3TEKOwZIPdf26xbxHR91KQ7cK2UIalbzud7gU=",
+        "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIEO3m7pN8qV2kzD8MUaZAQZz0otsj8lzISa+StyjT15V",
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQCmkf+x6GUO/Mc7hoyiV4jnTc/94y6EX7Ge3j2IxfDJJWuUa/KZWs3GDN7YdoVEAN9qVrNQ0K+24fWNueIJuGGQGeF+NimYkd+tAv3AJjjsq+GKberEQY70I4fvuXYdX3WEnc8udxSOBgySQ0eOEodDejGwf+Yva9330TcMc8nn8ZMjyc36AuQ4A69IaaCOksME0YfmxjMk427vDWkBH3h2iDXzmVu6Q/yI2d373uuPTy6GG8kE1lBb59PI8BpuYR6pDhuuzlIGBpFyWOOg8aD38gopdHjOaokw9mZZECP2wk6CXJ0zHZVsteJHvqaQ9UkBO9WigvCFUuCoNdbhcuVT",
+        "ansible_swapfree_mb": 0,
+        "ansible_swaptotal_mb": 0,
+        "ansible_system": "Linux",
+        "ansible_system_capabilities": [
+            "cap_chown",
+            "cap_dac_override",
+            "cap_dac_read_search",
+            "cap_fowner",
+            "cap_fsetid",
+            "cap_kill",
+            "cap_setgid",
+            "cap_setuid",
+            "cap_setpcap",
+            "cap_linux_immutable",
+            "cap_net_bind_service",
+            "cap_net_broadcast",
+            "cap_net_admin",
+            "cap_net_raw",
+            "cap_ipc_lock",
+            "cap_ipc_owner",
+            "cap_sys_module",
+            "cap_sys_rawio",
+            "cap_sys_chroot",
+            "cap_sys_ptrace",
+            "cap_sys_pacct",
+            "cap_sys_admin",
+            "cap_sys_boot",
+            "cap_sys_nice",
+            "cap_sys_resource",
+            "cap_sys_time",
+            "cap_sys_tty_config",
+            "cap_mknod",
+            "cap_lease",
+            "cap_audit_write",
+            "cap_audit_control",
+            "cap_setfcap",
+            "cap_mac_override",
+            "cap_mac_admin",
+            "cap_syslog",
+            "35",
+            "36",
+            "37+ep"
+        ],
+        "ansible_system_capabilities_enforced": "True",
+        "ansible_system_vendor": "Xen",
+        "ansible_uptime_seconds": 1314,
+        "ansible_user_dir": "/root",
+        "ansible_user_gecos": "root",
+        "ansible_user_gid": 0,
+        "ansible_user_id": "root",
+        "ansible_user_shell": "/bin/bash",
+        "ansible_user_uid": 0,
+        "ansible_userspace_architecture": "x86_64",
+        "ansible_userspace_bits": "64",
+        "ansible_virtualization_role": "guest",
+        "ansible_virtualization_type": "xen",
+        "gather_subset": [
+            "all"
+        ],
+        "module_setup": true
+    },
+    "changed": false
+}
+[ec2-user@controller myansible]$ ansible -m setup -a "filter=ansible_distribution" server1
+server1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_distribution": "Amazon"
+    },
+    "changed": false
+}
+[ec2-user@controller myansible]$ ansible -m setup -a "filter=ansible_os_family" server1
+server1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_os_family": "RedHat"
+    },
+    "changed": false
+}
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "RedHat"
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am == operator"], "delta": "0:00:00.038210", "end": "2021-05-04 02:04:28.745067", "rc": 0, "start": "2021-05-04 02:04:28.706857", "stderr": "", "stderr_lines": [], "stdout": "Hi I am == operator", "stdout_lines": ["Hi I am == operator"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "RedHat" or ansible_distribution == "Amazon"
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.038300", "end": "2021-05-04 02:08:13.068112", "rc": 0, "start": "2021-05-04 02:08:13.029812", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.037735", "end": "2021-05-04 02:09:30.648272", "rc": 0, "start": "2021-05-04 02:09:30.610537", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.038074", "end": "2021-05-04 02:10:23.382003", "rc": 0, "start": "2021-05-04 02:10:23.343929", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.038524", "end": "2021-05-04 02:12:54.600171", "rc": 0, "start": "2021-05-04 02:12:54.561647", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with > operator] *******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "My val1 value is 10"], "delta": "0:00:00.038382", "end": "2021-05-04 02:12:55.072705", "rc": 0, "start": "2021-05-04 02:12:55.034323", "stderr": "", "stderr_lines": [], "stdout": "My val1 value is 10", "stdout_lines": ["My val1 value is 10"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi cond.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.038075", "end": "2021-05-04 02:15:05.449872", "rc": 0, "start": "2021-05-04 02:15:05.411797", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with > operator] *******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "My val1 value is 10"], "delta": "0:00:00.038175", "end": "2021-05-04 02:15:05.916044", "rc": 0, "start": "2021-05-04 02:15:05.877869", "stderr": "", "stderr_lines": [], "stdout": "My val1 value is 10", "stdout_lines": ["My val1 value is 10"]}
+
+TASK [working with defined operator] *************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ ansible-playbook cond.yaml -e "subject=ansible" -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with conditions] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with == operator] ******************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with or operator] ******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi I am or operator"], "delta": "0:00:00.038214", "end": "2021-05-04 02:15:40.372992", "rc": 0, "start": "2021-05-04 02:15:40.334778", "stderr": "", "stderr_lines": [], "stdout": "Hi I am or operator", "stdout_lines": ["Hi I am or operator"]}
+
+TASK [working with and operator] *****************************************************************************************
+skipping: [server1] => {"changed": false, "skip_reason": "Conditional result was False"}
+
+TASK [working with > operator] *******************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "My val1 value is 10"], "delta": "0:00:00.038159", "end": "2021-05-04 02:15:40.836457", "rc": 0, "start": "2021-05-04 02:15:40.798298", "stderr": "", "stderr_lines": [], "stdout": "My val1 value is 10", "stdout_lines": ["My val1 value is 10"]}
+
+TASK [working with defined operator] *************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "subject value is ansible"], "delta": "0:00:00.038243", "end": "2021-05-04 02:15:41.255649", "rc": 0, "start": "2021-05-04 02:15:41.217406", "stderr": "", "stderr_lines": [], "stdout": "subject value is ansible", "stdout_lines": ["subject value is ansible"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=4    changed=3    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat cond.yaml
+---
+- name: working with conditions
+  hosts: server1
+  vars:
+    - val1: 10
+  tasks:
+    - name: working with == operator
+      command: echo "Hi I am == operator"
+      when: ansible_os_family == "Redhat"
+
+    - name: working with or operator
+      command: echo "Hi I am or operator"
+      when: ansible_os_family == "Redhat" or ansible_distribution == "Amazon"
+
+    - name: working with and operator
+      command: echo "Hi I am and operator"
+      when: ansible_os_family == "Redhat" and ansible_distribution == "Amazon"
+
+    - name: working with > operator
+      command: echo "My val1 value is {{ val1 }}"
+      when: val1 <= 10
+
+    - name: working with defined operator
+      command: echo "subject value is {{ subject }}"
+      when: subject is defined
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ touch prashanth
+[ec2-user@controller myansible]$ vi prashanth
+[ec2-user@controller myansible]$ cat prashanth
+hi prashanth
+[ec2-user@controller myansible]$ touch prashanth
+[ec2-user@controller myansible]$ cat prashanth
+hi prashanth
+[ec2-user@controller myansible]$ ls -l
+total 44
+-rw-rw-r-- 1 ec2-user ec2-user  237 May  3 02:18 1
+-rw-rw-r-- 1 ec2-user ec2-user  203 May  3 02:27 ansible.cfg
+-rw-rw-r-- 1 ec2-user ec2-user  762 May  4 02:14 cond.yaml
+drwxrwxr-x 2 ec2-user ec2-user   23 May  4 01:44 group_vars
+drwxrwxr-x 2 ec2-user ec2-user   26 May  3 03:24 host_vars
+-rw-rw-r-- 1 ec2-user ec2-user   45 May  4 01:46 myansiblehosts
+-rw-rw-r-- 1 ec2-user ec2-user   49 May  3 02:41 mycode.py
+-rw------- 1 ec2-user ec2-user 1675 May  1 05:30 mykey.pem
+-rw-rw-r-- 1 ec2-user ec2-user  305 May  3 03:01 mymodules.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  115 May  3 01:55 myplay.yaml
+-rw-rw-r-- 1 ec2-user ec2-user  204 May  4 01:49 myvars.yaml
+-rw-rw-r-- 1 ec2-user ec2-user   13 May  4 02:21 prashanth
+-rw-rw-r-- 1 ec2-user ec2-user   35 May  3 03:10 variables.yaml
+[ec2-user@controller myansible]$ ls -l prashanth
+-rw-rw-r-- 1 ec2-user ec2-user 13 May  4 02:21 prashanth
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.038325", "end": "2021-05-04 02:30:13.515504", "item": 10, "rc": 0, "start": "2021-05-04 02:30:13.477179", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.038311", "end": "2021-05-04 02:30:13.838331", "item": 20, "rc": 0, "start": "2021-05-04 02:30:13.800020", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.038251", "end": "2021-05-04 02:30:14.153490", "item": 30, "rc": 0, "start": "2021-05-04 02:30:14.115239", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038159", "end": "2021-05-04 02:30:14.468878", "item": 40, "rc": 0, "start": "2021-05-04 02:30:14.430719", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038277", "end": "2021-05-04 02:30:14.785411", "item": 50, "rc": 0, "start": "2021-05-04 02:30:14.747134", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi lo
+[ec2-user@controller myansible]$ ls -l /tmp/
+total 0
+drwx------ 3 root root 17 May  4 01:37 systemd-private-2372d227f44345b5a24035b1f42c7269-chronyd.service-8d5FxG
+[ec2-user@controller myansible]$ ssh -i mykey.pem server1
+Last login: Tue May  4 02:30:14 2021 from ip-172-31-57-41.ec2.internal
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+2 package(s) needed for security, out of 3 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@server1 ~]$ ls -l /tmp/
+total 0
+-rw-r--r-- 1 ec2-user ec2-user  0 May  3 02:19 dvsbatch1.txt
+drwx------ 3 root     root     17 May  4 01:37 systemd-private-1511f6197ab447789ff33f290439a6a8-chronyd.service-LavlQi
+[ec2-user@server1 ~]$ touch /tmp/test{1..10}.txt
+[ec2-user@server1 ~]$ ls -l /tmp/
+total 0
+-rw-r--r-- 1 ec2-user ec2-user  0 May  3 02:19 dvsbatch1.txt
+drwx------ 3 root     root     17 May  4 01:37 systemd-private-1511f6197ab447789ff33f290439a6a8-chronyd.service-LavlQi
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test10.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test1.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test2.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test3.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test4.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test5.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test6.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test7.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test8.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test9.txt
+[ec2-user@server1 ~]$ mkdir /tmp/myfolder{1..4}
+[ec2-user@server1 ~]$ ls -l /tmp/
+total 0
+-rw-r--r-- 1 ec2-user ec2-user  0 May  3 02:19 dvsbatch1.txt
+drwxrwxr-x 2 ec2-user ec2-user  6 May  4 02:32 myfolder1
+drwxrwxr-x 2 ec2-user ec2-user  6 May  4 02:32 myfolder2
+drwxrwxr-x 2 ec2-user ec2-user  6 May  4 02:32 myfolder3
+drwxrwxr-x 2 ec2-user ec2-user  6 May  4 02:32 myfolder4
+drwx------ 3 root     root     17 May  4 01:37 systemd-private-1511f6197ab447789ff33f290439a6a8-chronyd.service-LavlQi
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test10.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test1.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test2.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test3.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test4.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test5.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test6.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test7.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test8.txt
+-rw-rw-r-- 1 ec2-user ec2-user  0 May  4 02:32 test9.txt
+[ec2-user@server1 ~]$ logout
+Connection to server1 closed.
+[ec2-user@controller myansible]$ vi lo
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.038065", "end": "2021-05-04 02:35:05.415290", "item": 10, "rc": 0, "start": "2021-05-04 02:35:05.377225", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.038132", "end": "2021-05-04 02:35:05.731004", "item": 20, "rc": 0, "start": "2021-05-04 02:35:05.692872", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.038227", "end": "2021-05-04 02:35:06.043719", "item": 30, "rc": 0, "start": "2021-05-04 02:35:06.005492", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038149", "end": "2021-05-04 02:35:06.368497", "item": 40, "rc": 0, "start": "2021-05-04 02:35:06.330348", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038204", "end": "2021-05-04 02:35:06.694699", "item": 50, "rc": 0, "start": "2021-05-04 02:35:06.656495", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+TASK [working with my second loop with_fileglob] *************************************************************************
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ touch /tmp/local{1..4}.txt
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.038239", "end": "2021-05-04 02:35:34.911929", "item": 10, "rc": 0, "start": "2021-05-04 02:35:34.873690", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.038029", "end": "2021-05-04 02:35:35.228270", "item": 20, "rc": 0, "start": "2021-05-04 02:35:35.190241", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.038322", "end": "2021-05-04 02:35:35.535125", "item": 30, "rc": 0, "start": "2021-05-04 02:35:35.496803", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038588", "end": "2021-05-04 02:35:35.845106", "item": 40, "rc": 0, "start": "2021-05-04 02:35:35.806518", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038433", "end": "2021-05-04 02:35:36.160247", "item": 50, "rc": 0, "start": "2021-05-04 02:35:36.121814", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+TASK [working with my second loop with_fileglob] *************************************************************************
+changed: [server1] => (item=/tmp/local1.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local1.txt "], "delta": "0:00:00.038051", "end": "2021-05-04 02:35:36.569208", "item": "/tmp/local1.txt", "rc": 0, "start": "2021-05-04 02:35:36.531157", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local1.txt ", "stdout_lines": ["my file name is /tmp/local1.txt "]}
+changed: [server1] => (item=/tmp/local2.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local2.txt "], "delta": "0:00:00.038022", "end": "2021-05-04 02:35:36.879931", "item": "/tmp/local2.txt", "rc": 0, "start": "2021-05-04 02:35:36.841909", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local2.txt ", "stdout_lines": ["my file name is /tmp/local2.txt "]}
+changed: [server1] => (item=/tmp/local3.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local3.txt "], "delta": "0:00:00.038165", "end": "2021-05-04 02:35:37.194083", "item": "/tmp/local3.txt", "rc": 0, "start": "2021-05-04 02:35:37.155918", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local3.txt ", "stdout_lines": ["my file name is /tmp/local3.txt "]}
+changed: [server1] => (item=/tmp/local4.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local4.txt "], "delta": "0:00:00.038134", "end": "2021-05-04 02:35:37.502319", "item": "/tmp/local4.txt", "rc": 0, "start": "2021-05-04 02:35:37.464185", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local4.txt ", "stdout_lines": ["my file name is /tmp/local4.txt "]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin
+chrony:x:996:994::/var/lib/chrony:/sbin/nologin
+tcpdump:x:72:72::/:/sbin/nologin
+ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.037936", "end": "2021-05-04 02:41:28.315239", "item": 10, "rc": 0, "start": "2021-05-04 02:41:28.277303", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.037997", "end": "2021-05-04 02:41:28.626799", "item": 20, "rc": 0, "start": "2021-05-04 02:41:28.588802", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.038365", "end": "2021-05-04 02:41:28.941093", "item": 30, "rc": 0, "start": "2021-05-04 02:41:28.902728", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038378", "end": "2021-05-04 02:41:29.255475", "item": 40, "rc": 0, "start": "2021-05-04 02:41:29.217097", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038458", "end": "2021-05-04 02:41:29.567527", "item": 50, "rc": 0, "start": "2021-05-04 02:41:29.529069", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+TASK [working with my second loop with_fileglob] *************************************************************************
+changed: [server1] => (item=/tmp/local1.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local1.txt "], "delta": "0:00:00.038387", "end": "2021-05-04 02:41:29.981913", "item": "/tmp/local1.txt", "rc": 0, "start": "2021-05-04 02:41:29.943526", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local1.txt ", "stdout_lines": ["my file name is /tmp/local1.txt "]}
+changed: [server1] => (item=/tmp/local2.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local2.txt "], "delta": "0:00:00.038183", "end": "2021-05-04 02:41:30.301686", "item": "/tmp/local2.txt", "rc": 0, "start": "2021-05-04 02:41:30.263503", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local2.txt ", "stdout_lines": ["my file name is /tmp/local2.txt "]}
+changed: [server1] => (item=/tmp/local3.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local3.txt "], "delta": "0:00:00.038291", "end": "2021-05-04 02:41:30.614845", "item": "/tmp/local3.txt", "rc": 0, "start": "2021-05-04 02:41:30.576554", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local3.txt ", "stdout_lines": ["my file name is /tmp/local3.txt "]}
+changed: [server1] => (item=/tmp/local4.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local4.txt "], "delta": "0:00:00.038543", "end": "2021-05-04 02:41:30.927866", "item": "/tmp/local4.txt", "rc": 0, "start": "2021-05-04 02:41:30.889323", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local4.txt ", "stdout_lines": ["my file name is /tmp/local4.txt "]}
+
+TASK [working with my third loop with_lines] *****************************************************************************
+changed: [server1] => (item=root:x:0:0:root:/root:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is root:x:0:0:root:/root:/bin/bash"], "delta": "0:00:00.038359", "end": "2021-05-04 02:41:31.353545", "item": "root:x:0:0:root:/root:/bin/bash", "rc": 0, "start": "2021-05-04 02:41:31.315186", "stderr": "", "stderr_lines": [], "stdout": "my line is root:x:0:0:root:/root:/bin/bash", "stdout_lines": ["my line is root:x:0:0:root:/root:/bin/bash"]}
+changed: [server1] => (item=bin:x:1:1:bin:/bin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is bin:x:1:1:bin:/bin:/sbin/nologin"], "delta": "0:00:00.038599", "end": "2021-05-04 02:41:31.671692", "item": "bin:x:1:1:bin:/bin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:31.633093", "stderr": "", "stderr_lines": [], "stdout": "my line is bin:x:1:1:bin:/bin:/sbin/nologin", "stdout_lines": ["my line is bin:x:1:1:bin:/bin:/sbin/nologin"]}
+changed: [server1] => (item=daemon:x:2:2:daemon:/sbin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"], "delta": "0:00:00.038347", "end": "2021-05-04 02:41:31.992721", "item": "daemon:x:2:2:daemon:/sbin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:31.954374", "stderr": "", "stderr_lines": [], "stdout": "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin", "stdout_lines": ["my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"]}
+changed: [server1] => (item=adm:x:3:4:adm:/var/adm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"], "delta": "0:00:00.038353", "end": "2021-05-04 02:41:32.310028", "item": "adm:x:3:4:adm:/var/adm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:32.271675", "stderr": "", "stderr_lines": [], "stdout": "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin", "stdout_lines": ["my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"]}
+changed: [server1] => (item=lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"], "delta": "0:00:00.038378", "end": "2021-05-04 02:41:32.623544", "item": "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:32.585166", "stderr": "", "stderr_lines": [], "stdout": "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "stdout_lines": ["my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"]}
+changed: [server1] => (item=sync:x:5:0:sync:/sbin:/bin/sync) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sync:x:5:0:sync:/sbin:/bin/sync"], "delta": "0:00:00.037761", "end": "2021-05-04 02:41:32.935597", "item": "sync:x:5:0:sync:/sbin:/bin/sync", "rc": 0, "start": "2021-05-04 02:41:32.897836", "stderr": "", "stderr_lines": [], "stdout": "my line is sync:x:5:0:sync:/sbin:/bin/sync", "stdout_lines": ["my line is sync:x:5:0:sync:/sbin:/bin/sync"]}
+changed: [server1] => (item=shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"], "delta": "0:00:00.038234", "end": "2021-05-04 02:41:33.248292", "item": "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "rc": 0, "start": "2021-05-04 02:41:33.210058", "stderr": "", "stderr_lines": [], "stdout": "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "stdout_lines": ["my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"]}
+changed: [server1] => (item=halt:x:7:0:halt:/sbin:/sbin/halt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is halt:x:7:0:halt:/sbin:/sbin/halt"], "delta": "0:00:00.037923", "end": "2021-05-04 02:41:33.557954", "item": "halt:x:7:0:halt:/sbin:/sbin/halt", "rc": 0, "start": "2021-05-04 02:41:33.520031", "stderr": "", "stderr_lines": [], "stdout": "my line is halt:x:7:0:halt:/sbin:/sbin/halt", "stdout_lines": ["my line is halt:x:7:0:halt:/sbin:/sbin/halt"]}
+changed: [server1] => (item=mail:x:8:12:mail:/var/spool/mail:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"], "delta": "0:00:00.038058", "end": "2021-05-04 02:41:33.871013", "item": "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:33.832955", "stderr": "", "stderr_lines": [], "stdout": "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "stdout_lines": ["my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"]}
+changed: [server1] => (item=operator:x:11:0:operator:/root:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is operator:x:11:0:operator:/root:/sbin/nologin"], "delta": "0:00:00.038108", "end": "2021-05-04 02:41:34.185724", "item": "operator:x:11:0:operator:/root:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:34.147616", "stderr": "", "stderr_lines": [], "stdout": "my line is operator:x:11:0:operator:/root:/sbin/nologin", "stdout_lines": ["my line is operator:x:11:0:operator:/root:/sbin/nologin"]}
+changed: [server1] => (item=games:x:12:100:games:/usr/games:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is games:x:12:100:games:/usr/games:/sbin/nologin"], "delta": "0:00:00.037913", "end": "2021-05-04 02:41:34.502652", "item": "games:x:12:100:games:/usr/games:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:34.464739", "stderr": "", "stderr_lines": [], "stdout": "my line is games:x:12:100:games:/usr/games:/sbin/nologin", "stdout_lines": ["my line is games:x:12:100:games:/usr/games:/sbin/nologin"]}
+changed: [server1] => (item=ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"], "delta": "0:00:00.038117", "end": "2021-05-04 02:41:34.817629", "item": "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:34.779512", "stderr": "", "stderr_lines": [], "stdout": "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "stdout_lines": ["my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"]}
+changed: [server1] => (item=nobody:x:99:99:Nobody:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nobody:x:99:99:Nobody:/:/sbin/nologin"], "delta": "0:00:00.038115", "end": "2021-05-04 02:41:35.133882", "item": "nobody:x:99:99:Nobody:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:35.095767", "stderr": "", "stderr_lines": [], "stdout": "my line is nobody:x:99:99:Nobody:/:/sbin/nologin", "stdout_lines": ["my line is nobody:x:99:99:Nobody:/:/sbin/nologin"]}
+changed: [server1] => (item=systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"], "delta": "0:00:00.038198", "end": "2021-05-04 02:41:35.449837", "item": "systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:35.411639", "stderr": "", "stderr_lines": [], "stdout": "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "stdout_lines": ["my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"]}
+changed: [server1] => (item=dbus:x:81:81:System message bus:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is dbus:x:81:81:System message bus:/:/sbin/nologin"], "delta": "0:00:00.038044", "end": "2021-05-04 02:41:35.766023", "item": "dbus:x:81:81:System message bus:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:35.727979", "stderr": "", "stderr_lines": [], "stdout": "my line is dbus:x:81:81:System message bus:/:/sbin/nologin", "stdout_lines": ["my line is dbus:x:81:81:System message bus:/:/sbin/nologin"]}
+changed: [server1] => (item=rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"], "delta": "0:00:00.038217", "end": "2021-05-04 02:41:36.081307", "item": "rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:36.043090", "stderr": "", "stderr_lines": [], "stdout": "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "stdout_lines": ["my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"]}
+changed: [server1] => (item=libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"], "delta": "0:00:00.038320", "end": "2021-05-04 02:41:36.400126", "item": "libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:36.361806", "stderr": "", "stderr_lines": [], "stdout": "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "stdout_lines": ["my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"]}
+changed: [server1] => (item=sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"], "delta": "0:00:00.038212", "end": "2021-05-04 02:41:36.714504", "item": "sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:36.676292", "stderr": "", "stderr_lines": [], "stdout": "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "stdout_lines": ["my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"]}
+changed: [server1] => (item=rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038208", "end": "2021-05-04 02:41:37.027828", "item": "rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:36.989620", "stderr": "", "stderr_lines": [], "stdout": "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038261", "end": "2021-05-04 02:41:37.343755", "item": "nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:37.305494", "stderr": "", "stderr_lines": [], "stdout": "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"], "delta": "0:00:00.038042", "end": "2021-05-04 02:41:37.657305", "item": "ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:37.619263", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "stdout_lines": ["my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"]}
+changed: [server1] => (item=postfix:x:89:89::/var/spool/postfix:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"], "delta": "0:00:00.037985", "end": "2021-05-04 02:41:37.973710", "item": "postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:37.935725", "stderr": "", "stderr_lines": [], "stdout": "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "stdout_lines": ["my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"]}
+changed: [server1] => (item=rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"], "delta": "0:00:00.038258", "end": "2021-05-04 02:41:38.294532", "item": "rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:38.256274", "stderr": "", "stderr_lines": [], "stdout": "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "stdout_lines": ["my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"]}
+changed: [server1] => (item=chrony:x:996:994::/var/lib/chrony:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"], "delta": "0:00:00.038565", "end": "2021-05-04 02:41:38.612221", "item": "chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:38.573656", "stderr": "", "stderr_lines": [], "stdout": "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "stdout_lines": ["my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"]}
+changed: [server1] => (item=tcpdump:x:72:72::/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is tcpdump:x:72:72::/:/sbin/nologin"], "delta": "0:00:00.038432", "end": "2021-05-04 02:41:38.927558", "item": "tcpdump:x:72:72::/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:41:38.889126", "stderr": "", "stderr_lines": [], "stdout": "my line is tcpdump:x:72:72::/:/sbin/nologin", "stdout_lines": ["my line is tcpdump:x:72:72::/:/sbin/nologin"]}
+changed: [server1] => (item=ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"], "delta": "0:00:00.038064", "end": "2021-05-04 02:41:39.250421", "item": "ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "rc": 0, "start": "2021-05-04 02:41:39.212357", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "stdout_lines": ["my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=4    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: No JSON object could be decoded
+
+Syntax Error while loading YAML.
+  did not find expected key
+
+The error appears to be in '/home/ec2-user/myansible/myloop.yaml': line 16, column 24, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      command: echo "my line is {{item}}"
+      when: "ec2-user" in "{{item}}"
+                       ^ here
+We could be wrong, but this one looks like it might be an issue with
+missing quotes. Always quote template expression brackets when they
+start a value. For instance:
+
+    with_items:
+      - {{ foo }}
+
+Should be written as:
+
+    with_items:
+      - "{{ foo }}"
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi my
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+
+    - name: working with my 4th loop with_sequence
+      command: echo "my val is {{ item }}"
+      with_sequence: start=1 end=5
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.038314", "end": "2021-05-04 02:50:31.053807", "item": 10, "rc": 0, "start": "2021-05-04 02:50:31.015493", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.038204", "end": "2021-05-04 02:50:31.375392", "item": 20, "rc": 0, "start": "2021-05-04 02:50:31.337188", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.038349", "end": "2021-05-04 02:50:31.696012", "item": 30, "rc": 0, "start": "2021-05-04 02:50:31.657663", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038296", "end": "2021-05-04 02:50:32.014143", "item": 40, "rc": 0, "start": "2021-05-04 02:50:31.975847", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038399", "end": "2021-05-04 02:50:32.330699", "item": 50, "rc": 0, "start": "2021-05-04 02:50:32.292300", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+TASK [working with my second loop with_fileglob] *************************************************************************
+changed: [server1] => (item=/tmp/local1.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local1.txt "], "delta": "0:00:00.038166", "end": "2021-05-04 02:50:32.745973", "item": "/tmp/local1.txt", "rc": 0, "start": "2021-05-04 02:50:32.707807", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local1.txt ", "stdout_lines": ["my file name is /tmp/local1.txt "]}
+changed: [server1] => (item=/tmp/local2.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local2.txt "], "delta": "0:00:00.038099", "end": "2021-05-04 02:50:33.062218", "item": "/tmp/local2.txt", "rc": 0, "start": "2021-05-04 02:50:33.024119", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local2.txt ", "stdout_lines": ["my file name is /tmp/local2.txt "]}
+changed: [server1] => (item=/tmp/local3.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local3.txt "], "delta": "0:00:00.038314", "end": "2021-05-04 02:50:33.373599", "item": "/tmp/local3.txt", "rc": 0, "start": "2021-05-04 02:50:33.335285", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local3.txt ", "stdout_lines": ["my file name is /tmp/local3.txt "]}
+changed: [server1] => (item=/tmp/local4.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local4.txt "], "delta": "0:00:00.038248", "end": "2021-05-04 02:50:33.688814", "item": "/tmp/local4.txt", "rc": 0, "start": "2021-05-04 02:50:33.650566", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local4.txt ", "stdout_lines": ["my file name is /tmp/local4.txt "]}
+
+TASK [working with my third loop with_lines] *****************************************************************************
+changed: [server1] => (item=root:x:0:0:root:/root:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is root:x:0:0:root:/root:/bin/bash"], "delta": "0:00:00.038398", "end": "2021-05-04 02:50:34.108302", "item": "root:x:0:0:root:/root:/bin/bash", "rc": 0, "start": "2021-05-04 02:50:34.069904", "stderr": "", "stderr_lines": [], "stdout": "my line is root:x:0:0:root:/root:/bin/bash", "stdout_lines": ["my line is root:x:0:0:root:/root:/bin/bash"]}
+changed: [server1] => (item=bin:x:1:1:bin:/bin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is bin:x:1:1:bin:/bin:/sbin/nologin"], "delta": "0:00:00.037977", "end": "2021-05-04 02:50:34.419241", "item": "bin:x:1:1:bin:/bin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:34.381264", "stderr": "", "stderr_lines": [], "stdout": "my line is bin:x:1:1:bin:/bin:/sbin/nologin", "stdout_lines": ["my line is bin:x:1:1:bin:/bin:/sbin/nologin"]}
+changed: [server1] => (item=daemon:x:2:2:daemon:/sbin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"], "delta": "0:00:00.038412", "end": "2021-05-04 02:50:34.730837", "item": "daemon:x:2:2:daemon:/sbin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:34.692425", "stderr": "", "stderr_lines": [], "stdout": "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin", "stdout_lines": ["my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"]}
+changed: [server1] => (item=adm:x:3:4:adm:/var/adm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"], "delta": "0:00:00.038262", "end": "2021-05-04 02:50:35.041299", "item": "adm:x:3:4:adm:/var/adm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:35.003037", "stderr": "", "stderr_lines": [], "stdout": "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin", "stdout_lines": ["my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"]}
+changed: [server1] => (item=lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"], "delta": "0:00:00.038437", "end": "2021-05-04 02:50:35.356496", "item": "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:35.318059", "stderr": "", "stderr_lines": [], "stdout": "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "stdout_lines": ["my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"]}
+changed: [server1] => (item=sync:x:5:0:sync:/sbin:/bin/sync) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sync:x:5:0:sync:/sbin:/bin/sync"], "delta": "0:00:00.038167", "end": "2021-05-04 02:50:35.665258", "item": "sync:x:5:0:sync:/sbin:/bin/sync", "rc": 0, "start": "2021-05-04 02:50:35.627091", "stderr": "", "stderr_lines": [], "stdout": "my line is sync:x:5:0:sync:/sbin:/bin/sync", "stdout_lines": ["my line is sync:x:5:0:sync:/sbin:/bin/sync"]}
+changed: [server1] => (item=shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"], "delta": "0:00:00.037902", "end": "2021-05-04 02:50:35.976092", "item": "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "rc": 0, "start": "2021-05-04 02:50:35.938190", "stderr": "", "stderr_lines": [], "stdout": "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "stdout_lines": ["my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"]}
+changed: [server1] => (item=halt:x:7:0:halt:/sbin:/sbin/halt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is halt:x:7:0:halt:/sbin:/sbin/halt"], "delta": "0:00:00.038118", "end": "2021-05-04 02:50:36.289285", "item": "halt:x:7:0:halt:/sbin:/sbin/halt", "rc": 0, "start": "2021-05-04 02:50:36.251167", "stderr": "", "stderr_lines": [], "stdout": "my line is halt:x:7:0:halt:/sbin:/sbin/halt", "stdout_lines": ["my line is halt:x:7:0:halt:/sbin:/sbin/halt"]}
+changed: [server1] => (item=mail:x:8:12:mail:/var/spool/mail:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"], "delta": "0:00:00.038249", "end": "2021-05-04 02:50:36.604743", "item": "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:36.566494", "stderr": "", "stderr_lines": [], "stdout": "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "stdout_lines": ["my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"]}
+changed: [server1] => (item=operator:x:11:0:operator:/root:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is operator:x:11:0:operator:/root:/sbin/nologin"], "delta": "0:00:00.038071", "end": "2021-05-04 02:50:36.919077", "item": "operator:x:11:0:operator:/root:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:36.881006", "stderr": "", "stderr_lines": [], "stdout": "my line is operator:x:11:0:operator:/root:/sbin/nologin", "stdout_lines": ["my line is operator:x:11:0:operator:/root:/sbin/nologin"]}
+changed: [server1] => (item=games:x:12:100:games:/usr/games:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is games:x:12:100:games:/usr/games:/sbin/nologin"], "delta": "0:00:00.038257", "end": "2021-05-04 02:50:37.237570", "item": "games:x:12:100:games:/usr/games:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:37.199313", "stderr": "", "stderr_lines": [], "stdout": "my line is games:x:12:100:games:/usr/games:/sbin/nologin", "stdout_lines": ["my line is games:x:12:100:games:/usr/games:/sbin/nologin"]}
+changed: [server1] => (item=ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"], "delta": "0:00:00.038434", "end": "2021-05-04 02:50:37.551759", "item": "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:37.513325", "stderr": "", "stderr_lines": [], "stdout": "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "stdout_lines": ["my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"]}
+changed: [server1] => (item=nobody:x:99:99:Nobody:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nobody:x:99:99:Nobody:/:/sbin/nologin"], "delta": "0:00:00.038487", "end": "2021-05-04 02:50:37.865068", "item": "nobody:x:99:99:Nobody:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:37.826581", "stderr": "", "stderr_lines": [], "stdout": "my line is nobody:x:99:99:Nobody:/:/sbin/nologin", "stdout_lines": ["my line is nobody:x:99:99:Nobody:/:/sbin/nologin"]}
+changed: [server1] => (item=systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"], "delta": "0:00:00.038446", "end": "2021-05-04 02:50:38.175068", "item": "systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:38.136622", "stderr": "", "stderr_lines": [], "stdout": "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "stdout_lines": ["my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"]}
+changed: [server1] => (item=dbus:x:81:81:System message bus:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is dbus:x:81:81:System message bus:/:/sbin/nologin"], "delta": "0:00:00.038499", "end": "2021-05-04 02:50:38.484972", "item": "dbus:x:81:81:System message bus:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:38.446473", "stderr": "", "stderr_lines": [], "stdout": "my line is dbus:x:81:81:System message bus:/:/sbin/nologin", "stdout_lines": ["my line is dbus:x:81:81:System message bus:/:/sbin/nologin"]}
+changed: [server1] => (item=rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"], "delta": "0:00:00.038543", "end": "2021-05-04 02:50:38.798316", "item": "rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:38.759773", "stderr": "", "stderr_lines": [], "stdout": "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "stdout_lines": ["my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"]}
+changed: [server1] => (item=libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"], "delta": "0:00:00.038535", "end": "2021-05-04 02:50:39.113564", "item": "libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:39.075029", "stderr": "", "stderr_lines": [], "stdout": "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "stdout_lines": ["my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"]}
+changed: [server1] => (item=sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"], "delta": "0:00:00.038393", "end": "2021-05-04 02:50:39.425459", "item": "sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:39.387066", "stderr": "", "stderr_lines": [], "stdout": "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "stdout_lines": ["my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"]}
+changed: [server1] => (item=rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038837", "end": "2021-05-04 02:50:39.738709", "item": "rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:39.699872", "stderr": "", "stderr_lines": [], "stdout": "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038933", "end": "2021-05-04 02:50:40.052330", "item": "nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:40.013397", "stderr": "", "stderr_lines": [], "stdout": "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"], "delta": "0:00:00.038210", "end": "2021-05-04 02:50:40.364431", "item": "ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:40.326221", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "stdout_lines": ["my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"]}
+changed: [server1] => (item=postfix:x:89:89::/var/spool/postfix:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"], "delta": "0:00:00.038149", "end": "2021-05-04 02:50:40.672346", "item": "postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:40.634197", "stderr": "", "stderr_lines": [], "stdout": "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "stdout_lines": ["my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"]}
+changed: [server1] => (item=rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"], "delta": "0:00:00.038674", "end": "2021-05-04 02:50:40.982437", "item": "rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:40.943763", "stderr": "", "stderr_lines": [], "stdout": "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "stdout_lines": ["my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"]}
+changed: [server1] => (item=chrony:x:996:994::/var/lib/chrony:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"], "delta": "0:00:00.038664", "end": "2021-05-04 02:50:41.294943", "item": "chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:41.256279", "stderr": "", "stderr_lines": [], "stdout": "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "stdout_lines": ["my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"]}
+changed: [server1] => (item=tcpdump:x:72:72::/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is tcpdump:x:72:72::/:/sbin/nologin"], "delta": "0:00:00.039025", "end": "2021-05-04 02:50:41.609139", "item": "tcpdump:x:72:72::/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:50:41.570114", "stderr": "", "stderr_lines": [], "stdout": "my line is tcpdump:x:72:72::/:/sbin/nologin", "stdout_lines": ["my line is tcpdump:x:72:72::/:/sbin/nologin"]}
+changed: [server1] => (item=ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"], "delta": "0:00:00.038709", "end": "2021-05-04 02:50:41.923236", "item": "ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "rc": 0, "start": "2021-05-04 02:50:41.884527", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "stdout_lines": ["my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"]}
+
+TASK [working with my 4th loop with_sequence] ****************************************************************************
+changed: [server1] => (item=1) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 1"], "delta": "0:00:00.039193", "end": "2021-05-04 02:50:42.350075", "item": "1", "rc": 0, "start": "2021-05-04 02:50:42.310882", "stderr": "", "stderr_lines": [], "stdout": "my val is 1", "stdout_lines": ["my val is 1"]}
+changed: [server1] => (item=2) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 2"], "delta": "0:00:00.038707", "end": "2021-05-04 02:50:42.662638", "item": "2", "rc": 0, "start": "2021-05-04 02:50:42.623931", "stderr": "", "stderr_lines": [], "stdout": "my val is 2", "stdout_lines": ["my val is 2"]}
+changed: [server1] => (item=3) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 3"], "delta": "0:00:00.039276", "end": "2021-05-04 02:50:42.974681", "item": "3", "rc": 0, "start": "2021-05-04 02:50:42.935405", "stderr": "", "stderr_lines": [], "stdout": "my val is 3", "stdout_lines": ["my val is 3"]}
+changed: [server1] => (item=4) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 4"], "delta": "0:00:00.038432", "end": "2021-05-04 02:50:43.287575", "item": "4", "rc": 0, "start": "2021-05-04 02:50:43.249143", "stderr": "", "stderr_lines": [], "stdout": "my val is 4", "stdout_lines": ["my val is 4"]}
+changed: [server1] => (item=5) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 5"], "delta": "0:00:00.038769", "end": "2021-05-04 02:50:43.602213", "item": "5", "rc": 0, "start": "2021-05-04 02:50:43.563444", "stderr": "", "stderr_lines": [], "stdout": "my val is 5", "stdout_lines": ["my val is 5"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+
+    - name: working with my 4th loop with_sequence
+      command: echo "my val is {{ item }}"
+      with_sequence: start=1 end=5
+[ec2-user@controller myansible]$ ansible -m setup -a "filter=ansible_default_ipv4" server1
+server1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_default_ipv4": {
+            "address": "172.31.62.207",
+            "alias": "eth0",
+            "broadcast": "172.31.63.255",
+            "gateway": "172.31.48.1",
+            "interface": "eth0",
+            "macaddress": "06:1b:56:18:ec:13",
+            "mtu": 9001,
+            "netmask": "255.255.240.0",
+            "network": "172.31.48.0",
+            "type": "ether"
+        }
+    },
+    "changed": false
+}
+[ec2-user@controller myansible]$ vi myloop.yaml
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+
+    - name: working with my 4th loop with_sequence
+      command: echo "my val is {{ item }}"
+      with_sequence: start=1 end=5
+
+    - name: working with my 5th loop with_dict
+      command: echo "my key is {{item.key}} ==> {{item.value}}"
+      with_dict: "{{ansible_default_ipv4}}"
+[ec2-user@controller myansible]$ ansible-playbook myloop.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with loops] ************************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [working with my first with_items] **********************************************************************************
+changed: [server1] => (item=10) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 10"], "delta": "0:00:00.038606", "end": "2021-05-04 02:53:48.039126", "item": 10, "rc": 0, "start": "2021-05-04 02:53:48.000520", "stderr": "", "stderr_lines": [], "stdout": "my val is 10", "stdout_lines": ["my val is 10"]}
+changed: [server1] => (item=20) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 20"], "delta": "0:00:00.038602", "end": "2021-05-04 02:53:48.353813", "item": 20, "rc": 0, "start": "2021-05-04 02:53:48.315211", "stderr": "", "stderr_lines": [], "stdout": "my val is 20", "stdout_lines": ["my val is 20"]}
+changed: [server1] => (item=30) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 30"], "delta": "0:00:00.039038", "end": "2021-05-04 02:53:48.665779", "item": 30, "rc": 0, "start": "2021-05-04 02:53:48.626741", "stderr": "", "stderr_lines": [], "stdout": "my val is 30", "stdout_lines": ["my val is 30"]}
+changed: [server1] => (item=40) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 40"], "delta": "0:00:00.038448", "end": "2021-05-04 02:53:48.973647", "item": 40, "rc": 0, "start": "2021-05-04 02:53:48.935199", "stderr": "", "stderr_lines": [], "stdout": "my val is 40", "stdout_lines": ["my val is 40"]}
+changed: [server1] => (item=50) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 50"], "delta": "0:00:00.038613", "end": "2021-05-04 02:53:49.282937", "item": 50, "rc": 0, "start": "2021-05-04 02:53:49.244324", "stderr": "", "stderr_lines": [], "stdout": "my val is 50", "stdout_lines": ["my val is 50"]}
+
+TASK [working with my second loop with_fileglob] *************************************************************************
+changed: [server1] => (item=/tmp/local1.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local1.txt "], "delta": "0:00:00.038212", "end": "2021-05-04 02:53:49.694452", "item": "/tmp/local1.txt", "rc": 0, "start": "2021-05-04 02:53:49.656240", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local1.txt ", "stdout_lines": ["my file name is /tmp/local1.txt "]}
+changed: [server1] => (item=/tmp/local2.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local2.txt "], "delta": "0:00:00.039028", "end": "2021-05-04 02:53:50.006044", "item": "/tmp/local2.txt", "rc": 0, "start": "2021-05-04 02:53:49.967016", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local2.txt ", "stdout_lines": ["my file name is /tmp/local2.txt "]}
+changed: [server1] => (item=/tmp/local3.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local3.txt "], "delta": "0:00:00.038667", "end": "2021-05-04 02:53:50.320244", "item": "/tmp/local3.txt", "rc": 0, "start": "2021-05-04 02:53:50.281577", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local3.txt ", "stdout_lines": ["my file name is /tmp/local3.txt "]}
+changed: [server1] => (item=/tmp/local4.txt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my file name is /tmp/local4.txt "], "delta": "0:00:00.038739", "end": "2021-05-04 02:53:50.631246", "item": "/tmp/local4.txt", "rc": 0, "start": "2021-05-04 02:53:50.592507", "stderr": "", "stderr_lines": [], "stdout": "my file name is /tmp/local4.txt ", "stdout_lines": ["my file name is /tmp/local4.txt "]}
+
+TASK [working with my third loop with_lines] *****************************************************************************
+changed: [server1] => (item=root:x:0:0:root:/root:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is root:x:0:0:root:/root:/bin/bash"], "delta": "0:00:00.038615", "end": "2021-05-04 02:53:51.049228", "item": "root:x:0:0:root:/root:/bin/bash", "rc": 0, "start": "2021-05-04 02:53:51.010613", "stderr": "", "stderr_lines": [], "stdout": "my line is root:x:0:0:root:/root:/bin/bash", "stdout_lines": ["my line is root:x:0:0:root:/root:/bin/bash"]}
+changed: [server1] => (item=bin:x:1:1:bin:/bin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is bin:x:1:1:bin:/bin:/sbin/nologin"], "delta": "0:00:00.038553", "end": "2021-05-04 02:53:51.365476", "item": "bin:x:1:1:bin:/bin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:51.326923", "stderr": "", "stderr_lines": [], "stdout": "my line is bin:x:1:1:bin:/bin:/sbin/nologin", "stdout_lines": ["my line is bin:x:1:1:bin:/bin:/sbin/nologin"]}
+changed: [server1] => (item=daemon:x:2:2:daemon:/sbin:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"], "delta": "0:00:00.038687", "end": "2021-05-04 02:53:51.676569", "item": "daemon:x:2:2:daemon:/sbin:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:51.637882", "stderr": "", "stderr_lines": [], "stdout": "my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin", "stdout_lines": ["my line is daemon:x:2:2:daemon:/sbin:/sbin/nologin"]}
+changed: [server1] => (item=adm:x:3:4:adm:/var/adm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"], "delta": "0:00:00.038691", "end": "2021-05-04 02:53:51.991058", "item": "adm:x:3:4:adm:/var/adm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:51.952367", "stderr": "", "stderr_lines": [], "stdout": "my line is adm:x:3:4:adm:/var/adm:/sbin/nologin", "stdout_lines": ["my line is adm:x:3:4:adm:/var/adm:/sbin/nologin"]}
+changed: [server1] => (item=lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"], "delta": "0:00:00.038521", "end": "2021-05-04 02:53:52.304631", "item": "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:52.266110", "stderr": "", "stderr_lines": [], "stdout": "my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin", "stdout_lines": ["my line is lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin"]}
+changed: [server1] => (item=sync:x:5:0:sync:/sbin:/bin/sync) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sync:x:5:0:sync:/sbin:/bin/sync"], "delta": "0:00:00.038655", "end": "2021-05-04 02:53:52.617285", "item": "sync:x:5:0:sync:/sbin:/bin/sync", "rc": 0, "start": "2021-05-04 02:53:52.578630", "stderr": "", "stderr_lines": [], "stdout": "my line is sync:x:5:0:sync:/sbin:/bin/sync", "stdout_lines": ["my line is sync:x:5:0:sync:/sbin:/bin/sync"]}
+changed: [server1] => (item=shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"], "delta": "0:00:00.038785", "end": "2021-05-04 02:53:52.928460", "item": "shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "rc": 0, "start": "2021-05-04 02:53:52.889675", "stderr": "", "stderr_lines": [], "stdout": "my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown", "stdout_lines": ["my line is shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown"]}
+changed: [server1] => (item=halt:x:7:0:halt:/sbin:/sbin/halt) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is halt:x:7:0:halt:/sbin:/sbin/halt"], "delta": "0:00:00.038478", "end": "2021-05-04 02:53:53.244621", "item": "halt:x:7:0:halt:/sbin:/sbin/halt", "rc": 0, "start": "2021-05-04 02:53:53.206143", "stderr": "", "stderr_lines": [], "stdout": "my line is halt:x:7:0:halt:/sbin:/sbin/halt", "stdout_lines": ["my line is halt:x:7:0:halt:/sbin:/sbin/halt"]}
+changed: [server1] => (item=mail:x:8:12:mail:/var/spool/mail:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"], "delta": "0:00:00.038683", "end": "2021-05-04 02:53:53.559726", "item": "mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:53.521043", "stderr": "", "stderr_lines": [], "stdout": "my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin", "stdout_lines": ["my line is mail:x:8:12:mail:/var/spool/mail:/sbin/nologin"]}
+changed: [server1] => (item=operator:x:11:0:operator:/root:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is operator:x:11:0:operator:/root:/sbin/nologin"], "delta": "0:00:00.038885", "end": "2021-05-04 02:53:53.871295", "item": "operator:x:11:0:operator:/root:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:53.832410", "stderr": "", "stderr_lines": [], "stdout": "my line is operator:x:11:0:operator:/root:/sbin/nologin", "stdout_lines": ["my line is operator:x:11:0:operator:/root:/sbin/nologin"]}
+changed: [server1] => (item=games:x:12:100:games:/usr/games:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is games:x:12:100:games:/usr/games:/sbin/nologin"], "delta": "0:00:00.038501", "end": "2021-05-04 02:53:54.185477", "item": "games:x:12:100:games:/usr/games:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:54.146976", "stderr": "", "stderr_lines": [], "stdout": "my line is games:x:12:100:games:/usr/games:/sbin/nologin", "stdout_lines": ["my line is games:x:12:100:games:/usr/games:/sbin/nologin"]}
+changed: [server1] => (item=ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"], "delta": "0:00:00.038395", "end": "2021-05-04 02:53:54.498364", "item": "ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:54.459969", "stderr": "", "stderr_lines": [], "stdout": "my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin", "stdout_lines": ["my line is ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin"]}
+changed: [server1] => (item=nobody:x:99:99:Nobody:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nobody:x:99:99:Nobody:/:/sbin/nologin"], "delta": "0:00:00.038483", "end": "2021-05-04 02:53:54.807293", "item": "nobody:x:99:99:Nobody:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:54.768810", "stderr": "", "stderr_lines": [], "stdout": "my line is nobody:x:99:99:Nobody:/:/sbin/nologin", "stdout_lines": ["my line is nobody:x:99:99:Nobody:/:/sbin/nologin"]}
+changed: [server1] => (item=systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"], "delta": "0:00:00.038373", "end": "2021-05-04 02:53:55.125696", "item": "systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:55.087323", "stderr": "", "stderr_lines": [], "stdout": "my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin", "stdout_lines": ["my line is systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin"]}
+changed: [server1] => (item=dbus:x:81:81:System message bus:/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is dbus:x:81:81:System message bus:/:/sbin/nologin"], "delta": "0:00:00.038599", "end": "2021-05-04 02:53:55.442966", "item": "dbus:x:81:81:System message bus:/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:55.404367", "stderr": "", "stderr_lines": [], "stdout": "my line is dbus:x:81:81:System message bus:/:/sbin/nologin", "stdout_lines": ["my line is dbus:x:81:81:System message bus:/:/sbin/nologin"]}
+changed: [server1] => (item=rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"], "delta": "0:00:00.038613", "end": "2021-05-04 02:53:55.756738", "item": "rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:55.718125", "stderr": "", "stderr_lines": [], "stdout": "my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin", "stdout_lines": ["my line is rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin"]}
+changed: [server1] => (item=libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"], "delta": "0:00:00.038490", "end": "2021-05-04 02:53:56.073121", "item": "libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:56.034631", "stderr": "", "stderr_lines": [], "stdout": "my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin", "stdout_lines": ["my line is libstoragemgmt:x:999:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin"]}
+changed: [server1] => (item=sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"], "delta": "0:00:00.038644", "end": "2021-05-04 02:53:56.388394", "item": "sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:56.349750", "stderr": "", "stderr_lines": [], "stdout": "my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin", "stdout_lines": ["my line is sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin"]}
+changed: [server1] => (item=rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038395", "end": "2021-05-04 02:53:56.704245", "item": "rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:56.665850", "stderr": "", "stderr_lines": [], "stdout": "my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"], "delta": "0:00:00.038562", "end": "2021-05-04 02:53:57.018900", "item": "nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:56.980338", "stderr": "", "stderr_lines": [], "stdout": "my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin", "stdout_lines": ["my line is nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin"]}
+changed: [server1] => (item=ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"], "delta": "0:00:00.038736", "end": "2021-05-04 02:53:57.334131", "item": "ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:57.295395", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin", "stdout_lines": ["my line is ec2-instance-connect:x:998:996::/home/ec2-instance-connect:/sbin/nologin"]}
+changed: [server1] => (item=postfix:x:89:89::/var/spool/postfix:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"], "delta": "0:00:00.038701", "end": "2021-05-04 02:53:57.649138", "item": "postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:57.610437", "stderr": "", "stderr_lines": [], "stdout": "my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin", "stdout_lines": ["my line is postfix:x:89:89::/var/spool/postfix:/sbin/nologin"]}
+changed: [server1] => (item=rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"], "delta": "0:00:00.038620", "end": "2021-05-04 02:53:57.962985", "item": "rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:57.924365", "stderr": "", "stderr_lines": [], "stdout": "my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin", "stdout_lines": ["my line is rngd:x:997:995:Random Number Generator Daemon:/var/lib/rngd:/sbin/nologin"]}
+changed: [server1] => (item=chrony:x:996:994::/var/lib/chrony:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"], "delta": "0:00:00.038786", "end": "2021-05-04 02:53:58.283042", "item": "chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:58.244256", "stderr": "", "stderr_lines": [], "stdout": "my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin", "stdout_lines": ["my line is chrony:x:996:994::/var/lib/chrony:/sbin/nologin"]}
+changed: [server1] => (item=tcpdump:x:72:72::/:/sbin/nologin) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is tcpdump:x:72:72::/:/sbin/nologin"], "delta": "0:00:00.038869", "end": "2021-05-04 02:53:58.598046", "item": "tcpdump:x:72:72::/:/sbin/nologin", "rc": 0, "start": "2021-05-04 02:53:58.559177", "stderr": "", "stderr_lines": [], "stdout": "my line is tcpdump:x:72:72::/:/sbin/nologin", "stdout_lines": ["my line is tcpdump:x:72:72::/:/sbin/nologin"]}
+changed: [server1] => (item=ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"], "delta": "0:00:00.038900", "end": "2021-05-04 02:53:58.916290", "item": "ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "rc": 0, "start": "2021-05-04 02:53:58.877390", "stderr": "", "stderr_lines": [], "stdout": "my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash", "stdout_lines": ["my line is ec2-user:x:1000:1000:EC2 Default User:/home/ec2-user:/bin/bash"]}
+
+TASK [working with my 4th loop with_sequence] ****************************************************************************
+changed: [server1] => (item=1) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 1"], "delta": "0:00:00.038815", "end": "2021-05-04 02:53:59.347318", "item": "1", "rc": 0, "start": "2021-05-04 02:53:59.308503", "stderr": "", "stderr_lines": [], "stdout": "my val is 1", "stdout_lines": ["my val is 1"]}
+changed: [server1] => (item=2) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 2"], "delta": "0:00:00.038881", "end": "2021-05-04 02:53:59.662608", "item": "2", "rc": 0, "start": "2021-05-04 02:53:59.623727", "stderr": "", "stderr_lines": [], "stdout": "my val is 2", "stdout_lines": ["my val is 2"]}
+changed: [server1] => (item=3) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 3"], "delta": "0:00:00.038794", "end": "2021-05-04 02:53:59.974342", "item": "3", "rc": 0, "start": "2021-05-04 02:53:59.935548", "stderr": "", "stderr_lines": [], "stdout": "my val is 3", "stdout_lines": ["my val is 3"]}
+changed: [server1] => (item=4) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 4"], "delta": "0:00:00.038286", "end": "2021-05-04 02:54:00.302250", "item": "4", "rc": 0, "start": "2021-05-04 02:54:00.263964", "stderr": "", "stderr_lines": [], "stdout": "my val is 4", "stdout_lines": ["my val is 4"]}
+changed: [server1] => (item=5) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my val is 5"], "delta": "0:00:00.038496", "end": "2021-05-04 02:54:00.615965", "item": "5", "rc": 0, "start": "2021-05-04 02:54:00.577469", "stderr": "", "stderr_lines": [], "stdout": "my val is 5", "stdout_lines": ["my val is 5"]}
+
+TASK [working with my 5th loop with_dict] ********************************************************************************
+changed: [server1] => (item={u'key': u'macaddress', u'value': u'06:1b:56:18:ec:13'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is macaddress ==> 06:1b:56:18:ec:13"], "delta": "0:00:00.038539", "end": "2021-05-04 02:54:01.047673", "item": {"key": "macaddress", "value": "06:1b:56:18:ec:13"}, "rc": 0, "start": "2021-05-04 02:54:01.009134", "stderr": "", "stderr_lines": [], "stdout": "my key is macaddress ==> 06:1b:56:18:ec:13", "stdout_lines": ["my key is macaddress ==> 06:1b:56:18:ec:13"]}
+changed: [server1] => (item={u'key': u'network', u'value': u'172.31.48.0'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is network ==> 172.31.48.0"], "delta": "0:00:00.038685", "end": "2021-05-04 02:54:01.374209", "item": {"key": "network", "value": "172.31.48.0"}, "rc": 0, "start": "2021-05-04 02:54:01.335524", "stderr": "", "stderr_lines": [], "stdout": "my key is network ==> 172.31.48.0", "stdout_lines": ["my key is network ==> 172.31.48.0"]}
+changed: [server1] => (item={u'key': u'mtu', u'value': 9001}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is mtu ==> 9001"], "delta": "0:00:00.038547", "end": "2021-05-04 02:54:01.700075", "item": {"key": "mtu", "value": 9001}, "rc": 0, "start": "2021-05-04 02:54:01.661528", "stderr": "", "stderr_lines": [], "stdout": "my key is mtu ==> 9001", "stdout_lines": ["my key is mtu ==> 9001"]}
+changed: [server1] => (item={u'key': u'broadcast', u'value': u'172.31.63.255'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is broadcast ==> 172.31.63.255"], "delta": "0:00:00.038896", "end": "2021-05-04 02:54:02.032876", "item": {"key": "broadcast", "value": "172.31.63.255"}, "rc": 0, "start": "2021-05-04 02:54:01.993980", "stderr": "", "stderr_lines": [], "stdout": "my key is broadcast ==> 172.31.63.255", "stdout_lines": ["my key is broadcast ==> 172.31.63.255"]}
+changed: [server1] => (item={u'key': u'alias', u'value': u'eth0'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is alias ==> eth0"], "delta": "0:00:00.038479", "end": "2021-05-04 02:54:02.354486", "item": {"key": "alias", "value": "eth0"}, "rc": 0, "start": "2021-05-04 02:54:02.316007", "stderr": "", "stderr_lines": [], "stdout": "my key is alias ==> eth0", "stdout_lines": ["my key is alias ==> eth0"]}
+changed: [server1] => (item={u'key': u'netmask', u'value': u'255.255.240.0'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is netmask ==> 255.255.240.0"], "delta": "0:00:00.038554", "end": "2021-05-04 02:54:02.671910", "item": {"key": "netmask", "value": "255.255.240.0"}, "rc": 0, "start": "2021-05-04 02:54:02.633356", "stderr": "", "stderr_lines": [], "stdout": "my key is netmask ==> 255.255.240.0", "stdout_lines": ["my key is netmask ==> 255.255.240.0"]}
+changed: [server1] => (item={u'key': u'address', u'value': u'172.31.62.207'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is address ==> 172.31.62.207"], "delta": "0:00:00.038698", "end": "2021-05-04 02:54:02.988112", "item": {"key": "address", "value": "172.31.62.207"}, "rc": 0, "start": "2021-05-04 02:54:02.949414", "stderr": "", "stderr_lines": [], "stdout": "my key is address ==> 172.31.62.207", "stdout_lines": ["my key is address ==> 172.31.62.207"]}
+changed: [server1] => (item={u'key': u'interface', u'value': u'eth0'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is interface ==> eth0"], "delta": "0:00:00.038707", "end": "2021-05-04 02:54:03.305547", "item": {"key": "interface", "value": "eth0"}, "rc": 0, "start": "2021-05-04 02:54:03.266840", "stderr": "", "stderr_lines": [], "stdout": "my key is interface ==> eth0", "stdout_lines": ["my key is interface ==> eth0"]}
+changed: [server1] => (item={u'key': u'type', u'value': u'ether'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is type ==> ether"], "delta": "0:00:00.038473", "end": "2021-05-04 02:54:03.623042", "item": {"key": "type", "value": "ether"}, "rc": 0, "start": "2021-05-04 02:54:03.584569", "stderr": "", "stderr_lines": [], "stdout": "my key is type ==> ether", "stdout_lines": ["my key is type ==> ether"]}
+changed: [server1] => (item={u'key': u'gateway', u'value': u'172.31.48.1'}) => {"ansible_loop_var": "item", "changed": true, "cmd": ["echo", "my key is gateway ==> 172.31.48.1"], "delta": "0:00:00.038402", "end": "2021-05-04 02:54:03.940060", "item": {"key": "gateway", "value": "172.31.48.1"}, "rc": 0, "start": "2021-05-04 02:54:03.901658", "stderr": "", "stderr_lines": [], "stdout": "my key is gateway ==> 172.31.48.1", "stdout_lines": ["my key is gateway ==> 172.31.48.1"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat myloop.yaml
+---
+- name: working with loops
+  hosts: server1
+  tasks:
+    - name: working with my first with_items
+      command: echo "my val is {{ item }}"
+      with_items: [10,20,30,40,50]
+
+    - name: working with my second loop with_fileglob
+      command: echo "my file name is {{ item }} "
+      with_fileglob:
+        - "/tmp/*"
+
+    - name: working with my third loop with_lines
+      command: echo "my line is {{item}}"
+      with_lines:
+        - "cat /etc/passwd"
+
+    - name: working with my 4th loop with_sequence
+      command: echo "my val is {{ item }}"
+      with_sequence: start=1 end=5
+
+    - name: working with my 5th loop with_dict
+      command: echo "my key is {{item.key}} ==> {{item.value}}"
+      with_dict: "{{ansible_default_ipv4}}"
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: server1
+  tasks:
+    - name: printing output
+      command: echo "Hi Team welcome to Dvs"
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing output] ***************************************************************************************************
+changed: [server1]
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: server1
+  tasks:
+
+    - name: executing my code
+      script: ./dvsbatch1.py
+
+    - name: printing output
+      command: echo "Hi Team welcome to Dvs"
+[ec2-user@controller myansible]$ ls -l dvsbatch1.py
+ls: cannot access dvsbatch1.py: No such file or directory
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [executing my code] *************************************************************************************************
+fatal: [server1]: FAILED! => {"changed": false, "msg": "Could not find or access './dvsbatch1.py'\nSearched in:\n\t/home/ec2-user/myansible/files/./dvsbatch1.py\n\t/home/ec2-user/myansible/./dvsbatch1.py\n\t/home/ec2-user/myansible/files/./dvsbatch1.py\n\t/home/ec2-user/myansible/./dvsbatch1.py on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: server1
+  tasks:
+
+    - name: executing my code
+      script: ./dvsbatch1.py
+      ignore_errors: true
+
+    - name: printing output
+      command: echo "Hi Team welcome to Dvs"
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [executing my code] *************************************************************************************************
+fatal: [server1]: FAILED! => {"changed": false, "msg": "Could not find or access './dvsbatch1.py'\nSearched in:\n\t/home/ec2-user/myansible/files/./dvsbatch1.py\n\t/home/ec2-user/myansible/./dvsbatch1.py\n\t/home/ec2-user/myansible/files/./dvsbatch1.py\n\t/home/ec2-user/myansible/./dvsbatch1.py on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+...ignoring
+
+TASK [printing output] ***************************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["echo", "Hi Team welcome to Dvs"], "delta": "0:00:00.039104", "end": "2021-05-04 03:03:17.347383", "rc": 0, "start": "2021-05-04 03:03:17.308279", "stderr": "", "stderr_lines": [], "stdout": "Hi Team welcome to Dvs", "stdout_lines": ["Hi Team welcome to Dvs"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: all
+  tasks:
+
+    - name: printing hostipaddress
+      command: hostname -i
+
+    - name: printing servername
+      command: uname -a
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+ok: [server2]
+
+TASK [printing hostipaddress] ********************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038685", "end": "2021-05-04 03:13:58.332951", "rc": 0, "start": "2021-05-04 03:13:58.294266", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+changed: [server2] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038419", "end": "2021-05-04 03:13:58.337157", "rc": 0, "start": "2021-05-04 03:13:58.298738", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.255", "stdout_lines": ["172.31.62.255"]}
+
+TASK [printing servername] ***********************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.038529", "end": "2021-05-04 03:13:58.840605", "rc": 0, "start": "2021-05-04 03:13:58.802076", "stderr": "", "stderr_lines": [], "stdout": "Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+changed: [server2] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.038388", "end": "2021-05-04 03:13:58.837419", "rc": 0, "start": "2021-05-04 03:13:58.799031", "stderr": "", "stderr_lines": [], "stdout": "Linux server2 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server2 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: all
+  tasks:
+
+    - name: printing hostipaddress
+      command: hostname -i
+
+    - name: printing servername
+      command: uname -a
+      delegate_to: server1
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+ok: [server1]
+
+TASK [printing hostipaddress] ********************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038941", "end": "2021-05-04 03:16:12.926354", "rc": 0, "start": "2021-05-04 03:16:12.887413", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+changed: [server2] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.037992", "end": "2021-05-04 03:16:12.925322", "rc": 0, "start": "2021-05-04 03:16:12.887330", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.255", "stdout_lines": ["172.31.62.255"]}
+
+TASK [printing servername] ***********************************************************************************************
+changed: [server2 -> server1] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.076198", "end": "2021-05-04 03:16:13.566714", "rc": 0, "start": "2021-05-04 03:16:13.490516", "stderr": "", "stderr_lines": [], "stdout": "Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+changed: [server1 -> server1] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.049953", "end": "2021-05-04 03:16:13.620618", "rc": 0, "start": "2021-05-04 03:16:13.570665", "stderr": "", "stderr_lines": [], "stdout": "Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ vi specialcases.yaml
+[ec2-user@controller myansible]$
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: all
+  serial: 1
+  tasks:
+
+    - name: printing hostipaddress
+      command: hostname -i
+
+    - name: printing servername
+      command: uname -a
+      delegate_to: server1
+[ec2-user@controller myansible]$ ansible-playbook specialcases.yaml -v
+Using /home/ec2-user/myansible/ansible.cfg as config file
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server2]
+
+TASK [printing hostipaddress] ********************************************************************************************
+changed: [server2] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038512", "end": "2021-05-04 03:29:29.244986", "rc": 0, "start": "2021-05-04 03:29:29.206474", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.255", "stdout_lines": ["172.31.62.255"]}
+
+TASK [printing servername] ***********************************************************************************************
+changed: [server2 -> server1] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.038454", "end": "2021-05-04 03:29:29.799362", "rc": 0, "start": "2021-05-04 03:29:29.760908", "stderr": "", "stderr_lines": [], "stdout": "Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+
+PLAY [working with special cases] ****************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************
+ok: [server1]
+
+TASK [printing hostipaddress] ********************************************************************************************
+changed: [server1] => {"changed": true, "cmd": ["hostname", "-i"], "delta": "0:00:00.038387", "end": "2021-05-04 03:29:31.477376", "rc": 0, "start": "2021-05-04 03:29:31.438989", "stderr": "", "stderr_lines": [], "stdout": "172.31.62.207", "stdout_lines": ["172.31.62.207"]}
+
+TASK [printing servername] ***********************************************************************************************
+changed: [server1 -> server1] => {"changed": true, "cmd": ["uname", "-a"], "delta": "0:00:00.038469", "end": "2021-05-04 03:29:31.873733", "rc": 0, "start": "2021-05-04 03:29:31.835264", "stderr": "", "stderr_lines": [], "stdout": "Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux", "stdout_lines": ["Linux server1 4.14.231-173.360.amzn2.x86_64 #1 SMP Mon Apr 19 23:20:22 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"]}
+
+PLAY RECAP ***************************************************************************************************************
+server1                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+server2                    : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[ec2-user@controller myansible]$ cat specialcases.yaml
+---
+- name: working with special cases
+  hosts: all
+  serial: 1
+  tasks:
+
+    - name: printing hostipaddress
+      command: hostname -i
+
+    - name: printing servername
+      command: uname -a
+      delegate_to: server1
+[ec2-user@controller myansible]$

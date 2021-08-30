@@ -1,0 +1,1152 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-172-31-76-118 ~]$ sudo su -
+[root@ip-172-31-76-118 ~]#
+[root@ip-172-31-76-118 ~]# hostnamectl set-hostname jenkinspac
+[root@ip-172-31-76-118 ~]# bash
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# sudo wget -O /etc/yum.repos.d/jenkins.repo \
+>     https://pkg.jenkins.io/redhat/jenkins.repo
+--2021-05-17 02:21:00--  https://pkg.jenkins.io/redhat/jenkins.repo
+Resolving pkg.jenkins.io (pkg.jenkins.io)... 151.101.202.133, 2a04:4e42:2f::645
+Connecting to pkg.jenkins.io (pkg.jenkins.io)|151.101.202.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 71
+Saving to: ‘/etc/yum.repos.d/jenkins.repo’
+
+100%[================================================================================>] 71          --.-K/s   in 0s
+
+2021-05-17 02:21:00 (4.82 MB/s) - ‘/etc/yum.repos.d/jenkins.repo’ saved [71/71]
+
+[root@jenkinspac ~]# sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+[root@jenkinspac ~]# sudo yum clean all
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Cleaning repos: amzn2-core amzn2extra-docker jenkins
+Cleaning up everything
+Maybe you want: rm -rf /var/cache/yum, to also free up space taken by orphaned data from disabled or removed repos
+[root@jenkinspac ~]# sleep 5
+[root@jenkinspac ~]# sudo yum install java-1.8.0-openjdk-devel jenkins -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                         | 3.7 kB  00:00:00
+amzn2extra-docker                                                                                  | 3.0 kB  00:00:00
+jenkins                                                                                            | 2.9 kB  00:00:00
+(1/6): amzn2-core/2/x86_64/group_gz                                                                | 2.5 kB  00:00:00
+(2/6): amzn2-core/2/x86_64/updateinfo                                                              | 367 kB  00:00:00
+(3/6): jenkins/primary_db                                                                          | 170 kB  00:00:00
+(4/6): amzn2extra-docker/2/x86_64/primary_db                                                       |  76 kB  00:00:00
+(5/6): amzn2extra-docker/2/x86_64/updateinfo                                                       |   76 B  00:00:00
+(6/6): amzn2-core/2/x86_64/primary_db                                                              |  52 MB  00:00:01
+Resolving Dependencies
+--> Running transaction check
+---> Package java-1.8.0-openjdk-devel.x86_64 1:1.8.0.282.b08-1.amzn2.0.1 will be installed
+--> Processing Dependency: java-1.8.0-openjdk(x86-64) = 1:1.8.0.282.b08-1.amzn2.0.1 for package: 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libjvm.so()(64bit) for package: 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libjava.so()(64bit) for package: 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libX11.so.6()(64bit) for package: 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64
+---> Package jenkins.noarch 0:2.293-1.1 will be installed
+--> Running transaction check
+---> Package java-1.8.0-openjdk.x86_64 1:1.8.0.282.b08-1.amzn2.0.1 will be installed
+--> Processing Dependency: xorg-x11-fonts-Type1 for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libasound.so.2(ALSA_0.9.0rc4)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libasound.so.2(ALSA_0.9)(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libXcomposite(x86-64) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: gtk2(x86-64) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: fontconfig(x86-64) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libgif.so.4()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libasound.so.2()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libXtst.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libXrender.so.1()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libXi.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: libXext.so.6()(64bit) for package: 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64
+---> Package java-1.8.0-openjdk-headless.x86_64 1:1.8.0.282.b08-1.amzn2.0.1 will be installed
+--> Processing Dependency: tzdata-java >= 2020b for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: copy-jdk-configs >= 3.3 for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: pcsc-lite-libs(x86-64) for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: lksctp-tools(x86-64) for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: jpackage-utils for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+--> Processing Dependency: cups-libs(x86-64) for package: 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64
+---> Package libX11.x86_64 0:1.6.7-3.amzn2 will be installed
+--> Processing Dependency: libX11-common >= 1.6.7-3.amzn2 for package: libX11-1.6.7-3.amzn2.x86_64
+--> Processing Dependency: libxcb.so.1()(64bit) for package: libX11-1.6.7-3.amzn2.x86_64
+--> Running transaction check
+---> Package alsa-lib.x86_64 0:1.1.4.1-2.amzn2 will be installed
+---> Package copy-jdk-configs.noarch 0:3.3-10.amzn2 will be installed
+---> Package cups-libs.x86_64 1:1.6.3-51.amzn2 will be installed
+--> Processing Dependency: libavahi-common.so.3()(64bit) for package: 1:cups-libs-1.6.3-51.amzn2.x86_64
+--> Processing Dependency: libavahi-client.so.3()(64bit) for package: 1:cups-libs-1.6.3-51.amzn2.x86_64
+---> Package fontconfig.x86_64 0:2.13.0-4.3.amzn2 will be installed
+--> Processing Dependency: fontpackages-filesystem for package: fontconfig-2.13.0-4.3.amzn2.x86_64
+--> Processing Dependency: dejavu-sans-fonts for package: fontconfig-2.13.0-4.3.amzn2.x86_64
+---> Package giflib.x86_64 0:4.1.6-9.amzn2.0.2 will be installed
+--> Processing Dependency: libSM.so.6()(64bit) for package: giflib-4.1.6-9.amzn2.0.2.x86_64
+--> Processing Dependency: libICE.so.6()(64bit) for package: giflib-4.1.6-9.amzn2.0.2.x86_64
+---> Package gtk2.x86_64 0:2.24.31-1.amzn2.0.2 will be installed
+--> Processing Dependency: pango >= 1.20.0-1 for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXrandr >= 1.2.99.4-2 for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: atk >= 1.29.4-2 for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: hicolor-icon-theme for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: gtk-update-icon-cache for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libpangoft2-1.0.so.0()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libpangocairo-1.0.so.0()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libpango-1.0.so.0()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libgdk_pixbuf-2.0.so.0()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libcairo.so.2()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libatk-1.0.so.0()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXrandr.so.2()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXinerama.so.1()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXfixes.so.3()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXdamage.so.1()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+--> Processing Dependency: libXcursor.so.1()(64bit) for package: gtk2-2.24.31-1.amzn2.0.2.x86_64
+---> Package javapackages-tools.noarch 0:3.4.1-11.amzn2 will be installed
+--> Processing Dependency: python-javapackages = 3.4.1-11.amzn2 for package: javapackages-tools-3.4.1-11.amzn2.noarch
+--> Processing Dependency: libxslt for package: javapackages-tools-3.4.1-11.amzn2.noarch
+---> Package libX11-common.noarch 0:1.6.7-3.amzn2 will be installed
+---> Package libXcomposite.x86_64 0:0.4.4-4.1.amzn2.0.2 will be installed
+---> Package libXext.x86_64 0:1.3.3-3.amzn2.0.2 will be installed
+---> Package libXi.x86_64 0:1.7.9-1.amzn2.0.2 will be installed
+---> Package libXrender.x86_64 0:0.9.10-1.amzn2.0.2 will be installed
+---> Package libXtst.x86_64 0:1.2.3-1.amzn2.0.2 will be installed
+---> Package libxcb.x86_64 0:1.12-1.amzn2.0.2 will be installed
+--> Processing Dependency: libXau.so.6()(64bit) for package: libxcb-1.12-1.amzn2.0.2.x86_64
+---> Package lksctp-tools.x86_64 0:1.0.17-2.amzn2.0.2 will be installed
+---> Package pcsc-lite-libs.x86_64 0:1.8.8-7.amzn2 will be installed
+---> Package tzdata-java.noarch 0:2020d-2.amzn2 will be installed
+---> Package xorg-x11-fonts-Type1.noarch 0:7.5-9.amzn2 will be installed
+--> Processing Dependency: ttmkfdir for package: xorg-x11-fonts-Type1-7.5-9.amzn2.noarch
+--> Processing Dependency: ttmkfdir for package: xorg-x11-fonts-Type1-7.5-9.amzn2.noarch
+--> Processing Dependency: mkfontdir for package: xorg-x11-fonts-Type1-7.5-9.amzn2.noarch
+--> Processing Dependency: mkfontdir for package: xorg-x11-fonts-Type1-7.5-9.amzn2.noarch
+--> Running transaction check
+---> Package atk.x86_64 0:2.22.0-3.amzn2.0.2 will be installed
+---> Package avahi-libs.x86_64 0:0.6.31-20.amzn2 will be installed
+---> Package cairo.x86_64 0:1.15.12-4.amzn2 will be installed
+--> Processing Dependency: libpixman-1.so.0()(64bit) for package: cairo-1.15.12-4.amzn2.x86_64
+--> Processing Dependency: libGL.so.1()(64bit) for package: cairo-1.15.12-4.amzn2.x86_64
+--> Processing Dependency: libEGL.so.1()(64bit) for package: cairo-1.15.12-4.amzn2.x86_64
+---> Package dejavu-sans-fonts.noarch 0:2.33-6.amzn2 will be installed
+--> Processing Dependency: dejavu-fonts-common = 2.33-6.amzn2 for package: dejavu-sans-fonts-2.33-6.amzn2.noarch
+---> Package fontpackages-filesystem.noarch 0:1.44-8.amzn2 will be installed
+---> Package gdk-pixbuf2.x86_64 0:2.36.12-3.amzn2 will be installed
+--> Processing Dependency: libjasper.so.1()(64bit) for package: gdk-pixbuf2-2.36.12-3.amzn2.x86_64
+---> Package gtk-update-icon-cache.x86_64 0:3.22.30-3.amzn2 will be installed
+---> Package hicolor-icon-theme.noarch 0:0.12-7.amzn2 will be installed
+---> Package libICE.x86_64 0:1.0.9-9.amzn2.0.2 will be installed
+---> Package libSM.x86_64 0:1.2.2-2.amzn2.0.2 will be installed
+---> Package libXau.x86_64 0:1.0.8-2.1.amzn2.0.2 will be installed
+---> Package libXcursor.x86_64 0:1.1.15-1.amzn2 will be installed
+---> Package libXdamage.x86_64 0:1.1.4-4.1.amzn2.0.2 will be installed
+---> Package libXfixes.x86_64 0:5.0.3-1.amzn2.0.2 will be installed
+---> Package libXinerama.x86_64 0:1.1.3-2.1.amzn2.0.2 will be installed
+---> Package libXrandr.x86_64 0:1.5.1-2.amzn2.0.3 will be installed
+---> Package libxslt.x86_64 0:1.1.28-6.amzn2 will be installed
+---> Package pango.x86_64 0:1.42.4-4.amzn2 will be installed
+--> Processing Dependency: libthai(x86-64) >= 0.1.9 for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libXft(x86-64) >= 2.0.0 for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: harfbuzz(x86-64) >= 1.4.2 for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: fribidi(x86-64) >= 1.0 for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libthai.so.0(LIBTHAI_0.1)(64bit) for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libthai.so.0()(64bit) for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libharfbuzz.so.0()(64bit) for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libfribidi.so.0()(64bit) for package: pango-1.42.4-4.amzn2.x86_64
+--> Processing Dependency: libXft.so.2()(64bit) for package: pango-1.42.4-4.amzn2.x86_64
+---> Package python-javapackages.noarch 0:3.4.1-11.amzn2 will be installed
+--> Processing Dependency: python-lxml for package: python-javapackages-3.4.1-11.amzn2.noarch
+---> Package ttmkfdir.x86_64 0:3.0.9-42.amzn2.0.2 will be installed
+---> Package xorg-x11-font-utils.x86_64 1:7.5-21.amzn2 will be installed
+--> Processing Dependency: libfontenc.so.1()(64bit) for package: 1:xorg-x11-font-utils-7.5-21.amzn2.x86_64
+--> Running transaction check
+---> Package dejavu-fonts-common.noarch 0:2.33-6.amzn2 will be installed
+---> Package fribidi.x86_64 0:1.0.2-1.amzn2.1 will be installed
+---> Package harfbuzz.x86_64 0:1.7.5-2.amzn2 will be installed
+--> Processing Dependency: libgraphite2.so.3()(64bit) for package: harfbuzz-1.7.5-2.amzn2.x86_64
+---> Package jasper-libs.x86_64 0:1.900.1-33.amzn2 will be installed
+---> Package libXft.x86_64 0:2.3.2-2.amzn2.0.2 will be installed
+---> Package libfontenc.x86_64 0:1.1.3-3.amzn2.0.2 will be installed
+---> Package libglvnd-egl.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1 will be installed
+--> Processing Dependency: libglvnd(x86-64) = 1:1.0.1-0.1.git5baa1e5.amzn2.0.1 for package: 1:libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64
+--> Processing Dependency: mesa-libEGL(x86-64) >= 13.0.4-1 for package: 1:libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64
+--> Processing Dependency: libGLdispatch.so.0()(64bit) for package: 1:libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64
+---> Package libglvnd-glx.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1 will be installed
+--> Processing Dependency: mesa-libGL(x86-64) >= 13.0.4-1 for package: 1:libglvnd-glx-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64
+---> Package libthai.x86_64 0:0.1.14-9.amzn2.0.2 will be installed
+---> Package pixman.x86_64 0:0.34.0-1.amzn2.0.2 will be installed
+---> Package python-lxml.x86_64 0:3.2.1-4.amzn2.0.2 will be installed
+--> Running transaction check
+---> Package graphite2.x86_64 0:1.3.10-1.amzn2.0.2 will be installed
+---> Package libglvnd.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1 will be installed
+---> Package mesa-libEGL.x86_64 0:18.3.4-5.amzn2.0.1 will be installed
+--> Processing Dependency: mesa-libgbm = 18.3.4-5.amzn2.0.1 for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+--> Processing Dependency: libxshmfence.so.1()(64bit) for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+--> Processing Dependency: libwayland-server.so.0()(64bit) for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+--> Processing Dependency: libwayland-client.so.0()(64bit) for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+--> Processing Dependency: libglapi.so.0()(64bit) for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+--> Processing Dependency: libgbm.so.1()(64bit) for package: mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64
+---> Package mesa-libGL.x86_64 0:18.3.4-5.amzn2.0.1 will be installed
+--> Processing Dependency: libXxf86vm.so.1()(64bit) for package: mesa-libGL-18.3.4-5.amzn2.0.1.x86_64
+--> Running transaction check
+---> Package libXxf86vm.x86_64 0:1.1.4-1.amzn2.0.2 will be installed
+---> Package libwayland-client.x86_64 0:1.17.0-1.amzn2 will be installed
+---> Package libwayland-server.x86_64 0:1.17.0-1.amzn2 will be installed
+---> Package libxshmfence.x86_64 0:1.2-1.amzn2.0.2 will be installed
+---> Package mesa-libgbm.x86_64 0:18.3.4-5.amzn2.0.1 will be installed
+---> Package mesa-libglapi.x86_64 0:18.3.4-5.amzn2.0.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                              Arch            Version                                   Repository           Size
+==========================================================================================================================
+Installing:
+ java-1.8.0-openjdk-devel             x86_64          1:1.8.0.282.b08-1.amzn2.0.1               amzn2-core          9.7 M
+ jenkins                              noarch          2.293-1.1                                 jenkins              68 M
+Installing for dependencies:
+ alsa-lib                             x86_64          1.1.4.1-2.amzn2                           amzn2-core          425 k
+ atk                                  x86_64          2.22.0-3.amzn2.0.2                        amzn2-core          258 k
+ avahi-libs                           x86_64          0.6.31-20.amzn2                           amzn2-core           61 k
+ cairo                                x86_64          1.15.12-4.amzn2                           amzn2-core          732 k
+ copy-jdk-configs                     noarch          3.3-10.amzn2                              amzn2-core           21 k
+ cups-libs                            x86_64          1:1.6.3-51.amzn2                          amzn2-core          356 k
+ dejavu-fonts-common                  noarch          2.33-6.amzn2                              amzn2-core           64 k
+ dejavu-sans-fonts                    noarch          2.33-6.amzn2                              amzn2-core          1.4 M
+ fontconfig                           x86_64          2.13.0-4.3.amzn2                          amzn2-core          253 k
+ fontpackages-filesystem              noarch          1.44-8.amzn2                              amzn2-core           10 k
+ fribidi                              x86_64          1.0.2-1.amzn2.1                           amzn2-core           79 k
+ gdk-pixbuf2                          x86_64          2.36.12-3.amzn2                           amzn2-core          568 k
+ giflib                               x86_64          4.1.6-9.amzn2.0.2                         amzn2-core           40 k
+ graphite2                            x86_64          1.3.10-1.amzn2.0.2                        amzn2-core          115 k
+ gtk-update-icon-cache                x86_64          3.22.30-3.amzn2                           amzn2-core           26 k
+ gtk2                                 x86_64          2.24.31-1.amzn2.0.2                       amzn2-core          3.4 M
+ harfbuzz                             x86_64          1.7.5-2.amzn2                             amzn2-core          279 k
+ hicolor-icon-theme                   noarch          0.12-7.amzn2                              amzn2-core           43 k
+ jasper-libs                          x86_64          1.900.1-33.amzn2                          amzn2-core          150 k
+ java-1.8.0-openjdk                   x86_64          1:1.8.0.282.b08-1.amzn2.0.1               amzn2-core          303 k
+ java-1.8.0-openjdk-headless          x86_64          1:1.8.0.282.b08-1.amzn2.0.1               amzn2-core           33 M
+ javapackages-tools                   noarch          3.4.1-11.amzn2                            amzn2-core           73 k
+ libICE                               x86_64          1.0.9-9.amzn2.0.2                         amzn2-core           67 k
+ libSM                                x86_64          1.2.2-2.amzn2.0.2                         amzn2-core           39 k
+ libX11                               x86_64          1.6.7-3.amzn2                             amzn2-core          606 k
+ libX11-common                        noarch          1.6.7-3.amzn2                             amzn2-core          164 k
+ libXau                               x86_64          1.0.8-2.1.amzn2.0.2                       amzn2-core           29 k
+ libXcomposite                        x86_64          0.4.4-4.1.amzn2.0.2                       amzn2-core           22 k
+ libXcursor                           x86_64          1.1.15-1.amzn2                            amzn2-core           30 k
+ libXdamage                           x86_64          1.1.4-4.1.amzn2.0.2                       amzn2-core           20 k
+ libXext                              x86_64          1.3.3-3.amzn2.0.2                         amzn2-core           39 k
+ libXfixes                            x86_64          5.0.3-1.amzn2.0.2                         amzn2-core           18 k
+ libXft                               x86_64          2.3.2-2.amzn2.0.2                         amzn2-core           60 k
+ libXi                                x86_64          1.7.9-1.amzn2.0.2                         amzn2-core           41 k
+ libXinerama                          x86_64          1.1.3-2.1.amzn2.0.2                       amzn2-core           14 k
+ libXrandr                            x86_64          1.5.1-2.amzn2.0.3                         amzn2-core           27 k
+ libXrender                           x86_64          0.9.10-1.amzn2.0.2                        amzn2-core           26 k
+ libXtst                              x86_64          1.2.3-1.amzn2.0.2                         amzn2-core           20 k
+ libXxf86vm                           x86_64          1.1.4-1.amzn2.0.2                         amzn2-core           17 k
+ libfontenc                           x86_64          1.1.3-3.amzn2.0.2                         amzn2-core           31 k
+ libglvnd                             x86_64          1:1.0.1-0.1.git5baa1e5.amzn2.0.1          amzn2-core           89 k
+ libglvnd-egl                         x86_64          1:1.0.1-0.1.git5baa1e5.amzn2.0.1          amzn2-core           43 k
+ libglvnd-glx                         x86_64          1:1.0.1-0.1.git5baa1e5.amzn2.0.1          amzn2-core          125 k
+ libthai                              x86_64          0.1.14-9.amzn2.0.2                        amzn2-core          187 k
+ libwayland-client                    x86_64          1.17.0-1.amzn2                            amzn2-core           34 k
+ libwayland-server                    x86_64          1.17.0-1.amzn2                            amzn2-core           40 k
+ libxcb                               x86_64          1.12-1.amzn2.0.2                          amzn2-core          216 k
+ libxshmfence                         x86_64          1.2-1.amzn2.0.2                           amzn2-core          7.2 k
+ libxslt                              x86_64          1.1.28-6.amzn2                            amzn2-core          240 k
+ lksctp-tools                         x86_64          1.0.17-2.amzn2.0.2                        amzn2-core           88 k
+ mesa-libEGL                          x86_64          18.3.4-5.amzn2.0.1                        amzn2-core          108 k
+ mesa-libGL                           x86_64          18.3.4-5.amzn2.0.1                        amzn2-core          162 k
+ mesa-libgbm                          x86_64          18.3.4-5.amzn2.0.1                        amzn2-core           38 k
+ mesa-libglapi                        x86_64          18.3.4-5.amzn2.0.1                        amzn2-core           45 k
+ pango                                x86_64          1.42.4-4.amzn2                            amzn2-core          280 k
+ pcsc-lite-libs                       x86_64          1.8.8-7.amzn2                             amzn2-core           35 k
+ pixman                               x86_64          0.34.0-1.amzn2.0.2                        amzn2-core          254 k
+ python-javapackages                  noarch          3.4.1-11.amzn2                            amzn2-core           31 k
+ python-lxml                          x86_64          3.2.1-4.amzn2.0.2                         amzn2-core          1.0 M
+ ttmkfdir                             x86_64          3.0.9-42.amzn2.0.2                        amzn2-core           50 k
+ tzdata-java                          noarch          2020d-2.amzn2                             amzn2-core          189 k
+ xorg-x11-font-utils                  x86_64          1:7.5-21.amzn2                            amzn2-core          103 k
+ xorg-x11-fonts-Type1                 noarch          7.5-9.amzn2                               amzn2-core          521 k
+
+Transaction Summary
+==========================================================================================================================
+Install  2 Packages (+63 Dependent packages)
+
+Total download size: 125 M
+Installed size: 263 M
+Downloading packages:
+(1/65): alsa-lib-1.1.4.1-2.amzn2.x86_64.rpm                                                        | 425 kB  00:00:00
+(2/65): atk-2.22.0-3.amzn2.0.2.x86_64.rpm                                                          | 258 kB  00:00:00
+(3/65): avahi-libs-0.6.31-20.amzn2.x86_64.rpm                                                      |  61 kB  00:00:00
+(4/65): copy-jdk-configs-3.3-10.amzn2.noarch.rpm                                                   |  21 kB  00:00:00
+(5/65): cups-libs-1.6.3-51.amzn2.x86_64.rpm                                                        | 356 kB  00:00:00
+(6/65): dejavu-fonts-common-2.33-6.amzn2.noarch.rpm                                                |  64 kB  00:00:00
+(7/65): cairo-1.15.12-4.amzn2.x86_64.rpm                                                           | 732 kB  00:00:00
+(8/65): fontconfig-2.13.0-4.3.amzn2.x86_64.rpm                                                     | 253 kB  00:00:00
+(9/65): dejavu-sans-fonts-2.33-6.amzn2.noarch.rpm                                                  | 1.4 MB  00:00:00
+(10/65): fontpackages-filesystem-1.44-8.amzn2.noarch.rpm                                           |  10 kB  00:00:00
+(11/65): gdk-pixbuf2-2.36.12-3.amzn2.x86_64.rpm                                                    | 568 kB  00:00:00
+(12/65): giflib-4.1.6-9.amzn2.0.2.x86_64.rpm                                                       |  40 kB  00:00:00
+(13/65): graphite2-1.3.10-1.amzn2.0.2.x86_64.rpm                                                   | 115 kB  00:00:00
+(14/65): fribidi-1.0.2-1.amzn2.1.x86_64.rpm                                                        |  79 kB  00:00:00
+(15/65): gtk-update-icon-cache-3.22.30-3.amzn2.x86_64.rpm                                          |  26 kB  00:00:00
+(16/65): harfbuzz-1.7.5-2.amzn2.x86_64.rpm                                                         | 279 kB  00:00:00
+(17/65): gtk2-2.24.31-1.amzn2.0.2.x86_64.rpm                                                       | 3.4 MB  00:00:00
+(18/65): jasper-libs-1.900.1-33.amzn2.x86_64.rpm                                                   | 150 kB  00:00:00
+(19/65): java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64.rpm                                   | 303 kB  00:00:00
+(20/65): hicolor-icon-theme-0.12-7.amzn2.noarch.rpm                                                |  43 kB  00:00:00
+(21/65): java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64.rpm                             | 9.7 MB  00:00:00
+(22/65): javapackages-tools-3.4.1-11.amzn2.noarch.rpm                                              |  73 kB  00:00:00
+(23/65): libICE-1.0.9-9.amzn2.0.2.x86_64.rpm                                                       |  67 kB  00:00:00
+(24/65): libSM-1.2.2-2.amzn2.0.2.x86_64.rpm                                                        |  39 kB  00:00:00
+(25/65): libX11-1.6.7-3.amzn2.x86_64.rpm                                                           | 606 kB  00:00:00
+(26/65): libX11-common-1.6.7-3.amzn2.noarch.rpm                                                    | 164 kB  00:00:00
+(27/65): libXau-1.0.8-2.1.amzn2.0.2.x86_64.rpm                                                     |  29 kB  00:00:00
+(28/65): libXcomposite-0.4.4-4.1.amzn2.0.2.x86_64.rpm                                              |  22 kB  00:00:00
+(29/65): libXcursor-1.1.15-1.amzn2.x86_64.rpm                                                      |  30 kB  00:00:00
+(30/65): java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64.rpm                          |  33 MB  00:00:00
+(31/65): libXdamage-1.1.4-4.1.amzn2.0.2.x86_64.rpm                                                 |  20 kB  00:00:00
+(32/65): libXext-1.3.3-3.amzn2.0.2.x86_64.rpm                                                      |  39 kB  00:00:00
+(33/65): libXfixes-5.0.3-1.amzn2.0.2.x86_64.rpm                                                    |  18 kB  00:00:00
+(34/65): libXi-1.7.9-1.amzn2.0.2.x86_64.rpm                                                        |  41 kB  00:00:00
+(35/65): libXft-2.3.2-2.amzn2.0.2.x86_64.rpm                                                       |  60 kB  00:00:00
+(36/65): libXinerama-1.1.3-2.1.amzn2.0.2.x86_64.rpm                                                |  14 kB  00:00:00
+(37/65): libXrandr-1.5.1-2.amzn2.0.3.x86_64.rpm                                                    |  27 kB  00:00:00
+(38/65): libXrender-0.9.10-1.amzn2.0.2.x86_64.rpm                                                  |  26 kB  00:00:00
+(39/65): libXtst-1.2.3-1.amzn2.0.2.x86_64.rpm                                                      |  20 kB  00:00:00
+(40/65): libXxf86vm-1.1.4-1.amzn2.0.2.x86_64.rpm                                                   |  17 kB  00:00:00
+(41/65): libfontenc-1.1.3-3.amzn2.0.2.x86_64.rpm                                                   |  31 kB  00:00:00
+(42/65): libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64.rpm                                    |  43 kB  00:00:00
+(43/65): libglvnd-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64.rpm                                        |  89 kB  00:00:00
+(44/65): libglvnd-glx-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64.rpm                                    | 125 kB  00:00:00
+(45/65): libthai-0.1.14-9.amzn2.0.2.x86_64.rpm                                                     | 187 kB  00:00:00
+(46/65): libwayland-client-1.17.0-1.amzn2.x86_64.rpm                                               |  34 kB  00:00:00
+(47/65): libwayland-server-1.17.0-1.amzn2.x86_64.rpm                                               |  40 kB  00:00:00
+(48/65): libxshmfence-1.2-1.amzn2.0.2.x86_64.rpm                                                   | 7.2 kB  00:00:00
+(49/65): libxcb-1.12-1.amzn2.0.2.x86_64.rpm                                                        | 216 kB  00:00:00
+(50/65): lksctp-tools-1.0.17-2.amzn2.0.2.x86_64.rpm                                                |  88 kB  00:00:00
+(51/65): libxslt-1.1.28-6.amzn2.x86_64.rpm                                                         | 240 kB  00:00:00
+(52/65): mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64.rpm                                                 | 108 kB  00:00:00
+(53/65): mesa-libGL-18.3.4-5.amzn2.0.1.x86_64.rpm                                                  | 162 kB  00:00:00
+(54/65): mesa-libglapi-18.3.4-5.amzn2.0.1.x86_64.rpm                                               |  45 kB  00:00:00
+(55/65): mesa-libgbm-18.3.4-5.amzn2.0.1.x86_64.rpm                                                 |  38 kB  00:00:00
+(56/65): pango-1.42.4-4.amzn2.x86_64.rpm                                                           | 280 kB  00:00:00
+(57/65): pcsc-lite-libs-1.8.8-7.amzn2.x86_64.rpm                                                   |  35 kB  00:00:00
+(58/65): pixman-0.34.0-1.amzn2.0.2.x86_64.rpm                                                      | 254 kB  00:00:00
+(59/65): python-javapackages-3.4.1-11.amzn2.noarch.rpm                                             |  31 kB  00:00:00
+(60/65): ttmkfdir-3.0.9-42.amzn2.0.2.x86_64.rpm                                                    |  50 kB  00:00:00
+(61/65): python-lxml-3.2.1-4.amzn2.0.2.x86_64.rpm                                                  | 1.0 MB  00:00:00
+(62/65): tzdata-java-2020d-2.amzn2.noarch.rpm                                                      | 189 kB  00:00:00
+(63/65): xorg-x11-font-utils-7.5-21.amzn2.x86_64.rpm                                               | 103 kB  00:00:00
+(64/65): xorg-x11-fonts-Type1-7.5-9.amzn2.noarch.rpm                                               | 521 kB  00:00:00
+(65/65): jenkins-2.293-1.1.noarch.rpm                                                              |  68 MB  00:00:01
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      57 MB/s | 125 MB  00:00:02
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : mesa-libglapi-18.3.4-5.amzn2.0.1.x86_64                                                               1/65
+  Installing : libICE-1.0.9-9.amzn2.0.2.x86_64                                                                       2/65
+  Installing : libxslt-1.1.28-6.amzn2.x86_64                                                                         3/65
+  Installing : fontpackages-filesystem-1.44-8.amzn2.noarch                                                           4/65
+  Installing : 1:libglvnd-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                      5/65
+  Installing : libxshmfence-1.2-1.amzn2.0.2.x86_64                                                                   6/65
+  Installing : libwayland-server-1.17.0-1.amzn2.x86_64                                                               7/65
+  Installing : mesa-libgbm-18.3.4-5.amzn2.0.1.x86_64                                                                 8/65
+  Installing : dejavu-fonts-common-2.33-6.amzn2.noarch                                                               9/65
+  Installing : dejavu-sans-fonts-2.33-6.amzn2.noarch                                                                10/65
+  Installing : fontconfig-2.13.0-4.3.amzn2.x86_64                                                                   11/65
+  Installing : python-lxml-3.2.1-4.amzn2.0.2.x86_64                                                                 12/65
+  Installing : python-javapackages-3.4.1-11.amzn2.noarch                                                            13/65
+  Installing : javapackages-tools-3.4.1-11.amzn2.noarch                                                             14/65
+  Installing : libSM-1.2.2-2.amzn2.0.2.x86_64                                                                       15/65
+  Installing : graphite2-1.3.10-1.amzn2.0.2.x86_64                                                                  16/65
+  Installing : harfbuzz-1.7.5-2.amzn2.x86_64                                                                        17/65
+  Installing : jasper-libs-1.900.1-33.amzn2.x86_64                                                                  18/65
+  Installing : alsa-lib-1.1.4.1-2.amzn2.x86_64                                                                      19/65
+  Installing : copy-jdk-configs-3.3-10.amzn2.noarch                                                                 20/65
+  Installing : fribidi-1.0.2-1.amzn2.1.x86_64                                                                       21/65
+  Installing : libwayland-client-1.17.0-1.amzn2.x86_64                                                              22/65
+  Installing : libXau-1.0.8-2.1.amzn2.0.2.x86_64                                                                    23/65
+  Installing : libxcb-1.12-1.amzn2.0.2.x86_64                                                                       24/65
+  Installing : hicolor-icon-theme-0.12-7.amzn2.noarch                                                               25/65
+  Installing : pcsc-lite-libs-1.8.8-7.amzn2.x86_64                                                                  26/65
+  Installing : avahi-libs-0.6.31-20.amzn2.x86_64                                                                    27/65
+  Installing : 1:cups-libs-1.6.3-51.amzn2.x86_64                                                                    28/65
+  Installing : atk-2.22.0-3.amzn2.0.2.x86_64                                                                        29/65
+  Installing : libthai-0.1.14-9.amzn2.0.2.x86_64                                                                    30/65
+  Installing : libfontenc-1.1.3-3.amzn2.0.2.x86_64                                                                  31/65
+  Installing : 1:xorg-x11-font-utils-7.5-21.amzn2.x86_64                                                            32/65
+  Installing : tzdata-java-2020d-2.amzn2.noarch                                                                     33/65
+  Installing : ttmkfdir-3.0.9-42.amzn2.0.2.x86_64                                                                   34/65
+  Installing : xorg-x11-fonts-Type1-7.5-9.amzn2.noarch                                                              35/65
+  Installing : lksctp-tools-1.0.17-2.amzn2.0.2.x86_64                                                               36/65
+  Installing : 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64                                       37/65
+  Installing : libX11-common-1.6.7-3.amzn2.noarch                                                                   38/65
+  Installing : libX11-1.6.7-3.amzn2.x86_64                                                                          39/65
+  Installing : libXext-1.3.3-3.amzn2.0.2.x86_64                                                                     40/65
+  Installing : libXrender-0.9.10-1.amzn2.0.2.x86_64                                                                 41/65
+  Installing : libXfixes-5.0.3-1.amzn2.0.2.x86_64                                                                   42/65
+  Installing : libXi-1.7.9-1.amzn2.0.2.x86_64                                                                       43/65
+  Installing : libXdamage-1.1.4-4.1.amzn2.0.2.x86_64                                                                44/65
+  Installing : libXcomposite-0.4.4-4.1.amzn2.0.2.x86_64                                                             45/65
+  Installing : gdk-pixbuf2-2.36.12-3.amzn2.x86_64                                                                   46/65
+  Installing : gtk-update-icon-cache-3.22.30-3.amzn2.x86_64                                                         47/65
+  Installing : libXtst-1.2.3-1.amzn2.0.2.x86_64                                                                     48/65
+  Installing : libXcursor-1.1.15-1.amzn2.x86_64                                                                     49/65
+  Installing : libXrandr-1.5.1-2.amzn2.0.3.x86_64                                                                   50/65
+  Installing : libXft-2.3.2-2.amzn2.0.2.x86_64                                                                      51/65
+  Installing : libXinerama-1.1.3-2.1.amzn2.0.2.x86_64                                                               52/65
+  Installing : libXxf86vm-1.1.4-1.amzn2.0.2.x86_64                                                                  53/65
+  Installing : 1:libglvnd-glx-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                 54/65
+  Installing : mesa-libGL-18.3.4-5.amzn2.0.1.x86_64                                                                 55/65
+  Installing : 1:libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                 56/65
+  Installing : mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64                                                                57/65
+  Installing : giflib-4.1.6-9.amzn2.0.2.x86_64                                                                      58/65
+  Installing : pixman-0.34.0-1.amzn2.0.2.x86_64                                                                     59/65
+  Installing : cairo-1.15.12-4.amzn2.x86_64                                                                         60/65
+  Installing : pango-1.42.4-4.amzn2.x86_64                                                                          61/65
+  Installing : gtk2-2.24.31-1.amzn2.0.2.x86_64                                                                      62/65
+  Installing : 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64                                                63/65
+  Installing : 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64                                          64/65
+  Installing : jenkins-2.293-1.1.noarch                                                                             65/65
+  Verifying  : 1:java-1.8.0-openjdk-headless-1.8.0.282.b08-1.amzn2.0.1.x86_64                                        1/65
+  Verifying  : libwayland-server-1.17.0-1.amzn2.x86_64                                                               2/65
+  Verifying  : libxshmfence-1.2-1.amzn2.0.2.x86_64                                                                   3/65
+  Verifying  : 1:xorg-x11-font-utils-7.5-21.amzn2.x86_64                                                             4/65
+  Verifying  : 1:libglvnd-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                      5/65
+  Verifying  : 1:libglvnd-egl-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                  6/65
+  Verifying  : libXdamage-1.1.4-4.1.amzn2.0.2.x86_64                                                                 7/65
+  Verifying  : fontpackages-filesystem-1.44-8.amzn2.noarch                                                           8/65
+  Verifying  : mesa-libEGL-18.3.4-5.amzn2.0.1.x86_64                                                                 9/65
+  Verifying  : jenkins-2.293-1.1.noarch                                                                             10/65
+  Verifying  : pango-1.42.4-4.amzn2.x86_64                                                                          11/65
+  Verifying  : pixman-0.34.0-1.amzn2.0.2.x86_64                                                                     12/65
+  Verifying  : dejavu-fonts-common-2.33-6.amzn2.noarch                                                              13/65
+  Verifying  : libxcb-1.12-1.amzn2.0.2.x86_64                                                                       14/65
+  Verifying  : libXrandr-1.5.1-2.amzn2.0.3.x86_64                                                                   15/65
+  Verifying  : 1:java-1.8.0-openjdk-1.8.0.282.b08-1.amzn2.0.1.x86_64                                                16/65
+  Verifying  : libXext-1.3.3-3.amzn2.0.2.x86_64                                                                     17/65
+  Verifying  : libX11-common-1.6.7-3.amzn2.noarch                                                                   18/65
+  Verifying  : mesa-libGL-18.3.4-5.amzn2.0.1.x86_64                                                                 19/65
+  Verifying  : lksctp-tools-1.0.17-2.amzn2.0.2.x86_64                                                               20/65
+  Verifying  : cairo-1.15.12-4.amzn2.x86_64                                                                         21/65
+  Verifying  : libXcursor-1.1.15-1.amzn2.x86_64                                                                     22/65
+  Verifying  : ttmkfdir-3.0.9-42.amzn2.0.2.x86_64                                                                   23/65
+  Verifying  : python-lxml-3.2.1-4.amzn2.0.2.x86_64                                                                 24/65
+  Verifying  : gtk-update-icon-cache-3.22.30-3.amzn2.x86_64                                                         25/65
+  Verifying  : libXcomposite-0.4.4-4.1.amzn2.0.2.x86_64                                                             26/65
+  Verifying  : libSM-1.2.2-2.amzn2.0.2.x86_64                                                                       27/65
+  Verifying  : tzdata-java-2020d-2.amzn2.noarch                                                                     28/65
+  Verifying  : python-javapackages-3.4.1-11.amzn2.noarch                                                            29/65
+  Verifying  : 1:cups-libs-1.6.3-51.amzn2.x86_64                                                                    30/65
+  Verifying  : 1:java-1.8.0-openjdk-devel-1.8.0.282.b08-1.amzn2.0.1.x86_64                                          31/65
+  Verifying  : libfontenc-1.1.3-3.amzn2.0.2.x86_64                                                                  32/65
+  Verifying  : libthai-0.1.14-9.amzn2.0.2.x86_64                                                                    33/65
+  Verifying  : xorg-x11-fonts-Type1-7.5-9.amzn2.noarch                                                              34/65
+  Verifying  : atk-2.22.0-3.amzn2.0.2.x86_64                                                                        35/65
+  Verifying  : gtk2-2.24.31-1.amzn2.0.2.x86_64                                                                      36/65
+  Verifying  : libXrender-0.9.10-1.amzn2.0.2.x86_64                                                                 37/65
+  Verifying  : libX11-1.6.7-3.amzn2.x86_64                                                                          38/65
+  Verifying  : avahi-libs-0.6.31-20.amzn2.x86_64                                                                    39/65
+  Verifying  : dejavu-sans-fonts-2.33-6.amzn2.noarch                                                                40/65
+  Verifying  : fontconfig-2.13.0-4.3.amzn2.x86_64                                                                   41/65
+  Verifying  : pcsc-lite-libs-1.8.8-7.amzn2.x86_64                                                                  42/65
+  Verifying  : hicolor-icon-theme-0.12-7.amzn2.noarch                                                               43/65
+  Verifying  : harfbuzz-1.7.5-2.amzn2.x86_64                                                                        44/65
+  Verifying  : mesa-libgbm-18.3.4-5.amzn2.0.1.x86_64                                                                45/65
+  Verifying  : giflib-4.1.6-9.amzn2.0.2.x86_64                                                                      46/65
+  Verifying  : mesa-libglapi-18.3.4-5.amzn2.0.1.x86_64                                                              47/65
+  Verifying  : libXinerama-1.1.3-2.1.amzn2.0.2.x86_64                                                               48/65
+  Verifying  : libXi-1.7.9-1.amzn2.0.2.x86_64                                                                       49/65
+  Verifying  : libXau-1.0.8-2.1.amzn2.0.2.x86_64                                                                    50/65
+  Verifying  : gdk-pixbuf2-2.36.12-3.amzn2.x86_64                                                                   51/65
+  Verifying  : libXxf86vm-1.1.4-1.amzn2.0.2.x86_64                                                                  52/65
+  Verifying  : libwayland-client-1.17.0-1.amzn2.x86_64                                                              53/65
+  Verifying  : libxslt-1.1.28-6.amzn2.x86_64                                                                        54/65
+  Verifying  : fribidi-1.0.2-1.amzn2.1.x86_64                                                                       55/65
+  Verifying  : libXtst-1.2.3-1.amzn2.0.2.x86_64                                                                     56/65
+  Verifying  : libXft-2.3.2-2.amzn2.0.2.x86_64                                                                      57/65
+  Verifying  : copy-jdk-configs-3.3-10.amzn2.noarch                                                                 58/65
+  Verifying  : alsa-lib-1.1.4.1-2.amzn2.x86_64                                                                      59/65
+  Verifying  : jasper-libs-1.900.1-33.amzn2.x86_64                                                                  60/65
+  Verifying  : 1:libglvnd-glx-1.0.1-0.1.git5baa1e5.amzn2.0.1.x86_64                                                 61/65
+  Verifying  : libXfixes-5.0.3-1.amzn2.0.2.x86_64                                                                   62/65
+  Verifying  : libICE-1.0.9-9.amzn2.0.2.x86_64                                                                      63/65
+  Verifying  : graphite2-1.3.10-1.amzn2.0.2.x86_64                                                                  64/65
+  Verifying  : javapackages-tools-3.4.1-11.amzn2.noarch                                                             65/65
+
+Installed:
+  java-1.8.0-openjdk-devel.x86_64 1:1.8.0.282.b08-1.amzn2.0.1                  jenkins.noarch 0:2.293-1.1
+
+Dependency Installed:
+  alsa-lib.x86_64 0:1.1.4.1-2.amzn2                                atk.x86_64 0:2.22.0-3.amzn2.0.2
+  avahi-libs.x86_64 0:0.6.31-20.amzn2                              cairo.x86_64 0:1.15.12-4.amzn2
+  copy-jdk-configs.noarch 0:3.3-10.amzn2                           cups-libs.x86_64 1:1.6.3-51.amzn2
+  dejavu-fonts-common.noarch 0:2.33-6.amzn2                        dejavu-sans-fonts.noarch 0:2.33-6.amzn2
+  fontconfig.x86_64 0:2.13.0-4.3.amzn2                             fontpackages-filesystem.noarch 0:1.44-8.amzn2
+  fribidi.x86_64 0:1.0.2-1.amzn2.1                                 gdk-pixbuf2.x86_64 0:2.36.12-3.amzn2
+  giflib.x86_64 0:4.1.6-9.amzn2.0.2                                graphite2.x86_64 0:1.3.10-1.amzn2.0.2
+  gtk-update-icon-cache.x86_64 0:3.22.30-3.amzn2                   gtk2.x86_64 0:2.24.31-1.amzn2.0.2
+  harfbuzz.x86_64 0:1.7.5-2.amzn2                                  hicolor-icon-theme.noarch 0:0.12-7.amzn2
+  jasper-libs.x86_64 0:1.900.1-33.amzn2                            java-1.8.0-openjdk.x86_64 1:1.8.0.282.b08-1.amzn2.0.1
+  java-1.8.0-openjdk-headless.x86_64 1:1.8.0.282.b08-1.amzn2.0.1   javapackages-tools.noarch 0:3.4.1-11.amzn2
+  libICE.x86_64 0:1.0.9-9.amzn2.0.2                                libSM.x86_64 0:1.2.2-2.amzn2.0.2
+  libX11.x86_64 0:1.6.7-3.amzn2                                    libX11-common.noarch 0:1.6.7-3.amzn2
+  libXau.x86_64 0:1.0.8-2.1.amzn2.0.2                              libXcomposite.x86_64 0:0.4.4-4.1.amzn2.0.2
+  libXcursor.x86_64 0:1.1.15-1.amzn2                               libXdamage.x86_64 0:1.1.4-4.1.amzn2.0.2
+  libXext.x86_64 0:1.3.3-3.amzn2.0.2                               libXfixes.x86_64 0:5.0.3-1.amzn2.0.2
+  libXft.x86_64 0:2.3.2-2.amzn2.0.2                                libXi.x86_64 0:1.7.9-1.amzn2.0.2
+  libXinerama.x86_64 0:1.1.3-2.1.amzn2.0.2                         libXrandr.x86_64 0:1.5.1-2.amzn2.0.3
+  libXrender.x86_64 0:0.9.10-1.amzn2.0.2                           libXtst.x86_64 0:1.2.3-1.amzn2.0.2
+  libXxf86vm.x86_64 0:1.1.4-1.amzn2.0.2                            libfontenc.x86_64 0:1.1.3-3.amzn2.0.2
+  libglvnd.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1                 libglvnd-egl.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1
+  libglvnd-glx.x86_64 1:1.0.1-0.1.git5baa1e5.amzn2.0.1             libthai.x86_64 0:0.1.14-9.amzn2.0.2
+  libwayland-client.x86_64 0:1.17.0-1.amzn2                        libwayland-server.x86_64 0:1.17.0-1.amzn2
+  libxcb.x86_64 0:1.12-1.amzn2.0.2                                 libxshmfence.x86_64 0:1.2-1.amzn2.0.2
+  libxslt.x86_64 0:1.1.28-6.amzn2                                  lksctp-tools.x86_64 0:1.0.17-2.amzn2.0.2
+  mesa-libEGL.x86_64 0:18.3.4-5.amzn2.0.1                          mesa-libGL.x86_64 0:18.3.4-5.amzn2.0.1
+  mesa-libgbm.x86_64 0:18.3.4-5.amzn2.0.1                          mesa-libglapi.x86_64 0:18.3.4-5.amzn2.0.1
+  pango.x86_64 0:1.42.4-4.amzn2                                    pcsc-lite-libs.x86_64 0:1.8.8-7.amzn2
+  pixman.x86_64 0:0.34.0-1.amzn2.0.2                               python-javapackages.noarch 0:3.4.1-11.amzn2
+  python-lxml.x86_64 0:3.2.1-4.amzn2.0.2                           ttmkfdir.x86_64 0:3.0.9-42.amzn2.0.2
+  tzdata-java.noarch 0:2020d-2.amzn2                               xorg-x11-font-utils.x86_64 1:7.5-21.amzn2
+  xorg-x11-fonts-Type1.noarch 0:7.5-9.amzn2
+
+Complete!
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# vim installplugins.sh
+[root@jenkinspac ~]# vim /tmp/plugins.txt
+[root@jenkinspac ~]# bash installplugins.sh
+Installing: ace-editor
+Installing: amazon-ecr
+Installing: ant
+Installing: antisamy-markup-formatter
+Installing: apache-httpcomponents-client-4-api
+Installing: authentication-tokens
+Installing: aws-credentials
+Installing: aws-java-sdk
+Installing: blueocean
+Installing: blueocean-autofavorite
+Installing: blueocean-bitbucket-pipeline
+Installing: blueocean-commons
+Installing: blueocean-dashboard
+Installing: blueocean-display-url
+Installing: blueocean-events
+Installing: blueocean-git-pipeline
+Installing: blueocean-github-pipeline
+Installing: blueocean-i18n
+Installing: blueocean-jira
+Installing: blueocean-jwt
+Installing: blueocean-personalization
+Installing: blueocean-pipeline-api-impl
+Installing: blueocean-pipeline-editor
+Installing: blueocean-pipeline-scm-api
+Installing: blueocean-rest
+Installing: blueocean-rest-impl
+Installing: blueocean-web
+Installing: bouncycastle-api
+Installing: branch-api
+Installing: build-pipeline-plugin
+Installing: cloudbees-bitbucket-branch-source
+Installing: cloudbees-folder
+Installing: command-launcher
+Installing: conditional-buildstep
+Installing: config-file-provider
+Installing: credentials
+Installing: credentials-binding
+Installing: display-url-api
+Installing: docker-commons
+Installing: docker-workflow
+Installing: durable-task
+Installing: email-ext
+Installing: embeddable-build-status
+Installing: external-monitor-job
+Installing: favorite
+Installing: git
+Installing: git-client
+Installing: git-server
+Installing: github
+Installing: github-api
+Installing: github-branch-source
+Installing: github-pullrequest
+Installing: handy-uri-templates-2-api
+Installing: htmlpublisher
+Installing: jackson2-api
+Installing: javadoc
+Installing: jdk-tool
+Installing: jenkins-design-language
+Installing: jira
+Installing: jquery
+Installing: jquery-detached
+Installing: jsch
+Installing: junit
+Installing: ldap
+Installing: mailer
+Installing: matrix-auth
+Installing: matrix-project
+Installing: maven-plugin
+Installing: mercurial
+Installing: momentjs
+Installing: pam-auth
+Installing: workflow-aggregator
+Installing: workflow-api
+Installing: workflow-basic-steps
+Installing: workflow-cps
+Installing: workflow-cps-global-lib
+Installing: workflow-cps-global-lib-http
+Installing: workflow-durable-task-step
+Installing: workflow-job
+Installing: workflow-multibranch
+Installing: workflow-remote-loader
+Installing: workflow-scm-step
+Installing: workflow-step-api
+Installing: workflow-support
+Installing: parameterized-trigger
+Installing: pipeline-aggregator-view
+Installing: pipeline-aws
+Installing: pipeline-bamboo
+Installing: pipeline-build-step
+Installing: pipeline-config-history
+Installing: pipeline-cps-http
+Installing: pipeline-dependency-walker
+Installing: pipeline-deploymon
+Installing: pipeline-giphy-api
+Installing: pipeline-github
+Installing: pipeline-github-lib
+Installing: pipeline-githubnotify-step
+Installing: pipeline-gitstatuswrapper
+Installing: pipeline-graph-analysis
+Installing: pipeline-input-step
+Installing: pipeline-maven
+Installing: pipeline-milestone-step
+Installing: pipeline-model-api
+Installing: pipeline-model-declarative-agent
+Installing: pipeline-model-definition
+Installing: pipeline-model-extensions
+Installing: pipeline-multibranch-defaults
+Installing: pipeline-npm
+Installing: pipeline-rest-api
+Installing: pipeline-restful-api
+Installing: pipeline-stage-step
+Installing: pipeline-stage-tags-metadata
+Installing: pipeline-stage-view
+Installing: pipeline-timeline
+Installing: pipeline-utility-steps
+Installing: plain-credentials
+Installing: pubsub-light
+Installing: run-condition
+Installing: scm-api
+Installing: script-security
+Installing: slack
+Installing: ssh
+Installing: ssh-agent
+Installing: ssh-credentials
+Installing: ssh-slaves
+Installing: structs
+Installing: token-macro
+Installing: variant
+Installing: windows-slaves
+Check for missing dependecies ...
+Installing: sse-gateway
+Installing: blueocean-config
+Installing: blueocean-core-js
+Installing: blueocean-executor-info
+Installing: dashboard-view
+Installing: configuration-as-code
+Installing: trilead-api
+Installing: promoted-builds
+Installing: jjwt-api
+Installing: okhttp-api
+Installing: block-queued-job
+Installing: job-dsl
+Installing: jucies
+Installing: snakeyaml-api
+Installing: p4
+Installing: bootstrap4-api
+Installing: checks-api
+Installing: echarts-api
+Installing: plugin-util-api
+Installing: subversion
+Installing: support-core
+Installing: h2-api
+Installing: mysql-api
+Installing: postgresql-api
+Installing: jacoco
+Installing: jgiven
+Installing: junit-attachments
+Installing: maven-invoker-plugin
+Installing: findbugs
+Installing: tasks
+Installing: handlebars
+Installing: lockable-resources
+Check for missing dependecies ...
+Installing: font-awesome-api
+Installing: jquery3-api
+Installing: popper-api
+Installing: caffeine-api
+[/var/lib/jenkins/plugins/findbugs.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+Installing: vsphere-cloud
+Installing: managed-scripts
+Installing: multiple-scms
+Installing: rebuild
+Installing: project-inheritance
+Installing: mapdb-api
+Installing: async-http-client
+Installing: metrics
+[/var/lib/jenkins/plugins/tasks.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+Check for missing dependecies ...
+[/var/lib/jenkins/plugins/findbugs.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+[/var/lib/jenkins/plugins/tasks.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+Installing: node-iterator-api
+Check for missing dependecies ...
+[/var/lib/jenkins/plugins/findbugs.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+[/var/lib/jenkins/plugins/tasks.hpi]
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+fixing permissions
+all done
+[root@jenkinspac ~]# systemctl enable jenkins
+jenkins.service is not a native service, redirecting to /sbin/chkconfig.
+Executing /sbin/chkconfig jenkins on
+[root@jenkinspac ~]# systemctl restart jenkins
+[root@jenkinspac ~]# tail -f /var/log/jenkins/jenkins.log
+2021-05-17 02:24:02.421+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/github-api.hpi under a nonstandard name; expected github-api.jpi
+2021-05-17 02:24:02.432+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/github-branch-source.hpi under a nonstandard name; expected github-branch-source.jpi
+2021-05-17 02:24:02.446+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/github-pullrequest.hpi under a nonstandard name; expected github-pullrequest.jpi
+2021-05-17 02:24:02.460+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/handy-uri-templates-2-api.hpi under a nonstandard name; expected handy-uri-templates-2-api.jpi
+2021-05-17 02:24:02.465+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/htmlpublisher.hpi under a nonstandard name; expected htmlpublisher.jpi
+2021-05-17 02:24:02.502+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jackson2-api.hpi under a nonstandard name; expected jackson2-api.jpi
+2021-05-17 02:24:02.509+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/javadoc.hpi under a nonstandard name; expected javadoc.jpi
+2021-05-17 02:24:02.514+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jdk-tool.hpi under a nonstandard name; expected jdk-tool.jpi
+2021-05-17 02:24:02.540+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jenkins-design-language.hpi under a nonstandard name; expected jenkins-design-language.jpi
+2021-05-17 02:24:02.631+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jira.hpi under a nonstandard name; expected jira.jpi
+2021-05-17 02:24:02.642+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jquery.hpi under a nonstandard name; expected jquery.jpi
+2021-05-17 02:24:02.657+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jquery-detached.hpi under a nonstandard name; expected jquery-detached.jpi
+2021-05-17 02:24:02.665+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jsch.hpi under a nonstandard name; expected jsch.jpi
+2021-05-17 02:24:02.675+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/junit.hpi under a nonstandard name; expected junit.jpi
+2021-05-17 02:24:02.724+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/ldap.hpi under a nonstandard name; expected ldap.jpi
+2021-05-17 02:24:02.730+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/mailer.hpi under a nonstandard name; expected mailer.jpi
+2021-05-17 02:24:02.737+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/matrix-auth.hpi under a nonstandard name; expected matrix-auth.jpi
+2021-05-17 02:24:02.748+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/matrix-project.hpi under a nonstandard name; expected matrix-project.jpi
+2021-05-17 02:24:02.949+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/maven-plugin.hpi under a nonstandard name; expected maven-plugin.jpi
+2021-05-17 02:24:02.967+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/mercurial.hpi under a nonstandard name; expected mercurial.jpi
+2021-05-17 02:24:02.975+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/momentjs.hpi under a nonstandard name; expected momentjs.jpi
+2021-05-17 02:24:02.997+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pam-auth.hpi under a nonstandard name; expected pam-auth.jpi
+2021-05-17 02:24:03.002+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-aggregator.hpi under a nonstandard name; expected workflow-aggregator.jpi
+2021-05-17 02:24:03.007+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-api.hpi under a nonstandard name; expected workflow-api.jpi
+2021-05-17 02:24:03.014+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-basic-steps.hpi under a nonstandard name; expected workflow-basic-steps.jpi
+2021-05-17 02:24:03.028+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-cps.hpi under a nonstandard name; expected workflow-cps.jpi
+2021-05-17 02:24:03.050+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-cps-global-lib.hpi under a nonstandard name; expected workflow-cps-global-lib.jpi
+2021-05-17 02:24:03.059+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-cps-global-lib-http.hpi under a nonstandard name; expected workflow-cps-global-lib-http.jpi
+2021-05-17 02:24:03.064+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-durable-task-step.hpi under a nonstandard name; expected workflow-durable-task-step.jpi
+2021-05-17 02:24:03.070+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-job.hpi under a nonstandard name; expected workflow-job.jpi
+2021-05-17 02:24:03.076+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-multibranch.hpi under a nonstandard name; expected workflow-multibranch.jpi
+2021-05-17 02:24:03.203+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-remote-loader.hpi under a nonstandard name; expected workflow-remote-loader.jpi
+2021-05-17 02:24:03.212+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-scm-step.hpi under a nonstandard name; expected workflow-scm-step.jpi
+2021-05-17 02:24:03.217+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-step-api.hpi under a nonstandard name; expected workflow-step-api.jpi
+2021-05-17 02:24:03.227+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/workflow-support.hpi under a nonstandard name; expected workflow-support.jpi
+2021-05-17 02:24:03.233+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/parameterized-trigger.hpi under a nonstandard name; expected parameterized-trigger.jpi
+2021-05-17 02:24:03.248+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-aggregator-view.hpi under a nonstandard name; expected pipeline-aggregator-view.jpi
+2021-05-17 02:24:03.308+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-aws.hpi under a nonstandard name; expected pipeline-aws.jpi
+2021-05-17 02:24:03.364+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-bamboo.hpi under a nonstandard name; expected pipeline-bamboo.jpi
+2021-05-17 02:24:03.370+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-build-step.hpi under a nonstandard name; expected pipeline-build-step.jpi
+2021-05-17 02:24:03.380+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-config-history.hpi under a nonstandard name; expected pipeline-config-history.jpi
+2021-05-17 02:24:03.404+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-cps-http.hpi under a nonstandard name; expected pipeline-cps-http.jpi
+2021-05-17 02:24:03.411+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-dependency-walker.hpi under a nonstandard name; expected pipeline-dependency-walker.jpi
+2021-05-17 02:24:03.429+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-deploymon.hpi under a nonstandard name; expected pipeline-deploymon.jpi
+2021-05-17 02:24:03.451+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-giphy-api.hpi under a nonstandard name; expected pipeline-giphy-api.jpi
+2021-05-17 02:24:03.470+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-github.hpi under a nonstandard name; expected pipeline-github.jpi
+2021-05-17 02:24:03.474+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-github-lib.hpi under a nonstandard name; expected pipeline-github-lib.jpi
+2021-05-17 02:24:03.483+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-githubnotify-step.hpi under a nonstandard name; expected pipeline-githubnotify-step.jpi
+2021-05-17 02:24:03.491+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-gitstatuswrapper.hpi under a nonstandard name; expected pipeline-gitstatuswrapper.jpi
+2021-05-17 02:24:03.495+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-graph-analysis.hpi under a nonstandard name; expected pipeline-graph-analysis.jpi
+2021-05-17 02:24:03.498+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-input-step.hpi under a nonstandard name; expected pipeline-input-step.jpi
+2021-05-17 02:24:03.510+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-maven.hpi under a nonstandard name; expected pipeline-maven.jpi
+2021-05-17 02:24:03.514+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-milestone-step.hpi under a nonstandard name; expected pipeline-milestone-step.jpi
+2021-05-17 02:24:03.552+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-model-api.hpi under a nonstandard name; expected pipeline-model-api.jpi
+2021-05-17 02:24:03.556+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-model-declarative-agent.hpi under a nonstandard name; expected pipeline-model-declarative-agent.jpi
+2021-05-17 02:24:03.574+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-model-definition.hpi under a nonstandard name; expected pipeline-model-definition.jpi
+2021-05-17 02:24:03.578+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-model-extensions.hpi under a nonstandard name; expected pipeline-model-extensions.jpi
+2021-05-17 02:24:03.583+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-multibranch-defaults.hpi under a nonstandard name; expected pipeline-multibranch-defaults.jpi
+2021-05-17 02:24:03.586+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-npm.hpi under a nonstandard name; expected pipeline-npm.jpi
+2021-05-17 02:24:03.591+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-rest-api.hpi under a nonstandard name; expected pipeline-rest-api.jpi
+2021-05-17 02:24:03.596+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-restful-api.hpi under a nonstandard name; expected pipeline-restful-api.jpi
+2021-05-17 02:24:03.600+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-stage-step.hpi under a nonstandard name; expected pipeline-stage-step.jpi
+2021-05-17 02:24:03.603+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-stage-tags-metadata.hpi under a nonstandard name; expected pipeline-stage-tags-metadata.jpi
+2021-05-17 02:24:03.615+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-stage-view.hpi under a nonstandard name; expected pipeline-stage-view.jpi
+2021-05-17 02:24:03.632+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-timeline.hpi under a nonstandard name; expected pipeline-timeline.jpi
+2021-05-17 02:24:03.671+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pipeline-utility-steps.hpi under a nonstandard name; expected pipeline-utility-steps.jpi
+2021-05-17 02:24:03.676+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/plain-credentials.hpi under a nonstandard name; expected plain-credentials.jpi
+2021-05-17 02:24:03.679+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/pubsub-light.hpi under a nonstandard name; expected pubsub-light.jpi
+2021-05-17 02:24:03.686+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/run-condition.hpi under a nonstandard name; expected run-condition.jpi
+2021-05-17 02:24:03.692+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/scm-api.hpi under a nonstandard name; expected scm-api.jpi
+2021-05-17 02:24:03.713+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/script-security.hpi under a nonstandard name; expected script-security.jpi
+2021-05-17 02:24:03.732+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/slack.hpi under a nonstandard name; expected slack.jpi
+2021-05-17 02:24:03.739+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/ssh.hpi under a nonstandard name; expected ssh.jpi
+2021-05-17 02:24:03.743+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/ssh-agent.hpi under a nonstandard name; expected ssh-agent.jpi
+2021-05-17 02:24:03.747+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/ssh-credentials.hpi under a nonstandard name; expected ssh-credentials.jpi
+2021-05-17 02:24:03.751+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/ssh-slaves.hpi under a nonstandard name; expected ssh-slaves.jpi
+2021-05-17 02:24:03.755+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/structs.hpi under a nonstandard name; expected structs.jpi
+2021-05-17 02:24:03.770+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/token-macro.hpi under a nonstandard name; expected token-macro.jpi
+2021-05-17 02:24:03.775+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/variant.hpi under a nonstandard name; expected variant.jpi
+2021-05-17 02:24:03.785+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/windows-slaves.hpi under a nonstandard name; expected windows-slaves.jpi
+2021-05-17 02:24:03.790+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/sse-gateway.hpi under a nonstandard name; expected sse-gateway.jpi
+2021-05-17 02:24:03.794+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/blueocean-config.hpi under a nonstandard name; expected blueocean-config.jpi
+2021-05-17 02:24:03.807+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/blueocean-core-js.hpi under a nonstandard name; expected blueocean-core-js.jpi
+2021-05-17 02:24:03.811+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/blueocean-executor-info.hpi under a nonstandard name; expected blueocean-executor-info.jpi
+2021-05-17 02:24:03.827+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/dashboard-view.hpi under a nonstandard name; expected dashboard-view.jpi
+2021-05-17 02:24:03.868+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/configuration-as-code.hpi under a nonstandard name; expected configuration-as-code.jpi
+2021-05-17 02:24:03.917+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/trilead-api.hpi under a nonstandard name; expected trilead-api.jpi
+2021-05-17 02:24:03.943+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/promoted-builds.hpi under a nonstandard name; expected promoted-builds.jpi
+2021-05-17 02:24:03.948+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jjwt-api.hpi under a nonstandard name; expected jjwt-api.jpi
+2021-05-17 02:24:03.959+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/okhttp-api.hpi under a nonstandard name; expected okhttp-api.jpi
+2021-05-17 02:24:03.963+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/block-queued-job.hpi under a nonstandard name; expected block-queued-job.jpi
+2021-05-17 02:24:04.621+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createClassJarFromWebInfClasses: Created /var/lib/jenkins/plugins/job-dsl/WEB-INF/lib/classes.jar; update plugin to a version created with a newer harness
+2021-05-17 02:24:04.622+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/job-dsl.hpi under a nonstandard name; expected job-dsl.jpi
+2021-05-17 02:24:04.629+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createClassJarFromWebInfClasses: Created /var/lib/jenkins/plugins/jucies/WEB-INF/lib/classes.jar; update plugin to a version created with a newer harness
+2021-05-17 02:24:04.630+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jucies.hpi under a nonstandard name; expected jucies.jpi
+2021-05-17 02:24:04.637+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/snakeyaml-api.hpi under a nonstandard name; expected snakeyaml-api.jpi
+2021-05-17 02:24:04.708+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/p4.hpi under a nonstandard name; expected p4.jpi
+2021-05-17 02:24:04.737+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/bootstrap4-api.hpi under a nonstandard name; expected bootstrap4-api.jpi
+2021-05-17 02:24:04.741+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/checks-api.hpi under a nonstandard name; expected checks-api.jpi
+2021-05-17 02:24:05.153+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/echarts-api.hpi under a nonstandard name; expected echarts-api.jpi
+2021-05-17 02:24:05.181+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/plugin-util-api.hpi under a nonstandard name; expected plugin-util-api.jpi
+2021-05-17 02:24:05.310+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/subversion.hpi under a nonstandard name; expected subversion.jpi
+2021-05-17 02:24:05.635+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/support-core.hpi under a nonstandard name; expected support-core.jpi
+2021-05-17 02:24:05.667+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/h2-api.hpi under a nonstandard name; expected h2-api.jpi
+2021-05-17 02:24:05.719+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/mysql-api.hpi under a nonstandard name; expected mysql-api.jpi
+2021-05-17 02:24:05.734+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/postgresql-api.hpi under a nonstandard name; expected postgresql-api.jpi
+2021-05-17 02:24:05.802+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jacoco.hpi under a nonstandard name; expected jacoco.jpi
+2021-05-17 02:24:05.891+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jgiven.hpi under a nonstandard name; expected jgiven.jpi
+2021-05-17 02:24:05.897+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/junit-attachments.hpi under a nonstandard name; expected junit-attachments.jpi
+2021-05-17 02:24:06.161+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/maven-invoker-plugin.hpi under a nonstandard name; expected maven-invoker-plugin.jpi
+2021-05-17 02:24:06.176+0000 [id=30]    SEVERE  jenkins.InitReactorRunner$1#onTaskFailed: Failed Inspecting plugin /var/lib/jenkins/plugins/findbugs.hpi
+java.util.zip.ZipException: archive is not a ZIP archive
+        at org.apache.tools.zip.ZipFile.positionAtEndOfCentralDirectoryRecord(ZipFile.java:780)
+        at org.apache.tools.zip.ZipFile.positionAtCentralDirectory(ZipFile.java:716)
+        at org.apache.tools.zip.ZipFile.populateFromCentralDirectory(ZipFile.java:461)
+        at org.apache.tools.zip.ZipFile.<init>(ZipFile.java:217)
+        at org.apache.tools.ant.taskdefs.Expand.expandFile(Expand.java:190)
+Caused: Error while expanding /var/lib/jenkins/plugins/findbugs.hpi
+java.util.zip.ZipException: archive is not a ZIP archive
+        at org.apache.tools.ant.taskdefs.Expand.expandFile(Expand.java:214)
+        at org.apache.tools.ant.taskdefs.Expand.execute(Expand.java:157)
+        at hudson.ClassicPluginStrategy.unzipExceptClasses(ClassicPluginStrategy.java:565)
+        at hudson.ClassicPluginStrategy.explode(ClassicPluginStrategy.java:489)
+Caused: java.io.IOException: Failed to expand /var/lib/jenkins/plugins/findbugs.hpi
+        at hudson.ClassicPluginStrategy.explode(ClassicPluginStrategy.java:492)
+        at hudson.ClassicPluginStrategy.createPluginWrapper(ClassicPluginStrategy.java:175)
+        at hudson.PluginManager$1$3$1.run(PluginManager.java:446)
+        at org.jvnet.hudson.reactor.TaskGraphBuilder$TaskImpl.run(TaskGraphBuilder.java:169)
+        at org.jvnet.hudson.reactor.Reactor.runTask(Reactor.java:296)
+        at jenkins.model.Jenkins$5.runTask(Jenkins.java:1161)
+        at org.jvnet.hudson.reactor.Reactor$2.run(Reactor.java:214)
+        at org.jvnet.hudson.reactor.Reactor$Node.run(Reactor.java:117)
+        at jenkins.security.ImpersonatingExecutorService$1.run(ImpersonatingExecutorService.java:68)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:748)
+2021-05-17 02:24:06.177+0000 [id=28]    SEVERE  jenkins.InitReactorRunner$1#onTaskFailed: Failed Inspecting plugin /var/lib/jenkins/plugins/tasks.hpi
+java.util.zip.ZipException: archive is not a ZIP archive
+        at org.apache.tools.zip.ZipFile.positionAtEndOfCentralDirectoryRecord(ZipFile.java:780)
+        at org.apache.tools.zip.ZipFile.positionAtCentralDirectory(ZipFile.java:716)
+        at org.apache.tools.zip.ZipFile.populateFromCentralDirectory(ZipFile.java:461)
+        at org.apache.tools.zip.ZipFile.<init>(ZipFile.java:217)
+        at org.apache.tools.ant.taskdefs.Expand.expandFile(Expand.java:190)
+Caused: Error while expanding /var/lib/jenkins/plugins/tasks.hpi
+java.util.zip.ZipException: archive is not a ZIP archive
+        at org.apache.tools.ant.taskdefs.Expand.expandFile(Expand.java:214)
+        at org.apache.tools.ant.taskdefs.Expand.execute(Expand.java:157)
+        at hudson.ClassicPluginStrategy.unzipExceptClasses(ClassicPluginStrategy.java:565)
+        at hudson.ClassicPluginStrategy.explode(ClassicPluginStrategy.java:489)
+Caused: java.io.IOException: Failed to expand /var/lib/jenkins/plugins/tasks.hpi
+        at hudson.ClassicPluginStrategy.explode(ClassicPluginStrategy.java:492)
+        at hudson.ClassicPluginStrategy.createPluginWrapper(ClassicPluginStrategy.java:175)
+        at hudson.PluginManager$1$3$1.run(PluginManager.java:446)
+        at org.jvnet.hudson.reactor.TaskGraphBuilder$TaskImpl.run(TaskGraphBuilder.java:169)
+        at org.jvnet.hudson.reactor.Reactor.runTask(Reactor.java:296)
+        at jenkins.model.Jenkins$5.runTask(Jenkins.java:1161)
+        at org.jvnet.hudson.reactor.Reactor$2.run(Reactor.java:214)
+        at org.jvnet.hudson.reactor.Reactor$Node.run(Reactor.java:117)
+        at jenkins.security.ImpersonatingExecutorService$1.run(ImpersonatingExecutorService.java:68)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:748)
+2021-05-17 02:24:06.183+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/handlebars.hpi under a nonstandard name; expected handlebars.jpi
+2021-05-17 02:24:06.187+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/lockable-resources.hpi under a nonstandard name; expected lockable-resources.jpi
+2021-05-17 02:24:06.204+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/font-awesome-api.hpi under a nonstandard name; expected font-awesome-api.jpi
+2021-05-17 02:24:06.218+0000 [id=28]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/jquery3-api.hpi under a nonstandard name; expected jquery3-api.jpi
+2021-05-17 02:24:06.240+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/popper-api.hpi under a nonstandard name; expected popper-api.jpi
+2021-05-17 02:24:06.254+0000 [id=30]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/caffeine-api.hpi under a nonstandard name; expected caffeine-api.jpi
+2021-05-17 02:24:06.295+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/vsphere-cloud.hpi under a nonstandard name; expected vsphere-cloud.jpi
+2021-05-17 02:24:06.300+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/managed-scripts.hpi under a nonstandard name; expected managed-scripts.jpi
+2021-05-17 02:24:06.304+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/multiple-scms.hpi under a nonstandard name; expected multiple-scms.jpi
+2021-05-17 02:24:06.307+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/rebuild.hpi under a nonstandard name; expected rebuild.jpi
+2021-05-17 02:24:06.335+0000 [id=27]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/project-inheritance.hpi under a nonstandard name; expected project-inheritance.jpi
+2021-05-17 02:24:06.345+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/mapdb-api.hpi under a nonstandard name; expected mapdb-api.jpi
+2021-05-17 02:24:06.374+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/async-http-client.hpi under a nonstandard name; expected async-http-client.jpi
+2021-05-17 02:24:06.385+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/metrics.hpi under a nonstandard name; expected metrics.jpi
+2021-05-17 02:24:06.389+0000 [id=29]    WARNING hudson.ClassicPluginStrategy#createPluginWrapper: encountered /var/lib/jenkins/plugins/node-iterator-api.hpi under a nonstandard name; expected node-iterator-api.jpi
+2021-05-17 02:24:06.395+0000 [id=29]    INFO    jenkins.InitReactorRunner$1#onAttained: Listed all plugins
+2021-05-17 02:24:18.184+0000 [id=27]    INFO    jenkins.InitReactorRunner$1#onAttained: Prepared all plugins
+2021-05-17 02:24:18.677+0000 [id=29]    WARNING h.ExtensionFinder$GuiceFinder$FaultTolerantScope$1#error: Failed to instantiate Key[type=jenkins.telemetry.Correlator, annotation=[none]]; skipping this component
+com.google.inject.ProvisionException: Unable to provision, see the following errors:
+
+1) Tried proxying jenkins.telemetry.Correlator to support a circular dependency, but it is not an interface.
+
+1 error
+        at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:52)
+        at com.google.inject.internal.SingletonScope$1.get(SingletonScope.java:145)
+        at hudson.ExtensionFinder$GuiceFinder$FaultTolerantScope$1.get(ExtensionFinder.java:444)
+        at com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:41)
+        at com.google.inject.internal.InjectorImpl$2$1.call(InjectorImpl.java:1016)
+        at com.google.inject.internal.InjectorImpl.callInContext(InjectorImpl.java:1103)
+        at com.google.inject.internal.InjectorImpl$2.get(InjectorImpl.java:1012)
+        at hudson.ExtensionFinder$GuiceFinder._find(ExtensionFinder.java:404)
+        at hudson.ExtensionFinder$GuiceFinder.find(ExtensionFinder.java:395)
+        at hudson.ClassicPluginStrategy.findComponents(ClassicPluginStrategy.java:351)
+        at hudson.ExtensionList.load(ExtensionList.java:383)
+        at hudson.ExtensionList.ensureLoaded(ExtensionList.java:319)
+        at hudson.ExtensionList.iterator(ExtensionList.java:171)
+        at jenkins.model.Jenkins.getDescriptor(Jenkins.java:1615)
+        at org.jenkinsci.plugins.p4.ConfigurationListener.onChange(ConfigurationListener.java:31)
+        at hudson.model.listeners.SaveableListener.fireOnChange(SaveableListener.java:81)
+        at hudson.model.Descriptor.save(Descriptor.java:902)
+        at jenkins.telemetry.Correlator.<init>(Correlator.java:52)
+        at jenkins.telemetry.Correlator$$FastClassByGuice$$5678e8d6.newInstance(<generated>)
+        at com.google.inject.internal.cglib.reflect.$FastConstructor.newInstance(FastConstructor.java:40)
+        at com.google.inject.internal.DefaultConstructionProxyFactory$1.newInstance(DefaultConstructionProxyFactory.java:61)
+        at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:105)
+        at com.google.inject.internal.ConstructorInjector.access$000(ConstructorInjector.java:32)
+        at com.google.inject.internal.ConstructorInjector$1.call(ConstructorInjector.java:89)
+        at com.google.inject.internal.ProvisionListenerStackCallback$Provision.provision(ProvisionListenerStackCallback.java:115)
+        at hudson.ExtensionFinder$GuiceFinder$SezpozModule.onProvision(ExtensionFinder.java:571)
+        at com.google.inject.internal.ProvisionListenerStackCallback$Provision.provision(ProvisionListenerStackCallback.java:126)
+        at com.google.inject.internal.ProvisionListenerStackCallback.provision(ProvisionListenerStackCallback.java:68)
+        at com.google.inject.internal.ConstructorInjector.construct(ConstructorInjector.java:87)
+        at com.google.inject.internal.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:267)
+        at com.google.inject.internal.ProviderToInternalFactoryAdapter$1.call(ProviderToInternalFactoryAdapter.java:46)
+        at com.google.inject.internal.InjectorImpl.callInContext(InjectorImpl.java:1103)
+        at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+        at com.google.inject.internal.SingletonScope$1.get(SingletonScope.java:145)
+        at hudson.ExtensionFinder$GuiceFinder$FaultTolerantScope$1.get(ExtensionFinder.java:444)
+        at com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:41)
+        at com.google.inject.internal.InjectorImpl$2$1.call(InjectorImpl.java:1016)
+        at com.google.inject.internal.InjectorImpl.callInContext(InjectorImpl.java:1103)
+        at com.google.inject.internal.InjectorImpl$2.get(InjectorImpl.java:1012)
+        at hudson.ExtensionFinder$GuiceFinder._find(ExtensionFinder.java:404)
+        at hudson.ExtensionFinder$GuiceFinder.find(ExtensionFinder.java:395)
+        at hudson.ClassicPluginStrategy.findComponents(ClassicPluginStrategy.java:351)
+        at hudson.ExtensionList.load(ExtensionList.java:383)
+        at hudson.ExtensionList.ensureLoaded(ExtensionList.java:319)
+        at hudson.ExtensionList.iterator(ExtensionList.java:171)
+        at jenkins.model.Jenkins.getDescriptorByType(Jenkins.java:1640)
+        at com.cloudbees.jenkins.support.impl.AbstractItemDirectoryComponent.getDescriptor(AbstractItemDirectoryComponent.java:96)
+        at com.cloudbees.jenkins.support.impl.AbstractItemDirectoryComponent.getDescriptor(AbstractItemDirectoryComponent.java:30)
+        at com.cloudbees.jenkins.support.impl.DirectoryComponent.<init>(DirectoryComponent.java:42)
+        at com.cloudbees.jenkins.support.impl.AbstractItemDirectoryComponent.<init>(AbstractItemDirectoryComponent.java:34)
+        at com.cloudbees.jenkins.support.impl.AbstractItemDirectoryComponent$$FastClassByGuice$$57694467.newInstance(<generated>)
+        at com.google.inject.internal.cglib.reflect.$FastConstructor.newInstance(FastConstructor.java:40)
+        at com.google.inject.internal.DefaultConstructionProxyFactory$1.newInstance(DefaultConstructionProxyFactory.java:61)
+        at com.google.inject.internal.ConstructorInjector.provision(ConstructorInjector.java:105)
+        at com.google.inject.internal.ConstructorInjector.access$000(ConstructorInjector.java:32)
+        at com.google.inject.internal.ConstructorInjector$1.call(ConstructorInjector.java:89)
+        at com.google.inject.internal.ProvisionListenerStackCallback$Provision.provision(ProvisionListenerStackCallback.java:115)
+        at hudson.ExtensionFinder$GuiceFinder$SezpozModule.onProvision(ExtensionFinder.java:571)
+        at com.google.inject.internal.ProvisionListenerStackCallback$Provision.provision(ProvisionListenerStackCallback.java:126)
+        at com.google.inject.internal.ProvisionListenerStackCallback.provision(ProvisionListenerStackCallback.java:68)
+        at com.google.inject.internal.ConstructorInjector.construct(ConstructorInjector.java:87)
+        at com.google.inject.internal.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:267)
+        at com.google.inject.internal.ProviderToInternalFactoryAdapter$1.call(ProviderToInternalFactoryAdapter.java:46)
+        at com.google.inject.internal.InjectorImpl.callInContext(InjectorImpl.java:1103)
+        at com.google.inject.internal.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:40)
+        at com.google.inject.internal.SingletonScope$1.get(SingletonScope.java:145)
+        at hudson.ExtensionFinder$GuiceFinder$FaultTolerantScope$1.get(ExtensionFinder.java:444)
+        at com.google.inject.internal.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:41)
+        at com.google.inject.internal.InjectorImpl$2$1.call(InjectorImpl.java:1016)
+        at com.google.inject.internal.InjectorImpl.callInContext(InjectorImpl.java:1092)
+        at com.google.inject.internal.InjectorImpl$2.get(InjectorImpl.java:1012)
+        at hudson.ExtensionFinder$GuiceFinder._find(ExtensionFinder.java:404)
+        at hudson.ExtensionFinder$GuiceFinder.find(ExtensionFinder.java:395)
+        at hudson.ClassicPluginStrategy.findComponents(ClassicPluginStrategy.java:351)
+        at hudson.ExtensionList.load(ExtensionList.java:383)
+        at hudson.ExtensionList.ensureLoaded(ExtensionList.java:319)
+        at hudson.ExtensionList.iterator(ExtensionList.java:171)
+        at java.util.Spliterators$IteratorSpliterator.estimateSize(Spliterators.java:1821)
+        at java.util.Spliterator.getExactSizeIfKnown(Spliterator.java:408)
+        at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+        at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:472)
+        at java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:708)
+        at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+        at java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:566)
+        at com.cloudbees.jenkins.support.SupportPlugin.getComponents(SupportPlugin.java:285)
+        at com.cloudbees.jenkins.support.SupportPlugin.postInitialize(SupportPlugin.java:626)
+        at hudson.PluginManager$2$1$2.run(PluginManager.java:588)
+        at org.jvnet.hudson.reactor.TaskGraphBuilder$TaskImpl.run(TaskGraphBuilder.java:169)
+        at org.jvnet.hudson.reactor.Reactor.runTask(Reactor.java:296)
+        at jenkins.model.Jenkins$5.runTask(Jenkins.java:1161)
+        at org.jvnet.hudson.reactor.Reactor$2.run(Reactor.java:214)
+        at org.jvnet.hudson.reactor.Reactor$Node.run(Reactor.java:117)
+        at jenkins.security.ImpersonatingExecutorService$1.run(ImpersonatingExecutorService.java:68)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:748)
+2021-05-17 02:24:21.233+0000 [id=29]    INFO    jenkins.InitReactorRunner$1#onAttained: Started all plugins
+2021-05-17 02:24:21.320+0000 [id=29]    INFO    jenkins.InitReactorRunner$1#onAttained: Augmented all extensions
+2021-05-17 02:24:21.522+0000 [id=29]    INFO    jenkins.InitReactorRunner$1#onAttained: System config loaded
+2021-05-17 02:24:21.892+0000 [id=28]    INFO    jenkins.InitReactorRunner$1#onAttained: System config adapted
+2021-05-17 02:24:21.893+0000 [id=30]    INFO    jenkins.InitReactorRunner$1#onAttained: Loaded all jobs
+2021-05-17 02:24:21.922+0000 [id=30]    INFO    jenkins.InitReactorRunner$1#onAttained: Configuration for all jobs updated
+2021-05-17 02:24:21.933+0000 [id=47]    INFO    hudson.model.AsyncPeriodicWork#lambda$doRun$0: Started Download metadata
+2021-05-17 02:24:21.956+0000 [id=47]    INFO    hudson.util.Retrier#start: Attempt #1 to do the action check updates server
+2021-05-17 02:24:22.471+0000 [id=29]    INFO    jenkins.install.SetupWizard#init:
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+Please use the following password to proceed to installation:
+
+c251e770c2f74b39b764a0f573a0a83b
+
+This may also be found at: /var/lib/jenkins/secrets/initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************
+
+2021-05-17 02:24:32.360+0000 [id=30]    INFO    jenkins.InitReactorRunner$1#onAttained: Completed initialization
+2021-05-17 02:24:32.386+0000 [id=21]    INFO    hudson.WebAppMain$3#run: Jenkins is fully up and running
+2021-05-17 02:24:32.439+0000 [id=47]    INFO    h.m.DownloadService$Downloadable#load: Obtained the updated data file for hudson.tasks.Maven.MavenInstaller
+2021-05-17 02:24:32.491+0000 [id=47]    INFO    h.m.DownloadService$Downloadable#load: Obtained the updated data file for hudson.tasks.Ant.AntInstaller
+2021-05-17 02:24:32.936+0000 [id=47]    INFO    h.m.DownloadService$Downloadable#load: Obtained the updated data file for hudson.tools.JDKInstaller
+2021-05-17 02:24:32.937+0000 [id=47]    INFO    hudson.util.Retrier#start: Performed the action check updates server successfully at the attempt #1
+2021-05-17 02:24:32.939+0000 [id=47]    INFO    hudson.model.AsyncPeriodicWork#lambda$doRun$0: Finished Download metadata. 10,991 ms
+2021-05-17 02:24:41.167+0000 [id=73]    WARNING j.m.api.Metrics$HealthChecker#execute: Some health checks are reporting as unhealthy: [plugins : There are 2 failed plugins: findbugs.hpi; tasks.hpi]
+^C
+[root@jenkinspac ~]# cat /var/lib/jenkins/secrets/initialAdminPassword
+c251e770c2f74b39b764a0f573a0a83b
+[root@jenkinspac ~]#
+[root@jenkinspac ~]# yum install git -y
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                        | 3.7 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package git.x86_64 0:2.23.4-1.amzn2.0.1 will be installed
+--> Processing Dependency: perl-Git = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: git-core-doc = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: git-core = 2.23.4-1.amzn2.0.1 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: emacs-filesystem >= 25.3 for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Term::ReadKey) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Git::I18N) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: perl(Git) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Processing Dependency: libsecret-1.so.0()(64bit) for package: git-2.23.4-1.amzn2.0.1.x86_64
+--> Running transaction check
+---> Package emacs-filesystem.noarch 1:25.3-3.amzn2.0.2 will be installed
+---> Package git-core.x86_64 0:2.23.4-1.amzn2.0.1 will be installed
+---> Package git-core-doc.noarch 0:2.23.4-1.amzn2.0.1 will be installed
+---> Package libsecret.x86_64 0:0.18.5-2.amzn2.0.2 will be installed
+---> Package perl-Git.noarch 0:2.23.4-1.amzn2.0.1 will be installed
+--> Processing Dependency: perl(Error) for package: perl-Git-2.23.4-1.amzn2.0.1.noarch
+---> Package perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2 will be installed
+--> Running transaction check
+---> Package perl-Error.noarch 1:0.17020-2.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=========================================================================================================================
+ Package                         Arch                  Version                           Repository                 Size
+=========================================================================================================================
+Installing:
+ git                             x86_64                2.23.4-1.amzn2.0.1                amzn2-core                135 k
+Installing for dependencies:
+ emacs-filesystem                noarch                1:25.3-3.amzn2.0.2                amzn2-core                 64 k
+ git-core                        x86_64                2.23.4-1.amzn2.0.1                amzn2-core                5.0 M
+ git-core-doc                    noarch                2.23.4-1.amzn2.0.1                amzn2-core                2.4 M
+ libsecret                       x86_64                0.18.5-2.amzn2.0.2                amzn2-core                153 k
+ perl-Error                      noarch                1:0.17020-2.amzn2                 amzn2-core                 32 k
+ perl-Git                        noarch                2.23.4-1.amzn2.0.1                amzn2-core                 47 k
+ perl-TermReadKey                x86_64                2.30-20.amzn2.0.2                 amzn2-core                 31 k
+
+Transaction Summary
+=========================================================================================================================
+Install  1 Package (+7 Dependent packages)
+
+Total download size: 7.9 M
+Installed size: 41 M
+Downloading packages:
+(1/8): git-2.23.4-1.amzn2.0.1.x86_64.rpm                                                          | 135 kB  00:00:00
+(2/8): emacs-filesystem-25.3-3.amzn2.0.2.noarch.rpm                                               |  64 kB  00:00:00
+(3/8): git-core-doc-2.23.4-1.amzn2.0.1.noarch.rpm                                                 | 2.4 MB  00:00:00
+(4/8): libsecret-0.18.5-2.amzn2.0.2.x86_64.rpm                                                    | 153 kB  00:00:00
+(5/8): perl-Error-0.17020-2.amzn2.noarch.rpm                                                      |  32 kB  00:00:00
+(6/8): perl-Git-2.23.4-1.amzn2.0.1.noarch.rpm                                                     |  47 kB  00:00:00
+(7/8): git-core-2.23.4-1.amzn2.0.1.x86_64.rpm                                                     | 5.0 MB  00:00:00
+(8/8): perl-TermReadKey-2.30-20.amzn2.0.2.x86_64.rpm                                              |  31 kB  00:00:00
+-------------------------------------------------------------------------------------------------------------------------
+Total                                                                                     29 MB/s | 7.9 MB  00:00:00
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : git-core-2.23.4-1.amzn2.0.1.x86_64                                                                    1/8
+  Installing : git-core-doc-2.23.4-1.amzn2.0.1.noarch                                                                2/8
+  Installing : 1:emacs-filesystem-25.3-3.amzn2.0.2.noarch                                                            3/8
+  Installing : 1:perl-Error-0.17020-2.amzn2.noarch                                                                   4/8
+  Installing : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                             5/8
+  Installing : libsecret-0.18.5-2.amzn2.0.2.x86_64                                                                   6/8
+  Installing : perl-Git-2.23.4-1.amzn2.0.1.noarch                                                                    7/8
+  Installing : git-2.23.4-1.amzn2.0.1.x86_64                                                                         8/8
+  Verifying  : libsecret-0.18.5-2.amzn2.0.2.x86_64                                                                   1/8
+  Verifying  : perl-TermReadKey-2.30-20.amzn2.0.2.x86_64                                                             2/8
+  Verifying  : git-2.23.4-1.amzn2.0.1.x86_64                                                                         3/8
+  Verifying  : git-core-doc-2.23.4-1.amzn2.0.1.noarch                                                                4/8
+  Verifying  : perl-Git-2.23.4-1.amzn2.0.1.noarch                                                                    5/8
+  Verifying  : git-core-2.23.4-1.amzn2.0.1.x86_64                                                                    6/8
+  Verifying  : 1:perl-Error-0.17020-2.amzn2.noarch                                                                   7/8
+  Verifying  : 1:emacs-filesystem-25.3-3.amzn2.0.2.noarch                                                            8/8
+
+Installed:
+  git.x86_64 0:2.23.4-1.amzn2.0.1
+
+Dependency Installed:
+  emacs-filesystem.noarch 1:25.3-3.amzn2.0.2                     git-core.x86_64 0:2.23.4-1.amzn2.0.1
+  git-core-doc.noarch 0:2.23.4-1.amzn2.0.1                       libsecret.x86_64 0:0.18.5-2.amzn2.0.2
+  perl-Error.noarch 1:0.17020-2.amzn2                            perl-Git.noarch 0:2.23.4-1.amzn2.0.1
+  perl-TermReadKey.x86_64 0:2.30-20.amzn2.0.2
+
+Complete!
+[root@jenkinspac ~]#
+[root@jenkinspac ~]#

@@ -1,0 +1,2478 @@
+Using username "ec2-user".
+Authenticating with public key "imported-openssh-key" from agent
+Last login: Sat May  1 07:30:36 2021 from bba600456.alshamil.net.ae
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-172-31-60-56 ~]$ sudo su -
+Last login: Sat May  1 07:30:38 UTC 2021 on pts/0
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 7 root root  114 May  1 08:15 terraform-modules-dvs
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# mv terraform-modules-dvs modules
+[root@ip-172-31-60-56 ~]# cd modules/
+[root@ip-172-31-60-56 modules]# ls -l
+total 4
+drwxr-xr-x 3 root root 161 May  1 09:13 ec2
+-rw-r--r-- 1 root root 554 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   0 May  1 08:15 outputs.tf
+drwxr-xr-x 2 root root 116 May  1 08:15 raw
+drwxr-xr-x 3 root root 161 May  1 09:12 s3
+-rw-r--r-- 1 root root   0 May  1 08:15 variables.tf
+drwxr-xr-x 2 root root 116 May  1 08:15 vpc
+[root@ip-172-31-60-56 modules]# rm -rf main.tf outputs.tf variables.tf raw
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  1 09:13 ec2
+drwxr-xr-x 3 root root 161 May  1 09:12 s3
+drwxr-xr-x 2 root root 116 May  1 08:15 vpc
+[root@ip-172-31-60-56 modules]#
+[root@ip-172-31-60-56 modules]# cd s3/
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  301 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   63 May  1 08:19 variables.tf
+[root@ip-172-31-60-56 s3]# ls -al
+total 24
+drwxr-xr-x 3 root root  161 May  1 09:12 .
+drwxr-xr-x 6 root root   50 May  2 10:32 ..
+-rw-r--r-- 1 root root  301 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+drwxr-xr-x 3 root root   23 May  1 08:18 .terraform
+-rw-r--r-- 1 root root 2049 May  1 08:18 .terraform.lock.hcl
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   63 May  1 08:19 variables.tf
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  301 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   63 May  1 08:19 variables.tf
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# cat main.tf
+resource "random_id" "myrandomid" {
+  byte_length = 2
+}
+
+/* S3 Bucket Creation */
+
+resource "aws_s3_bucket" "mys3bucket" {
+  bucket = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  force_destroy = "true"
+  tags = {
+    Name        = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  }
+}
+
+[root@ip-172-31-60-56 s3]# cat variables.tf
+variable "mys3bucket_name" {
+        default = "mys3-bucket"
+}
+[root@ip-172-31-60-56 s3]# terraform -v
+Terraform v0.15.1
+on linux_amd64
++ provider registry.terraform.io/hashicorp/aws v3.38.0
++ provider registry.terraform.io/hashicorp/random v3.1.0
+[root@ip-172-31-60-56 s3]# terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Reusing previous version of hashicorp/random from the dependency lock file
+- Using previously-installed hashicorp/aws v3.38.0
+- Using previously-installed hashicorp/random v3.1.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 s3]# terraform apply
+provider.aws.region
+  The region where AWS operations will take place. Examples
+  are us-east-1, us-west-2, etc.
+
+  Enter a value: ^C
+
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+╷
+│ Error: Missing required argument
+│
+│ The argument "region" is required, but was not set.
+╵
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  301 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   63 May  1 08:19 variables.tf
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# cat variables.tf
+variable "mys3bucket_name" {
+        default = "mys3-bucket"
+}
+[root@ip-172-31-60-56 s3]# vi main.tf
+[root@ip-172-31-60-56 s3]# cat variables.tf
+variable "mys3bucket_name" {
+        default = "mys3-bucket"
+}
+[root@ip-172-31-60-56 s3]# vi myvars.tfvars
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# ls -l
+total 24
+-rw-r--r-- 1 root root  348 May  2 10:34 main.tf
+-rw-r--r-- 1 root root   48 May  2 10:34 myvars.tfvars
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   63 May  1 08:19 variables.tf
+[root@ip-172-31-60-56 s3]# vi variables.tf
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# terraform apply
+var.mys3bucket_name
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 1:
+│    1: variable "mys3bucket_name" {}
+│
+│ The root module input variable "mys3bucket_name" is not set, and has no default value. Use a -var or -var-file command
+│ line argument to provide a value for this variable.
+╵
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+╷
+│ Warning: Value for undeclared variable
+│
+│ The root module does not declare a variable named "region" but a value was found in file "myvars.tfvars". If you meant
+│ to use this value, add a "variable" block to the configuration.
+│
+│ To silence these warnings, use TF_VAR_... environment variables to provide certain "global" settings to all
+│ configurations in your organization. To reduce the verbosity of these warnings, use the -compact-warnings option.
+╵
+╷
+│ Error: Variables not allowed
+│
+│   on myvars.tfvars line 2:
+│    2: mys3bucket_name=mys3-bucket
+│
+│ Variables may not be used here.
+╵
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 1:
+│    1: variable "mys3bucket_name" {}
+│
+│ The root module input variable "mys3bucket_name" is not set, and has no default value. Use a -var or -var-file command
+│ line argument to provide a value for this variable.
+╵
+[root@ip-172-31-60-56 s3]# vi myvars.tfvars
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+provider.aws.region
+  The region where AWS operations will take place. Examples
+  are us-east-1, us-west-2, etc.
+
+  Enter a value: ^C
+
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+╷
+│ Warning: Value for undeclared variable
+│
+│ The root module does not declare a variable named "region" but a value was found in file "myvars.tfvars". If you meant
+│ to use this value, add a "variable" block to the configuration.
+│
+│ To silence these warnings, use TF_VAR_... environment variables to provide certain "global" settings to all
+│ configurations in your organization. To reduce the verbosity of these warnings, use the -compact-warnings option.
+╵
+╷
+│ Error: Missing required argument
+│
+│   on main.tf line 1, in provider "aws":
+│    1: provider "aws" {
+│
+│ The argument "region" is required, but no definition was found.
+╵
+╷
+│ Error: Unsupported argument
+│
+│   on main.tf line 2, in provider "aws":
+│    2:         default = "${var.region}"
+│
+│ An argument named "default" is not expected here.
+╵
+[root@ip-172-31-60-56 s3]# cat main.tf
+provider "aws" {
+        default = "${var.region}"
+
+}
+resource "random_id" "myrandomid" {
+  byte_length = 2
+}
+
+/* S3 Bucket Creation */
+
+resource "aws_s3_bucket" "mys3bucket" {
+  bucket = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  force_destroy = "true"
+  tags = {
+    Name        = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  }
+}
+
+[root@ip-172-31-60-56 s3]# terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/random from the dependency lock file
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/random v3.1.0
+- Using previously-installed hashicorp/aws v3.38.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 s3]# ls -l
+total 24
+-rw-r--r-- 1 root root  348 May  2 10:34 main.tf
+-rw-r--r-- 1 root root   49 May  2 10:35 myvars.tfvars
+-rw-r--r-- 1 root root   76 May  1 08:21 outputs.tf
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   30 May  2 10:35 variables.tf
+[root@ip-172-31-60-56 s3]# ^C
+[root@ip-172-31-60-56 s3]# cat outputs.tf
+output "mys3bucketname"{
+        value = "${aws_s3_bucket.mys3bucket.id}"
+}
+[root@ip-172-31-60-56 s3]# rm -f outputs.tf
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  348 May  2 10:34 main.tf
+-rw-r--r-- 1 root root   49 May  2 10:35 myvars.tfvars
+-rw-r--r-- 1 root root  156 May  1 09:12 terraform.tfstate
+-rw-r--r-- 1 root root 2516 May  1 09:12 terraform.tfstate.backup
+-rw-r--r-- 1 root root   30 May  2 10:35 variables.tf
+[root@ip-172-31-60-56 s3]# rm -f terraform.tfstate*
+[root@ip-172-31-60-56 s3]# ls -l
+total 12
+-rw-r--r-- 1 root root 348 May  2 10:34 main.tf
+-rw-r--r-- 1 root root  49 May  2 10:35 myvars.tfvars
+-rw-r--r-- 1 root root  30 May  2 10:35 variables.tf
+[root@ip-172-31-60-56 s3]# cat main.tf
+provider "aws" {
+        default = "${var.region}"
+
+}
+resource "random_id" "myrandomid" {
+  byte_length = 2
+}
+
+/* S3 Bucket Creation */
+
+resource "aws_s3_bucket" "mys3bucket" {
+  bucket = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  force_destroy = "true"
+  tags = {
+    Name        = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  }
+}
+
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+provider.aws.region
+  The region where AWS operations will take place. Examples
+  are us-east-1, us-west-2, etc.
+
+  Enter a value: ^C
+
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+╷
+│ Warning: Value for undeclared variable
+│
+│ The root module does not declare a variable named "region" but a value was found in file "myvars.tfvars". If you meant
+│ to use this value, add a "variable" block to the configuration.
+│
+│ To silence these warnings, use TF_VAR_... environment variables to provide certain "global" settings to all
+│ configurations in your organization. To reduce the verbosity of these warnings, use the -compact-warnings option.
+╵
+╷
+│ Error: Missing required argument
+│
+│   on main.tf line 1, in provider "aws":
+│    1: provider "aws" {
+│
+│ The argument "region" is required, but no definition was found.
+╵
+╷
+│ Error: Unsupported argument
+│
+│   on main.tf line 2, in provider "aws":
+│    2:         default = "${var.region}"
+│
+│ An argument named "default" is not expected here.
+╵
+[root@ip-172-31-60-56 s3]# vi main.tf
+[root@ip-172-31-60-56 s3]# ls -l
+total 12
+-rw-r--r-- 1 root root 347 May  2 10:37 main.tf
+-rw-r--r-- 1 root root  49 May  2 10:35 myvars.tfvars
+-rw-r--r-- 1 root root  30 May  2 10:35 variables.tf
+[root@ip-172-31-60-56 s3]# git branch
+* master
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+╷
+│ Warning: Value for undeclared variable
+│
+│ The root module does not declare a variable named "region" but a value was found in file "myvars.tfvars". If you meant
+│ to use this value, add a "variable" block to the configuration.
+│
+│ To silence these warnings, use TF_VAR_... environment variables to provide certain "global" settings to all
+│ configurations in your organization. To reduce the verbosity of these warnings, use the -compact-warnings option.
+╵
+╷
+│ Error: Reference to undeclared input variable
+│
+│   on main.tf line 2, in provider "aws":
+│    2:         region = "${var.region}"
+│
+│ An input variable with the name "region" has not been declared. This variable can be declared with a variable "region"
+│ {} block.
+╵
+[root@ip-172-31-60-56 s3]# cat variables.tf
+variable "mys3bucket_name" {}
+[root@ip-172-31-60-56 s3]# vi variables.tf
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+╷
+│ Error: Invalid AWS Region: us-east=1
+│
+│   with provider["registry.terraform.io/hashicorp/aws"],
+│   on main.tf line 1, in provider "aws":
+│    1: provider "aws" {
+│
+╵
+[root@ip-172-31-60-56 s3]# vi main.tf
+[root@ip-172-31-60-56 s3]# vi variables.tf
+[root@ip-172-31-60-56 s3]# vi myvars.tfvars
+[root@ip-172-31-60-56 s3]# terraform apply -var-file myvars.tfvars
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.mys3bucket will be created
+  + resource "aws_s3_bucket" "mys3bucket" {
+      + acceleration_status         = (known after apply)
+      + acl                         = "private"
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = true
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+
+      + versioning {
+          + enabled    = (known after apply)
+          + mfa_delete = (known after apply)
+        }
+    }
+
+  # random_id.myrandomid will be created
+  + resource "random_id" "myrandomid" {
+      + b64_std     = (known after apply)
+      + b64_url     = (known after apply)
+      + byte_length = 2
+      + dec         = (known after apply)
+      + hex         = (known after apply)
+      + id          = (known after apply)
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+random_id.myrandomid: Creating...
+random_id.myrandomid: Creation complete after 0s [id=pKM]
+aws_s3_bucket.mys3bucket: Creating...
+aws_s3_bucket.mys3bucket: Creation complete after 1s [id=mys3-bucket-42147]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 s3]# ls -l
+total 16
+-rw-r--r-- 1 root root  347 May  2 10:37 main.tf
+-rw-r--r-- 1 root root   49 May  2 10:38 myvars.tfvars
+-rw-r--r-- 1 root root 2424 May  2 10:38 terraform.tfstate
+-rw-r--r-- 1 root root   51 May  2 10:37 variables.tf
+[root@ip-172-31-60-56 s3]# cd ..
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  1 09:13 ec2
+drwxr-xr-x 3 root root 132 May  2 10:38 s3
+drwxr-xr-x 2 root root 116 May  1 08:15 vpc
+[root@ip-172-31-60-56 modules]# cd -
+/root/modules/s3
+[root@ip-172-31-60-56 s3]# terraform destroy -auto-approve
+var.mys3bucket_name
+  Enter a value: ^C
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 1:
+│    1: variable "mys3bucket_name" {}
+│
+│ The root module input variable "mys3bucket_name" is not set, and has no default value. Use a -var or -var-file command
+│ line argument to provide a value for this variable.
+╵
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 2:
+│    2: variable "region" {}
+│
+│ The root module input variable "region" is not set, and has no default value. Use a -var or -var-file command line
+│ argument to provide a value for this variable.
+╵
+[root@ip-172-31-60-56 s3]# terraform destroy -auto-approve -var-file myvars.tfvars
+random_id.myrandomid: Refreshing state... [id=pKM]
+aws_s3_bucket.mys3bucket: Refreshing state... [id=mys3-bucket-42147]
+aws_s3_bucket.mys3bucket: Destroying... [id=mys3-bucket-42147]
+aws_s3_bucket.mys3bucket: Destruction complete after 0s
+random_id.myrandomid: Destroying... [id=pKM]
+random_id.myrandomid: Destruction complete after 0s
+
+Destroy complete! Resources: 2 destroyed.
+[root@ip-172-31-60-56 s3]# cd ..
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  1 09:13 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  1 08:15 vpc
+[root@ip-172-31-60-56 modules]# cd vpc/
+[root@ip-172-31-60-56 vpc]# ls -l
+total 28
+-rw-r--r-- 1 root root  1353 May  1 08:15 main.tf
+-rw-r--r-- 1 root root   215 May  1 08:15 outputs.tf
+-rw-r--r-- 1 root root   318 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 10459 May  1 08:15 terraform.tfstate.backup
+-rw-r--r-- 1 root root   429 May  1 08:15 variables.tf
+[root@ip-172-31-60-56 vpc]# cat outputs.tf
+output "myvpcname" {
+        value = "${aws_vpc.myvpc.tags.Name}"
+}
+
+output "mysubnetid" {
+        value = "${aws_subnet.mypubsubnet.id}"
+}
+
+output "mysgid" {
+        value = "${aws_security_group.mysecgroup.id}"
+}
+[root@ip-172-31-60-56 vpc]# cd ..
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  1 09:13 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  1 08:15 vpc
+[root@ip-172-31-60-56 modules]# cd ..
+[root@ip-172-31-60-56 ~]# cp -rf modules modules_new
+[root@ip-172-31-60-56 ~]# rm -rf modules
+[root@ip-172-31-60-56 ~]# mv modules_new modules
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 6 root root   50 May  2 10:39 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# cd modules
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  2 10:39 vpc
+[root@ip-172-31-60-56 modules]# cd ..
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 6 root root   50 May  2 10:39 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 6 root root   50 May  2 10:39 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# cd modules/
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  2 10:39 vpc
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  2 10:39 vpc
+[root@ip-172-31-60-56 modules]# cd s3/
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  347 May  2 10:39 main.tf
+-rw-r--r-- 1 root root   49 May  2 10:39 myvars.tfvars
+-rw-r--r-- 1 root root  156 May  2 10:39 terraform.tfstate
+-rw-r--r-- 1 root root 2424 May  2 10:39 terraform.tfstate.backup
+-rw-r--r-- 1 root root   51 May  2 10:39 variables.tf
+[root@ip-172-31-60-56 s3]# cat variables.tf
+variable "mys3bucket_name" {}
+variable "region" {}
+[root@ip-172-31-60-56 s3]# cat main.tf
+provider "aws" {
+        region = "${var.region}"
+
+}
+resource "random_id" "myrandomid" {
+  byte_length = 2
+}
+
+/* S3 Bucket Creation */
+
+resource "aws_s3_bucket" "mys3bucket" {
+  bucket = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  force_destroy = "true"
+  tags = {
+    Name        = "${var.mys3bucket_name}-${random_id.myrandomid.dec}"
+  }
+}
+
+[root@ip-172-31-60-56 s3]# terraform show
+
+[root@ip-172-31-60-56 s3]# cd ..
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root 116 May  2 10:39 vpc
+[root@ip-172-31-60-56 modules]# cd vpc/
+[root@ip-172-31-60-56 vpc]# ls -l
+total 28
+-rw-r--r-- 1 root root  1353 May  2 10:39 main.tf
+-rw-r--r-- 1 root root   215 May  2 10:39 outputs.tf
+-rw-r--r-- 1 root root   318 May  2 10:39 terraform.tfstate
+-rw-r--r-- 1 root root 10459 May  2 10:39 terraform.tfstate.backup
+-rw-r--r-- 1 root root   429 May  2 10:39 variables.tf
+[root@ip-172-31-60-56 vpc]# rm -rf outputs.tf
+[root@ip-172-31-60-56 vpc]# ls -l
+total 24
+-rw-r--r-- 1 root root  1353 May  2 10:39 main.tf
+-rw-r--r-- 1 root root   318 May  2 10:39 terraform.tfstate
+-rw-r--r-- 1 root root 10459 May  2 10:39 terraform.tfstate.backup
+-rw-r--r-- 1 root root   429 May  2 10:39 variables.tf
+[root@ip-172-31-60-56 vpc]# rm -f terraform.tfstate*
+[root@ip-172-31-60-56 vpc]# ls -l
+total 8
+-rw-r--r-- 1 root root 1353 May  2 10:39 main.tf
+-rw-r--r-- 1 root root  429 May  2 10:39 variables.tf
+[root@ip-172-31-60-56 vpc]# cat variables.tf
+variable "myvpc_name" {
+#        default = "myvpc"
+}
+
+variable "myvpc_cidr" {
+ #       default = "192.166.0.0/16"
+}
+
+variable "myigw_name" {
+  #      default = "myigw"
+}
+
+variable "myroute_name" {
+   #     default = "myroute"
+}
+
+variable "mypubsubnet_name" {
+
+    #    default = "mypubsubnet"
+}
+variable "mypubsubnet_cidr" {
+     #   default = "192.166.10.0/24"
+}
+
+variable "mysecgroup_name" {
+      #  default = "mysecgroup"
+}
+
+[root@ip-172-31-60-56 vpc]#
+[root@ip-172-31-60-56 vpc]# cd ../s3/
+[root@ip-172-31-60-56 s3]# ls -l
+total 20
+-rw-r--r-- 1 root root  347 May  2 10:39 main.tf
+-rw-r--r-- 1 root root   49 May  2 10:39 myvars.tfvars
+-rw-r--r-- 1 root root  156 May  2 10:39 terraform.tfstate
+-rw-r--r-- 1 root root 2424 May  2 10:39 terraform.tfstate.backup
+-rw-r--r-- 1 root root   51 May  2 10:39 variables.tf
+[root@ip-172-31-60-56 s3]# terraform show
+
+[root@ip-172-31-60-56 s3]# cd
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 6 root root   50 May  2 10:39 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]# mkdir mymodules
+[root@ip-172-31-60-56 ~]# cd mymodules/
+[root@ip-172-31-60-56 mymodules]# ls -l
+total 0
+[root@ip-172-31-60-56 mymodules]# mkdir s3
+[root@ip-172-31-60-56 mymodules]# cd s3/
+[root@ip-172-31-60-56 s3]# ls -l
+total 0
+[root@ip-172-31-60-56 s3]# vi main.tf
+[root@ip-172-31-60-56 s3]# vi variables.tf
+[root@ip-172-31-60-56 s3]# vi myvars.tfvars
+[root@ip-172-31-60-56 s3]# terraform apply -auto-approve
+var.bucket_name
+  Enter a value: ^C
+Interrupt received.
+Please wait for Terraform to exit or data loss may occur.
+Gracefully shutting down...
+
+
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 2:
+│    2: variable "region" {}
+│
+│ The root module input variable "region" is not set, and has no default value. Use a -var or -var-file command line
+│ argument to provide a value for this variable.
+╵
+╷
+│ Error: No value for required variable
+│
+│   on variables.tf line 3:
+│    3: variable "bucket_name" {}
+│
+│ The root module input variable "bucket_name" is not set, and has no default value. Use a -var or -var-file command line
+│ argument to provide a value for this variable.
+╵
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# terraform apply -auto-approve -var-file myvars.tfvars
+╷
+│ Error: Could not load plugin
+│
+│
+│ Plugin reinitialization required. Please run "terraform init".
+│
+│ Plugins are external binaries that Terraform uses to access and manipulate
+│ resources. The configuration provided requires plugins which can't be located,
+│ don't satisfy the version constraints, or are otherwise incompatible.
+│
+│ Terraform automatically discovers provider requirements from your
+│ configuration, including providers used in child modules. To see the
+│ requirements and constraints, run "terraform providers".
+│
+│ 2 problems:
+│
+│ - failed to instantiate provider "registry.terraform.io/hashicorp/aws" to obtain schema: unknown provider
+│ "registry.terraform.io/hashicorp/aws"
+│ - failed to instantiate provider "registry.terraform.io/hashicorp/random" to obtain schema: unknown provider
+│ "registry.terraform.io/hashicorp/random"
+│
+╵
+[root@ip-172-31-60-56 s3]# ls -al
+total 12
+drwxr-xr-x 2 root root  62 May  2 10:52 .
+drwxr-xr-x 3 root root  16 May  2 10:50 ..
+-rw-r--r-- 1 root root 291 May  2 10:51 main.tf
+-rw-r--r-- 1 root root  54 May  2 10:51 myvars.tfvars
+-rw-r--r-- 1 root root  61 May  2 10:51 variables.tf
+[root@ip-172-31-60-56 s3]# terraform  init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Finding latest version of hashicorp/random...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+- Installing hashicorp/random v3.1.0...
+- Installed hashicorp/random v3.1.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 s3]# terraform apply -auto-approve -var-file myvars.tfvars
+random_id.myrandomid: Creating...
+random_id.myrandomid: Creation complete after 0s [id=f_U]
+aws_s3_bucket.mys3: Creating...
+aws_s3_bucket.mys3: Creation complete after 1s [id=dvsbatch1-32757]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 s3]#
+[root@ip-172-31-60-56 s3]# terraform destroy -auto-approve -var-file myvars.tfvars
+random_id.myrandomid: Refreshing state... [id=f_U]
+aws_s3_bucket.mys3: Refreshing state... [id=dvsbatch1-32757]
+aws_s3_bucket.mys3: Destroying... [id=dvsbatch1-32757]
+aws_s3_bucket.mys3: Destruction complete after 0s
+random_id.myrandomid: Destroying... [id=f_U]
+random_id.myrandomid: Destruction complete after 0s
+
+Destroy complete! Resources: 2 destroyed.
+[root@ip-172-31-60-56 s3]# cd ..
+[root@ip-172-31-60-56 mymodules]# ls -l
+total 0
+drwxr-xr-x 3 root root 164 May  2 10:53 s3
+[root@ip-172-31-60-56 mymodules]# mkdir vpc
+[root@ip-172-31-60-56 mymodules]# cd vpc/
+[root@ip-172-31-60-56 vpc]#
+[root@ip-172-31-60-56 vpc]# touch main.tf variables.tf myvars.tfvars
+[root@ip-172-31-60-56 vpc]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  2 10:55 main.tf
+-rw-r--r-- 1 root root 0 May  2 10:55 myvars.tfvars
+-rw-r--r-- 1 root root 0 May  2 10:55 variables.tf
+[root@ip-172-31-60-56 vpc]# vi main.tf
+[root@ip-172-31-60-56 vpc]# vi main.tf
+[root@ip-172-31-60-56 vpc]# vi variables.tf
+[root@ip-172-31-60-56 vpc]# vi myvars.tfvars
+[root@ip-172-31-60-56 vpc]# terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+╷
+│ Error: Reference to undeclared resource
+│
+│   on main.tf line 14, in resource "aws_internet_gateway" "myigw":
+│   14:   vpc_id = "${aws_vpc.main.id}"
+│
+│ A managed resource "aws_vpc" "main" has not been declared in the root module.
+╵
+╷
+│ Error: Reference to undeclared resource
+│
+│   on main.tf line 35, in resource "aws_subnet" "mysub":
+│   35:   vpc_id     = "${aws_vpc.main.id}"
+│
+│ A managed resource "aws_vpc" "main" has not been declared in the root module.
+╵
+[root@ip-172-31-60-56 vpc]# vi main.tf
+[root@ip-172-31-60-56 vpc]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Creating...
+aws_vpc.myvpc: Creation complete after 1s [id=vpc-0a1b040629f389669]
+aws_subnet.mysub: Creating...
+aws_internet_gateway.myigw: Creating...
+aws_internet_gateway.myigw: Creation complete after 0s [id=igw-0d444eb222bc4209c]
+aws_route_table.myroute: Creating...
+aws_subnet.mysub: Creation complete after 0s [id=subnet-0e822dd1b3ce23d04]
+aws_route_table.myroute: Creation complete after 1s [id=rtb-0eb38a5052acf2347]
+aws_route_table_association.myassoc: Creating...
+aws_route_table_association.myassoc: Creation complete after 0s [id=rtbassoc-0210ecb76f70486d3]
+
+Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 vpc]# terraform destroy -auto-approve -var-file myvars.tfvars
+aws_vpc.myvpc: Refreshing state... [id=vpc-0a1b040629f389669]
+aws_subnet.mysub: Refreshing state... [id=subnet-0e822dd1b3ce23d04]
+aws_internet_gateway.myigw: Refreshing state... [id=igw-0d444eb222bc4209c]
+aws_route_table.myroute: Refreshing state... [id=rtb-0eb38a5052acf2347]
+aws_route_table_association.myassoc: Refreshing state... [id=rtbassoc-0210ecb76f70486d3]
+aws_route_table_association.myassoc: Destroying... [id=rtbassoc-0210ecb76f70486d3]
+aws_route_table_association.myassoc: Destruction complete after 1s
+aws_subnet.mysub: Destroying... [id=subnet-0e822dd1b3ce23d04]
+aws_route_table.myroute: Destroying... [id=rtb-0eb38a5052acf2347]
+aws_route_table.myroute: Destruction complete after 0s
+aws_internet_gateway.myigw: Destroying... [id=igw-0d444eb222bc4209c]
+aws_subnet.mysub: Destruction complete after 0s
+aws_internet_gateway.myigw: Still destroying... [id=igw-0d444eb222bc4209c, 10s elapsed]
+aws_internet_gateway.myigw: Destruction complete after 10s
+aws_vpc.myvpc: Destroying... [id=vpc-0a1b040629f389669]
+aws_vpc.myvpc: Destruction complete after 1s
+
+Destroy complete! Resources: 5 destroyed.
+[root@ip-172-31-60-56 vpc]# cd ..
+[root@ip-172-31-60-56 mymodules]# ls- l
+-bash: ls-: command not found
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]# mkdir ec2
+[root@ip-172-31-60-56 mymodules]# cd ec2
+[root@ip-172-31-60-56 ec2]# ls -l
+total 0
+[root@ip-172-31-60-56 ec2]# touch main.tf variables.tf myvars.tfvars
+[root@ip-172-31-60-56 ec2]# ls -l
+total 0
+-rw-r--r-- 1 root root 0 May  2 11:09 main.tf
+-rw-r--r-- 1 root root 0 May  2 11:09 myvars.tfvars
+-rw-r--r-- 1 root root 0 May  2 11:09 variables.tf
+[root@ip-172-31-60-56 ec2]# vi main.tf
+[root@ip-172-31-60-56 ec2]# vi variables.tf
+[root@ip-172-31-60-56 ec2]# vi myvars.tfvars
+[root@ip-172-31-60-56 ec2]#
+[root@ip-172-31-60-56 ec2]#
+[root@ip-172-31-60-56 ec2]# terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 ec2]# terraform apply -auto-approve -var-file myvars.tfvars
+aws_instance.myec2: Creating...
+aws_instance.myec2: Still creating... [10s elapsed]
+aws_instance.myec2: Still creating... [20s elapsed]
+aws_instance.myec2: Still creating... [30s elapsed]
+aws_instance.myec2: Creation complete after 32s [id=i-00650d04ff02262ce]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 ec2]#
+[root@ip-172-31-60-56 ec2]# terraform destroy -auto-approve -var-file myvars.tfvars
+aws_instance.myec2: Refreshing state... [id=i-00650d04ff02262ce]
+aws_instance.myec2: Destroying... [id=i-00650d04ff02262ce]
+aws_instance.myec2: Still destroying... [id=i-00650d04ff02262ce, 10s elapsed]
+aws_instance.myec2: Still destroying... [id=i-00650d04ff02262ce, 20s elapsed]
+aws_instance.myec2: Still destroying... [id=i-00650d04ff02262ce, 30s elapsed]
+aws_instance.myec2: Destruction complete after 40s
+
+Destroy complete! Resources: 1 destroyed.
+[root@ip-172-31-60-56 ec2]# cd ..
+[root@ip-172-31-60-56 mymodules]# ls -l
+total 0
+drwxr-xr-x 3 root root 164 May  2 11:14 ec2
+drwxr-xr-x 3 root root 164 May  2 10:53 s3
+drwxr-xr-x 3 root root 164 May  2 11:09 vpc
+[root@ip-172-31-60-56 mymodules]# vi main.tf
+[root@ip-172-31-60-56 mymodules]# pwd
+/root/mymodules
+[root@ip-172-31-60-56 mymodules]# ls -l
+total 4
+drwxr-xr-x 3 root root 164 May  2 11:14 ec2
+-rw-r--r-- 1 root root  28 May  2 11:17 main.tf
+drwxr-xr-x 3 root root 164 May  2 10:53 s3
+drwxr-xr-x 3 root root 164 May  2 11:09 vpc
+[root@ip-172-31-60-56 mymodules]# vi main.tf
+[root@ip-172-31-60-56 mymodules]# cat ec2/main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+resource "aws_instance" "myec2" {
+  ami           = "${var.myami}"
+  instance_type = "${var.servertype}"
+  key_name = "${var.mykeyname}"
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+[root@ip-172-31-60-56 mymodules]# cat ec2/variables.tf
+/*Variables*/
+variable "region" {}
+variable "myami" {}
+variable "servername" {}
+variable "mykeyname" {}
+variable "servertype" {}
+[root@ip-172-31-60-56 mymodules]# cat ec2/myvars.tfvars
+/*tfvars*/
+region="us-east-1"
+myami="ami-048f6ed62451373d9"
+servername="dvsserver"
+mykeyname="aruna_nvirg_key1"
+servertype="t2.micro"
+[root@ip-172-31-60-56 mymodules]# vi main.tf
+[root@ip-172-31-60-56 mymodules]# cat main.tf
+module "mytestserver" {
+source = "/root/mymodules/ec2/"
+region = "us-east-1"
+myami = "ami-048f6ed62451373d9"
+servername = "dvsserver"
+mykeyname = "aruna_nvirg_key1"
+servertype = "t2.micro"
+
+}
+[root@ip-172-31-60-56 mymodules]# terraform init
+Initializing modules...
+Downloading /root/mymodules/ec2/ for mytestserver...
+- mytestserver in .terraform/modules/mytestserver
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 mymodules]# terraform apply -auto-approve
+module.mytestserver.aws_instance.myec2: Creating...
+module.mytestserver.aws_instance.myec2: Still creating... [10s elapsed]
+module.mytestserver.aws_instance.myec2: Still creating... [20s elapsed]
+module.mytestserver.aws_instance.myec2: Still creating... [30s elapsed]
+module.mytestserver.aws_instance.myec2: Creation complete after 32s [id=i-03fac40217229380a]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 mymodules]# terraform show
+# module.mytestserver.aws_instance.myec2:
+resource "aws_instance" "myec2" {
+    ami                                  = "ami-048f6ed62451373d9"
+    arn                                  = "arn:aws:ec2:us-east-1:140770401787:instance/i-03fac40217229380a"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1e"
+    cpu_core_count                       = 1
+    cpu_threads_per_core                 = 1
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    id                                   = "i-03fac40217229380a"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = "aruna_nvirg_key1"
+    monitoring                           = false
+    primary_network_interface_id         = "eni-0ea2759948d635b39"
+    private_dns                          = "ip-172-31-58-212.ec2.internal"
+    private_ip                           = "172.31.58.212"
+    public_dns                           = "ec2-54-146-93-123.compute-1.amazonaws.com"
+    public_ip                            = "54.146.93.123"
+    secondary_private_ips                = []
+    security_groups                      = [
+        "default",
+    ]
+    source_dest_check                    = true
+    subnet_id                            = "subnet-5ab41b6b"
+    tags                                 = {
+        "Name" = "dvsserver"
+    }
+    tags_all                             = {
+        "Name" = "dvsserver"
+    }
+    tenancy                              = "default"
+    vpc_security_group_ids               = [
+        "sg-cc436dc0",
+    ]
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_put_response_hop_limit = 1
+        http_tokens                 = "optional"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/xvda"
+        encrypted             = false
+        iops                  = 100
+        tags                  = {}
+        throughput            = 0
+        volume_id             = "vol-017eed6da23f67f6c"
+        volume_size           = 8
+        volume_type           = "gp2"
+    }
+}
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]# terraform destroy -auto-approve
+module.mytestserver.aws_instance.myec2: Refreshing state... [id=i-03fac40217229380a]
+module.mytestserver.aws_instance.myec2: Destroying... [id=i-03fac40217229380a]
+module.mytestserver.aws_instance.myec2: Still destroying... [id=i-03fac40217229380a, 10s elapsed]
+module.mytestserver.aws_instance.myec2: Still destroying... [id=i-03fac40217229380a, 20s elapsed]
+module.mytestserver.aws_instance.myec2: Still destroying... [id=i-03fac40217229380a, 30s elapsed]
+module.mytestserver.aws_instance.myec2: Destruction complete after 40s
+
+Destroy complete! Resources: 1 destroyed.
+[root@ip-172-31-60-56 mymodules]# ls -l
+total 12
+drwxr-xr-x 3 root root  164 May  2 11:14 ec2
+-rw-r--r-- 1 root root  192 May  2 11:19 main.tf
+drwxr-xr-x 3 root root  164 May  2 10:53 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:09 vpc
+[root@ip-172-31-60-56 mymodules]#
+[root@ip-172-31-60-56 mymodules]# terraform show
+
+[root@ip-172-31-60-56 mymodules]# cd ..
+[root@ip-172-31-60-56 ~]# cp -rf mymodules /tmp/modules_new
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 6 root root   50 May  2 10:39 modules
+drwxr-xr-x 6 root root  155 May  2 11:21 mymodules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# mv mymodules modules
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 7 root root   67 May  2 11:22 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# cd modules/
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 6 root root 155 May  2 11:21 mymodules
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root  41 May  2 10:42 vpc
+[root@ip-172-31-60-56 modules]# cd ..
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 7 root root   67 May  2 11:22 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# cat main.tf
+provider "aws" {
+        region = "us-east-1"
+}
+variable "servername" {
+
+        default = "dvsserver"
+}
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+output "myoutput" {
+
+        value = "${var.servername}-${aws_instance.myec2.public_ip}"
+}
+[root@ip-172-31-60-56 ~]# pwd
+/root
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]# cd /tmp/
+[root@ip-172-31-60-56 tmp]# ls
+modules_new  systemd-private-ec5b2b9e499245f1afb9445c21bed780-chronyd.service-0Uvjns
+(reverse-i-search)`c': ^C /tmp/
+[root@ip-172-31-60-56 tmp]# git clone https://github.com/shan5a6/terraform-modules-dvs.git
+Cloning into 'terraform-modules-dvs'...
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/shan5a6/terraform-modules-dvs.git/'
+[root@ip-172-31-60-56 tmp]# git clone https://github.com/shan5a6/terraform-modules-dvs.git
+Cloning into 'terraform-modules-dvs'...
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+remote: Enumerating objects: 26, done.
+remote: Counting objects: 100% (26/26), done.
+remote: Compressing objects: 100% (15/15), done.
+remote: Total 26 (delta 10), reused 26 (delta 10), pack-reused 0
+Unpacking objects: 100% (26/26), done.
+[root@ip-172-31-60-56 tmp]# mv modules_new terraform-modules-dvs/
+[root@ip-172-31-60-56 tmp]# ls -l
+total 0
+drwx------ 3 root root  17 May  2 10:26 systemd-private-ec5b2b9e499245f1afb9445c21bed780-chronyd.service-0Uvjns
+drwxr-xr-x 8 root root 133 May  2 11:23 terraform-modules-dvs
+[root@ip-172-31-60-56 tmp]# cd terraform-modules-dvs/
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# git add .
+git commit -m "adding new code f[root@ip-172-31-60-56 terraform-modules-dvs]# git commit -m "adding new code for modules"
+[master eb4e2bf] adding new code for modules
+ Committer: root <root@ip-172-31-60-56.ec2.internal>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 29 files changed, 737 insertions(+)
+ create mode 100644 modules_new/.terraform.lock.hcl
+ create mode 100644 modules_new/.terraform/modules/modules.json
+ create mode 120000 modules_new/.terraform/modules/mytestserver
+ create mode 100755 modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ create mode 100644 modules_new/ec2/.terraform.lock.hcl
+ create mode 100755 modules_new/ec2/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ create mode 100644 modules_new/ec2/main.tf
+ create mode 100644 modules_new/ec2/myvars.tfvars
+ create mode 100644 modules_new/ec2/terraform.tfstate
+ create mode 100644 modules_new/ec2/terraform.tfstate.backup
+ create mode 100644 modules_new/ec2/variables.tf
+ create mode 100644 modules_new/main.tf
+ create mode 100644 modules_new/s3/.terraform.lock.hcl
+ create mode 100755 modules_new/s3/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ create mode 100755 modules_new/s3/.terraform/providers/registry.terraform.io/hashicorp/random/3.1.0/linux_amd64/terraform-provider-random_v3.1.0_x5
+ create mode 100644 modules_new/s3/main.tf
+ create mode 100644 modules_new/s3/myvars.tfvars
+ create mode 100644 modules_new/s3/terraform.tfstate
+ create mode 100644 modules_new/s3/terraform.tfstate.backup
+ create mode 100644 modules_new/s3/variables.tf
+ create mode 100644 modules_new/terraform.tfstate
+ create mode 100644 modules_new/terraform.tfstate.backup
+ create mode 100644 modules_new/vpc/.terraform.lock.hcl
+ create mode 100755 modules_new/vpc/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ create mode 100644 modules_new/vpc/main.tf
+ create mode 100644 modules_new/vpc/myvars.tfvars
+ create mode 100644 modules_new/vpc/terraform.tfstate
+ create mode 100644 modules_new/vpc/terraform.tfstate.backup
+ create mode 100644 modules_new/vpc/variables.tf
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]#
+[root@ip-172-31-60-56 terraform-modules-dvs]#
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -la
+total 4
+drwxr-xr-x 8 root root 133 May  2 11:23 .
+drwxrwxrwt 9 root root 201 May  2 11:23 ..
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+drwxr-xr-x 8 root root 185 May  2 11:24 .git
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# git push origin master
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 47, done.
+Counting objects: 100% (47/47), done.
+Compressing objects: 100% (34/34), done.
+Writing objects: 100% (46/46), 38.70 MiB | 2.91 MiB/s, done.
+Total 46 (delta 7), reused 0 (delta 0)
+remote: Resolving deltas: 100% (7/7), completed with 1 local object.
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: c4dd182bb690f58e374a9cf549c0b049c7caf75dda47d9ab9750f97abb5258ea
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5 is 168.86 MB; this exceeds GitHub's file size limit of 100.00 MB
+To https://github.com/shan5a6/terraform-modules-dvs.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/shan5a6/terraform-modules-dvs.git'
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd modules_new/
+[root@ip-172-31-60-56 modules_new]# ls -l
+total 12
+drwxr-xr-x 3 root root  164 May  2 11:21 ec2
+-rw-r--r-- 1 root root  192 May  2 11:21 main.tf
+drwxr-xr-x 3 root root  164 May  2 11:21 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:21 vpc
+[root@ip-172-31-60-56 modules_new]# cd ..
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# vi .gitignore
+[root@ip-172-31-60-56 terraform-modules-dvs]#
+[root@ip-172-31-60-56 terraform-modules-dvs]#
+[root@ip-172-31-60-56 terraform-modules-dvs]#
+[root@ip-172-31-60-56 terraform-modules-dvs]# git push origin master
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 47, done.
+Counting objects: 100% (47/47), done.
+Compressing objects: 100% (34/34), done.
+Writing objects: 100% (46/46), 38.70 MiB | 2.91 MiB/s, done.
+Total 46 (delta 7), reused 0 (delta 0)
+remote: Resolving deltas: 100% (7/7), completed with 1 local object.
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: e7a979f53bd8dcb3bff1e3c71e72cdf14fad191818ec22c1f89442861958aa5b
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5 is 168.86 MB; this exceeds GitHub's file size limit of 100.00 MB
+To https://github.com/shan5a6/terraform-modules-dvs.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/shan5a6/terraform-modules-dvs.git'
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -al
+total 8
+drwxr-xr-x 8 root root 151 May  2 11:25 .
+drwxrwxrwt 9 root root 201 May  2 11:24 ..
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+drwxr-xr-x 8 root root 185 May  2 11:24 .git
+-rw-r--r-- 1 root root  12 May  2 11:25 .gitignore
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 6 root root 155 May  2 11:21 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd modules_new/
+[root@ip-172-31-60-56 modules_new]# ls -l
+total 12
+drwxr-xr-x 3 root root  164 May  2 11:21 ec2
+-rw-r--r-- 1 root root  192 May  2 11:21 main.tf
+drwxr-xr-x 3 root root  164 May  2 11:21 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:21 vpc
+[root@ip-172-31-60-56 modules_new]# ls -al
+total 16
+drwxr-xr-x 6 root root  155 May  2 11:21 .
+drwxr-xr-x 8 root root  151 May  2 11:25 ..
+drwxr-xr-x 3 root root  164 May  2 11:21 ec2
+-rw-r--r-- 1 root root  192 May  2 11:21 main.tf
+drwxr-xr-x 3 root root  164 May  2 11:21 s3
+drwxr-xr-x 4 root root   38 May  2 11:21 .terraform
+-rw-r--r-- 1 root root 1077 May  2 11:21 .terraform.lock.hcl
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:21 vpc
+[root@ip-172-31-60-56 modules_new]# rm -rf .terraform
+[root@ip-172-31-60-56 modules_new]# cd ec2/
+[root@ip-172-31-60-56 ec2]# ls -al
+total 24
+drwxr-xr-x 3 root root  164 May  2 11:21 .
+drwxr-xr-x 5 root root  137 May  2 11:25 ..
+-rw-r--r-- 1 root root  232 May  2 11:21 main.tf
+-rw-r--r-- 1 root root  134 May  2 11:21 myvars.tfvars
+drwxr-xr-x 3 root root   23 May  2 11:21 .terraform
+-rw-r--r-- 1 root root 1077 May  2 11:21 .terraform.lock.hcl
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3531 May  2 11:21 terraform.tfstate.backup
+-rw-r--r-- 1 root root  129 May  2 11:21 variables.tf
+[root@ip-172-31-60-56 ec2]# rm -rf .terraform
+[root@ip-172-31-60-56 ec2]# cd ../vpc/
+[root@ip-172-31-60-56 vpc]# rm -rf .terraform
+[root@ip-172-31-60-56 vpc]# cd ../s3/
+[root@ip-172-31-60-56 s3]# rm -rf .terraform
+[root@ip-172-31-60-56 s3]# cd ..
+[root@ip-172-31-60-56 modules_new]# cd ..
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 5 root root 137 May  2 11:25 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# git push origin master
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 47, done.
+Counting objects: 100% (47/47), done.
+Compressing objects: 100% (34/34), done.
+Writing objects: 100% (46/46), 38.70 MiB | 2.87 MiB/s, done.
+Total 46 (delta 7), reused 0 (delta 0)
+remote: Resolving deltas: 100% (7/7), completed with 1 local object.
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: 84fe64ab30c09bc26c50fb52f53743ede1f33c7a662551998119922218018ca9
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5 is 168.86 MB; this exceeds GitHub's file size limit of 100.00 MB
+To https://github.com/shan5a6/terraform-modules-dvs.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/shan5a6/terraform-modules-dvs.git'
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -la modules_new/|grep -i terr
+-rw-r--r-- 1 root root 1077 May  2 11:21 .terraform.lock.hcl
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ls: cannot access modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5: No such file or directory
+[root@ip-172-31-60-56 terraform-modules-dvs]# rm -rf modules_new/.terraform.lock.hcl
+[root@ip-172-31-60-56 terraform-modules-dvs]# du -sh *
+24K     ec2
+4.0K    main.tf
+88K     modules_new
+0       outputs.tf
+28K     raw
+20K     s3
+0       variables.tf
+28K     vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# git add .
+[root@ip-172-31-60-56 terraform-modules-dvs]# git commit -m "adding new code"
+[master f8d4548] adding new code
+ Committer: root <root@ip-172-31-60-56.ec2.internal>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 9 files changed, 1 insertion(+), 22 deletions(-)
+ create mode 100644 .gitignore
+ delete mode 100644 modules_new/.terraform.lock.hcl
+ delete mode 100644 modules_new/.terraform/modules/modules.json
+ delete mode 120000 modules_new/.terraform/modules/mytestserver
+ delete mode 100755 modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ delete mode 100755 modules_new/ec2/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ delete mode 100755 modules_new/s3/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+ delete mode 100755 modules_new/s3/.terraform/providers/registry.terraform.io/hashicorp/random/3.1.0/linux_amd64/terraform-provider-random_v3.1.0_x5
+ delete mode 100755 modules_new/vpc/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5
+[root@ip-172-31-60-56 terraform-modules-dvs]# git push
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 54, done.
+Counting objects: 100% (54/54), done.
+Compressing objects: 100% (40/40), done.
+Writing objects: 100% (53/53), 38.70 MiB | 2.87 MiB/s, done.
+Total 53 (delta 12), reused 0 (delta 0)
+remote: Resolving deltas: 100% (12/12), completed with 1 local object.
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: e5a2070e57fdd80160b4e1199763b58f6b63f184a42a0eeb2c30cade0632452f
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File modules_new/.terraform/providers/registry.terraform.io/hashicorp/aws/3.38.0/linux_amd64/terraform-provider-aws_v3.38.0_x5 is 168.86 MB; this exceeds GitHub's file size limit of 100.00 MB
+To https://github.com/shan5a6/terraform-modules-dvs.git
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'https://github.com/shan5a6/terraform-modules-dvs.git'
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd modules_new/
+[root@ip-172-31-60-56 modules_new]# ls -l
+total 12
+drwxr-xr-x 2 root root  146 May  2 11:26 ec2
+-rw-r--r-- 1 root root  192 May  2 11:21 main.tf
+drwxr-xr-x 2 root root  146 May  2 11:26 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 2 root root  146 May  2 11:26 vpc
+[root@ip-172-31-60-56 modules_new]# ls -al
+total 12
+drwxr-xr-x 5 root root  110 May  2 11:27 .
+drwxr-xr-x 8 root root  151 May  2 11:25 ..
+drwxr-xr-x 2 root root  146 May  2 11:26 ec2
+-rw-r--r-- 1 root root  192 May  2 11:21 main.tf
+drwxr-xr-x 2 root root  146 May  2 11:26 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 2 root root  146 May  2 11:26 vpc
+[root@ip-172-31-60-56 modules_new]# cd ..
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls -l
+total 4
+drwxr-xr-x 2 root root 116 May  2 11:23 ec2
+-rw-r--r-- 1 root root 554 May  2 11:23 main.tf
+drwxr-xr-x 5 root root 110 May  2 11:27 modules_new
+-rw-r--r-- 1 root root   0 May  2 11:23 outputs.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 raw
+drwxr-xr-x 2 root root 116 May  2 11:23 s3
+-rw-r--r-- 1 root root   0 May  2 11:23 variables.tf
+drwxr-xr-x 2 root root 116 May  2 11:23 vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd ..
+[root@ip-172-31-60-56 tmp]# ls
+systemd-private-ec5b2b9e499245f1afb9445c21bed780-chronyd.service-0Uvjns  terraform-modules-dvs
+[root@ip-172-31-60-56 tmp]# mv terraform-modules-dvs/modules_new /tmp/
+[root@ip-172-31-60-56 tmp]# cd terraform-modules-dvs/
+[root@ip-172-31-60-56 terraform-modules-dvs]# ls
+ec2  main.tf  outputs.tf  raw  s3  variables.tf  vpc
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd ..
+[root@ip-172-31-60-56 tmp]# rm -rf terraform-modules-dvs
+[root@ip-172-31-60-56 tmp]# git clone https://github.com/shan5a6/terraform-modules-dvs.git
+Cloning into 'terraform-modules-dvs'...
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+remote: Enumerating objects: 26, done.
+remote: Counting objects: 100% (26/26), done.
+remote: Compressing objects: 100% (15/15), done.
+remote: Total 26 (delta 10), reused 26 (delta 10), pack-reused 0
+Unpacking objects: 100% (26/26), done.
+[root@ip-172-31-60-56 tmp]#
+[root@ip-172-31-60-56 tmp]#
+[root@ip-172-31-60-56 tmp]# du -sh modules_new/
+88K     modules_new/
+[root@ip-172-31-60-56 tmp]# mv modules_new terraform-modules-dvs/
+[root@ip-172-31-60-56 tmp]# cd terraform-modules-dvs/
+[root@ip-172-31-60-56 terraform-modules-dvs]# git status
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        modules_new/
+
+nothing added to commit but untracked files present (use "git add" to track)
+[root@ip-172-31-60-56 terraform-modules-dvs]# git add .
+[root@ip-172-31-60-56 terraform-modules-dvs]# git commit -m "adding new code"
+[master 8c6d6bd] adding new code
+ Committer: root <root@ip-172-31-60-56.ec2.internal>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 21 files changed, 715 insertions(+)
+ create mode 100644 modules_new/ec2/.terraform.lock.hcl
+ create mode 100644 modules_new/ec2/main.tf
+ create mode 100644 modules_new/ec2/myvars.tfvars
+ create mode 100644 modules_new/ec2/terraform.tfstate
+ create mode 100644 modules_new/ec2/terraform.tfstate.backup
+ create mode 100644 modules_new/ec2/variables.tf
+ create mode 100644 modules_new/main.tf
+ create mode 100644 modules_new/s3/.terraform.lock.hcl
+ create mode 100644 modules_new/s3/main.tf
+ create mode 100644 modules_new/s3/myvars.tfvars
+ create mode 100644 modules_new/s3/terraform.tfstate
+ create mode 100644 modules_new/s3/terraform.tfstate.backup
+ create mode 100644 modules_new/s3/variables.tf
+ create mode 100644 modules_new/terraform.tfstate
+ create mode 100644 modules_new/terraform.tfstate.backup
+ create mode 100644 modules_new/vpc/.terraform.lock.hcl
+ create mode 100644 modules_new/vpc/main.tf
+ create mode 100644 modules_new/vpc/myvars.tfvars
+ create mode 100644 modules_new/vpc/terraform.tfstate
+ create mode 100644 modules_new/vpc/terraform.tfstate.backup
+ create mode 100644 modules_new/vpc/variables.tf
+[root@ip-172-31-60-56 terraform-modules-dvs]# git push
+Username for 'https://github.com': shan5a6
+Password for 'https://shan5a6@github.com':
+Enumerating objects: 27, done.
+Counting objects: 100% (27/27), done.
+Compressing objects: 100% (26/26), done.
+Writing objects: 100% (26/26), 7.12 KiB | 1.78 MiB/s, done.
+Total 26 (delta 6), reused 0 (delta 0)
+remote: Resolving deltas: 100% (6/6), completed with 1 local object.
+To https://github.com/shan5a6/terraform-modules-dvs.git
+   28ab144..8c6d6bd  master -> master
+[root@ip-172-31-60-56 terraform-modules-dvs]# cd /root/
+[root@ip-172-31-60-56 ~]# ls -l
+total 12
+-rw-r--r-- 1 root root  329 May  1 08:11 main.tf
+drwxr-xr-x 7 root root   67 May  2 11:22 modules
+-rw-r--r-- 1 root root  156 May  1 08:15 terraform.tfstate
+-rw-r--r-- 1 root root 3603 May  1 08:15 terraform.tfstate.backup
+[root@ip-172-31-60-56 ~]# cat main.tf
+provider "aws" {
+        region = "us-east-1"
+}
+variable "servername" {
+
+        default = "dvsserver"
+}
+resource "aws_instance" "myec2" {
+  ami           = "ami-048f6ed62451373d9"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+output "myoutput" {
+
+        value = "${var.servername}-${aws_instance.myec2.public_ip}"
+}
+[root@ip-172-31-60-56 ~]# rm -f *tf*
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 7 root root 67 May  2 11:22 modules
+[root@ip-172-31-60-56 ~]# ls -l modules/
+total 0
+drwxr-xr-x 3 root root 161 May  2 10:39 ec2
+drwxr-xr-x 6 root root 155 May  2 11:21 mymodules
+drwxr-xr-x 3 root root 164 May  2 10:39 s3
+drwxr-xr-x 2 root root  41 May  2 10:42 vpc
+[root@ip-172-31-60-56 ~]# mv modules/mymodules .
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 6 root root  50 May  2 11:30 modules
+drwxr-xr-x 6 root root 155 May  2 11:21 mymodules
+[root@ip-172-31-60-56 ~]# rm -rf modules
+[root@ip-172-31-60-56 ~]# mv mymodules modules
+[root@ip-172-31-60-56 ~]# cd modules/
+[root@ip-172-31-60-56 modules]# ls -l ec2/
+total 20
+-rw-r--r-- 1 root root  232 May  2 11:11 main.tf
+-rw-r--r-- 1 root root  134 May  2 11:12 myvars.tfvars
+-rw-r--r-- 1 root root  156 May  2 11:14 terraform.tfstate
+-rw-r--r-- 1 root root 3531 May  2 11:14 terraform.tfstate.backup
+-rw-r--r-- 1 root root  129 May  2 11:12 variables.tf
+[root@ip-172-31-60-56 modules]# cat ec2/main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+resource "aws_instance" "myec2" {
+  ami           = "${var.myami}"
+  instance_type = "${var.servertype}"
+  key_name = "${var.mykeyname}"
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+[root@ip-172-31-60-56 modules]# ls -l
+total 12
+drwxr-xr-x 3 root root  164 May  2 11:14 ec2
+-rw-r--r-- 1 root root  192 May  2 11:19 main.tf
+drwxr-xr-x 3 root root  164 May  2 10:53 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:09 vpc
+[root@ip-172-31-60-56 modules]#
+[root@ip-172-31-60-56 modules]# ls -l
+total 12
+drwxr-xr-x 3 root root  164 May  2 11:14 ec2
+-rw-r--r-- 1 root root  192 May  2 11:19 main.tf
+drwxr-xr-x 3 root root  164 May  2 10:53 s3
+-rw-r--r-- 1 root root  156 May  2 11:21 terraform.tfstate
+-rw-r--r-- 1 root root 3594 May  2 11:21 terraform.tfstate.backup
+drwxr-xr-x 3 root root  164 May  2 11:09 vpc
+[root@ip-172-31-60-56 modules]# cat main
+cat: main: No such file or directory
+[root@ip-172-31-60-56 modules]# cat main.tf
+module "mytestserver" {
+source = "/root/mymodules/ec2/"
+region = "us-east-1"
+myami = "ami-048f6ed62451373d9"
+servername = "dvsserver"
+mykeyname = "aruna_nvirg_key1"
+servertype = "t2.micro"
+
+}
+[root@ip-172-31-60-56 modules]# rm -f *tf*
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 164 May  2 11:14 ec2
+drwxr-xr-x 3 root root 164 May  2 10:53 s3
+drwxr-xr-x 3 root root 164 May  2 11:09 vpc
+[root@ip-172-31-60-56 modules]#
+[root@ip-172-31-60-56 modules]#
+[root@ip-172-31-60-56 modules]# cd ..
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 6 root root 83 May  2 11:33 modules
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]# ls
+modules
+[root@ip-172-31-60-56 ~]#
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 6 root root 83 May  2 11:33 modules
+[root@ip-172-31-60-56 ~]# cd modules
+[root@ip-172-31-60-56 modules]# ls -l
+total 0
+drwxr-xr-x 3 root root 164 May  2 11:14 ec2
+drwxr-xr-x 3 root root 164 May  2 10:53 s3
+drwxr-xr-x 3 root root 164 May  2 11:09 vpc
+[root@ip-172-31-60-56 modules]# cd ..
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 6 root root 83 May  2 11:33 modules
+[root@ip-172-31-60-56 ~]# mkdir app1
+[root@ip-172-31-60-56 ~]# cd app1/
+[root@ip-172-31-60-56 app1]# ls -l
+total 0
+[root@ip-172-31-60-56 app1]# vi main.tf
+[root@ip-172-31-60-56 app1]# ls -l /root/modules/ec2/
+total 20
+-rw-r--r-- 1 root root  232 May  2 11:11 main.tf
+-rw-r--r-- 1 root root  134 May  2 11:12 myvars.tfvars
+-rw-r--r-- 1 root root  156 May  2 11:14 terraform.tfstate
+-rw-r--r-- 1 root root 3531 May  2 11:14 terraform.tfstate.backup
+-rw-r--r-- 1 root root  129 May  2 11:12 variables.tf
+[root@ip-172-31-60-56 app1]# vi main.tf
+[root@ip-172-31-60-56 app1]# cat /root/modules/ec2/variables.tf
+/*Variables*/
+variable "region" {}
+variable "myami" {}
+variable "servername" {}
+variable "mykeyname" {}
+variable "servertype" {}
+[root@ip-172-31-60-56 app1]# vi main.tf
+[root@ip-172-31-60-56 app1]# ls -l
+total 4
+-rw-r--r-- 1 root root 197 May  2 12:49 main.tf
+[root@ip-172-31-60-56 app1]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "mymoduleserver"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+[root@ip-172-31-60-56 app1]# terraform init
+Initializing modules...
+Downloading /root/modules/ec2 for myapp1ec2...
+- myapp1ec2 in .terraform/modules/myapp1ec2
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 app1]# terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.myapp1ec2.aws_instance.myec2 will be created
+  + resource "aws_instance" "myec2" {
+      + ami                                  = "ami-048f6ed62451373d9"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "dev-key"
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "mymoduleserver"
+        }
+      + tags_all                             = {
+          + "Name" = "mymoduleserver"
+        }
+      + tenancy                              = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.myapp1ec2.aws_instance.myec2: Creating...
+module.myapp1ec2.aws_instance.myec2: Still creating... [10s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still creating... [20s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still creating... [30s elapsed]
+module.myapp1ec2.aws_instance.myec2: Creation complete after 32s [id=i-034f068efef425c2d]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 app1]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "mymoduleserver"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+[root@ip-172-31-60-56 app1]# cd ..
+[root@ip-172-31-60-56 ~]# ls -l
+total 0
+drwxr-xr-x 3 root root 91 May  2 12:51 app1
+drwxr-xr-x 6 root root 83 May  2 11:33 modules
+[root@ip-172-31-60-56 ~]# mkdir app2
+[root@ip-172-31-60-56 ~]# cd app
+-bash: cd: app: No such file or directory
+[root@ip-172-31-60-56 ~]# cd app2/
+[root@ip-172-31-60-56 app2]# ls -l
+total 0
+[root@ip-172-31-60-56 app2]# vi main.tf
+[root@ip-172-31-60-56 app2]# pwd
+/root/app2
+[root@ip-172-31-60-56 app2]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "myappserver2"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+
+[root@ip-172-31-60-56 app2]# terraform init
+Initializing modules...
+Downloading /root/modules/ec2 for myapp1ec2...
+- myapp1ec2 in .terraform/modules/myapp1ec2
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v3.38.0...
+- Installed hashicorp/aws v3.38.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[root@ip-172-31-60-56 app2]# ls -l
+total 4
+-rw-r--r-- 1 root root 230 May  2 12:53 main.tf
+[root@ip-172-31-60-56 app2]# terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
+following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.myapp1ec2.aws_instance.myec2 will be created
+  + resource "aws_instance" "myec2" {
+      + ami                                  = "ami-048f6ed62451373d9"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "dev-key"
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "myappserver2"
+        }
+      + tags_all                             = {
+          + "Name" = "myappserver2"
+        }
+      + tenancy                              = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+module.myapp1ec2.aws_instance.myec2: Creating...
+module.myapp1ec2.aws_instance.myec2: Still creating... [10s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still creating... [20s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still creating... [30s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still creating... [40s elapsed]
+module.myapp1ec2.aws_instance.myec2: Creation complete after 42s [id=i-0d9f6dd0068d885da]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@ip-172-31-60-56 app2]# terraform show
+
+# module.myapp1ec2.aws_instance.myec2:
+resource "aws_instance" "myec2" {
+    ami                                  = "ami-048f6ed62451373d9"
+    arn                                  = "arn:aws:ec2:us-east-1:140770401787:instance/i-0d9f6dd0068d885da"
+    associate_public_ip_address          = true
+    availability_zone                    = "us-east-1e"
+    cpu_core_count                       = 1
+    cpu_threads_per_core                 = 1
+    disable_api_termination              = false
+    ebs_optimized                        = false
+    get_password_data                    = false
+    hibernation                          = false
+    id                                   = "i-0d9f6dd0068d885da"
+    instance_initiated_shutdown_behavior = "stop"
+    instance_state                       = "running"
+    instance_type                        = "t2.micro"
+    ipv6_address_count                   = 0
+    ipv6_addresses                       = []
+    key_name                             = "dev-key"
+    monitoring                           = false
+    primary_network_interface_id         = "eni-0409e0c1830264e28"
+    private_dns                          = "ip-172-31-58-224.ec2.internal"
+    private_ip                           = "172.31.58.224"
+    public_dns                           = "ec2-54-172-159-244.compute-1.amazonaws.com"
+    public_ip                            = "54.172.159.244"
+    secondary_private_ips                = []
+    security_groups                      = [
+        "default",
+    ]
+    source_dest_check                    = true
+    subnet_id                            = "subnet-5ab41b6b"
+    tags                                 = {
+        "Name" = "myappserver2"
+    }
+    tags_all                             = {
+        "Name" = "myappserver2"
+    }
+    tenancy                              = "default"
+    vpc_security_group_ids               = [
+        "sg-cc436dc0",
+    ]
+
+    credit_specification {
+        cpu_credits = "standard"
+    }
+
+    enclave_options {
+        enabled = false
+    }
+
+    metadata_options {
+        http_endpoint               = "enabled"
+        http_put_response_hop_limit = 1
+        http_tokens                 = "optional"
+    }
+
+    root_block_device {
+        delete_on_termination = true
+        device_name           = "/dev/xvda"
+        encrypted             = false
+        iops                  = 100
+        tags                  = {}
+        throughput            = 0
+        volume_id             = "vol-00bdce692ba068761"
+        volume_size           = 8
+        volume_type           = "gp2"
+    }
+}
+[root@ip-172-31-60-56 app2]# terraform destroy -auto-approve
+module.myapp1ec2.aws_instance.myec2: Refreshing state... [id=i-0d9f6dd0068d885da]
+module.myapp1ec2.aws_instance.myec2: Destroying... [id=i-0d9f6dd0068d885da]
+kmodule.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-0d9f6dd0068d885da, 10s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-0d9f6dd0068d885da, 20s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-0d9f6dd0068d885da, 30s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-0d9f6dd0068d885da, 40s elapsed]
+module.myapp1ec2.aws_instance.myec2: Destruction complete after 50s
+
+Destroy complete! Resources: 1 destroyed.
+[root@ip-172-31-60-56 app2]# terraform workspace  list
+* default
+
+[root@ip-172-31-60-56 app2]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "myappserver2"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+
+[root@ip-172-31-60-56 app2]# cat /root/modules/ec2/variables.tf
+/*Variables*/
+variable "region" {}
+variable "myami" {}
+variable "servername" {}
+variable "mykeyname" {}
+variable "servertype" {}
+[root@ip-172-31-60-56 app2]# cat /root/modules/ec2/main.tf
+provider "aws" {
+
+        region = "${var.region}"
+}
+
+resource "aws_instance" "myec2" {
+  ami           = "${var.myami}"
+  instance_type = "${var.servertype}"
+  key_name = "${var.mykeyname}"
+  tags = {
+    Name = "${var.servername}"
+  }
+}
+[root@ip-172-31-60-56 app2]#
+[root@ip-172-31-60-56 app2]#
+[root@ip-172-31-60-56 app2]#
+[root@ip-172-31-60-56 app2]#
+[root@ip-172-31-60-56 app2]# terraform show
+
+[root@ip-172-31-60-56 app2]# cd ../app1/
+[root@ip-172-31-60-56 app1]# terraform destroy -auto-approve
+module.myapp1ec2.aws_instance.myec2: Refreshing state... [id=i-034f068efef425c2d]
+module.myapp1ec2.aws_instance.myec2: Destroying... [id=i-034f068efef425c2d]
+module.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-034f068efef425c2d, 10s elapsed]
+module.myapp1ec2.aws_instance.myec2: Still destroying... [id=i-034f068efef425c2d, 20s elapsed]
+module.myapp1ec2.aws_instance.myec2: Destruction complete after 30s
+
+Destroy complete! Resources: 1 destroyed.
+[root@ip-172-31-60-56 app1]#
+[root@ip-172-31-60-56 app1]#
+[root@ip-172-31-60-56 app1]# cat ~/.aws/config
+[default]
+output = json
+region = us-east-1
+[root@ip-172-31-60-56 app1]# cat ~/.aws/credentials
+[default]
+aws_access_key_id = AKIASBRUR3X5TQUXDVSL
+aws_secret_access_key = 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
+[root@ip-172-31-60-56 app1]# aws configure --profile us-east-2
+AWS Access Key ID [None]: AKIASBRUR3X5TQUXDVSL
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-2
+Default output format [None]: json
+[root@ip-172-31-60-56 app1]# cat ~/.aws/config
+[default]
+output = json
+region = us-east-1
+[profile us-east-2]
+output = json
+region = us-east-2
+[root@ip-172-31-60-56 app1]# cat ~/.aws/credentials
+[default]
+aws_access_key_id = AKIASBRUR3X5TQUXDVSL
+aws_secret_access_key = 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
+[us-east-2]
+aws_access_key_id = AKIASBRUR3X5TQUXDVSL
+aws_secret_access_key = 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
+[root@ip-172-31-60-56 app1]#
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes
+{
+    "Volumes": [
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-0ced293ff1432af0c",
+            "State": "available",
+            "Iops": 100,
+            "SnapshotId": "snap-046fb53cd6361efc5",
+            "CreateTime": "2021-04-06T16:09:01.975Z",
+            "MultiAttachEnabled": false,
+            "Size": 8
+        },
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [],
+            "Tags": [
+                {
+                    "Value": "standarddisk",
+                    "Key": "Name"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-0c1d36b443a02c749",
+            "State": "available",
+            "Iops": 100,
+            "SnapshotId": "",
+            "CreateTime": "2021-04-15T02:20:01.550Z",
+            "MultiAttachEnabled": false,
+            "Size": 10
+        },
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [
+                {
+                    "AttachTime": "2021-05-01T05:17:50.000Z",
+                    "InstanceId": "i-0cc802b65016f9f2f",
+                    "VolumeId": "vol-03ce30d41c5417b34",
+                    "State": "attached",
+                    "DeleteOnTermination": true,
+                    "Device": "/dev/xvda"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-03ce30d41c5417b34",
+            "State": "in-use",
+            "Iops": 100,
+            "SnapshotId": "snap-0d6a2ac1feca4cf17",
+            "CreateTime": "2021-05-01T05:17:50.205Z",
+            "MultiAttachEnabled": false,
+            "Size": 8
+        },
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [
+                {
+                    "AttachTime": "2021-05-01T05:17:50.000Z",
+                    "InstanceId": "i-08737e0322f047a67",
+                    "VolumeId": "vol-0e5bc2e2fe5db7e33",
+                    "State": "attached",
+                    "DeleteOnTermination": true,
+                    "Device": "/dev/xvda"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-0e5bc2e2fe5db7e33",
+            "State": "in-use",
+            "Iops": 100,
+            "SnapshotId": "snap-0d6a2ac1feca4cf17",
+            "CreateTime": "2021-05-01T05:17:50.236Z",
+            "MultiAttachEnabled": false,
+            "Size": 8
+        },
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [
+                {
+                    "AttachTime": "2021-05-01T05:17:50.000Z",
+                    "InstanceId": "i-0332b1780cd7b5c02",
+                    "VolumeId": "vol-021802c4807da93e8",
+                    "State": "attached",
+                    "DeleteOnTermination": true,
+                    "Device": "/dev/xvda"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-021802c4807da93e8",
+            "State": "in-use",
+            "Iops": 100,
+            "SnapshotId": "snap-0d6a2ac1feca4cf17",
+            "CreateTime": "2021-05-01T05:17:50.137Z",
+            "MultiAttachEnabled": false,
+            "Size": 8
+        },
+        {
+            "AvailabilityZone": "us-east-1e",
+            "Attachments": [
+                {
+                    "AttachTime": "2021-05-01T07:29:09.000Z",
+                    "InstanceId": "i-07735531d7448bcc9",
+                    "VolumeId": "vol-09f82405e3d67b9c2",
+                    "State": "attached",
+                    "DeleteOnTermination": true,
+                    "Device": "/dev/xvda"
+                }
+            ],
+            "Encrypted": false,
+            "VolumeType": "gp2",
+            "VolumeId": "vol-09f82405e3d67b9c2",
+            "State": "in-use",
+            "Iops": 100,
+            "SnapshotId": "snap-0d6a2ac1feca4cf17",
+            "CreateTime": "2021-05-01T07:29:09.623Z",
+            "MultiAttachEnabled": false,
+            "Size": 8
+        }
+    ]
+}
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes|grep "Size"
+            "Size": 8
+            "Size": 10
+            "Size": 8
+            "Size": 8
+            "Size": 8
+            "Size": 8
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes|grep "Size"|wc -l
+6
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes --profile default|grep "Size"|wc -l
+6
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes --profile us-east-2|grep "Size"|wc -l
+0
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes --profile us-east-2|grep "Size"|wc -l
+1
+[root@ip-172-31-60-56 app1]# aws ec2 describe-volumes --profile us-east-2|grep "Size"
+            "Size": 1
+[root@ip-172-31-60-56 app1]# cat ~/.aws/config
+[default]
+output = json
+region = us-east-1
+[profile us-east-2]
+output = json
+region = us-east-2
+[root@ip-172-31-60-56 app1]# cd ..
+[root@ip-172-31-60-56 ~]# cd -
+/root/app1
+[root@ip-172-31-60-56 app1]# ls -l
+total 12
+-rw-r--r-- 1 root root  197 May  2 12:49 main.tf
+-rw-r--r-- 1 root root  156 May  2 13:20 terraform.tfstate
+-rw-r--r-- 1 root root 3591 May  2 13:20 terraform.tfstate.backup
+[root@ip-172-31-60-56 app1]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "mymoduleserver"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+[root@ip-172-31-60-56 app1]# vi main.tf
+[root@ip-172-31-60-56 app1]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "mymoduleserver"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+
+module "myowns3" {
+        source = "/root/modules/s3"
+
+
+}
+[root@ip-172-31-60-56 app1]# whoami
+root
+[root@ip-172-31-60-56 app1]# echo "~ec2-user"
+~ec2-user
+[root@ip-172-31-60-56 app1]# echo "$(~ec2-user)"
+-bash: /home/ec2-user: Is a directory
+
+[root@ip-172-31-60-56 app1]# su - ec2-user
+Last login: Sun May  2 10:32:05 UTC 2021 from bba308746.alshamil.net.ae on pts/0
+[ec2-user@ip-172-31-60-56 ~]$ pwd
+/home/ec2-user
+[ec2-user@ip-172-31-60-56 ~]$ touch gowtham.txt
+[ec2-user@ip-172-31-60-56 ~]$ ls -l ~/gowtham.txt
+-rw-rw-r-- 1 ec2-user ec2-user 0 May  2 13:36 /home/ec2-user/gowtham.txt
+[ec2-user@ip-172-31-60-56 ~]$ logout
+[root@ip-172-31-60-56 app1]# ll
+total 12
+-rw-r--r-- 1 root root  258 May  2 13:34 main.tf
+-rw-r--r-- 1 root root  156 May  2 13:20 terraform.tfstate
+-rw-r--r-- 1 root root 3591 May  2 13:20 terraform.tfstate.backup
+[root@ip-172-31-60-56 app1]# cat main.tf
+module "myapp1ec2" {
+
+        source = "/root/modules/ec2"
+        region = "us-east-1"
+        myami = "ami-048f6ed62451373d9"
+        servername = "mymoduleserver"
+        mykeyname = "dev-key"
+        servertype = "t2.micro"
+
+}
+
+module "myowns3" {
+        source = "/root/modules/s3"
+
+
+}
+[root@ip-172-31-60-56 app1]# ls -l
+total 12
+-rw-r--r-- 1 root root  258 May  2 13:34 main.tf
+-rw-r--r-- 1 root root  156 May  2 13:20 terraform.tfstate
+-rw-r--r-- 1 root root 3591 May  2 13:20 terraform.tfstate.backup
+[root@ip-172-31-60-56 app1]# mv main.tf main-dev.tf
+[root@ip-172-31-60-56 app1]# cp main-dev.tf main-prod.tf
+[root@ip-172-31-60-56 app1]# ls -l
+total 16
+-rw-r--r-- 1 root root  258 May  2 13:34 main-dev.tf
+-rw-r--r-- 1 root root  258 May  2 13:42 main-prod.tf
+-rw-r--r-- 1 root root  156 May  2 13:20 terraform.tfstate
+-rw-r--r-- 1 root root 3591 May  2 13:20 terraform.tfstate.backup
+[root@ip-172-31-60-56 app1]# #cp main-dev.tf main.tf
+[root@ip-172-31-60-56 app1]#
