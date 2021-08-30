@@ -1,0 +1,142 @@
+Configuring the Pipe Line ::
+
+NOTE: MAKE SURE YOU ARE HAVING PASSWORDLESS LOGIN FROM JENKINS TO ALL APPLICATION SERVERS
+
+1. Configuring Java in the machine (Jenkins server)
+	yum install java-1.8.0-openjdk-devel -y
+	java -version
+	update-alternatives --config java
+	update-alternatives --config javac
+	java -version
+	
+2. Configuring Jenkins :: (Jenkins server)
+
+	wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
+	rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+	yum install jenkins -y
+	Make the jenkins to be running as root user like below.
+	[root@jenkins apache]# grep -v "^#" /etc/sysconfig/jenkins|grep -i user
+	JENKINS_USER="root"
+	chown -R root:root /var/lib/jenkins/ /var/cache/jenkins /var/log/jenkins
+	systemctl restart jenkins
+	systemctl enable jenkins
+	
+Once done with the above installation we are going to configure the build job as part of the jenkins using our maven !!!
+
+
+3. Installing and configuring apache-tomcat as part the machine. ( Other Machine )
+
+NOTE:
+First hit the url "http://www-eu.apache.org/dist/tomcat/tomcat-8/" get the version and change the variable 
+"Version" to the latest version number  in the below execution.
+
+Installation::
+
+	yum install java-1.8.0-openjdk-devel -y
+	export Version=8.5.58
+	wget http://www-eu.apache.org/dist/tomcat/tomcat-8/v${Version}/bin/apache-tomcat-${Version}.tar.gz
+	tar xvfz apache-tomcat-${Version}.tar.gz
+	mv apache-tomcat-${Version}.tar.gz /tmp/
+	mv apache-tomcat-${Version}/ tomcat8
+	cd tomcat8/conf/
+	vim server.xml
+	:%s/8080/80/g
+	cd ..
+	bin/startup.sh
+	netstat -nap|grep :80
+	
+	Configuring User @ Tomcat level:
+	
+		cd /root/tomcat8/webapps/manager/META-INF
+		Keep the context.xml file with below data ( Insimple please remove the "value" part)
+		
+		[root@jenkins META-INF]# cat context.xml
+		<?xml version="1.0" encoding="UTF-8"?>
+		<!--
+		  Licensed to the Apache Software Foundation (ASF) under one or more
+		  contributor license agreements.  See the NOTICE file distributed with
+		  this work for additional information regarding copyright ownership.
+		  The ASF licenses this file to You under the Apache License, Version 2.0
+		  (the "License"); you may not use this file except in compliance with
+		  the License.  You may obtain a copy of the License at
+
+			  http://www.apache.org/licenses/LICENSE-2.0
+
+		  Unless required by applicable law or agreed to in writing, software
+		  distributed under the License is distributed on an "AS IS" BASIS,
+		  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		  See the License for the specific language governing permissions and
+		  limitations under the License.
+		-->
+		<Context antiResourceLocking="false" privileged="true" >
+		  <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+		</Context>
+		
+		[root@jenkins META-INF]#
+		Hint:: use: :%s/\t//g for replacing wide tab spaces !!
+
+	Configuring user :
+		cd /root/tomcat8/conf
+		vim tomcat-users.xml
+		add the below content.
+		<role rolename="manager-gui"/>
+		<role rolename="manager-script"/>
+		<user username="dvsdevops" password="dvsdevops" roles="manager-gui,manager-script"/>
+		
+		/root/tomcat8/bin/shutdown.sh
+		/root/tomcat8/bin/startup.sh
+		
+		Now try to access the site using your user "dvsdevops" & password "dvsdevops"
+		
+		
+		
+4. Installing and configuring you maven !!! (On Jenkins server)
+
+	wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+	sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+	yum install -y apache-maven git -y
+
+	mvn --version
+	
+5. Installing and configuring ansible in Jenkins server itself
+	sudo amazon-linux-extras install epel -y
+	sudo yum install ansible -y
+	Note: make sure that you are having password less login to the apache server (slave machines) from your jenkins server via root.
+	
+	
+Deploying final code:
+
+Note:
+Enable the webhooks for Push & Pullrequest triggers
+
+1. Create a jenkins job like below For CI.
+    mkdir /root/myweb
+	chmod 777 /root/
+
+	Jenkins-> Newitem->name (myweb-ci)->source code management (git) -->https://github.com/shan5a6/myweb --> Branch --> */release -->Builds --> click on 
+	Add build step --> Invoke top-level Maven Targets --> type "clean package" under goals --> Build --> Execute shell -->mkdir -p /root/myweb/; /bin/cp /var/lib/jenkins/workspace/myweb-ci/target/myweb-0.*.war /root/myweb/ -f
+	--> save
+	
+	
+2. Create a jenkins job for CD pipe line
+	Jenkins--> Newitem --> myweb-cd --> source code management (git) -->https://github.com/shan5a6/myweb --> Branch --> */master -->
+	Build--> Execute shell --> ansible-playbook -i ./hosts ./myweb.yml --> save 
+	
+	Note: Make sure that you are clicking on githubwebhook poll scm option.
+	
+Note: When you are executing the above just change the hosts names as part of your hosts file & change the 
+deployment code (myweb.yml) file accordingly !!
+
+
+	
+
+	
+	
+	
+
+	
+	
+	
+	

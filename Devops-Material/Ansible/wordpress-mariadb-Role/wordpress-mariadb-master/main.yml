@@ -1,0 +1,16 @@
+---
+- name: working on db installation
+  hosts: db
+  vars_files:
+    - ./vars/db-vars.yaml
+  roles:
+    - mysql
+
+
+
+- name: working on app installation
+  hosts: app
+  vars_files:
+    - ./vars/db-vars.yaml
+  roles:
+    - wordpress

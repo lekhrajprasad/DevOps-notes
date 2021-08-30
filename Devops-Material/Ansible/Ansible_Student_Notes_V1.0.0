@@ -1,0 +1,720 @@
+Ansible Student Notes:
+
+Black - background
+white - font
+
+Topic 1 ::
+
+1. Installation:
+
+Redhat/Centos:
+
+https://protect-eu.mimecast.com/s/Ja74CZYB4F5B054OujNCGX?domain=digitalocean.com
+
+Amazon Image:
+Normal Form::
+sudo amazon-linux-extras install epel -y
+sudo yum install ansible -y
+
+Simplest form::
+#pip install ansible
+
+
+Topic 2:
+
+Configuring VIM as per our requirement ::
+
+highlight-ansible-yaml-and-jinja-syntax-in-vim-editor ::
+
+mkdir -p ~/.vim/autoload ~/.vim/bundle 
+curl -LSso ~/.vim/autoload/pathogen.vim https://protect-eu.mimecast.com/s/WnjQC2xmRcpygplnc2nVUs?domain=tpo.pe
+
+Now add the following lines to vim ~/.vimrc to activate this and start autoloading bundles.
+
+[root@slave1 ansible]# vim ~/.vimrc
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+
+Topic 3::
+
+YAML Basics::
+
+Explain in detail about the basics of variables
+https://yaml-online-parser.appspot.com/?_sm_au_=iHVjTRJS7kJJs5NrJf17vK0T8QQJ4
+
+comments (#)
+Variables
+booleans
+lists
+dictionaries
+multilines (> & !)
+Dict of Dict
+
+Examples For YML :
+
+#Hello all this is the comment section
+
+
+val1: 430
+
+bool1: "Ture"
+
+l1:
+  - 1
+  - 2
+  - 3
+
+l2: [1,2,3,4]
+
+
+dict1:
+   - name: "n1"
+   
+dict2:
+  - name: "dvs"
+  - 1
+  - 2
+  - 3
+  - place: "blr"
+  - l1:
+     - 1
+     - 2
+     - 3
+
+Topic 4::
+
+Configuring Ansible as per our requirement
+
+1. Configure ansible using default configuration i.e.,
+
+/etc/ansible/ansible.cfg
+
+or
+
+your custom ansible.cfg file
+
+[defaults]
+inventory      = ./hosts
+interpreter_python = /usr/bin/python
+private_key_file = ./mykey.pem
+
+[privilege_escalation]
+become=True
+become_method=sudo
+become_user=root
+
+Note:
+1. Explain them one by one like adding private_key_file & then adding become_user & etc one by one as per our requirement
+2. Add the privilege_escalation part post explanation of modules & yaml
+3. Explain them using module via cli not via playbooks
+
+
+Example default configuration file::
+https://protect-eu.mimecast.com/s/UNk-C5Qp8TZN2ZjqhNWduM?domain=raw.githubusercontent.com :-> Link of default anisble.cfg
+
+2. Configure ansible using our own configuration i.e.,
+
+By default we will be having /etc/ansible/ansible.cfg file which contains all the defaults configuration but it will be in comments. we need to
+configure the things based up on our requirement.
+             
+* you can configure the things based up on your requirement. It means its not mandatory to use the base location i.e /etc/ansible as you parent directory.
+
+* you can configure any directory as your base directory but you need to convey the details to it like below.
+
+# mkdir /ansible
+#cd /ansible
+[root@master ansible]# cat ansible.cfg
+[defaults]
+inventory= /ansible/hosts
+
+#Configuring hosts file:
+Testing using:
+
+ansible -m command -a "uptime" all/group/clientname
+
+Accessing servers inside parent directory and outside parent directory
+
+3. Complete theory about the background process of ansible execution
+
+What Exactly Happens in background:
+
+1. Generate a python script
+2. Copy the script to respective servers
+3. Execute the script on respective servers
+4. Wait for the script to complete execution on all hosts
+
+Its Important To note that:
+
+1. Ansible runs each task in parallel across all hosts
+2. Ansible waits until all hosts have completed a task befor moving to the next node
+3. Ansible runs the tasks in the order that you specify them.
+
+4. To manage a server with ansible, the server needs to have ssh & python 2.5 or later installed or python 2.4 with the python simple json
+library installed
+5. Ansible is an agent less configuration tool which works on ssh port (22)
+6. Pushbased: Unlike chef and puppet ansible is push based . It simply executes the playbook from parent/ansible server to its clients. Where as puppet and ansible are agent based.
+7. Ansible scales down: Which means you can define a single host to "n" number of hosts for configuring.
+
+* Idempotent
+
+Idempotent in simple: If its installed then it won't do any thing, if its not installed it will install it. If any changes are made then it will revert back. Hence these
+type of behaviour is called Idempotent.
+
+4. Adding inventory variables
+
+[dev]
+master ansible_ssh_host=https://protect-eu.mimecast.com/s/oI-QC6Xq6hrwqrOQT21hVC?domain=35.176.200.8 ansible_ssh_port=22
+
+Other Inventory Parameters:
+
+Name                Default         Description
+ansible_ssh_host    name(hosts)     hostname
+ansible_ssh_port    22              Port to ssh to
+ansible_ssh_user    root            user to do the ssh
+ansible_ssh_pass    none            password for ssh authentication
+ansible_ssh_private_
+key_file            none            private key to access m/c's
+ansible_connection  smart           connection to host types
+ansible_shell_type  sh              shell to use for commands
+
+* Organizing the servers under groups.
+* Numbered hosts
+    client1 client2 client3 (client[1:3])
+    web1.example.com,web2.example.com (web[1:3]https://protect-eu.mimecast.com/s/fK6PCgZj5TAQDA0VskXbuE?domain=example.com)
+
+
+Topic 5::
+
+Modules::
+
+1. Command
+2. File
+Explain in detail about the importance of idempotency
+Note: state: touch
+3. Copy
+4. Template(force=no)
+5. Script
+6. Debug
+
+Example ::
+
+[ec2-user@master ansible]$ cat modules.yml
+---
+- name: working with playbooks
+  hosts: all
+  tasks:
+    - name: working with command module
+      shell: "uptime;df -hT"
+
+    - name: working with file module
+      file:
+        path: /etc/foo.conf
+        owner: root
+        mode: '0644'
+        state: touch
+
+    - name: working with copy module
+      copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: working with template
+      template:
+        src: /etc/passwd
+        dest: /tmp/dvsbatch/
+        force: no
+
+    - name: working with script
+      script: ./myscript.py
+      register: script_output
+
+    - debug: msg="{{script_output.stdout_lines[0]}}"
+
+
+
+Topic 6::
+
+Variables
+
+Variables plays an important role in writing any code. We have many ways of creating & declaring the variables
+
+1. Inside Playbooks via "vars:" section
+
+2. Using vars_files
+
+3. Using host_vars
+
+Note:
+https://protect-eu.mimecast.com/s/UxyuClxoOc24j2ngtvcCD9?domain=1.here under hosts we are using "master" since we are delaing with host_vars part we are representing direclty our host name
+2. Though you give "all" as part of the hosts, only it will display the variables which are defined for that particular host.
+
+4. Using group_vars
+
+5. Using Inventory File(=)
+
+6. Built in variables
+    set_fact module : Take some output and assign the value to a variable and print the output got stored via this module on the screen.
+
+7. Passing variables @ runtime
+
+
+
+Variable Precedence:
+
+role defaults
+inventory file or script group vars
+inventory group_vars/all
+playbook group_vars/all
+inventory group_vars/*
+playbook group_vars/*
+inventory file or script host vars
+inventory host_vars/*
+playbook host_vars/*
+host facts
+play vars
+play vars_prompt
+play vars_files
+role vars (defined in role/vars/main.yml)
+block vars (only for tasks in block)
+task vars (only for the task)
+role (and include_role) params
+include params
+include_vars
+set_facts / registered vars
+extra vars (always win precedence)
+
+
+Topic 7::
+
+Conditions::
+
+Use "setup module" for explaining !
+
+Using "when" for the conditions
+
+"ansible_distribution": "Amazon",
+"ansible_os_family": "RedHat"
+
+1. ==
+2. or
+3. and
+4. < & >
+5. True, False
+6. undefined, defined
+
+Example::
+[ec2-user@master ansible]$ cat conditions.yml
+---
+- name: working with conditions
+  hosts: master
+  vars:
+    myval: 10
+    truth: true
+  tasks:
+    - name: working with == operator
+      command: echo "I am under == opertaor"
+      when: ( ansible_distribution == "Amazon" ) or ( ansible_os_family == "Redat" )
+    - name: working with == operator
+      command: echo "I am under == opertaor"
+      when: ( ansible_distribution == "Amazon" ) and ( ansible_os_family == "Redat" )
+
+    - name: working with > & < operators
+      command: echo "my value is {{myval}}"
+      when: "{{myval}} < 20 "
+
+
+    - name: testing the true or false
+      command: echo "Hi I am true"
+      when: truth
+
+    - name: testing is defined
+      command: echo "my val is {{ mynew_val }}"
+      when: mynew_val is defined
+ 
+ 
+Topic 8::
+
+Loops ::
+
+1. with_items
+2. with_fileglob
+3. with_lines
+4. with_dict (ansible_default_ipv4)
+5. with_sequence
+
+Topic 9::
+
+Special Cases ::
+
+1. ignore_errors
+2. delegate_to
+3. Running one one host at a time
+serial: 1 or serial: 2
+"serial: 1" represents that execution is going to happen 1 by 1
+If you mention that one as "serial: 2" then executioin will be 2 servers per run.
+
+max_fail_percentage: 25
+Here it represents that all the tasks will get executed @ max of 1 failure per 4 servers.
+
+4. ansible vault
+
+ansible-vault commands:
+
+ansible-vault encrypt file.yml :-> Encrypts the existing file
+ansible-vault decrypt file.yml :-> Decrypts the encrypted file
+ansible-vault view file.yml --vault-password-file=passwd:-> helps you to view the file
+ansible-vault create file.yml :-> helps you to create the new encrypted file
+ansible-vault edit file.yml    :-> helps to edit the encrypted file.
+ansible-playbook --vault-password-file=passwd ignore_errors.yml
+
+Topic 10::
+
+Debugging Ansible Play Books ::
+
+1. Limiting Which Hosts To Run
+2. Debugging SSH Issues : (use of -vv (verbose))
+3. Debug Mode
+
+Checking Your Playbook Before Execution:
+
+1. Syntax Check: (--syntax-check)
+
+2. List Hosts: (--list-hosts)
+
+3. Listing All the Tasks: (--list-tasks)
+
+4. Check Mode: (-C)
+
+5. Step: (--step)
+
+6. Start-at-Task: (--start-at-task)
+
+7. Tagging: (tags/-t)
+
+8. import_playbook
+
+Helps you to execute multiple things at a time under a single file.
+
+[root@master playbooks]# cat main.yml
+---
+- import_playbook: when.yml
+- import_playbook: script.yml
+[root@master playbooks]#
+
+
+Topic 11::
+
+1. Installing and configuring httpd manually
+
+yum install httpd -y
+systemctl enable httpd
+curl http://169.254.169.254/latest/meta-data/public-ipv4
+cd /var/www/html/
+vim index.html
+<html>
+<h1>Hello Team How are you doing </h1>
+</html>
+systemctl restart httpd
+
+2. Automating it with playbooks
+
+1. Create index.html with below data
+vim index.html
+<html>
+<h1>Hello Team How are you doing </h1>
+</html>
+
+2. Playbook
+[ec2-user@master ansible]$ cat http.yaml
+---
+- name: Installing httpd
+  hosts: app
+  tasks:
+    - name: collecting public ipaddress
+      command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+      register: output
+
+    - set_fact: ipaddress="{{output.stdout}}"
+
+    - name: Installing apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: enabling httpd on runlevel
+      command: systemctl enable httpd
+
+    - name: Modify httpd.conf file
+      replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^#ServerName www.example.com'
+        replace: 'ServerName {{ipaddress}}'
+      notify: http restart
+
+    - name: copying index.html file
+      template:
+        src: ./index.html
+        dest: /var/www/html/
+        owner: apache
+        group: apache
+        mode: 644
+
+  handlers:
+    - name: http restart
+      service:
+        name: httpd
+        state: restarted
+
+12. Seggregating using Roles
+
+Roles :: (Scale up your playbooks)
+
+ansible-galaxy init --init-path=/ansible/playbooks/roles/ apache
+
+Exp:
+
+Till now we were continously working on playbooks, just image if we have 3 environments like test,syst&prod. Where each and every environment requries certain set of
+packages. We need certain mechanism to keep all the packages as part of one umberella. In such cases we will be having one concept called "ROLES"
+
+
+[root@master roles]# tree -A apache/
+apache/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── readme.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+From the above we can conlude that you no need to declare the variables,tasks,hosts,templates,files,handlers seperately. For each n every term we have seperate place to declare under role.
+
+defaults ->helps to declare the default variables
+files :-> you can keep the files you want to send or use
+handlers :-> Helps to define the handlers
+meta :-> stores the dependent details
+tasks :-> helps to write the tasks
+templates :-> Helps to create the templates
+vars :-> helps you to declare the variables.
+
+Structure ::
+
+[ec2-user@master ansible]$ cat main.yaml
+---
+- name: working with apache role
+  hosts: app
+  roles:
+    - apache
+[ec2-user@master ansible]$ tree roles/
+roles/
+└── apache
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    │   └── index.html
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+13. Configuring Wordpress application
+
+1. Manual Installation of Database ::
+
+yum install mariadb-server
+systemctl enable mariadb.service
+systemctl restart mariadb.service
+
+mysql:
+
+CREATE USER 'admin'@'%' IDENTIFIED BY 'admin123';
+GRANT ALL PRIVILEGES ON * . * TO 'admin'@'%';
+FLUSH PRIVILEGES;
+create database devopsdb;
+
+Verification::
+select host, user, password from mysql.user;
+DROP USER 'admin'@'localhost';
+
+Automating the configuration using ansible roles ::
+
+
+2. Manual Installation of application
+
+sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+sudo yum install -y httpd
+sudo systemctl start httpd
+sudo systemctl enable httpd
+wget https://wordpress.org/latest.tar.gz
+tar -xzf latest.tar.gz
+sudo cp -r wordpress/* /var/www/html/
+cd /var/www/html/
+sudo cp wp-config-sample.php wp-config.php
+
+Post db installation do the below.
+
+sudo vi wp-config.php --> add the database details to this file
+sudo chown -R apache /var/www
+sudo chgrp -R apache /var/www
+sudo chmod 775 /var/www
+sudo find /var/www -type d -exec sudo chmod 2775 {} \;
+sudo find /var/www -type f -exec sudo chmod 0664 {} \;
+sudo systemctl restart httpd
+
+Automating the configuration using ansible roles ::
+
+Final Code ::
+https://github.com/shan5a6/wordpress-mariadb.git
+
+14. Integrating Ansible with AWS ::
+
+Basic Requirement:
+
+# aws configure
+[root@master playbooks]# aws configure
+AWS Access Key ID [****************EBFA]:
+AWS Secret Access Key [****************DOqF]:
+Default region name [us-west-2]: eu-west-2
+Default output format [json]: json
+
+
+Installtin boto3
+
+pip install boto3 boto
+
+Note: If anisble is not there make sure you are installing it with "pip install ansible"
+
+If you are getting below error then make sure you are adding "become: False" in the playbook.
+
+TASK [creating a normal basic instance] ***************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "No handler was ready to authenticate. 1 handlers were checked. ['HmacAuthV4Handler'] Check your credentials"}
+
+
+Examples:
+
+1. Creating Ec2 instance using "ec2" module
+
+[root@master playbooks]# cat ec2-create.yml
+---
+- name: working with ec2 instance creation
+  vars:
+    - serv_count: 0
+  hosts: localhost
+  become: False
+  tasks:
+    - name: creating a normal basic instance
+      ec2:
+           key_name: newkeys_swamy_useast1
+           instance_type: t2.micro
+           image: ami-97785bed
+           wait: yes
+           group: opentoworld
+           count: "{{serv_count}}"
+           vpc_subnet_id: subnet-d88cbcf4
+           assign_public_ip: yes
+           region: us-east-1
+      register: output
+
+    - debug: msg="{{output}}"
+
+2. Creating a VPC with a public subnet and security groups.
+
+---
+- name: creating a vpc
+  hosts: localhost
+  become: False
+  tasks:
+    - name: working with VPC creation
+      ec2_vpc_net:
+          name: "mytestvpc"
+          cidr_block: "192.168.0.0/16"
+          region: "us-east-1"
+          state: "present"
+      register: myvpc
+
+# Assigning the vpc id to a variable
+
+    - set_fact: vpc_id="{{myvpc.vpc.id}}"
+    - command: echo "{{vpc_id}}"
+
+# Creating a public Subnet
+
+    - name: creating a public Subnet
+      ec2_vpc_subnet:
+        state: "present"
+        vpc_id: "{{vpc_id}}"
+        cidr: "192.168.10.0/24"
+        resource_tags:
+          Name: "Public Subnet"
+
+      register: my_public_subnet
+
+# Assigning public subnet id to a variable
+
+    - set_fact: pub_sub_id="{{my_public_subnet.subnet.id}}"
+
+# Creating IGW for the vpc
+
+    - name: creating the IGW
+      ec2_vpc_igw:
+        vpc_id: "{{vpc_id}}"
+        region: "us-east-1"
+        state:  "present"
+      register: my_vpc_igw
+
+# Assigning igw id to a variable
+
+    - set_fact: igw_id="{{my_vpc_igw.gateway_id}}"
+
+# Creating the route table
+
+    - name: creating our own route table
+      ec2_vpc_route_table:
+        vpc_id: "{{vpc_id}}"
+        region: "us-east-1"
+        tags:
+          Name: "public"
+        subnets:
+          - "{{pub_sub_id}}"
+        routes:
+          - dest: "0.0.0.0/0"
+            gateway_id: "{{igw_id}}"
+
+
+# Creating our own security group
+
+    - name: creating our own security group
+      ec2_group:
+        name: "Ansible securitygroup"
+        description: "Ansible SG"
+        vpc_id: "{{vpc_id}}"
+        region: "us-east-1"
+        rules:
+          - proto: "tcp"
+            from_port: 0
+            to_port:  65000
+            cidr_ip: "0.0.0.0/0"

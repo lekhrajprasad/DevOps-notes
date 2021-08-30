@@ -1,0 +1,8 @@
+---
+- name: working with vault
+  hosts: prod
+  vars_files:
+   - crcp.yml
+  tasks: 
+   - name: vault
+     command: echo "{{servername}}"

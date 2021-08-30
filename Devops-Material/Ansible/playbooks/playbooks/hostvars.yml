@@ -1,0 +1,16 @@
+---
+- name: working with hostvars
+  hosts: prod
+  vars:
+    ip: "{{hostvars['master'].ansible_all_ipv4_addresses}}"
+  tasks:
+    - name: printing the hostvars
+      debug: msg="{{hostvars['master'].ansible_all_ipv4_addresses}}"
+
+    - name: printing ipaddress
+      command: echo "{{ip}}"
+      register: output
+    - debug: msg="{{output.stdout}}"
+
+    - name: using set_fact
+      set_fact: my_var="{{hostvars['master']}}"

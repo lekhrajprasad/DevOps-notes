@@ -1,0 +1,72 @@
+Python Interview Questions:
+
+cat /tmp/test|awk '{print NR,$0}'
+
+
+1. What is Dictionary and Tuples and lists and sequences and Sets
+
+2. How do you remove duplicates in lists and Strings?
+
+3. Write a program in regular expression to Authenticate the password
+
+4. Write a program about telnet
+
+5. Global Variable and Local Variable explain with Example
+
+6. What are dictionaries? where do you use them ? and why?
+
+7. How can you create and Write and save a File ?
+
+8. How do you read a New file and give privileges?
+
+9. Write a program for validating the date. Explain each step
+
+10. Write a program to print even and odd numbers
+
+11. How do you replace the contents in a File
+
+12. Difference between insert and Append
+
+13. How do you use Range () function? Explain with Example
+
+14. Global Variable and Local Variable
+
+15. Write a program to interchange the variables without using the Temp.
+
+16. To Remove duplicates form a Array
+
+17. In a string find all the numbers
+
+18. Write a program to search a word in a file .
+
+19. Explain briefly about basic data types.
+22. Explain Regular Expression.
+
+23. Difference between Tuple and list
+
+24. Difference between match and search
+
+25. What is findall in RE?
+
+26. How the function works?
+
+27. Algorithm for a dice game
+
+28.  Complexity of code?
+
+29. Find match of IP using grep
+
+30. Description of any package in detail worked upon.
+
+31. Script to SSH into a remote server from host ip
+
+32. Write a program of IP Address using Regular Expression.
+
+33. Program to SSH in Python
+
+34. Explain current scope of work of which framework is followed and packages and modules worked upon.
+
+35. Program for factorial of a number
+
+36. Write a palindrome program
+

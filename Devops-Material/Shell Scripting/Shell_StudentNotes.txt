@@ -1,0 +1,183 @@
+Unix & Linux Shell Scripting:
+
+Special Files:
+
+/dev/null
+
+echo "hello" > /dev/null
+
+/dev/tty
+
+cp file > /dev/tty
+
+Variables:
+
+1. Predifined
+2. User defined
+- Null Variables
+- unsetting a varaible
+- Storing File Names ( Wild Cards ? & *)
+- Storing File contents to a varaible
+- Storing Commands to a variable
+- Exporting Variables
+Which shell you are currently in 
+ps -p $$
+echo $$
+echo $0 ( it wont work for csh)
+tcsh - set var=name
+- Echo/print command & formats "\t \n \\ \b"
+Perment assigning the variables
+
+Reading A variable:
+- less arguments
+- More i/p than arguments
+- reading from a file
+- exit status ?
+Note: read -p "hi enter a vallue:" a
+
+Bash Shell Scripting:
+
+#! (shebang) & Importance
+# comments 
+; & \n importance
+Executing a script 
+
+
+Expressions:
+Mathametical
+ex: take a,b & explain +,/,*,%,-
+
+Decision Making :
+if
+if-then-else
+elif-ladder
+
+ex: take three variables & explain all the 3 conditions
+
+Relational operators
+<,>,<=,>=,!=
+ex: take 2 values & explain them the use of releations
+
+File expressions
+-f ,-d ,-x & etc
+
+Logical Operations
+
+&&,!!
+ex: student score example
+
+Command Controled Loops:
+
+while loop
+
+case
+ex: take +,/,%,*,- operators
+
+for loop
+
+select loop
+ex: calculator program
+
+Loop Direction:
+
+Input Redirection:
+while
+
+output Redirection:
+while
+for
+
+Input Piping:
+while
+ex: cat serverslist |while read data;do echo $data;done
+output piping:
+while
+ex: cat serverslist |while read data;do echo $data;done|wc -l
+
+Other Controled Loops:
+break
+continue
+sleep
+
+
+Special Parameters & Values:
+Arguments & Positional Parameters 
+$1 .. $9
+$0 , $#,$@,$*
+
+All parameters with out quotes
+All parameters with quotes
+
+Argument Validation:
+
+Debuggin scripts:
+ksh -o xtrace *.scr
+-x
+set -x
+
+
+
+Realtime examples ::
+
+1. Write a code that should accept only 3 arguments oprend1,oprend2 & operator based on operator it should
+return output
+
+2. Login in to multiple servers & collect the below information
+
+uname -a 
+df -hT
+
+syntax: ssh servername 'bash -s' <./mycommands.sh
+
+3. Write the code which accepts only two arguments source & target buckets it should copy data from source to target bucket.
+
+4. Collect the server data as per the question 2 & send one email to your manager (shahan.aix@gmail.com)
+
+aws --region us-east-1 sns publish --topic-arn "arn:aws:sns:us-east-1:353664852275:Billing" --message "serverinformation"
+aws sns publish --topic-arn "arn:aws:sns:us-west-2:0123456789012:my-topic" --message file://message.txt
+
+5. Automate the process of uploading server logs to s3 bucket by 4AM everyday
+
+ex path:
+/var/logs/
+
+6. Checking the server connectivity & preparing reachable & not reachable servers list
+
+[root@shellscript day2]# cat ping.sh
+#!/bin/bash
+for i in $(cat serverslist)
+do
+#timeout 2 ping -c 1 $i
+timeout 2 ssh $i "exit 0"
+if [[ $? == 0 ]]
+then
+        echo $i >> workingservers.txt
+else
+        echo $i >> notworkingservers.txt
+fi
+done
+
+7. Updating packages based on the current version
+
+Getting all the avaiable versions of a pacakge:
+
+yum --showduplicates list httpd | expand
+
+Installing a particular version of package.
+yum install httpd-2.4.39-1.amzn2.0.1 -y 
+
+[root@shellscripting ~]# cat mycode.sh
+#!/bin/bash
+
+#checking which pacakge installed
+httpd_version=$(rpm -qi httpd|grep Version|awk '{print $3}')
+
+case $httpd_version in
+"2.4.43") echo "httpd is already with latest version";
+          exit 0;;
+*) echo "Installing Latest package";
+   yum update httpd -y;
+   exit 0;;
+esac
+
+

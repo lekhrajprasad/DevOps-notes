@@ -1,0 +1,9 @@
+---
+- name: setup
+  hosts: prod
+  tasks: 
+   - name: setup 
+     setup: filter=ansible_default_ipv4
+     register: output
+   - debug: msg="{{output}}"
+   

@@ -1,0 +1,10 @@
+---
+- name: working with vars
+  hosts: prod
+  vars_files:
+    - varibles.yml
+    
+  tasks:
+    - name: printing name & age values
+      command: echo "are name is {{area}},pin code is {{code}}"
+      

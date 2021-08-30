@@ -1,0 +1,34 @@
+    1 :  What is Dictionary and Tuples and lists and sequences and Sets
+    2 :  How do you remove duplicates in lists and Strings?
+    3 :  Write a program in regular expression to Authenticate the password
+    4 :  Write a program about telnet
+    5 :  Global Variable and Local Variable explain with Example
+    6 :  What are dictionaries? where do you use them ? and why?
+    7 :  How can you create and Write and save a File ?
+    8 :  How do you read a New file and give privileges?
+    9 :  Write a program for validating the date
+   10 :  Write a program to print even and odd numbers
+   11 :  How do you replace the contents in a File
+   12 :  Difference between insert and Append
+   13 :  How do you use Range () function? Explain with Example
+   14 :  Global Variable and Local Variable
+   15 :  Write a program to interchange the variables without using the Temp
+   16 :  To Remove duplicates form a Array
+   17 :  In a string find all the numbers
+   18 :  Write a program to search a word in a file
+   19 :  Explain briefly about basic data types
+   20 :  Explain Regular Expression
+   21 :  Difference between Tuple and list
+   22 :  Difference between match and search
+   23 :  What is findall in RE?
+   24 :  How the function works?
+   25 :  Algorithm for a dice game
+   26 :   Complexity of code?
+   27 :  Find match of IP using grep
+   28 :  Description of any package in detail worked upon
+   29 :  Script to SSH into a remote server from host ip
+   30 :  Write a program of IP Address using Regular Expression
+   31 :  Program to SSH in Python
+   32 :  Explain current scope of work of which framework is followed and packages and modules worked upon
+   33 :  Program for factorial of a number
+   34 :  Write a palindrome program

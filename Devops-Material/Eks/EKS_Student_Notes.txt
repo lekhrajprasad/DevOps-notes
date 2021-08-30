@@ -1,0 +1,563 @@
+EKS Student Notes ::
+
+NOTE:
+MAKE SURE THAT YOU ARE CREATING A ROOT ALIAS ACCOUNT TO PERFORM THE BELOW.
+DONT USE THE ROOT ACCOUNT TO CREATE THE CLUSTER
+
+EKS Architecture
+
+What is EKS ?
+1. Managed Kubernetes service
+2. Runs uprstream k8s - not an AWS fork
+3. use kubectl & friends
+4. Ecs is cheaper than EKS for small/simple deployments
+5. EKS is loosely integrated with other AWS services,but this is changing rapidly
+6. K8s is more popular than ECS or Elastic Beanstalk
+7. K8s runs on all major cloud providers, and on-premises
+8.~60% of k8s deployments runs on AWS
+9. EKS is secure by default
+
+10. EKS provides k8s master nodes,api servers, etcdlayer
+11. 3 Master,3 etc nodes by default
+12. Backups,etcd snapshosts, autoscalling included
+13. You provision and manage the ec2 worker nodes
+14. Masters and etcd are multi-az
+15. EKS scales master nodes for you
+16. Master nodes are not visible for you in EKS.
+17. EKS will scale master automatically for you when add ur worker nodes
+
+Aws provides its own baked AMI's for EKS i.e 
+EKS-Optimized AMI
+1. Aws-supplied AMI based on Amazon Linux 2
+2. Preconfigured with Docker,Kubelet,Aws IAM Authenticator
+3. Ec2 user data bootstrap script
+4. Allows automatic joining to EKS cluster
+5. Build using packer 
+git: https://github.com/awslabs/amazon-eks-ami
+
+19. You can configure your workers with spot instances to reduce the cost
+
+Configuring an EKS Cluster:
+
+1. Creating EKS service role
+
+IAM --> Create role --> EKS --> select Cluster option --> Permissions --> you will get AWS managed Policies(Amazon EKS cluster policy)
+--> next --> give role name (myeksrole)--> created
+
+Once you created the above myeksrole, make sure that you are attaching one more policy "AmazonEKSServicePolicy" to the
+above role.
+
+2. Now lets create a VPC, make sure that you are having different VPC's for different clusters 
+You can use the default vpc Cloud Formation template defined for EKS for creating your vpc using below.
+Ref: "https://docs.aws.amazon.com/eks/latest/userguide/create-public-private-vpc.html"
+
+Cloud formation template 
+
+Navigate to cloudformation --> Stacks --> Create task --> Make sure you are selecting the below 
+template is ready, Amazon S3 URL (https://amazon-eks.s3.us-west-2.amazonaws.com/cloudformation/2020-05-08/amazon-eks-vpc-sample.yaml)
+--> once u gave the url click on next --> stack name(eks-vpc) --> next --> create stack 
+
+It will take some time to spin up the VPC once you are done, you can check the details in the output section 
+like subnetid,vpcid,subnetgroupid etc..
+
+3. Lets create our EKS cluster now
+
+Search for EKS --> cluster name (eks-cluster) --> Next step -->kubernetes version (1.1) --> Cluster service role (Role we created above)
+--> next --> Select the VPC which we create above --> select the security group name with controlpanesecuritygroup -->
+next --> next --> create
+
+Note: It will some time to create the EKS cluster 
+
+4. Lets configure our kubectl on any linux machine in our case I am gonna take amazon linux server.
+spin up one ec2 & perform below. 
+
+
+[root@ip-172-31-61-104 ~]$ curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 55.7M  100 55.7M    0     0  10.0M      0  0:00:05  0:00:05 --:--:-- 11.6M
+[ec2-user@ip-172-31-63-84 ~]$ chmod +x ./kubectl
+[ec2-user@ip-172-31-63-84 ~]$ mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+[ec2-user@ip-172-31-63-84 ~]$ echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+[ec2-user@ip-172-31-63-84 ~]$ kubectl version --short --client
+Client Version: v1.17.9-eks-4c6976
+
+
+5. Now inorder to access our cluster we should make sure that we are having aws-iam-authenticator
+ref:
+https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
+https://github.com/kubernetes-sigs/aws-iam-authenticator
+
+[ec2-user@ip-172-31-63-84 ~]$ curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/aws-iam-authenticator
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 33.6M  100 33.6M    0     0  11.2M      0  0:00:02  0:00:02 --:--:-- 11.2M
+[ec2-user@ip-172-31-63-84 ~]$ chmod +x ./aws-iam-authenticator
+[ec2-user@ip-172-31-63-84 ~]$ mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$PATH:$HOME/bin
+
+[ec2-user@ip-172-31-63-84 ~]$ aws-iam-authenticator help
+A tool to authenticate to Kubernetes using AWS IAM credentials
+
+6. Install and configure latest PIP package
+
+curl -O https://bootstrap.pypa.io/get-pip.py
+
+[ec2-user@ip-172-31-63-84 ~]$ curl -O https://bootstrap.pypa.io/get-pip.py
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1825k  100 1825k    0     0  23.1M      0 --:--:-- --:--:-- --:--:-- 23.1M
+
+
+[ec2-user@ip-172-31-63-84 ~]$ ls -l get-pip.py
+-rw-rw-r-- 1 ec2-user ec2-user  1869136 Jun  8 19:27 get-pip.py
+
+
+[ec2-user@ip-172-31-63-84 ~]$ python get-pip.py
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pip
+  Downloading pip-20.1.1-py2.py3-none-any.whl (1.5 MB)
+     |████████████████████████████████| 1.5 MB 13.9 MB/s
+Collecting wheel
+  Downloading wheel-0.34.2-py2.py3-none-any.whl (26 kB)
+Installing collected packages: pip, wheel
+Successfully installed pip-20.1.1 wheel-0.34.2
+
+[ec2-user@ip-172-31-63-84 ~]$ pip install awscli --upgrade
+DEPRECATION: Python 2.7 reached the end of its life on January 1st, 2020. Please upgrade your Python as Python 2.7 is no longer maintained. pip 21.0 will drop support for Python 2.7 in January 2021. More details about Python 2 support in pip, can be found at https://pip.pypa.io/en/latest/development/release-process/#python-2-support
+Defaulting to user installation because normal site-packages is not writeable
+Collecting awscli
+  Downloading awscli-1.18.75.tar.gz (1.2 MB)
+     |████████████████████████████████| 1.2 MB 15.0 MB/s
+Collecting botocore==1.16.25
+
+7. Create aws configure
+[ec2-user@ip-172-31-63-84 ~]$ aws configure
+AWS Access Key ID [None]: AKIA322SDQDMLMLT3H5K
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: json
+[ec2-user@ip-172-31-63-84 ~]$
+
+8. Updating kubeconfiguration
+
+
+[ec2-user@ip-172-31-63-84 ~]$ aws eks update-kubeconfig --name eks-cluster
+Added new context arn:aws:eks:us-east-1:813531627736:cluster/eks-cluster to /home/ec2-user/.kube/config
+
+OR ::
+
+[ec2-user@ip-172-31-50-96 ~]$ aws eks update-kubeconfig --name eks-cluster --role-arn arn:aws:iam::813531627736:role/shaneksrole
+
+[ec2-user@ip-172-31-63-84 ~]$ kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://27283F01CDBF39F217E7D38CD3245EE7.gr7.us-east-1.eks.amazonaws.com
+  name: arn:aws:eks:us-east-1:813531627736:cluster/eks-cluster
+
+MAKE SURE THAT YOU ARE GETTING BELOW OUTPUT IF YOU DIDN'T GET YOUR CLUSTER IS NOT WORKING PROPERLY
+
+[ec2-user@ip-172-31-50-96 ~]$ kubectl cluster-info
+Kubernetes master is running at https://71AEA8D11D429BC4D097174C7AC6903A.gr7.us-east-1.eks.amazonaws.com
+CoreDNS is running at https://71AEA8D11D429BC4D097174C7AC6903A.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+Provisioning Worker Nodes ::
+
+In this section we will try to create our worker nodes for the cluster as follows.
+
+1. Lets create our worker nodes using cloud formation templates
+
+cloudformation --> stacks --> create stack --> Prerequisite - Prepare template( template is ready ) -->
+Specify template( Amazon S3 URL )-->  https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-11-07/amazon-eks-nodegroup.yaml
+--> Next --> Stack Name(eks-nodegroup) --> EKS cluster (eks-cluster make sure you are giving right cluster name)
+--> ClusterControlPlaneSecurityGroup ( ek-vpc-controlplanesecuritygroup****) --> Worker Node Configuration( eks-workers)
+--> NodeAutoScalingGroupMinSize(1) --> NodeAutoScalingGroupMaxSize(3 its max how much u want) -->
+NodeInstanceType ( t2.medium) --> NodeImageId( this is the image id which AWS provides for its customized
+ami's for EKS. Please check the below url for updated Image ids based on the region 
+https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html (ami-07250434f8a7bc5f1) )
+--> NodeVolumeSize(EBS volume size) --> KeyName ( Select the keypair name) --> Worker Network Configuration 
+select the VPC ID which you have created above i.e eks-vpc-VPC in our case --> subnets ( select all 3 subnets )--> next 
+--> next --> check the acknowlegment option --> create stack 
+
+Note: It will take sometime for creating the stack.
+
+Once stack is done, make sure that you are copying the node ARN like below.
+arn:aws:iam::071490662899:role/myeks-workers-NodeInstanceRole-E0DT9UU3LKZB
+
+2. Now perform the below in our workstation server 
+curl -O https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2018-11-07/aws-auth-cm.yaml
+
+
+[ec2-user@ip-172-31-50-96 ~]$ kubectl cluster-info
+Kubernetes master is running at https://71AEA8D11D429BC4D097174C7AC6903A.gr7.us-east-1.eks.amazonaws.com
+CoreDNS is running at https://71AEA8D11D429BC4D097174C7AC6903A.gr7.us-east-1.eks.amazonaws.com/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+[ec2-user@ip-172-31-50-96 ~]$ cat aws-auth-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::813531627736:role/eks-workers-NodeInstanceRole-QHB9QDHOS50V
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+
+[ec2-user@ip-172-31-50-96 ~]$ kubectl apply -f aws-auth-cm.yaml
+configmap/aws-auth created
+
+[ec2-user@ip-172-31-50-96 ~]$ kubectl get nodes -w
+NAME                             STATUS   ROLES    AGE   VERSION
+ip-192-168-170-35.ec2.internal   Ready    <none>   31s   v1.16.8-eks-e16311
+ip-192-168-234-34.ec2.internal   Ready    <none>   31s   v1.16.8-eks-e16311
+ip-192-168-72-191.ec2.internal   Ready    <none>   32s   v1.16.8-eks-e16311
+
+To know who is the caller or eks user 
+
+[ec2-user@ip-172-31-50-96 ~]$ aws sts get-caller-identity
+{
+    "Account": "813531627736",
+    "UserId": "AIDA322SDQDMPJ6ZMMPB5",
+    "Arn": "arn:aws:iam::813531627736:user/eks-user"
+}
+
+
+====
+
+IAM Authentication ::
+
+Check the picture saved once to understand more about the IAM nature in EKS !!
+If you observe above we have created cluster entirely with one user called eks-user
+
+[ec2-user@ip-172-31-48-17 ~]$ aws sts get-caller-identity
+{
+    "Account": "813531627736",
+    "UserId": "AIDA322SDQDMPJ6ZMMPB5",
+    "Arn": "arn:aws:iam::813531627736:user/eks-user"
+}
+
+Now just imagine I have one more user called "ramesh", we need to provide access for him how we can do it ???
+
+1. Lets create a user called ramesh in the IAM with cli and console access  & grant him eks all policies 
+AKIA322SDQDMNEELRBWX
+/HR++XNDM+He3r0xOJ5W4lbdooK5vaM/QbxMEpvv
+
+2. Lets configure this user in the jump host as ramesh user 
+
+[[ As ec2-user or root User ]]
+
+[ec2-user@ip-172-31-48-17 ~]$ sudo useradd ramesh
+[ec2-user@ip-172-31-48-17 ~]$ ls -l ./bin/
+total 91592
+-rwxrwxr-x 1 ec2-user ec2-user 35290752 Jun  9 19:16 aws-iam-authenticator
+-rwxrwxr-x 1 ec2-user ec2-user 58496932 Jun  9 19:16 kubectl
+[ec2-user@ip-172-31-48-17 ~]$ sudo cp -r ./bin/ /home/ramesh/ -f
+[ec2-user@ip-172-31-48-17 ~]$ sudo cp .local /home/ramesh/ -rf
+[ec2-user@ip-172-31-48-17 ~]$ sudo cp ~/.bashrc /home/ramesh/ -rf
+[ec2-user@ip-192-168-122-109 ~]$ sudo chown -R ramesh:ramesh /home/ramesh/
+[ec2-user@ip-172-31-48-17 ~]$ sudo su - ramesh
+Last login: Wed Jun 10 05:24:09 UTC 2020 on pts/0
+
+Note: In simple make sure that ramesh is having all the setup like ec2-user interms of kubectl,aws-iam-authenticator,profiles
+etc ..
+
+[[ As Ramesh User ]]
+[ramesh@ip-172-31-48-17 ~]$ whoami
+ramesh
+[ramesh@ip-172-31-48-17 ~]$ aws configure
+AWS Access Key ID [None]: AKIA322SDQDMNEELRBWX
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: json
+[ramesh@ip-172-31-48-17 ~]$ kubectl version --short
+Client Version: v1.17.9-eks-e16311
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+[ramesh@ip-172-31-48-17 ~]$
+
+
+If you observe above we can see that ramesh can't reach to the eks cluster. 
+
+[[ As ec2-user or root User ]]
+
+perform the below as ec2-user or root user 
+
+1. Since eks-user is the admin user for the eks cluster he need to add ramesh user so that he can access the cluster.
+
+we have a configmap aws-auth which we created in the kube-system which is going to act like a key to access 
+the eks cluster. 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::813531627736:role/shaaneks-workers-NodeInstanceRole-1MLNKJ57VG6A7
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+
+2. lets modify this and add our user ramesh to the eks cluster
+
+Get the ARN of ramesh 
+"Arn": "arn:aws:iam::813531627736:user/ramesh"
+
+Post modification our file will look like below. 
+
+[ec2-user@ip-172-31-48-17 ~]$ cat aws-auth-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: arn:aws:iam::813531627736:role/shaaneks-workers-NodeInstanceRole-1MLNKJ57VG6A7
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    - userarn: arn:aws:iam::813531627736:user/ramesh
+      username: ramesh
+      groups:
+        - system:masters
+	
+[ec2-user@ip-172-31-48-17 ~]$ kubectl apply -f aws-auth-cm.yaml
+configmap/aws-auth configured
+
+3. Now lets test the connectivity via ramesh user 
+
+[[ As ramesh User ]]
+
+[ramesh@ip-172-31-48-17 ~]$ whoami
+ramesh
+[ramesh@ip-172-31-48-17 ~]$ aws eks update-kubeconfig --name shaaneks-cluster
+Updated context arn:aws:eks:us-east-1:813531627736:cluster/shaaneks-cluster in /home/ramesh/.kube/config
+[ramesh@ip-172-31-48-17 ~]$ kubectl get nodes
+NAME                              STATUS   ROLES    AGE   VERSION
+ip-192-168-185-87.ec2.internal    Ready    <none>   46m   v1.16.8-eks-e16311
+ip-192-168-210-126.ec2.internal   Ready    <none>   46m   v1.16.8-eks-e16311
+[ramesh@ip-172-31-48-17 ~]$
+
+====
+
+Developing for EKS ::
+
+Understanding the Application Architecture
+#kubectl create ns myproject
+#kubectl create deployment myapp --image=nginx -n myproject
+#kubectl expose deployment myapp --target-port 80 --port 80 --type LoadBalancer -n myproject
+
+Intersting thing to observe over here is that for every LoadBalancer service type you will get one LB 
+get created as part of the Aws Management console.
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get svc -n myproject
+NAME     TYPE           CLUSTER-IP      EXTERNAL-IP                                                              PORT(S)        AGE
+myapp1   LoadBalancer   10.100.80.221   a6d4393c34655462f996f3caf38618f0-823768960.us-east-1.elb.amazonaws.com   80:31951/TCP   6h4m
+
+You just need to hit the LB url in the browser.
+
+====
+
+EKS in Production::
+
+Autoscaling an EKS Cluster
+
+Just imagine your cluster is in high demand for new pods to spinup. We don't need to worry we can see that automatically
+EKS cluster nodes will get spinup. Lets do the configuration accordingly.
+
+CA --> Cluster Autoscaller helps in achieving this.
+
+1. Go to Management console --> Ec2 --> Autoscalling groups --> Copy the name of ASG in our case it is 
+(shaaneks-workers-NodeGroup-1GQGO07SO1C7Z) and keep it handy 
+
+now click in the same page of ASG click on asg group actions --> edit --> change min to 2 & max to 8 for the ASG
+--> save 
+
+It will look like below in the console.
+
+shaaneks-workers-NodeGroup-1GQGO07SO1C7Z shaaneks-workers-NodeLaunchConfig-9O47NH2KYHJE 2 2 2 8 us-east-1a, us-east-1b, us-e
+
+2. We need to create one inline policy for our role like below.
+
+Go to Ec2 --> click on any worker node --> Go to down (or) search for IAM role --> Click on the IAM role in our case it is 
+shaaneks-workers-NodeInstanceRole-1MLNKJ57VG6A7 --> It will navigate to IAM console with role --> clikc on Add inline policy  
+--> add the below content their --> Review Policy --> give some name as "shaneksinlineasg" --> create policy 
+
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeInstances",
+                "autoscaling:DescribeLaunchConfigurations",
+                "autoscaling:DescribeTags",
+                "autoscaling:SetDesiredCapacity",
+                "autoscaling:TerminateInstanceInAutoScalingGroup",
+                "ec2:DescribeLaunchTemplateVersions",
+                "ec2:DescribeInstanceTypes"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+
+
+3. Now lets go to our workstation machine & do the below. 
+
+Ref:
+
+Refer to cluster_autoscaler.yaml students notes
+
+Git Refernce : https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-one-asg.yaml
+
+
+In the above YAML make sure that you are going to line no :148 & doing below changes.
+
+- --nodes=2:8:<AUTOSCALING GROUP NAME>
+          env:
+            - name: AWS_REGION
+              value: us-east-1
+
+TO
+
+- --nodes=2:8:shaaneks-workers-NodeGroup-1GQGO07SO1C7Z
+          env:
+            - name: AWS_REGION
+              value: us-east-1
+
+Note: Change the region identity if you are using diff region. In our case its us-east-1
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl apply -f cluster-autoscaler-autodiscover.yaml
+serviceaccount/cluster-autoscaler created
+clusterrole.rbac.authorization.k8s.io/cluster-autoscaler created
+role.rbac.authorization.k8s.io/cluster-autoscaler created
+clusterrolebinding.rbac.authorization.k8s.io/cluster-autoscaler created
+rolebinding.rbac.authorization.k8s.io/cluster-autoscaler created
+deployment.apps/cluster-autoscaler created
+[ec2-user@ip-172-31-48-17 ~]$
+
+You can check the logs using below.
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl logs -f deploy/cluster-autoscaler -n kube-system
+I0610 18:38:45.863046       1 flags.go:52] FLAG: --add-dir-header="false"
+I0610 18:38:45.863273       1 flags.go:52] FLAG: --address=":8085"
+I0610 18:38:45.863360       1 flags.go:52] FLAG: --alsologtostderr="false"
+I0610 18:38:45.863418       1 flags.go:52] FLAG: --aws-use-static-instance-list="false"
+I0610 18:38:45.863467       1 flags.go:52] FLAG: --balance-similar-node-groups="false"
+I0610 18:38:45.863568       1 flags.go:52] FLAG: --cloud-config=""
+I0610 18:38:45.863618       1 flags.go:52] FLAG: --cloud-provider="aws"
+I0610 18:38:45.863696       1 flags.go:52
+
+4. Lets test out our Cluster Autoscaler capability.
+
+Before :
+
+Total Nodes
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get nodes
+NAME                              STATUS   ROLES    AGE   VERSION
+ip-192-168-185-87.ec2.internal    Ready    <none>   13h   v1.16.8-eks-e16311
+ip-192-168-210-126.ec2.internal   Ready    <none>   13h   v1.16.8-eks-e16311
+[ec2-user@ip-172-31-48-17 ~]$
+
+Lets create one deployment & scale it up to max replicas & see what will happen
+
+vim nginx.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-scaleout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        service: nginx
+        app: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx-scaleout
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+			
+[ec2-user@ip-172-31-48-17 ~]$ kubectl apply -f nginx.yaml
+deployment.apps/nginx-scaleout created
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get deploy
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-scaleout   1/1     1            1           6s
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl scale deploy nginx-scaleout --replicas=20
+deployment.apps/nginx-scaleout scaled
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get pods -o wide
+NAME                              READY   STATUS    RESTARTS   AGE   IP                NODE                              NOMINATED NODE   READINESS GATES
+nginx-scaleout-57ddc59dd5-24kff   0/1     Pending   0          55s   <none>            <none>                            <none>           <none>
+nginx-scaleout-57ddc59dd5-4mm6c   0/1     Pending   0          55s   <none>            <none>                            <none>           <none>
+nginx-scaleout-57ddc59dd5-55kpr   0/1     Pending   0          55s   <none>            <non
+
+Here if you observe only two pods got created but other 18 pods are showing as status pending. which means our cluster 
+is not having capacity to scale it up. Now since we have applied our AC (autosclaer capability) we should get  more instances
+
+after 1 min if you see the details of your nodes then it will be
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get nodes
+NAME                              STATUS   ROLES    AGE   VERSION
+ip-192-168-108-34.ec2.internal    Ready    <none>   59s   v1.16.8-eks-e16311
+ip-192-168-147-244.ec2.internal   Ready    <none>   85s   v1.16.8-eks-e16311
+ip-192-168-185-87.ec2.internal    Ready    <none>   13h   v1.16.8-eks-e16311
+ip-192-168-210-126.ec2.internal   Ready    <none>   13h   v1.16.8-eks-e16311
+ip-192-168-215-251.ec2.internal   Ready    <none>   88s   v1.16.8-eks-e16311
+ip-192-168-254-153.ec2.internal   Ready    <none>   83s   v1.16.8-eks-e16311
+ip-192-168-70-218.ec2.internal    Ready    <none>   74s   v1.16.8-eks-e16311
+ip-192-168-73-69.ec2.internal     Ready    <none>   85s   v1.16.8-eks-e16311
+
+
+5. Lets test the auto scale down .
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl delete -f nginx.yaml
+deployment.apps "nginx-scaleout" deleted
+
+
+Wait for sometime for the nodes to delete. Automatically they will delete them self. 
+
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get nodes
+NAME                              STATUS     ROLES    AGE   VERSION
+ip-192-168-185-87.ec2.internal    Ready      <none>   14h   v1.16.8-eks-e16311
+ip-192-168-210-126.ec2.internal   Ready      <none>   14h   v1.16.8-eks-e16311
+ip-192-168-254-153.ec2.internal   NotReady   <none>   13m   v1.16.8-eks-e16311
+[ec2-user@ip-172-31-48-17 ~]$ kubectl get nodes
+NAME                              STATUS   ROLES    AGE   VERSION
+ip-192-168-185-87.ec2.internal    Ready    <none>   14h   v1.16.8-eks-e16311
+ip-192-168-210-126.ec2.internal   Ready    <none>   14h   v1.16.8-eks-e16311
+[ec2-user@ip-172-31-48-17 ~]$
+
+Note: If its not scalling down make sure you are making desired capacity as 2 
+
+====
+
+

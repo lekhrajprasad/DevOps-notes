@@ -1,0 +1,8 @@
+---
+- name: working with copy module
+  hosts: mytest
+  tasks:
+    - name: checking the copyu module
+      copy: src="/etc/passwd" dest="/tmp/copydir/" owner="ec2-user" group="root"
+      register: output
+    - debug: var=output

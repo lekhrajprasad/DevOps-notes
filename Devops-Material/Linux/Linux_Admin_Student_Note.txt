@@ -1,0 +1,187 @@
+Linux Administration  Notes:
+
+1. Introduction to Linux
+2. Differences between Linux & Unix
+3. Why we are going for Unix Than windows
+4. Basic Kernel & Shell Architecture
+5. Softwares used to reach the servers
+6. Introuduction to shell & environment
+OS installation
+7. File system Hierarchy
+8. Working with directories
+	how to create a directory
+	how to remove a directory
+9. what is permissions, and explanation of rights
+	how to change the owner ship
+	how to change the permission
+	how to change the permissions & owner ships recursively
+	
+10. Basic commands
+	ls
+	pwd
+	history 
+	cat
+	cp
+	mv
+	tail
+	head
+	touch
+	cd
+	find 
+	less
+	view
+	rm
+	man
+	chmod
+	chown
+	chgrp
+	grep
+	curent directory & previous directory
+
+11. Explanation about VIM
+ 
+Exploring VIM
+
+Different options used in vim
+
+modes :-> Insert & Escape
+
+i --> insert mode
+shift+a --> append mode
+x--> delete a single charecter
+dd --> deletes a complet line
+gg --> go to starting of the line
+p --> paste the copied line
+yy --> copies the line
+e --> move one word by word
+/ --> search for patterns
+n --> gives the next word
+N --> Helps to search in reverse order
+0 --> moves starting of the line
+^ --> moves starting for the line
+$ --> moves end of the line
+G --> moves last line in the file
+: se nu --> shows the numbers in the file
+:%s/USER/SHAHAN  --> subtitution
+w --> helps to writes the content to the file
+wq! --> write & quit
+q! --> quit & overwrite
+
+
+Monitoring:
+12.  vmstat, ping, top
+
+13. What is memory & cache memory (real & swap) explanation 
+
+
+
+14. user administration 
+
+1. user add 
+2. user del
+3. important configuration files
+4. chage
+
+-d, --lastday LAST_DAY       
+-E, --expiredate EXPIRE_DATE 
+-h, --help                   
+-I, --inactive INACTIVE      
+                             
+-l, --list                   
+-m, --mindays MIN_DAYS       
+                             
+-M, --maxdays MAX_DAYS       
+                             
+-W, --warndays WARN_DAYS     
+
+5. gpasswd
+6. common issues on user administration 
+7. special permissions & related files
+/var/log/wtmp
+/etc/passwd
+/etc/group
+/etc/shadow
+/etc/login.defs
+
+
+15 Standard Partition:
+
+Partions & management of partitions
+
+Partion types (primary,extended,logical)
+
+1. what is partion and why we are going for partions
+2. File system & what is it importance
+3. what type of file systems are there & their importance
+4. creating a file system & mounting it on a directory
+5. creating & deleteing the partions 
+6. fdisk utility & respective options
+
+
+16. Working With LVM
+
+scanning a new lun
+creating partition
+creating PV
+creating vg
+creating lv
+creating File system
+mount a file system
+File system increase
+----
+
+umounting a file system
+removing lv
+removing pv
+removing vg
+
+
+17. Package management:
+
+what is package
+how to install the package --> rpm,yum
+rpm -ivh
+rpm -qa
+rpm -qi
+rpm -qc --> gives the configuration files
+rpm -qd --> document files
+rpm -qf --> configuration files
+rpm -e pkgname --> removes the pkg
+
+
+18. what is YUM
+Yum configuration
+installing pkg
+deleting a pkg
+information of pkg
+listing pkg
+listing repo
+cleaning repo
+reinstall a pkg
+
+example::
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+ 
+jenkins.repo ::
+
+[jenkins]
+name=Jenkins
+baseurl=http://pkg.jenkins.io/redhat
+gpgcheck=1
+
+configuring httpd
+
+Server accessability
+password less login and configuring 
+Network Configuration
+Hostname
+how to configure the adapter 
+assing the ip address 
+tools used to see the adapter details
+ethtool,ifconfig,netstat,nslookup,ping,scp,
+
+
+
+

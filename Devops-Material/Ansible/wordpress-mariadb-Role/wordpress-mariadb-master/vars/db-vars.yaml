@@ -1,0 +1,4 @@
+DB_NAME: "devopsdb"
+DB_USER: "admin"
+DB_PASSWORD: "admin123"
+DB_HOST: "172.31.95.194"

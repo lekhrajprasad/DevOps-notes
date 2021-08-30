@@ -1,0 +1,781 @@
+Unix & Linux Shell Scripting:
+
+Special Files:
+
+/dev/null
+
+echo "hello" > /dev/null
+
+/dev/tty
+[root@server shellscript]# echo "hello" >/dev/tty
+hello
+
+
+Variables:
+
+1. Predifined
+
+[root@server shellscript]# env|more
+ABC=123
+HOSTNAME=server.example.com
+swap_created=True
+SELINUX_ROLE_REQUESTED=
+TERM=xterm
+SHELL=/bin/bash
+HISTSIZE=1000
+SSH_CLIENT=192.168.10.3 61601 22
+SELINUX_USE_CURRENT_RANGE=
+QTDIR=/usr/lib/qt-3.3
+OLDPWD=/tmp/class
+QTINC=/usr/lib/qt-3.3/include
+SSH_TTY=/dev/pts/0
+
+
+2. User defined
+
+- Null Variables
+[root@server shellscript]# str=""
+[root@server shellscript]# echo $str
+
+- unsetting a varaible
+[root@server shellscript]# var=10
+[root@server shellscript]# echo $var
+10
+[root@server shellscript]# unset var
+[root@server shellscript]# echo $var
+
+
+- Storing File Names ( Wild Cards ? & *)
+
+[root@server shellscript]# touch file1 file2 file3
+[root@server shellscript]# ls -l
+total 4
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file3
+drwxr-xr-x. 3 root root 4096 Jun  9 21:52 practise
+[root@server shellscript]# ls -l file?
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file3
+[root@server shellscript]# touch file22
+[root@server shellscript]# ls -l file?
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file3
+[root@server shellscript]# ls -l file*
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root 0 Jun 11 07:24 file22
+-rw-r--r--. 1 root root 0 Jun 11 07:23 file3
+
+- Storing File contents to a varaible
+
+[root@server shellscript]# cat file
+hello this is shahan
+this is my first class
+[root@server shellscript]# var=$(cat file)
+[root@server shellscript]# echo $var
+hello this is shahan this is my first class
+
+- Storing Commands to a variable
+[root@server shellscript]# cmd="ls -l"
+You have new mail in /var/spool/mail/root
+[root@server shellscript]# echo $cmd
+ls -l
+[root@server shellscript]# $cmd
+total 8
+-rw-r--r--. 1 root root   44 Jun 11 07:24 file
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root    0 Jun 11 07:24 file22
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file3
+drwxr-xr-x. 3 root root 4096 Jun  9 21:52 practise
+
+
+- Read Only Variables
+[root@server shellscript]# readonly var=10
+[root@server shellscript]# echo $var
+10
+[root@server shellscript]# var=20
+-bash: var: readonly variable
+
+- Exporting Variables
+var=10
+export var
+
+Which shell you are currently in 
+echo $0 ( it wont work for csh)
+
+Perment assigning the variables
+vim ~/.bash_profile
+export var=10
+
+source ~/.bash_profile
+
+
+Reading A variable:
+[root@server shellscript]# cat var.sh
+echo "please give a and b values"
+read a b
+echo "your input data is",$a,$b
+
+- less arguments
+[root@server shellscript]# bash var.sh
+please give a and b values
+10
+your input data is,10,
+
+- More i/p than arguments
+[root@server shellscript]# bash var.sh
+please give a and b values
+10 20 30
+your input data is,10,20 30
+
+- reading from a file
+[root@server shellscript]# cat file
+hello this is shahan
+this is my first class
+[root@server shellscript]# read data <file
+[root@server shellscript]# echo $data
+hello this is shahan
+
+- exit status ?
+Success Always returns "0"
+[root@server shellscript]# ls -l
+total 12
+-rw-r--r--. 1 root root   44 Jun 11 07:24 file
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file1
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file2
+-rw-r--r--. 1 root root    0 Jun 11 07:24 file22
+-rw-r--r--. 1 root root    0 Jun 11 07:23 file3
+drwxr-xr-x. 3 root root 4096 Jun  9 21:52 practise
+-rw-r--r--. 1 root root   75 Jun 11 07:29 var.sh
+[root@server shellscript]# echo $?
+0
+
+Failure always returns other numbers except "0"
+
+[root@server shellscript]# lind
+-bash: lind: command not found
+[root@server shellscript]# echo $?
+127
+
+
+Bash Shell Scripting:
+
+#! (shebang) & Importance
+# comments 
+; & \n importance
+Executing a script 
+
+One way :
+[root@server shellscript]# bash var.sh
+please give a and b values
+10 20
+your input data is,10,20
+
+2nd Way:
+[root@server shellscript]# ls -l var.sh
+-rw-r--r--. 1 root root 75 Jun 11 07:29 var.sh
+[root@server shellscript]# chmod +x var.sh
+[root@server shellscript]# ls -l var.sh
+-rwxr-xr-x. 1 root root 75 Jun 11 07:29 var.sh
+
+[root@server shellscript]# ./var.sh
+please give a and b values
+10 20
+your input data is,10,20
+
+
+Expressions:
+
+Mathametical 
+[root@server practise]# cat mat.sh
+#!/bin/bash
+echo "please give a and b values"
+read a
+read b
+echo "add of a and b is",$((a+b))
+echo "sub of a and b is",$((a-b))
+echo "div of a and b is",$((a/b))
+echo "mul of a and b is",$(($a*$b))
+echo "mod of a and b is",$((a%b))
+
+Output:
+[root@server practise]# ./mat.sh
+please give a and b values
+20
+30
+add of a and b is,50
+sub of a and b is,-10
+div of a and b is,0
+mul of a and b is,600
+mod of a and b is,20
+
+Relational operators( 2 ways)
+First Way Strings:
+
+[root@server practise]# cat rel.sh
+#!/bin/bash
+echo "please give a and b values"
+read a
+read b
+if [[ $a -gt $b ]]
+then
+echo "a is big"
+fi
+
+if [[ $a -lt $b ]]
+then
+echo "b is big"
+fi
+if [[ $a -ne $b ]]
+then
+echo "a is not equal to b"
+fi
+if [[ $a -eq $b ]]
+then
+echo "a and b are equal"
+fi
+
+Output:
+
+[root@server practise]# ./rel.sh
+please give a and b values
+10
+20
+b is big
+a is not equal to b
+
+2nd Way Numerics:
+
+[root@server practise]# cat rel_num.sh
+#!/bin/bash
+echo "please give a and b values"
+read a
+read b
+
+if (( a > b))
+then
+echo "a is big"
+fi
+
+if (( a <b ))
+then
+echo "b is big"
+fi
+
+if (( a == b ))
+then
+echo "a is equal to b"
+fi
+
+if ((a != b ))
+then
+echo "a and b are not equal"
+fi
+
+[root@server practise]# ./rel_num.sh
+please give a and b values
+10
+20
+b is big
+a and b are not equal
+
+
+File expressions:
+-x:
+#!/bin/bash
+if [[ -x file1 ]]
+then
+echo "has execute permission"
+else
+echo "has no execute permission"
+fi
+
+-d:
+
+[root@server practise]# cat file-check.sh
+#!/bin/bash
+if [[ -d test ]]
+then
+echo "directory exists"
+else
+echo "directory not exits"
+fi
+
+[root@server practise]# ./file-check.sh
+directory exists
+
+[root@server practise]# ./file-check.sh
+directory not exits
+
+-f: 
+
+[root@server practise]# cat file-check.sh
+#!/bin/bash
+if [[ -f file1 ]]
+then
+echo "file exists"
+else
+echo "file not exits"
+fi
+
+[root@server practise]# ls -l file1
+-rw-------. 1 root root 72 Jun  9 20:41 file1
+[root@server practise]# ./file-check.sh
+file exists
+[root@server practise]# rm file1
+rm: remove regular file `file1'? y
+[root@server practise]# ./file-check.sh
+file not exits
+
+Logical Operations:
+[root@server practise]# cat elif.sh
+#!/bin/bash
+echo "please give sum "
+read sum
+
+if (( sum<=100 && sum >=80 ))
+then
+echo "grade A"
+elif (( sum <=79 && sum >= 60))
+then
+echo "grade B"
+elif (( sum <59 && sum>=40))
+then
+echo "grade C"
+elif (( sum <39 && sum >=35))
+then
+echo "just passed"
+else
+echo "failed"
+fi
+
+Output:
+[root@server practise]# ./elif.sh
+please give sum
+90
+grade A
+[root@server practise]# ./elif.sh
+please give sum
+30
+failed
+
+
+
+Decision Making :
+
+if:
+if (( a > b))
+then
+echo "a is big"
+fi
+
+if-then-else:
+if ((a != b ))
+then
+echo "a and b are not equal"
+else
+echo "a and b are equal"
+fi
+
+elif-ladder:
+if (( sum<=100 && sum >=80 ))
+then
+echo "grade A"
+elif (( sum <=79 && sum >= 60))
+then
+echo "grade B"
+elif (( sum <59 && sum>=40))
+then
+echo "grade C"
+elif (( sum <39 && sum >=35))
+then
+echo "just passed"
+else
+echo "failed"
+fi
+
+
+
+Special Parameters & Values:
+Arguments & Positional Parameters 
+$1 .. $9
+$0 , $#,$@,$*
+
+All parameters with out quotes
+All parameters with quotes
+
+Program:
+[root@server practise]# cat parm.sh
+#!/bin/bash
+
+echo "your total input parameters are ",$#
+echo "your input parameters are $1,$2,$3"
+echo "your input paramaters are "
+echo "Your script name is ",$0
+echo "Using \$*"
+for i in $*
+do
+echo $i
+done
+echo "Using \$@"
+for i in $@
+do
+echo $i
+done
+echo "Using \"\$*\""
+for i in "$*"
+do
+echo $i
+done
+echo "Using \"\$@\""
+for i in "$@"
+do
+echo $i
+done
+
+Output:
+
+[root@server practise]# ./parm.sh 10 20 30 "40 50"
+your total input parameters are ,4
+your input parameters are 10,20,30
+your input paramaters are
+Your script name is ,./parm.sh
+Using $*
+10
+20
+30
+40
+50
+Using $@
+10
+20
+30
+40
+50
+Using "$*"
+10 20 30 40 50
+Using "$@"
+10
+20
+30
+40 50
+
+Argument Validation:
+[root@server practise]# cat case.sh
+#!/bin/bash
+
+if [[ $# != 3 ]]
+then
+echo "Usage: Please give a and b values & operation\(+,-,/,*,%\)"
+fi
+
+
+Command Controled Loops:
+
+while loop:
+
+[root@server practise]# cat while.sh
+#!/bin/bash
+count=1
+while((count<5))
+do
+echo $count
+((count=count+1))
+done
+
+Output:
+[root@server practise]# ./while.sh
+1
+2
+3
+4
+
+case:
+[root@server practise]# cat case.sh
+#!/bin/bash
+
+if [[ $# != 3 ]]
+then
+echo "Usage: Please give a and b values & operation\(+,-,/,*,%\)"
+fi
+
+
+case $3 in
+"+") echo "add of a and b is",$(($1+$2));;
+esac
+
+Output:
+[root@server practise]# ./case.sh 10 20 +
+add of a and b is,30
+
+
+until loop:
+[root@server practise]# cat until.sh
+#!/bin/bash
+
+
+count=10
+until ((count <1))
+do
+echo $count
+((count=count-1))
+done
+
+Output:
+[root@server practise]# ./until.sh
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+
+for loop:
+[root@server practise]# cat for.sh
+#!/bin/bash
+for i in {1..9}
+do
+echo $i
+done
+Output:
+[root@server practise]# ./for.sh
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+select loop:
+[root@server practise]# cat select.sh
+#!/bin/bash
+
+select i in + - / % \*
+do
+echo "please give a and b values"
+read a
+read b
+case $i in
+"+") echo "add of a and b is ",$((a+b));;
+"/") echo "div of a and b is",$((a/b));;
+"%") echo "mod of a and b is",$((a%b));;
+"*") echo "mul of a and b is", $((a*b));;
+"-") echo "sub of a and b is",$((a-b));;
+*) echo "Usage: Please give proper arthimetic operator";;
+esac
+done
+
+Output:
+[root@server practise]# ./select.sh
+1) +
+2) -
+3) /
+4) %
+5) *
+#? 1
+please give a and b values
+10
+20
+add of a and b is ,30
+#? 2
+please give a and b values
+10
+20
+sub of a and b is,-10
+
+
+Loop Direction:
+
+Input Redirection:
+
+while
+[root@server shellscript]# cat file
+hello this is shahan
+this is my first class
+[root@server shellscript]# while read data
+> do
+> echo $data
+> done<file
+hello this is shahan
+this is my first class
+
+
+output Redirection:
+
+while:
+[root@server shellscript]# cat opred.sh
+#!/bin/bash
+count=1
+while ((count <5))
+do
+echo $count
+((count=count+1))
+done>/tmp/test
+
+Output:
+[root@server shellscript]# ./opred.sh
+[root@server shellscript]# cat /tmp/test
+1
+2
+3
+4
+
+for:
+for i in {1..5}; do echo $i; done>/tmp/test
+[root@server shellscript]# cat /tmp/test
+1
+2
+3
+4
+5
+
+
+
+Input Piping:
+while:
+[root@server shellscript]# cat file
+hello this is shahan
+this is my first class
+[root@server shellscript]# cat file|while read data
+> do
+> echo $data
+> done
+hello this is shahan
+this is my first class
+
+
+
+output piping:
+while:
+[root@server shellscript]# cat file
+hello this is shahan
+this is my first class
+[root@server shellscript]# cat file|while read data; do echo $data; done|wc -l
+2
+
+
+Other Controled Loops:
+break:
+[root@server shellscript]# for i in {1..9}
+> do
+> if ((i==5))
+> then
+> break
+> fi
+> echo $i
+> done
+1
+2
+3
+4
+
+continue:
+
+[root@server shellscript]# for i in {1..9}
+> do
+> if ((i==5))
+> then
+> continue
+> fi
+> echo $i
+> done
+1
+2
+3
+4
+6
+7
+8
+9
+
+sleep:
+[root@server shellscript]# for i in {1..9}
+> do
+> echo $i
+> sleep 2
+> done
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+
+
+Debuggin scripts:
+One Method:
+ksh -o xtrace *.scr
+2nd Way:
+simple add "set -x " after "#!/bin/bash" and execute the script
+
+Functions & Explanation
+[root@server practise]# cat fun.sh
+#!/bin/bash
+echo "please give a and b values"
+read a
+read b
+echo -e "please choose the operation from below \n (+,-,/,*,%)"
+read opr
+
+function add()
+{
+return $((a+b))
+}
+
+function sub()
+{
+sum=$((a-b))
+}
+function div()
+{
+return $((a/b))
+}
+function mul()
+{
+return $((a*b))
+}
+function mod()
+{
+return $((a%b))
+}
+case $opr in
+"+") add
+     echo "add of a and b is",$?;;
+"-") sub
+     echo "sub of a and b is",$sum;;
+"/") div
+     echo "div of a and b is",$?;;
+"*") mul
+     echo "mul of a and b is",$?;;
+"%") mod
+     echo "mod of a and b is",$?;;
+*) echo "Usage: Please choose proper operator";;
+esac
+
+Output:
+
+[root@server practise]# ./fun.sh
+please give a and b values
+20
+30
+please choose the operation from below
+ (+,-,/,*,%)
++
+add of a and b is,50
+
+

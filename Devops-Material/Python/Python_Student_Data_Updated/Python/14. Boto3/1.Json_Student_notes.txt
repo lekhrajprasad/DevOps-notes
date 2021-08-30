@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+import json
+import os
+
+input = os.popen("aws ec2 describe-volumes").read()
+
+#Converting json to dictionary
+
+parser = json.loads(str(input))
+
+# Printing the volume information
+
+for i in parser["Volumes"]:
+    print "volume information is",i["Attachments"][0]['Device']
+
+
+# Converting dictionary to json
+
+dict1 = {"name": "bangalore",
+            "lis1": [0,1,2,3,4],
+            "area": "marthahali"}
+
+output = json.dumps(dict1, indent=4)
+
+print output

@@ -1,0 +1,31 @@
+#!/bin/env/python
+
+#### Print using brackets
+print ("Hello, World")
+
+#######Print using space
+print "This is also" " Hello, World"
+
+#########Print using ,
+print "This is also", " Hello, World"
+
+#######Single quote
+print 'this is also " great" '
+
+########Single quote inside double quote
+print "This is ' not different'  "
+
+######Multiple line print using triple quote
+print """This is different
+       than others"""
+
+######Hash inside string is not comment
+STRING = "# This is not a comment."
+
+print STRING
+
+######Continue print using ,
+
+print "This is going to be printed",
+print 'in same line' ,
+print 'as the earlier one'

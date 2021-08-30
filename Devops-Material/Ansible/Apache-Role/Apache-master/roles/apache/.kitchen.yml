@@ -1,0 +1,18 @@
+---
+driver:
+  name: docker
+
+platforms:
+  - name: centos-6.9
+
+provisioner:
+  name: ansible_playbook
+  ansible_verbose: false
+  ansible_verbosity: 1
+  playbook: test.yml
+  hosts: slave
+  additional_copy_path:
+        - "."
+
+suites:
+  - name: default

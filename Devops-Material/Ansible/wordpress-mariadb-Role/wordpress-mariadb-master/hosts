@@ -1,0 +1,10 @@
+[all]
+app
+db
+master
+
+[database]
+db
+
+[application]
+app

@@ -1,0 +1,9 @@
+---
+- name: working with ignore_errors
+  hosts: all
+  tasks:
+    - name: ignoring erros
+      command: /tmp/ding
+      ignore_errors: True
+    - name: working with echo command
+      command: echo "2nd task"

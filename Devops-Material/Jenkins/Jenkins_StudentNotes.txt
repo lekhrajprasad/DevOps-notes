@@ -1,0 +1,393 @@
+Jenkins Class Notes:
+
+Introduction to Jenkins:
+
+What is Jenkins:
+
+Jenkins is a leading opensource automation server,jenkins provides hundereds
+ of plugins to support building,deploying,
+and automating any project.
+
+Jenkins is an application that monitors executions of repeated jobs, such as
+ building a software project or jobs run 
+by cron.
+
+Traditionally, development make s/w available in a repostiory and then operations
+ builds and deploys the software to 
+one or more environments.
+A QA(Quality Assurance) team may then execute load and performance test against 
+that build and release it for 
+production use
+
+Jenkins can automate large portions of that repetable process.
+
+What's so great about it:
+
+Its a open source!
+it works for most people
+Its easy to setup and configure
+Its hightly flexible with a ton of plugin support.
+Works in just about any environment.
+It doesn't use a lot of resources
+
+What's Covered in this course:
+
+CI & CD
+Installing Jenkins and Prerequisites
+Configuring and securing jenkins
+BasicProjects - Configuring and concepts
+Folders and views
+Working with plugins
+and etc ...
+
+Continuous Integration and Continuous Delivery:
+
+CI:
+
+It's a s/w development practice where contributors are integrating their work frequencey. This results in
+ multiple daily integrations
+to a mainline. Automted testing(post-commit promotion) is commonly used.
+
+
+Basic Workflow:
+
+1. Checkout from source code management (like git)
+2. Branch and make local changes
+3. Add or change tests as necessary
+4. Trigger automated build locally
+5. If successful,consider committing
+6. Update with latest from mainline
+7. Push changes, build and test on integration
+
+Continuous Delivery:
+
+A s/w development discipline where software is built so that it can be
+ released to production at anytime
+
+Keys and Assumptions:
+
+S/w is always deployable throughout s/w development life cycle (SDLC)
+Not breaking the build is prioritized over adding feautures.
+Feedback is fast and production readiness is known.
+Push-botton deployments are possible of any version of the s/w
+Close/Collaborative workng relationship
+
+Best practices:
+
+1. Maintain a single source repository
+2. Have a common mainline branch (usually master)
+3. Automate the build
+4. Minimize potential for user error,automte everything possible
+5. Make the build self-testing - self-testing code
+6. Everyone commits frequently (at least daily preferably)
+7. Communication is a key!
+8. Frequent mergers will help
+9. The working branch should be updated as frequently as possible to help avoid very large diffs while merging.
+10. Build every commit
+11. Prioritize fixing broken builds
+12. Keep your builds fast !!!
+13. Testing environment should be as close to prod as possible
+14. Make it easy for anyone to get the latest
+15. Keep it open, everyone should see what's happening
+16. Automate the deployment
+
+Must Do:
+
+* Backup Jenkins(at least jenkins home for job security)
+* use file fingerprinting to manage dependencies
+* Build from source control whenever possible (will generate clean builds)
+* Integrate jenkins with an issue management or help desk system
+* Take advantages of automated testing(with java builds,) generate and look at the repots
+* Layout your jenkins install on the disk with the most storage (both jenkins jobs and build process will take up space)
+
+* Before deleting a job have an archive copy. better: never delete, move to an archive group or fodlder and disable the jobs
+* Resist the temptation to have one build job for multiple environments (dev,test,pord) - Consider creating one job to specialize in each
+environment to retain flexibility to make changes
+* Email the results to all developers and operations staff for every job, particularly if jenkins is not integrated into and issue management system
+* User Jenkins for common maintenance or clean up tasks that are run regularly.
+* Tag merge or baseline your code in source control after a successful build
+* Keep your jenkins up to date- atleast be on the latest LTS version
+* keep your plugins up to date- review the bug reports and see what they address
+*DON'T BUILD ON MASTER except on very small deployments. If you have more than a dozen jobs and they are used by more that two or three
+people, set up build slaved to do the work.
+
+All the above are the best practices which helps you to be in safe side.
+
+Build Pipeline:
+
+It is a process by which the software build is broken down in sections:
+
+1. Unit test
+2. Acceptance test
+3. Packaging
+4. Reporting
+5. Deployment
+6. Notification
+
+these can then be executed in series,or in parallel,and depending on the 
+success or failure of any phase, 
+it can automatically be moved to the next phase.
+
+Where is "Devops" in that, through automation, the tools and skills needed are very "cross domain"
+
+Best Practices:
+
+jenkins and devops movement have caused companiens to think of common tasks differently:
+
+* Build Management
+* Release Management
+* Deployment Automation
+* Test Orchestratioin
+
+
+
+
+Difference b/w CI & CD (continous delivery):
+
+Continous delivery is the ability to release at anytime.
+Continous integration is just the practice of intergrating code continously.
+
+Continous Delivery Versus Continous Deployment:
+
+Continous Delivery means the code can be deliverd at anytime
+Continous deployment is that code is released continously as part of an automated pipeline
+
+Questions & Answers:
+
+1) What's the difference between Continuous Delivery and Continuous Deployment? 
+Continuous Delivery means the code CAN be released at any time, while Continuous Deployment means it is released continuously.
+
+2) Which answer best describes Continuous Integration? 
+A software development practice where contributors are integrating their work very frequently.
+
+3) Which answer best describes Continuous Deployment? 
+
+A software development discipline where software is released continuously as part of an automated pipeline.
+
+4) Which is NOT a Continuous Integration best practice? 
+Do everything manually with great care.
+
+5) Which answer best describes Continuous Delivery? 
+A software development discipline where software is built so that it can be released to production at any time.
+
+
+Installing and Configuring Jenkins :
+
+Prerequisites:
+
+1. Make sure that java is installed
+	yum install java-1.8.0-openjdk-devel -y
+	java -version
+	update-alternatives --config java
+	update-alternatives --config javac
+	java -version
+
+Jenkins Installation:
+
+Note: Here we are going to install jenkins @specific version i.e "2.19.4-1.1". At the end we are going to disable the repo to make sure that the jenkins version is not updated in any case
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
+rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+yum clean all
+#yum upgrade -y
+yum install jenkins
+4. Before restarting the services make sure that port 8080 is free ... using below
+netstat -nap|grep :8080
+5. systemctl restart jenkins
+6. systemctl enable jenkins
+7. Now open your serverip:8080 it will ask you to do copy the password from "/var/lib/jenkins/secrets/initialAdminPassword". Open the file from the server and copy the password
+cat /var/lib/jenkins/secrets/initialAdminPassword
+75aa5a6089dd4900b0b7c77d01f106ca
+
+Now you are good to go, your console will be opened. 
+
+Now click on install suggested plugins option where it will install the pllugins.
+Plugin Names:
+Folder plugins
+Timestamper
+Pipeline
+Subversion Plugin
+LDAP Plugin
+workspace cleanup plugin
+github organization folder plugin
+email extension plugin
+ant plugin
+buildtimeout plugin
+pipeline: stage view plugin
+Matrix authorization stratagy plugin
+Mailer plugin
+Credentials building plugin
+git plugin
+gradle plugin
+PAM authenticatin plugin
+
+Now once the above step is done, it will ask for userid creation. Please provide the respective informaiton and go ahead. You will be able to see the home screen.
+
+Now we are done with the jenkins installation and configurations.
+
+Configuration Tour ::
+
+Home directory of jenkins user and important configuration files under 
+/var/lib/jenkins/secrets/initialAdminPassword
+
+Each and every directory has its own specification.
+
+All the .xml files will stores the configuration of our node objects
+
+Secrete.key will save our secrete key information, similarly our secrets directory too saves our keys of (jenkins) user which will be used for accessing the nodes
+
+cd jobs 
+
+In side jobs directory you will find our all the jobs which are running in the machine (master node)
+
+cd userContent
+
+This is having a readme.txt file which will convey the details reagarding users information
+
+ex: create some html and show the output
+
+cd /var/cache 
+
+/var/cache/jenkins/war -> Importance
+
+cd WEB-INF/ -> importance
+
+
+The Dashboard ::
+
+In the dash board we could see an option called "build executor status" by default we will be having two jobs. If it is more than 2 builds then they will be @Build queue.
+
+User Management and Security:
+
+user id creation 
+
+Assigning permissions to this user.
+
+grant only read,write permissions and check it out for test id.
+
+=====================================================================================================
+
+Adding a Jenkins Slave:
+
+Take a new machine and start working on this. Make sure that you are going to enable ssh for user "jenkins".
+When you are installing the jenkins package it will automatically create the user "jenkins" and its home directory is "/var/lib/jenkins"
+
+[root@jenkins jenkins]# grep jenkin /etc/passwd
+jenkins:x:498:497:Jenkins Continuous Integration Server:/var/lib/jenkins:/bin/false
+
+Know enable ssh using below ..
+
+[root@jenkins jenkins]# su - jenkins -s /bin/bash
+
+-bash-4.2$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/var/lib/jenkins/.ssh/id_rsa):
+Created directory '/var/lib/jenkins/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /var/lib/jenkins/.ssh/id_rsa.
+Your public key has been saved in /var/lib/jenkins/.ssh/id_rsa.pub.
+The key fingerprint is:
+35:2a:71:2e:f2:b1:59:e4:f7:8d:ea:60:36:1f:3f:ab jenkins@jenkins
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|                 |
+|      . o o      |
+|       * o .     |
+|    . + S .      |
+|     o B . . o   |
+|      + = . o .  |
+|       o + +.    |
+|         .E.oo   |
++-----------------+
+
+
+Once you are done with the key generation, make sure that you are copying the key to the slave node.
+
+Work on slave node:
+
+Install the machine
+configure the password enabling
+Install the jdk which is already downloaded from the jenkins server, use scp and copy to the destination (slave) machine
+
+In Slave:
+
+yum install java-1.8.0-openjdk-devel -y
+Now create the user "jenkins" in the slave node and make sure that you are giving /var/lib/jenkins as home directory
+useradd jenkins -d /var/lib/jenkins
+mkdir -p /var/lib/jenkins/.ssh
+Copy the public key of jenkins server to your slaves "authorized_keys" file and save it.
+
+Once you are done with the above changes. Now add the slave node in the console.
+
+How a Job Runs:
+
+Do simple job test
+
+
+Plugin Manager:
+
+Plugins Link:
+http://updates.jenkins-ci.org/download/plugins/
+
+
+Take thin backup plugin 
+	install
+	updated
+	downgrade
+	uninstall
+	
+	
+Taking system backup :
+
+1. Backup Manager
+2. Thin backup
+
+Crontab Entries:
+
+# Minute   Hour   Day of Month       Month          Day of Week        Command    
+# (0-59)  (0-23)     (1-31)    (1-12 or Jan-Dec)  (0-6 or Sun-Sat)                
+    0        2          12             *                *            /usr/bin/find
+	
+	
+Projects :
+Freestyle Project Configuration:
+
+Workspace Environment Variables:
+
+Generic Variables:
+
+echo "Generic Genkins Variables"
+echo "Build Number $BUILD_NUMBER"
+echo "Node Name $NODE_NAME"
+echo "Job Name $JOB_NAME"
+echo "Executor Number $EXECUTOR_NUMBER"
+echo "Workspace $WORKSPACE"
+
+Git Specific Variables:
+
+echo "GIT Environment Variables"
+echo "GIT Commit $GIT_COMMIT"
+echo "GIT Branch $GIT_BRANCH"
+echo "GIT Previous Commit $GIT_PREVIOUS_COMMIT"
+echo "GIT URL $GIT_URL"
+
+Testing Git configuration with POLL SCM Option:
+Integrating Github with Jenkins::
+
+
+Final Test Triggering events 
+
+server -> github (take a job/build) -> trigger event(other job/build)
+
+Folders & Views
+
+
+Old Content::
+
+3. yum list --show-duplicates jenkins :-> Helps to show the duplicates of the packages.
+
+
+
+

@@ -1,0 +1,7 @@
+---
+- name: working with ignore
+  hosts: master
+  tasks:
+   - name: working with ignore
+     command: uname -a
+

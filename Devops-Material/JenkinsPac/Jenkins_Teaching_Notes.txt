@@ -1,0 +1,740 @@
+Jenkins Pipeline Scripting ::
+
+What is Jenkins Pipeline:
+
+A Pipeline which provides an extensible set of tools for modeling simple-to-complex delivery of application. 
+Pipelines are defined in Domain Specific Language (DSL) syntax .
+Typically, the definition of a Jenkins Pipeline is written into a text file (called a Jenkinsfile) which
+in turn is checked into a project’s source control repository. This is the foundation of "Pipeline-as-Code" 
+which is stored in the git and helps us to version and review it like any other code. 
+
+Creating a Jenkinsfile provides a number of immediate benefits:
+
+• Automatically create Pipelines for all Branches and Pull Requests
+• Code review/iteration on the Pipeline
+• Audit trail for the Pipeline
+• Single source of truth
+
+Note: generally considered best practice to define the Pipeline in a Jenkinsfile and check that in to source
+control.
+
+Jenkins Installation ::
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+#sudo yum upgrade -y
+sudo yum clean all
+sleep 5
+sudo yum install jenkins java-1.8.0-openjdk-devel -y
+
+Jenkins Plugins Installation ::
+
+Script ::
+
+vim installplugins.sh
+
+#!/bin/bash
+
+set -e
+
+plugin_dir=/var/lib/jenkins/plugins
+file_owner=jenkins.jenkins
+
+mkdir -p /var/lib/jenkins/plugins
+
+installPlugin() {
+  if [ -f ${plugin_dir}/${1}.hpi -o -f ${plugin_dir}/${1}.jpi ]; then
+    if [ "$2" == "1" ]; then
+      return 1
+    fi
+    echo "Skipped: $1 (already installed)"
+    return 0
+  else
+    echo "Installing: $1"
+    curl -L --silent --output ${plugin_dir}/${1}.hpi  https://updates.jenkins-ci.org/latest/${1}.hpi
+    return 0
+  fi
+}
+
+while read -r plugin
+do
+    installPlugin "$plugin"
+done < "/tmp/plugins.txt"
+
+changed=1
+maxloops=100
+
+while [ "$changed"  == "1" ]; do
+  echo "Check for missing dependecies ..."
+  if  [ $maxloops -lt 1 ] ; then
+    echo "Max loop count reached - probably a bug in this script: $0"
+    exit 1
+  fi
+  ((maxloops--))
+  changed=0
+  for f in ${plugin_dir}/*.hpi ; do
+    deps=$( unzip -p ${f} META-INF/MANIFEST.MF | tr -d '\r' | sed -e ':a;N;$!ba;s/\n //g' | grep -e "^Plugin-Dependencies: " | awk '{ print $2 }' | tr ',' '\n' | awk -F ':' '{ print $1 }' | tr '\n' ' ' )
+    for plugin in $deps; do
+      installPlugin "$plugin" 1 && changed=1
+    done
+  done
+done
+
+echo "fixing permissions"
+
+chown ${file_owner} ${plugin_dir} -R
+
+echo "all done"
+
+Plugins list ::
+
+vim /tmp/plugins.txt
+
+ace-editor
+amazon-ecr
+ant
+antisamy-markup-formatter
+apache-httpcomponents-client-4-api
+authentication-tokens
+aws-credentials
+aws-java-sdk
+blueocean
+blueocean-autofavorite
+blueocean-bitbucket-pipeline
+blueocean-commons
+blueocean-dashboard
+blueocean-display-url
+blueocean-events
+blueocean-git-pipeline
+blueocean-github-pipeline
+blueocean-i18n
+blueocean-jira
+blueocean-jwt
+blueocean-personalization
+blueocean-pipeline-api-impl
+blueocean-pipeline-editor
+blueocean-pipeline-scm-api
+blueocean-rest
+blueocean-rest-impl
+blueocean-web
+bouncycastle-api
+branch-api
+build-pipeline-plugin
+cloudbees-bitbucket-branch-source
+cloudbees-folder
+command-launcher
+conditional-buildstep
+config-file-provider
+credentials
+credentials-binding
+display-url-api
+docker-commons
+docker-workflow
+durable-task
+email-ext
+embeddable-build-status
+external-monitor-job
+favorite
+git
+git-client
+git-server
+github
+github-api
+github-branch-source
+github-pullrequest
+handy-uri-templates-2-api
+htmlpublisher
+jackson2-api
+javadoc
+jdk-tool
+jenkins-design-language
+jira
+jquery
+jquery-detached
+jsch
+junit
+ldap
+mailer
+matrix-auth
+matrix-project
+maven-plugin
+mercurial
+momentjs
+pam-auth
+workflow-aggregator
+workflow-api
+workflow-basic-steps
+workflow-cps
+workflow-cps-global-lib
+workflow-cps-global-lib-http
+workflow-durable-task-step
+workflow-job
+workflow-multibranch
+workflow-remote-loader
+workflow-scm-step
+workflow-step-api
+workflow-support
+parameterized-trigger
+pipeline-aggregator-view
+pipeline-aws
+pipeline-bamboo
+pipeline-build-step
+pipeline-config-history
+pipeline-cps-http
+pipeline-dependency-walker
+pipeline-deploymon
+pipeline-giphy-api
+pipeline-github
+pipeline-github-lib
+pipeline-githubnotify-step
+pipeline-gitstatuswrapper
+pipeline-graph-analysis
+pipeline-input-step
+pipeline-maven
+pipeline-milestone-step
+pipeline-model-api
+pipeline-model-declarative-agent
+pipeline-model-definition
+pipeline-model-extensions
+pipeline-multibranch-defaults
+pipeline-npm
+pipeline-rest-api
+pipeline-restful-api
+pipeline-stage-step
+pipeline-stage-tags-metadata
+pipeline-stage-view
+pipeline-timeline
+pipeline-utility-steps
+plain-credentials
+pubsub-light
+run-condition
+scm-api
+script-security
+slack
+ssh
+ssh-agent
+ssh-credentials
+ssh-slaves
+structs
+token-macro
+variant
+windows-slaves
+
+#Once you are done with the installation of plugins execute the below.
+systemctl start jenkins
+systemctl enable jenkins
+
+
+There are two ways of pipeline scripting they are as follows.
+
+1. Declarative
+2. scripted
+
+Examples :
+
+Examples ::
+
+// Declarative //
+
+pipeline {
+agent any ①
+stages {
+  stage('Build') { ②
+  steps { ③
+  sh 'make' ④
+  }
+  }
+  stage('Test'){
+  steps {
+  sh 'make check'
+  junit 'reports/**/*.xml' ⑤
+  }
+  }
+  stage('Deploy') {
+  steps {
+  sh 'make publish'
+  }
+  }
+  }
+}
+
+// Script //
+
+node {
+  stage('Build') {
+  sh 'make'
+  }
+  stage('Test') {
+  sh 'make check'
+  junit 'reports/**/*.xml'
+  }
+  stage('Deploy') {
+  sh 'make publish'
+  }
+}
+
+Explain about journey example then explain below
+
+Explain about application deployment process what term should be used where checkout & etc ...
+
+Explain about each and every things like,
+agent,stages,stage,steps,node
+
+Teach them about pipeline-syntax & blueocean plugin and use cases
+
+
+2. Declaring Variables :
+
+Variable initialization & accessing variable.
+
+def & println
+Note: need to give inside script
+
+Global Variables:
+
+You will get all the globla variables as below from your jenkins
+https://<ipaddress:8080>/pipeline-syntax/globals
+
+Accessing varibales using env:
+
+examples for global variables
+
+currentBuild.result, currentBuild.displayName, etc. Consult the built-in Global Variable Reference for a complete, and up to date, list of properties available on currentBuild.
+
+Defining Variables using environment:
+
+Defining Variables using parameters:
+
+Just use the pipeline syntax generator to generate the syntax like below.
+https://<jenkins:8080>/directive-generator/
+
+Note: parameter variables can be accessible via "${params.ENV_VARIABLE}", with out params it will not work.
+
+3. Using Operators :
+
+Jenkins supports multiple operators like
+
+arithmetic operators:
++,-,/,%,*
+
+unary operators:
++,-
+
+Assignment arithmetic operators:
++=,-=,*=,%=,/=
+
+Relational operators:
+==,!=,<,<=,>,>=
+
+Logical operators:
+
+&&,||,!
+
+Bitwise operators:
+&,|,^,~
+
+Conditional operators:
+not operator - !
+
+4. Using Decision Making:
+
+simple if statement:
+if-else statement:
+nested-if statement:
+switch statement:
+
+Note: Try to use input for taking the userinput.
+myval1.toInteger()
+
+
+5. Using Loops:
+
+while loop:
+for loop:
+for-in loop:
+break statement:
+Continue Statement:
+
+6. Using Methods:
+
+simple method:
+method with arguments/parameters:
+method with default parameters/arguments:
+method with return values:
+
+7. Using I/O operations on files:
+
+Reading files:
+Reading the Contents of a File as an Entire String:
+note: text = file.getText('UTF-8')
+write a new file:
+Note: If already file exists then the content will be lost.
+append the text to a file:
+Other fn()'s related to the file operations:
+	- isFile()
+	- isDirectory()
+	- length()
+Creating a Directory:
+Delete a file/directory:
+Copying files:
+dstfile << srcfile.text
+
+8. Explain about CI & CD process
+
+Note: make sure you are installing dockers in the jenkins server.
+######
+yum install docker -y
+systemctl enable docker
+systemctl start docker 
+
+Run jenkins as root user to avoid permission issues
+
+Configure the Pipeline via Git SCM and show them the execution.
+Note: Don't forget to create the credentials
+
+9. Explanation of total structure with dockers
+
+pipeline {
+  agent any/none/label/node/docker/dockerfile
+  /*
+  rest of the syntax
+  */
+}
+
+
+Here if you are observing you can use agent part for running your code as part of the execution. 
+We have ample of options like below, you can choose them as per your requirement.
+
+- agent:
+
+This "agent" should be added to the pipeline code. This tell us where our code should run, 
+which means a server/container where code should run.
+
+It accepts diff parameters some of them are below.
+
+You can use any of the below parameters for passing to the agent like below.
+
+  Parameters:
+
+      - any
+      Execute the Pipeline, or stage, on any available agent. For example: agent any
+
+      - none
+      When applied at the top-level of the pipeline block no global agent will be allocated for the
+      entire Pipeline run and each stage section will need to contain its own agent section. For
+
+      example: agent none
+
+      - label
+      Execute the Pipeline, or stage, on an agent available in the Jenkins environment with the
+      provided label. For example: agent { label 'my-defined-label' }
+
+      - node
+      agent { node { label 'labelName' } } behaves the same as agent { label 'labelName' }, but
+      node allows for additional options (such as customWorkspace).
+
+      - docker
+
+      helps in dynamically create the contianer from the respective image.
+
+      agent { docker 'maven:3-alpine' }
+
+      or
+
+      agent {
+              docker {
+                      image 'maven:3-alpine'
+                      label 'my-defined-label'
+                      args '-v /tmp:/tmp'
+                      }
+            }
+
+      - dockerfile
+
+      Execute the Pipeline, or stage, with a container built from a Dockerfile contained in the source
+      repository. In order to use this option, the Jenkinsfile must be loaded from either a Multibranch
+      Pipeline, or a "Pipeline from SCM." Conventionally this is the Dockerfile in the root of the source
+      repository: agent { dockerfile true }. If building a Dockerfile in another directory, use the dir
+      option: agent { dockerfile { dir 'someSubDir' } }. You can pass additional arguments to the
+      docker build … command with the additionalBuildArgs option, like agent { dockerfile {
+      additionalBuildArgs '--build-arg foo=bar' } }.
+
+Example:
+
+pipeline {
+  agent any
+  stages {
+    stage('working inside maven pod') {
+      agent {
+        docker {
+          image 'maven'
+          label 'mymavenpod'
+          args '-v /tmp:/tmp'
+        }
+		}
+        steps {
+          script{
+            echo "Hi I am inside maven pod"
+          }
+        }
+      
+
+    }
+    stage('working inside tomcat') {
+      agent {
+        docker {
+          image 'tomcat:8.0'
+          lable 'my tomcat image'
+          customWorkspace '/mydir/mydata'
+        }
+		}
+        steps {
+          script{
+            echo "Hi all i am inside tomcat pod"
+          }
+        }
+      
+    }
+
+  }
+}
+
+Note: make sure that you are giving {agent any } in the first section other wise you cannot declare agent in the subsequent stages !
+
+
+CI & CD Design & Implementation ::
+
+1. Java Web based Application Deployment Process ::
+
+In this project we need to have one image with java,maven,tomcat installed and configured. Hence we
+are creating our own customised image using below docker file.
+
+Base Image::
+
+[root@jenkins myweb]# cat ../Dockerfile
+FROM centos:7
+# Installing Java
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+ENV PATH=$PATH:$JAVA_HOME
+RUN yum install java-1.8.0-openjdk-devel wget git -y
+EXPOSE 8080
+
+# Installing Maven
+ENV Mvn_Version=3.6.3
+ENV M2_HOME=/usr/local/apache-maven/apache-maven-${Mvn_Version}
+ENV M2="${M2_HOME}/bin"
+ENV PATH=$PATH:$M2
+
+RUN wget https://downloads.apache.org/maven/maven-3/${Mvn_Version}/binaries/apache-maven-${Mvn_Version}-bin.tar.gz && \
+    tar xvfz apache-maven-${Mvn_Version}-bin.tar.gz && \
+    mkdir /usr/local/apache-maven/apache-maven-${Mvn_Version} -p && \
+    mv apache-maven-${Mvn_Version}/* /usr/local/apache-maven/apache-maven-${Mvn_Version}/
+
+
+# Installing and configuring Tomcat
+
+ENV Tomcat_Version=8.5.59
+RUN     wget http://www-eu.apache.org/dist/tomcat/tomcat-8/v${Tomcat_Version}/bin/apache-tomcat-${Tomcat_Version}.tar.gz && \
+        tar xvfz apache-tomcat-${Tomcat_Version}.tar.gz && \
+        mkdir -p /opt/tomcat/ /opt/myapplication/ -p && \
+        mv apache-tomcat-${Tomcat_Version}.tar.gz /tmp/ && \
+        mv apache-tomcat-${Tomcat_Version}/* /opt/tomcat/.
+COPY context.xml /opt/tomcat/webapps/manager/META-INF/
+COPY tomcat-users.xml /opt/tomcat/conf/
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
+
+Context file data context.xml::
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<Context antiResourceLocking="false" privileged="true" >
+  <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+</Context>
+
+tomcat users file data tomcat-users.xml::
+
+<tomcat-users>
+<!--
+  <role rolename="tomcat"/>
+  <role rolename="role1"/>
+  <user username="tomcat" password="tomcat" roles="tomcat"/>
+  <user username="both" password="tomcat" roles="tomcat,role1"/>
+  <user username="role1" password="tomcat" roles="role1"/>
+-->
+
+        <role rolename="manager-gui"/>
+        <user username="dvsdevops" password="dvsdevops" roles="manager-gui"/>
+
+</tomcat-users>
+
+
+Manual Execution of application:
+
+Show them how to run the application via docker container. 
+
+Post that build the base image & implement your CI & CD as per below.
+
+Explain the Application Deployment manually ::
+https://github.com/shan5a6/myweb.git
+
+CI Implementation ::
+
+pipeline {
+  agent any
+  stages {
+    stage('Git checkout') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'gitaccess', url: 'https://github.com/shan5a6/myweb.git']]])
+      }
+    }
+    stage('Building the image') {
+      steps {
+        sh """
+        docker build -t "javawebapplication" .
+        """
+      }
+    }
+  }
+}
+
+
+CD Implementation::
+
+pipeline {
+  agent any 
+  stages {
+    stage('Checking the application status') {
+      steps {
+        script {
+          def container_status = sh(script: "docker ps -a|grep -i javawebapplication", returnStatus: true) == 0
+          if ("${container_status}" ==  "true")
+          {
+            sh 'docker rm -f javawebapplication'
+          }
+        }
+      }
+    }
+    stage('Starting the application') {
+      steps {
+        sh "docker run -d --name javawebapplication -p 8000:8080 javawebapplication"
+      }
+    }
+  }
+}
+
+
+2. Nodejs Application Deployment process ::
+
+Explain the Application Deployment manually ::
+https://github.com/shan5a6/nodeJsApplication.git
+
+
+CI Implementation :
+
+pipeline {
+  agent any
+  stages {
+    stage('Git checkout') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'gitaccess', url: 'https://github.com/shan5a6/nodeJsApplication.git']]])
+      }
+    }
+    stage('Building the image') {
+      steps {
+        sh """
+        docker build -t "nodejsapplication" .
+        """
+      }
+    }
+  }
+}
+
+CD Implementation :
+
+pipeline {
+  agent any 
+  stages {
+    stage('Checking the application status') {
+      steps {
+        script {
+          def container_status = sh(script: "docker ps -a|grep -i nodejsapplication", returnStatus: true) == 0
+          if ("${container_status}" ==  "true")
+          {
+            sh 'docker rm -f nodejsapplication'
+          }
+        }
+      }
+    }
+    stage('Starting the application') {
+      steps {
+        sh "docker run -d --name nodejsapplication -p 8001:3000 nodejsapplication"
+      }
+    }
+  }
+}
+
+
+3. Springboot Application Deployment process ::
+
+Explain the Application Deployment manually ::
+https://github.com/shan5a6/javaSpringBoot.git
+
+
+CI Implementation :
+
+pipeline {
+  agent any
+  stages {
+    stage('Git checkout') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CheckoutOption']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'gitaccess', url: 'https://github.com/shan5a6/javaSpringBoot.git']]])
+      }
+    }
+    stage('Building the image') {
+      steps {
+        sh """
+        docker build -t "springapplication" .
+        """
+      }
+    }
+  }
+}
+
+CD Implementation :
+
+pipeline {
+  agent any 
+  stages {
+    stage('Checking the application status') {
+      steps {
+        script {
+          def container_status = sh(script: "docker ps -a|grep -i springapplication", returnStatus: true) == 0
+          if ("${container_status}" == "true")
+          {
+            sh 'docker rm -f springapplication'
+          }
+        }
+      }
+    }
+    stage('Starting the application') {
+      steps {
+        sh "docker run -d --name springapplication -p 8002:8080 springapplication"
+      }
+    }
+  }
+}
+

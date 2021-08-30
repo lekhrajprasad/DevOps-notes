@@ -1,0 +1,14 @@
+---
+- name: working with file module
+  hosts: prod
+  tasks:
+    - name: creating a new file
+      file:
+        path: "/tmp/directory"
+        owner: ec2-user
+        group: root
+      ignore_errors: True
+      register: output
+    - debug: var=output
+    - set_fact: myvar= output.changed
+

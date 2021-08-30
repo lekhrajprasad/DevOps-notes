@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#Write a code that should accept only 3 arguments oprend1,oprend2 & operator based on operator it should return output
+
+if [[ $#  != 3 ]]
+then
+echo -e "Please provide 3 arguments operand1,operand2 & operator\nex: bash ex1.sh 10 20 +"
+exit 1
+fi
+a=$1
+b=$2
+opr=$3
+
+case $opr in
+"+") echo "sum of  $a & $b is $((a+b))";;
+"-") echo "sub of $a & $b is $((a-b))";;
+"/") echo "div of $a & $b is $((a/b))";;
+"*") echo "mul of $a & $b is $((a*b))";;
+"%") echo "mod of $a & $b is $((a%b))";;
+*) echo "Usage bash ex1.sh 10 20 +/-/*/%/*"
+   exit 1;;
+esac

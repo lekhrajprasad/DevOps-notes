@@ -1,0 +1,24 @@
+---
+- name: working with loops
+  hosts: prod
+  tasks:
+    - name: working with with_items
+      command: echo "{{item}}"
+      with_items: [0,1,2]
+    - name: working with with_fileglob
+      command: echo "{{item}}"
+      with_fileglob:
+         - /tmp/*
+      register: output
+    - debug: msg="{{output}}"
+    - name: working with with_lines
+      command: echo "{{item}}"
+      with_lines:
+        - "cat /etc/passwd|awk -F: '{print $1}'"
+    - name: working with with_dict
+      command: echo "{{item.key}}={{item.value}}"
+      with_dict: "{{ansible_default_ipv4}}"
+    - name: working with with_sequence
+      command: echo "{{item}}"
+      with_sequence: start=0 end=5
+

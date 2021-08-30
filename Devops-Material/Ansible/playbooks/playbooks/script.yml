@@ -1,0 +1,8 @@
+---
+- name: working with script module
+  hosts: prod
+  tasks: 
+    - name: printing script content
+      script: ./for.py
+      register: output
+    - debug: var=output.stdout_lines

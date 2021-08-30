@@ -1,0 +1,7 @@
+---
+- name: working with vars
+  hosts: all
+  tasks:
+    - name: printing name & age values
+      command: echo "My course name is {{course}}"
+      

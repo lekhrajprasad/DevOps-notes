@@ -1,0 +1,10 @@
+[prod]
+master
+[dev]
+client1
+[test]
+client2 
+[mytest]
+client[1:2]
+[mytest:vars]
+course="Ansible"

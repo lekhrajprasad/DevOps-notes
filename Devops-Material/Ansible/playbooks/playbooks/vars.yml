@@ -1,0 +1,10 @@
+---
+- name: working with vars
+  hosts: prod
+  vars:
+    name: CRCP
+    age: 20
+  tasks:
+    - name: printing name & age values
+      command: echo "name is {{name}},age is  {{age}}"
+      

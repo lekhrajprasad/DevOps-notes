@@ -1,0 +1,490 @@
+Terraform ( Infrastructure As A Code IaaC) ::
+
+Why we use Terraform and not Chef, Puppet, Ansible, SaltStack, or CloudFormation
+
+If you search the Internet for “infrastructure-as-code”, it’s pretty easy to come up with 
+a list of
+ the most popular tools:
+
+Chef
+Puppet
+Ansible
+SaltStack
+CloudFormation
+Terraform
+
+
+All the above tools helps us to manage our infrastructure in the form of code. 
+But question is simple why 
+should we choose "terraform" than all these. If you observe all the above tools 
+are opensource and they 
+have their own communities and the contribution & one more thing is they all are 
+enterprize tools.
+
+Even we have "cloud formation" for automating the things with AWS than terraform. 
+but question remains same 
+why terraform ??
+
+Configuration Management vs Orchestration ::
+
+The above mentioned tools except "CloudFormation & Terraform" all other tools are 
+basically configuration 
+management tools.
+
+Which means that they are used to manage and install the s/w or helps to maintain a s
+tate of the particular 
+macine. 
+
+But "Terraform" & "CloudFormation" are the Orchestration tools which means that they are desinged to provison
+ the machines & their infrastructure. Once the machine is builded you can
+use the configuration management tools for performing your task.
+
+Mutable Infrastructure vs Immutable Infrastructure ::
+
+Mutable --> Configuration management tools
+using configuration management tools, we can deploy the new software versions based up on the environement we
+are choosing. But if you observe each server will be having a seperate
+version based up on the environement.
+
+
+Immutable --> Orchestration tools
+But if you are choosing the Orchestration tools you can simply maintain all the servers with a single version 
+of OS. Its simple create a simple OS image and start deploy the servers as per the requirement and all your 
+old machines will be replaced with the newly builded machines and all the machines will have same version of 
+the package installed !!
+
+
+
+Procedural vs Declarative ::
+
+Procedural approach means if you want to achieve some thing you need to mention the things in an programatic approach. "Chef & Ansible" works on the same.
+
+But in Declarative approach you no need to worry about flow it will automatically gets the respective informaiton based up the resource what we are choosing. 
+
+For example if you want to create 10 servers with app version v1 then the code for different tools will be like below.
+
+using Ansible : (Procedural approach)
+
+- ec2:
+	count: 10
+	ami: app-v1
+	instance_type: t2.micro
+	
+
+Using terraform : (Declarative)
+
+resource "aws_instance" "example" {
+  count = 10
+  ami = "ami-v1"
+  instance_type = "t2.micro"
+}
+
+
+Till now its fine no much changes in both the configuration. But question is what will happen if the load is high and if you want to add 5 more servers. 
+
+Using Ansible you need to specify the code like below.
+
+- ec2:
+	count: 15
+	ami: app-v1
+	instance_type: t2.micro
+	
+Soon after executing this code, you will get a 15 more servers along with 10 machines so total will be 25 servers. But your desire state is to have only 5 machines with out changing 
+the code. Which means that you need to again re-write the entire code and find the previous machines and has to do all the other stuff.
+
+Using Terraform you need to specify the code like below.
+
+resource "aws_instance" "exampe" {
+	count = 15
+	ami = "ami-v1"
+	instance_type = "t2.micro"
+	}
+	
+Now what Terraform will do it, it won't create 15 more servers it will simply create 5 servers because it is well aware of the current state what ever it is having. 
+Hence you no need to break you head to write new code.
+
+
+Disadvantages:
+
+Of course, there are downsides to declarative languages too. Without access to a full
+ programming language, your expressive power is limited. For example, some types of 
+infrastructure changes, such as a rolling, zero-downtime deployment, are hard to express
+ in purely declarative terms. Similarly, without the ability to do “logic” 
+(e.g. if-statements, loops), creating generic, reusable code can be tricky (especially in
+ CloudFormation). 
+
+Client/Server Architecture vs Client-Only Architecture ::
+
+Chef,puppet & salt stack are purely based on "Client/Server". Which indeed there are many
+ hiccups when you are dealing with these tools, like 
+
+1. you need to install the client in all the machines in order to get the desired state as 
+per the requirement
+2. you should require a manageble server which should give the instructions to the client
+ machines. 
+3. you will get all the issues with the network,client,management and etc.
+
+Ansible,CloudFormation & Terraform are purely client-only Architecture, which in deed you 
+no need to install any agents as part of your machines in order to do the management. 
+
+CloudFormation is also client/server, but AWS handles all the server details so transparently,
+ that as an end user, you only have to think about the client code.
+The Ansible client works by connecting directly to your servers over SSH
+Terraform uses cloud provider APIs to provision infrastructure, so there are no new 
+authentication mechanisms beyond what you’re using with the cloud provider already, and 
+there is no need for direct access to your servers
+
+Final Conclusion:
+
+Of course, Terraform isn’t perfect. It’s younger and less mature than all the other tools on the list: whereas Puppet came out in 2005, Chef in 2009, SaltStack and CloudFormation in 
+2011, and Ansible in 2012,
+Terraform came out just 4 years ago, in 2014. 
+Bugs are relatively common (e.g. there are over 800 open issues with the label “bug”), although the vast majority are harmless eventual consistency issues that go away when you 
+rerun Terraform
+
+
+
+Infrastructure As A Code with AWS Using Terraform ::
+
+Installation and Configuration:
+
+sudo curl -O https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+sudo yum install -y unzip
+sudo unzip terraform_0.11.13_linux_amd64.zip -d /usr/bin/
+
+Creating connection between CLI & AWS API ::
+
+[root@terraform basics]# aws configure
+AWS Access Key ID [None]: AKIAVEWARMEZ4JG77O25
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+export AWS_DEFAULT_REGION="us-east-1"
+
+lets play around our terraform commands ::
+
+:: Explain in detail about the documentation page ::
+
+Topic 1 ::
+Terraform Commands:
+
+[root@terraform ~]# mkdir ~/terraform/basics -p
+[root@terraform ~]# ls -l
+total 20636
+drwxr-xr-x 3 root root       20 Feb 17 08:23 terraform
+-rw-r--r-- 1 root root 21128942 Feb 17 08:19 terraform_0.11.13_linux_amd64.zip
+[root@terraform ~]# cd terraform/basics/
+[root@terraform basics]# ls -l
+total 0
+
+
+[root@terraform basics]# cat main.tf
+resource "aws_key_pair" "deployer" {
+  key_name   = "devops-test-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+}
+
+terraform plan -out=tfplan
+
+[root@terraform basics]# terraform apply tfplan
+aws_key_pair.deployer: Creating...
+  fingerprint: "" => "<computed>"
+  key_name:    "" => "devops-test-key"
+  key_pair_id: "" => "<computed>"
+  public_key:  "" => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com"
+aws_key_pair.deployer: Creation complete after 0s (ID: devops-test-key)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[root@terraform basics]#
+
+
+[root@terraform basics]# ls -al .terraform/plugins/
+total 0
+drwxr-xr-x 3 root root 25 Feb 17 08:25 .
+drwxr-xr-x 3 root root 21 Feb 17 08:25 ..
+drwxr-xr-x 2 root root 64 Feb 17 08:25 linux_amd64
+[root@terraform basics]#
+
+
+[root@terraform basics]# terraform providers
+.
+└── provider.aws
+
+[root@terraform basics]#
+
+[root@terraform basics]# terraform show
+aws_key_pair.deployer:
+  id = devops-test-key
+  fingerprint = d7:ff:a6:63:18:64:9c:57:a1:ee:ca:a4:ad:c2:81:62
+  key_name = devops-test-key
+  key_pair_id = key-0d4c6fef9c0d9284c
+  public_key = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3F6tyPEFEzV0LX3X8BsXdMsQz1x2cEikKDEY0aIj41qgxMCP/iteneqXSIFZBp5vizPvaoIR3Um9xK7PGoW8giupGn+EPuxIA4cDM4vzOqOkiMPhz5XK0whEjkVzTo4+S0puvDZuwIsdiW9mxhJc7tgBNL0cYlWSYVkz4G/fslNfRPW5mYAM49f4fhtxPb5ok4Q2Lg9dPKVHO/Bgeu5woMc7RY0p1ej6D4CKFE6lymSDJpW0YHX/wqE9+cfEauh7xZcG0q9t2ta6F6fmX0agvpFyZo8aFbXeUBr7osSCJNgvavWbM/06niWrOvYX2xwWdhXmXSrbX8ZbabVohBK41 email@example.com
+  tags.% = 0
+
+[root@terraform basics]# terraform destroy
+aws_key_pair.deployer: Refreshing state... (ID: devops-test-key)
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+
+[root@terraform basics]# terraform destroy -auto-approve
+aws_key_pair.deployer: Refreshing state... (ID: devops-test-key)
+aws_key_pair.deployer: Destroying... (ID: devops-test-key)
+aws_key_pair.deployer: Destruction complete after 0s
+
+Destroy complete! Resources: 1 destroyed.
+[root@terraform basics]
+
+useful Commands::
+
+apply: Builds or changes infrastructure
+console: Interactive console for Terraform interpolations
+destroy: Destroys Terraform-managed infrastructure
+fmt: Rewrites configuration files to canonical format
+get: Downloads and installs modules for the configuration
+graph: Creates a visual graph of Terraform resources
+import: Imports existing infrastructure into Terraform
+init: Initializes a new or existing Terraform configuration
+output: Reads an output from a state file
+plan: Generates and shows an execution plan
+providers: Prints a tree of the providers used in the configuration
+push: Uploads this Terraform module to Terraform Enterprise to run
+refresh: Updates local state file against real resources
+show: Inspects Terraform state or plan
+taint: Manually marks a resource for recreation
+untaint: Manually unmarks a resource as tainted
+validate: Validates the Terraform files
+version: Prints the Terraform version
+workspace: Workspace management
+
+
+HashiCorp Configuration Language ::
+
+Refernces :
+https://www.terraform.io/docs/providers/docker/r/container.html
+https://www.terraform.io/docs/configuration-0-11/syntax.html
+https://www.terraform.io/docs/configuration-0-11/interpolation.html
+
+If you want to access the variables value then you can use the below syntax
+
+"${variable.attribute}"
+
+Topic 2 ::
+
+Variables ::
+
+Lets play around the variables ::
+
+Tell them about server creation as example & start playing around it.
+
+case 1 :
+
+default value 
+
+case 2:
+
+user interactive
+
+case 3:
+
+passing using -var section
+
+case 4:
+
+defining outputs as part of the main.tf file
+
+case 5:
+
+Using variables.tfvars
+
+
+Topic 3 ::
+
+Restructure our Terraform code ::
+
+Till now we are using single main.tf file for  all our requirements. now lets break down the file in to
+different parts like below.
+
+main.tf, variables.tf & outputs.tf 
+
+Topic 4 ::
+
+Maps and Lookups ::
+
+They help us to define the key value pairs as of our configuration files, for suppose i am gonna provide different values
+for the same variable using maps like below.
+
+Our main intention is to provide different values to the variables based up on the environmnet what I select. Hence I am 
+re-modifying our infrastructure as below.
+
+Note: we are trying to bring two servers in dev & prod with different server names & different keys.
+
+Topic 5 ::
+
+Terraform Workspaces::
+
+Workspace gives us a great feasibility of creating our own infrastructure based up on different
+environments like dev/sit/uat/prod etc .. In simple we will have individual tfstate file particular to the
+environment. Let's see how are we gonna do it .
+
+
+Now lets try to understand why we have to opt for Workspaces, if we don't use them what will happen.
+
+Lets execute our code as it is as above with different environments.
+
+Initially we dont have anything.
+
+workspace commands ::
+
+terraform workspace list
+terraform workspace new prod
+terraform workspace select prod
+terraform plan -out prodplan -var env=prod
+terraform apply prodplan
+
+Note: Tell them clearly how to switch the accounts in the workspace. 
+before going futher destroy all the environments
+
+Null Resources and Local-exec ::
+
+syntax:
+resource "null_resource" "null_id" {
+  provisioner "local-exec" {
+    command = "echo ${aws_instance.myserver.tags.Name},${aws_instance.myserver.public_ip} >> servers.txt"
+  }
+}
+
+Modules ::
+
+Refer to file "Raw_S3_Vpc_Ec2" and module_code.tar file for the code.
+
+
+Practise Example :
+
+Autoscalling configuration ::
+
+Creating AWS Autoscalling so that, even thought the server is crashes we will have other instances will be up and running fine. 
+
+
+1. Gathering all the availability zones
+
+2. Configuring security group
+
+3. Creating the launch configuration
+
+4. Creating Autoscalling Group
+
+5. Creating ELB
+
+6. Printing the load balencer dns name
+
+Final Code:
+
+[root@terraform asg]# cat main.tf
+provider "aws" {
+        region = "eu-west-2"
+        profile = "default"
+        }
+
+
+# Gathering availability zones
+
+data "aws_availability_zones" "all" {}
+
+# Creating security Group
+
+resource "aws_security_group" "my_security_group" {
+        name = "my_security_group"
+        ingress {
+            from_port   = 0
+            to_port     = 0
+            protocol    = "-1"
+            cidr_blocks = ["0.0.0.0/0"]
+          }
+
+          egress {
+            from_port       = 0
+            to_port         = 0
+            protocol        = "-1"
+            cidr_blocks     = ["0.0.0.0/0"]
+        }
+        tags {
+                Name = "Allow All"
+        }
+
+}
+
+
+#Creating the launch configuration
+
+resource "aws_launch_configuration" "my-launch-configuration" {
+        name = "my-launch-configuration"
+        image_id = "ami-403e2524"
+        instance_type = "t2.micro"
+        security_groups = ["${aws_security_group.my_security_group.id}"]
+        user_data = <<-EOF
+              #!/bin/bash
+              yum install httpd -y
+              chkconfig httpd on
+              echo "Hello, World" >> /var/www/html/index.html
+              service httpd restart
+              EOF
+}
+# Creating Autoscaling Group
+
+resource "aws_autoscaling_group" "my_autoscaling_group" {
+        availability_zones = ["${data.aws_availability_zones.all.names}"]
+        launch_configuration = "${aws_launch_configuration.my-launch-configuration.id}"
+        min_size = 2
+        max_size = 4
+        health_check_type = "ELB"
+        load_balancers = ["${aws_elb.my-elb.id}"]
+        tag {
+                key = "Name"
+                value = "terraform-example-asg"
+                propagate_at_launch = true
+         }
+
+
+}
+
+# Creating Loadbalencer
+
+resource "aws_elb" "my-elb" {
+        name = "my-elb"
+        availability_zones = ["${data.aws_availability_zones.all.names}"]
+        listener {
+            instance_port     = 80
+            instance_protocol = "http"
+            lb_port           = 80
+            lb_protocol       = "http"
+          }
+        health_check {
+            healthy_threshold   = 2
+            unhealthy_threshold = 2
+            timeout             = 3
+            target              = "TCP:80"
+            interval            = 30
+          }
+
+}
+
+# Displaying the elb dns name
+
+output "dns_name" {
+        value = "${aws_elb.my-elb.dns_name}"
+        }
+
+==========================
+Module Output Format ::
+
+output "mys3_bucket_name" {
+
+        value = "${module.storage.mys3_bucket_name}"
+}
+
+output "mypub_ip1" {
+        value = "${module.server.mypub_ip}"
+}
+[

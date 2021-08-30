@@ -1,0 +1,33 @@
+pip install paramiko -U
+pip install netmiko -U
+
+import paramiko
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect("servername/ipaddress", username="*******", password="**********")
+ssh_stdin, ssh_stdout, ssh_stderr = ssh.exec_command("uname -a")
+print ssh_stdout.readlines()
+
+
+
+Login in to the server using ".pem" file:
+
+[root@master ssh]# cat login_ssh.py
+import paramiko
+k = paramiko.RSAKey.from_private_key_file("/tmp/ssh/class_devops.pem")
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+print "connecting"
+ssh.connect( hostname = "52.56.74.235", username = "ec2-user", pkey = k )
+print "connected"
+commands = [ "/sbin/ifconfig eth0","df -hT"]
+for command in commands:
+    print "Executing {}".format( command )
+    stdin , stdout, stderr = ssh.exec_command(command)
+    print stdout.read()
+    print( "Errors")
+    print stderr.read()
+ssh.close()
+
+
+

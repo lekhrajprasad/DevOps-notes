@@ -1,0 +1,35 @@
+---
+# tasks file for wordpress
+- name: Installing mariadb & php
+  command: amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+
+- name: Installing httpd
+  yum:
+    name: httpd
+    state: present
+
+
+- name: enabling service
+  systemd:
+    name: httpd
+    enabled: yes
+
+- name: Downloading wordpress 
+  get_url: url=https://wordpress.org/latest.tar.gz dest=/tmp/wordpress.tar.gz force=yes
+
+- name: Alligning the configuration
+  shell: |
+    cd /tmp
+    tar -xzf wordpress.tar.gz
+    cp -r wordpress/* /var/www/html/
+
+- name: Copying the wordpress configuration file
+  template: src=wp-config.j2 dest=/var/www/html/wp-config.php
+
+- name: Setting the permissions
+  file: path=/var/www state=directory recurse=yes owner=apache group=apache mode="0755"
+  notify: restart httpd
+
+
+
+

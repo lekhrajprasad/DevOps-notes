@@ -1,0 +1,887 @@
+Student Notes::
+
+centos7-minimal-v20190919.0.0 --> AMI image
+
+/usr/local/nagios/bin/nagios -v  /usr/local/nagios/etc/nagios.cfg
+
+1. Installation and configuration !!
+
+Nagios is one of the most mature and well-known monitoring system in the industry !!
+
+We will also utilize the Nagios Remote Plugin Executor (NRPE), that will be installed as an agent on remote hosts, to monitor their local resources.
+
+Installation & Configuration of Nagios4 ::
+
+In this case we are taking two centos 7 machines one named as "nagiosserver" & other one as "nagiosclient1"
+
+1. Configure your local dns between your machines 
+
+2. Configure your password less authentication between you nagiosserver to nagiosclient1
+	Make sure that you are executing "yum update -y" if you are taking your new machines
+
+3. Instllating & configuring LAMP stack (Linux,Apache,Mysql,PHP).
+
+Please execute the below.
+
+yum install httpd -y
+systemctl start httpd.service
+systemctl enable httpd.service
+yum install mariadb-server mariadb firewalld -y
+systemctl start mariadb
+mysql_secure_installation
+
+During the installation it will ask for the password set for root account please hit enter for the first case & reset the root password. 
+Once done hit enter for all other prompts !!
+
+systemctl enable mariadb.service
+yum install php php-mysql -y
+systemctl restart httpd.service
+systemctl restart firewalld
+systemctl enable firewalld
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --permanent --zone=public --add-service=https
+firewall-cmd --reload
+
+4. Now start installing the nagios !!
+
+Please do execute the below steps in order to install your nagios4 package !!
+
+yum install gcc glibc glibc-common gd gd-devel make net-snmp openssl-devel xinetd unzip -y
+useradd nagios
+groupadd nagcmd
+usermod -a -G nagcmd nagios
+
+cd ~
+curl -L -O https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz
+tar xvf nagios-*.tar.gz
+cd nagios-*
+./configure --with-command-group=nagcmd
+make all
+sudo make install
+sudo make install-commandmode
+sudo make install-init
+sudo make install-config
+sudo make install-webconf
+usermod -G nagcmd apache
+cd ~
+curl -L -O http://nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
+tar xvf nagios-plugins-*.tar.gz
+cd nagios-plugins-*
+./configure --with-nagios-user=nagios --with-nagios-group=nagios --with-openssl
+make
+make install
+cd ~
+curl -L -O http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz
+tar xvf nrpe-*.tar.gz
+cd nrpe-*
+./configure --enable-command-args --with-nagios-user=nagios --with-nagios-group=nagios --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+make all
+sudo make install
+sudo make install-xinetd
+sudo make install-daemon-config
+
+#### Add the below 
+vi /etc/xinetd.d/nrpe
+
+Modify the only_from line by adding the private IP address of the your Nagios server to the end (substitute in the actual IP address of your server):
+
+only_from = 127.0.0.1 10.132.224.168 (your private ipaddress)
+
+service xinetd restart
+
+### Configuring the nagios server according to our wish !!!
+
+[root@nagiosserver objects]# pwd
+/usr/local/nagios/etc/objects
+[root@nagiosserver objects]# ll
+total 48
+-rw-rw-r--. 1 nagios nagios  7688 Mar 25 07:23 commands.cfg
+-rw-rw-r--. 1 nagios nagios  2138 Mar 25 07:23 contacts.cfg
+-rw-rw-r--. 1 nagios nagios  5375 Mar 25 07:23 localhost.cfg
+-rw-rw-r--. 1 nagios nagios  3096 Mar 25 07:23 printer.cfg
+-rw-rw-r--. 1 nagios nagios  3265 Mar 25 07:23 switch.cfg
+-rw-rw-r--. 1 nagios nagios 10621 Mar 25 07:23 templates.cfg
+-rw-rw-r--. 1 nagios nagios  3180 Mar 25 07:23 timeperiods.cfg
+-rw-rw-r--. 1 nagios nagios  3991 Mar 25 07:23 windows.cfg
+
+Make sure that you are creating the below directories 
+
+mkdir commands contacts contactgroups hosts hostgroups services servicegroups templates timeperiods
+
+Now start moving the content of respective files to the destination directories !! like below.
+
+mv commands.cfg commands
+mv contacts.cfg contacts
+mv localhost.cfg hosts/
+mv templates.cfg templates
+mv timeperiods.cfg timeperiods/
+
+#### Add the below 
+
+vi /usr/local/nagios/etc/nagios.cfg
+
+
+add the below to the nagios configuration & comment all the lines of cfg_file 
+
+cfg_dir=/usr/local/nagios/etc/objects/commands
+cfg_dir=/usr/local/nagios/etc/objects/contacts
+cfg_dir=/usr/local/nagios/etc/objects/contactgroups
+cfg_dir=/usr/local/nagios/etc/objects/hosts
+cfg_dir=/usr/local/nagios/etc/objects/hostgroups
+cfg_dir=/usr/local/nagios/etc/objects/services
+cfg_dir=/usr/local/nagios/etc/objects/servicegroups
+cfg_dir=/usr/local/nagios/etc/objects/templates
+cfg_dir=/usr/local/nagios/etc/objects/timeperiods
+
+
+
+#### Add the below 
+
+vi /usr/local/nagios/etc/objects/contacts/contacts.cfg
+
+Find the email directive, and replace its value (the highlighted part) with your own email address:
+
+email                           nagios@localhost        ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+
+#### Add the below 
+
+vi /usr/local/nagios/etc/objects/commands/commands.cfg
+
+Add the following to the end of the file:
+
+define command{
+        command_name check_nrpe
+        command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+}
+
+
+htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+
+Note: If you create a user that is not named "nagiosadmin", you will need to edit /usr/local/nagios/etc/cgi.cfg and change all the "nagiosadmin" references to the user you created.
+
+
+sudo systemctl daemon-reload
+sudo systemctl start nagios.service
+sudo systemctl restart httpd.service
+chkconfig nagios on
+systemctl restart nagios.service
+systemctl restart httpd.service
+
+
+5. Accessing the Nagios Web Interface
+
+http://nagios_server_public_ip/nagios
+
+Note: Password is "redhat"(your own password !!)
+
+Working with nagios!! ::
+
+Plugins ::
+
+/usr/local/nagios/libexec is the parent directory where you will have all your plugins (default) ones got installed.
+
+Usage of the plugins :
+
+[root@nagiosserver libexec]# /usr/local/nagios/libexec/check_disk --help
+check_disk v2.2.1.git (nagios-plugins 2.2.1)
+Copyright (c) 1999 Ethan Galstad <nagios@nagios.org>
+Copyright (c) 1999-2014 Nagios Plugin Development Team
+        <devel@nagios-plugins.org>
+
+This plugin checks the amount of used disk space on a mounted file system
+and generates an alert if free space is less than one of the threshold values
+
+
+Usage:
+ check_disk -w limit -c limit [-W limit] [-K limit] {-p path | -x device}
+[-C] [-E] [-e] [-f] [-g group ] [-k] [-l] [-M] [-m] [-R path ] [-r path ]
+[-t timeout] [-u unit] [-v] [-X type] [-N type] [-n]
+
+
+For any command what ever you want to use you can simply opt for "--help" for accessing the usage of it .. in this case nagios will provide the good
+examples too like below.
+
+0 -> OK
+1 -> Warning
+2 -> Critical
+3 -> unknown
+
+Examples:
+ check_disk -w 10% -c 5% -p /tmp -p /var -C -w 100000 -c 50000 -p /
+    Checks /tmp and /var at 10% and 5%, and / at 100MB and 50MB
+ check_disk -w 100 -c 50 -C -w 1000 -c 500 -g sidDATA -r '^/oracle/SID/data.*$'
+    Checks all filesystems not matching -r at 100M and 50M. The fs matching the -r regex
+    are grouped which means the freespace thresholds are applied to all disks together
+ check_disk -w 100 -c 50 -C -w 1000 -c 500 -p /foo -C -w 5% -c 3% -p /bar
+    Checks /foo for 1000M/500M and /bar for 5/3%. All remaining volumes use 100M/50M
+
+Explanation:
+[root@nagiosserver libexec]# ./check_disk -w 20% -p /
+DISK OK - free space: / 8271 MB (80% inode=98%);| /=1957MB;8183;;0;10229
+[root@nagiosserver libexec]#
+
+Here"-w" we are taking in terms of % utilized (100-80). Which means if the mount point has only 20% free space then start alerting to the respective contact.
+
+[root@nagiosserver libexec]# df -hT /
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/sda1      xfs    10G  2.0G  8.1G  20% /
+[root@nagiosserver libexec]#
+
+
+current usage is 20% if you want warning message for the mount point having 20% utilization then your code should be likebelow.
+
+[root@nagiosserver libexec]# ./check_disk -w 80% -p /
+DISK WARNING - free space: / 8271 MB (80% inode=98%);| /=1957MB;2045;;0;10229
+[root@nagiosserver libexec]#
+
+
+Checks ::
+
+
+
+There are two types of checks
+
+1. Active 
+2. passive checks !!
+
+1. Active Checks:
+
+these are the checks which our nagios core server will initiate and it will be getting executed on the various client as per the specifications.
+
+2. passive checks :
+
+these are the checks which nagios clients will initiate and pass the information to the nagios server.
+
+/usr/local/nagios/etc/objects/hosts
+
+Hosts, Host Objects, and Host Definitions ::
+
+Our parent configuration directory for our servers is 
+
+
+now try to build our own host definetion like below.
+
+
+[root@nagiosserver servers]# cat nagiosserver.cfg
+# Localhost: Nagios Core Host
+
+
+define host{
+        host_name                       nagiosserver
+        alias                           nagios core host
+        check_period                    24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              3
+        check_command                   check-host-by-ping
+        contact_groups                  admins
+        notifications_enabled           1
+        event_handler_enabled           1
+        flap_detection_enabled          1
+        process_perf_data               1
+        retain_status_information       1
+        retain_nonstatus_information    1
+        notification_interval           5
+        notification_options            d,u,r
+        notification_period             24x7
+
+}
+
+/usr/local/nagios/bin/nagios -v  /usr/local/nagios/etc/nagios.cfg
+
+Explanation: Here we have not given any name or defined any user commands hence its getting failed. Similarly its unable to reach the server
+because we have not defined the server name any where. Hence its unable to find the machine. 
+
+
+Trouble Shooting:
+
+Add the below post doing the changes !!
+
+# Defining nagios Core host
+
+define host{
+        host_name                       nagiosserver
+        alias                           nagios core host
+        check_period                    24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              3
+#        check_command                   check-host-by-ping
+        check_command                   check_ping!100.0,20%!500.0,60%
+        address                         127.0.0.1
+        contact_groups                  admins
+        notifications_enabled           1
+        event_handler_enabled           1
+        flap_detection_enabled          1
+        process_perf_data               1
+        retain_status_information       1
+        retain_nonstatus_information    1
+        notification_interval           5
+        notification_options            d,u,r
+        notification_period             24x7
+
+}
+
+
+here each and every directive has its own meaninig, see the below.
+
+host_name -> represents the host which you want to monitor & name which you want to display on the main nagios page
+alias -> its a alias name of your hostname
+check_period -> this represent the checking time period of that particular host
+check_interval -> this represents how much time (in minutes) the host's alert should be verified
+retry_interval -> once the respective check fot failed as per defined check_interval then retry_interval helps in retrying the same thing before
+					convyeing that the issue exists
+					
+max_check_attempts -> this helps in triggering an email to the admins group if both the check_interval & retry_interval are done ...
+check_command -> represents what need to be checked
+contact_groups -> helps in giving the groups for whoom the notification should be send.
+all the other directives are enabled when they are given "1" & disabled when "0" is given.
+
+notification_options -> u (unreachable),d(down),r(recovered)
+
+
+Macros ::
+
+These are nothing but our nagios variables. there are two types default & user defined. They are like below.
+
+You can able to see the marcos as part of the below directory "/usr/local/nagios/etc".
+
+[root@nagiosserver etc]# grep -v "^#" resource.cfg
+
+$USER1$=/usr/local/nagios/libexec
+
+we could see only one macro called "USER1" is defined & its having a default path where all our nagios plugins are installed. 
+
+Note: Macros end & start with "$"
+
+Example:
+
+define command {
+ command_name check-host-alive
+ command_line $USER1$/../libexec/check_ping -H $HOSTADDRESS$ -p 5
+}
+
+as per the above example, i could see that "$USER1$ is been defined which means as per the "resource.cfg" file its path is "/usr/local/nagios/libexec"
+
+in deed its complet path is as below.
+
+/usr/local/nagios/libexec/check_ping -H :)
+
+Services, Service Objects, and Service Definitions ::
+
+Unlike host definition, we do have definetion to services. like below.
+
+define service{
+
+        host_name                       $HOSTNAME$
+        service_description             local-clock-offset
+        check_command
+        max_check_attempts              1
+        check_period                    24x7
+        contacts
+        contact_groups
+        notification_interval           480
+        notification_period             24x7
+
+}
+
+Here we are using "$HOSTNAME$ which means this service defention can be used as part of the other clients too, because we are using varaible
+"$HOSTNAME$" it will be changing as per host name.
+
+Explanation:
+
+	Service plays an important role in defining the command when to run, what to check, whoom to report what not everything !!
+	
+Commands, Command Objects, and Command Definitions ::
+
+Commands plays an important role in defining our own commands as per our need & deed. Here we are going to create our own commands
+
+[root@nagiosserver commands]# pwd
+/usr/local/nagios/etc/objects/commands
+
+
+[root@nagiosserver commands]# cat check-host-by-ping.cfg
+define command{
+        command_name    check-host-by-ping
+        command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 2000.00,80% -c 5000.00,100% -p 5
+}
+
+
+[root@nagiosserver commands]# cat check-local-clock-offset.cfg
+define command{
+        command_name            check-local-clock-offset
+        command_line            $USER1$/check_ntp_time -H 0.us.pool.ntp.org -w 60
+
+}
+
+[root@nagiosserver commands]# ll
+total 16
+-rw-r--r--. 1 root   root    168 Mar 25 17:05 check-host-by-ping.cfg
+-rw-r--r--. 1 nagios nagios  158 Mar 25 17:01 check-local-clock-offset.cfg
+-rw-rw-r--. 1 nagios nagios 7804 Mar 25 07:51 commands.cfg
+
+
+Explanation:
+
+One thing we need to understand here is "command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 2000.00,80% -c 5000.00,100% -p 5", if you observe here 
+we are using "2000.80,80%" and so on .. which are static in terms of using. But the values of checking differs from server to server. Hence we need 
+to make the things as dynamic. Hence we are going to use the variables as "$ARG1$" & "$ARG2$" and so on upto 32 arguments.
+
+So post changes our file will look like below.
+
+[root@nagiosserver commands]# cat check-host-by-ping.cfg
+define command{
+        command_name    check-host-by-ping
+        command_line    $USER1$/../libexec/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -p 5
+}
+
+
+Now lets make our "nagios server" to use our customized command than the previously defined one. 
+
+Before Changes:
+
+[root@nagiosserver hosts]# cat nagiosserver.cfg
+# Defining nagios Core host
+
+define host{
+        host_name                       nagiosserver
+        alias                           nagios core host
+        check_period                    24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              3
+#        check_command                   check-host-by-ping
+ check_command   check_ping!100.0,20%!500.0,60%
+ address    127.0.0.1
+        contact_groups                  admins
+        notifications_enabled           1
+        event_handler_enabled           1
+        flap_detection_enabled          1
+        process_perf_data               1
+        retain_status_information       1
+        retain_nonstatus_information    1
+        notification_interval           5
+        notification_options            d,u,r
+        notification_period             24x7
+
+}
+
+
+After Changes:
+
+[root@nagiosserver hosts]# cat nagiosserver.cfg
+# Defining nagios Core host
+
+define host{
+        host_name                       nagiosserver
+        alias                           nagios core host
+        check_period                    24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              3
+        check_command                   check-host-by-ping
+ address    127.0.0.1
+        contact_groups                  admins
+        notifications_enabled           1
+        event_handler_enabled           1
+        flap_detection_enabled          1
+        process_perf_data               1
+        retain_status_information       1
+        retain_nonstatus_information    1
+        notification_interval           5
+        notification_options            d,u,r
+        notification_period             24x7
+
+}
+
+in this "check-host-by-ping!2000.00,80%!5000.00,100%". 
+
+2000.00,80% --> arg1
+
+5000.00,100% --> arg2
+
+
+Timeperiods and Timeperiod Definitions ::
+
+This part mainly deals with the time periods what we specify as part of our command,services definitions. Like "24x7"
+
+[root@nagiosserver timeperiods]# pwd
+/usr/local/nagios/etc/objects/timeperiods
+
+
+Explain about the importance of the timeperiods and why we require that one.
+
+Contacts, Contact Objects, and Contact Definitions ::
+
+/usr/local/nagios/etc/objects/contacts
+
+Create the file like below (Iff file not exists). If exists remove the group part and add it to the groups section.
+
+[root@nagiosserver contacts]# cat contacts.cfg |grep -v "^#"
+
+define contact{
+        contact_name                    nagiosadmin     ; Short name of user
+ use    generic-contact  ; Inherit default values from generic-contact template (defined above)
+        alias                           Nagios Admin    ; Full name of user
+
+        email                           shahan.aix@gmail.com ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
+        }
+		
+		
+
+/usr/local/nagios/etc/objects/contactgroups
+
+and create the file as below.
+
+[root@nagiosserver contactgroups]# cat admins.cfg
+define contactgroup{
+        contactgroup_name       admins
+        alias                   Nagios Administrators
+        members                 nagiosadmin
+        }
+
+Notifications::
+
+1. Defined in contacts: who, how & when(contact info, notification method, timeperiod)
+2. Host and service objects "contain" the contact information relevant to them
+3. Sent when host or service changes status
+	1. After first_notification_delay number of minutes(as specified in the host definition)
+4. When a host or service remains "Down" or "Unreachable"
+	1. Notifications are sent every notification_interval number of minutes as specified in the host object
+5. A host or service returns to an "OK" state, in which a notification is sent immmediately and once
+6. A host or service starts,stops,or remains flapping
+	1. Sent every notification_interval minutes
+	
+0->OK,1->Warning,2->Critical,3->Unknown
+
+
+Verifying Our Configuration and Starting Nagios ::
+
+Once you are done with the configuration, if you want to check the configurations you need to run the below.
+
+/usr/local/nagios/bin/nagios -v  /usr/local/nagios/etc/nagios.cfg
+
+NOTE: here nagios.cfg is our configuration file.
+
+
+Final Checks:
+
+Make sure that you are giving "755" permission for your nagios complete directory & user as (nagios), group as (nagios).
+
+[root@nagiosserver etc]# systemctl list-unit-files|grep -i nagios
+[root@nagiosserver etc]# find / -iname "nagios.service"
+/run/systemd/generator.late/runlevel5.target.wants/nagios.service
+/run/systemd/generator.late/runlevel4.target.wants/nagios.service
+/run/systemd/generator.late/runlevel3.target.wants/nagios.service
+/run/systemd/generator.late/runlevel2.target.wants/nagios.service
+/run/systemd/generator.late/nagios.service
+/sys/fs/cgroup/devices/system.slice/nagios.service
+/sys/fs/cgroup/systemd/system.slice/nagios.service
+[root@nagiosserver etc]# systemctl enable naios
+
+
+Finally check the nagios.log file for getting and understanding if the nagios is running succesfully or not. If everything is fine then you wont
+have any errors. If you find some errors try to rectify them accrodingly.
+
+Looking at the WebUI ::
+
+Explain about the web Ui & how it works !!
+
+Authoring Groups::
+
+So basically helps to add the service groups & make use of this group to be part of any service where you want to access it.
+
+Templates & Inheritance ::
+
+Templates are the basic building blocks of our code, where you can use these templates as part of your other defentions using "use" option.
+
+Note: You should mention the directive called "register	0" then only your nagios will consider that definition as a template other wise it will be normal
+	definition only.
+	
+check templates1 & 2 for more information !!
+
+
+Troubleshooting the final Configuration !!! ::
+
+Issue:
+
+local-clock-offset was not coming up !!
+
+done the below.
+
+added "use                             local-service" to the configuration template of the service.
+
+Similarly added contacts & contactgroups !!
+
+Finally reload the services, everything started & looking fine. 
+
+
+Configuring an alert for the nagios server:
+
+Please do the below things !!
+
+1. Define the service definition for the host which you want to configure. 
+
+In our case I am gonna configure the "disk check for our nagiosserver"
+
+[root@nagiosserver hosts]# pwd
+/usr/local/nagios/etc/objects/hosts
+[root@nagiosserver hosts]#
+
+
+define service{
+
+        host_name                       nagiosserver
+        use                             local-service
+        service_description             check-nagios-root-disk
+        check_command                   check-nagios-root-disk!80%!70%!/
+        max_check_attempts              1
+        check_period                    24x7
+        contacts                        nagiosadmin
+        contact_groups                  admins
+        notification_interval           480
+        notification_period             24x7
+}
+
+
+2. Define the command you want to configure for the machine !!
+
+define command{
+        command_name    check-nagios-root-disk
+        command_line    $USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$
+        }
+
+		
+3. Once done simply restart the services !!
+
+systemctl reload nagios
+
+Note: If any errors please go through the logs & configuration checks
+
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+Second Way of Defining Host based alerts is as follows !!::
+
+1. Define the service in the "services" directory.
+
+[root@nagiosserver services]# ll
+total 8
+-rw-r--r--. 1 nagios nagios 537 Mar 25 18:48 check-nagios-root-disk.cfg
+-rw-r--r--. 1 nagios nagios 444 Mar 25 18:13 local-clock-offset.cfg
+[root@nagiosserver services]# cat check-nagios-root-disk.cfg
+define service{
+
+        host_name                       nagiosserver
+        use                             local-service
+        service_description             check-nagios-root-disk
+        check_command                   check-nagios-root-disk!80%!70%!/
+        max_check_attempts              1
+        check_period                    24x7
+        contacts                        nagiosadmin
+        contact_groups                  admins
+        notification_interval           480
+        notification_period             24x7
+}
+
+
+2. Define respective command in the commands directory like below.
+
+[root@nagiosserver commands]# pwd
+/usr/local/nagios/etc/objects/commands
+[root@nagiosserver commands]#
+
+[root@nagiosserver services]# cd ../commands/
+[root@nagiosserver commands]# ll
+total 20
+-rw-r--r--. 1 nagios nagios  157 Mar 25 17:12 check-host-by-ping.cfg
+-rw-r--r--. 1 nagios nagios  158 Mar 25 17:01 check-local-clock-offset.cfg
+-rw-r--r--. 1 nagios nagios  146 Mar 25 18:48 check-nagios-root-disk.cfg
+-rw-rw-r--. 1 nagios nagios 7804 Mar 25 07:51 commands.cfg
+[root@nagiosserver commands]# cat check-nagios-root-disk.cfg
+define command{
+        command_name    check-nagios-root-disk
+        command_line    $USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$
+        }
+
+		
+Thats it restart the services and you are good to go.
+
+Note: If you want to make the same service available for "n" of hosts then simply add the line like below for your service definition.
+
+[root@nagiosserver services]# cat check-nagios-root-disk.cfg
+define service{
+
+        host_name                       nagiosserver,localhost
+        use                             local-service
+        service_description             check-nagios-root-disk
+        check_command                   check-nagios-root-disk!80%!70%!/
+        max_check_attempts              1
+        check_period                    24x7
+        contacts                        nagiosadmin
+        contact_groups                  admins
+        notification_interval           480
+        notification_period             24x7
+}
+
+here we are enabling the service to both "nagiosserver" & "localhost" machines !!
+
+============================================================================================
+
+
+Let's monitor another host with Nagios!
+
+ON NAGIOS CLIENT MACHINE ::
+
+Monitor a CentOS 7 Host with NRPE
+
+In this section, we'll show you how to add a new host to Nagios, so it will be monitored.
+Repeat this section for each CentOS or RHEL server you wish to monitor.
+
+On a server that you want to monitor, install the EPEL repository:
+
+yum install epel-release -y
+
+Now install Nagios Plugins and NRPE:
+
+yum install nrpe nagios-plugins-all -y
+
+Now, let's update the NRPE configuration file. Open it in your favorite editor (we're using vi):
+
+vi /etc/nagios/nrpe.cfg
+
+Find the allowed_hosts directive, and add the private IP address of your Nagios server to the comma-delimited list (substitute it in place of the
+ highlighted example):
+
+allowed_hosts=127.0.0.1,10.132.224.168(private ip address of your nagiosserver)
+
+save and exit. This configures NRPE to accept requests from your Nagios server, via its private IP address.
+
+Restart NRPE to put the change into effect:
+
+sudo systemctl start nrpe.service
+sudo systemctl enable nrpe.service
+Once you are done installing and configuring NRPE on the hosts that you want to monitor, you will have to add these hosts to your Nagios server 
+configuration before it will start monitoring them.
+
+
+ON NAGIOS SERVER:
+
+Add Host to Nagios Configuration
+
+Pls do the below changes !!
+
+[root@nagiosserver nrpe-2.15]# cat /usr/local/nagios/etc/objects/hosts/nagiosclient1.cfg
+define host {
+        use                             linux-server
+        host_name                       nagiosclient1
+        alias                           My first Apache server
+        address                         <nagiosclient1 private ipaddress>
+        max_check_attempts              5
+        check_period                    24x7
+        notification_interval           30
+        notification_period             24x7
+}
+
+
+With the configuration file above, Nagios will only monitor if the host is up or down. If this is sufficient for you, save and exit then restart Nagios. 
+If you want to monitor particular services, then do the below....
+
+Add any of these service blocks for services you want to monitor. Note that the value of check_command determines what will be monitored, 
+including status threshold values. Here are some examples that you can add to your host's configuration file:
+
+Ping:
+
+define service {
+        use                             generic-service
+        host_name                       nagiosclient1
+        service_description             PING
+        check_command                   check_ping!100.0,20%!500.0,60%
+}
+
+
+SSH (notifications_enabled set to 0 disables notifications for a service):
+
+define service {
+        use                             generic-service
+        host_name                       nagiosclient1
+        service_description             SSH
+        check_command                   check_ssh
+        notifications_enabled           0
+}
+
+
+
+If you're not sure what use generic-service means, it is simply inheriting the values of a service template called "generic-service" that is defined by
+default.
+
+Now save and quit. Reload your Nagios configuration to put any changes into effect:
+
+sudo systemctl reload nagios.service
+
+Once you are done configuring Nagios to monitor all of your remote hosts, you should be set. Be sure to access your Nagios web interface, 
+and check out the Services page to see all of your monitored hosts and services:
+
+
+Hence we have completed installing & configuring the Nagios & its Client !!! :)  :) :)
+
+Monitoring Remote Hosts via Publicly Available Ports::
+
+Monitoring Public Ports:
+
+Public ports are monitored exactly like any service in nagios. However, because they are available to the network-at-large, they can be monitored
+from the nagios core host, and require no configuration on the host being monitored. keep in mind that public ports provide limited information,
+and may offer little insight beyond whether or not a host is responding over the specified TCP/UDP port.
+
+	Building the service:
+		Decide which plugin to use, and what parameters you want pass to the plugin.
+		Author the command definition, using the appropriate $ARG macros(and other macros) to capitalize on reusability.
+		
+/usr/local/nagios/libexec/check_http -4 -H <hostname> -p 80 -w 2.0 -c 5.0 -t 10:2  :: -> Helps in getting the status of the port on the remote host.
+
+
+Finally Lets Configure our final alert for our host nagiosclient1 !!!!
+
+1. First install and configure the httpd in nagiosclient1
+
+yum install httpd -y
+cd /var/www/html/
+echo "hello Team"> index.html
+service httpd restart
+
+2. now lets do our work in nagiosserver
+
+[root@nagiosserver objects]# pwd
+/usr/local/nagios/etc/objects
+
+Configuring the command:
+
+[root@nagiosserver services]# pwd
+/usr/local/nagios/etc/objects/command
+
+[root@nagiosserver services]#
+
+[root@nagiosserver commands]# cat check-http-port-80.cfg
+define command{
+        command_name            check-http-port-80
+        command_line            $USER1$/../libexec/check_http $ARG1$ -H $HOSTNAME$ -p $ARG2$ -w $ARG3$ -c $ARG4$ -t $ARG5$
+}
+[root@nagiosserver commands]#
+
+Configuring the service:
+
+[root@nagiosserver services]# pwd
+/usr/local/nagios/etc/objects/services
+[root@nagiosserver services]#
+
+[root@nagiosserver services]# cat http-port-80.cfg
+define service{
+        name                            http-port-80
+        use                             generic-service
+        host_name                       nagiosclient1
+        service_description             check HTTP Port 80
+        check_command                   check-http-port-80!-4!80!2.0!5.0!10:2
+}
+[root@nagiosserver services]#
+
+/usr/local/nagios/bin/nagios -v  /usr/local/nagios/etc/nagios.cfg
+systemctl restart nagios

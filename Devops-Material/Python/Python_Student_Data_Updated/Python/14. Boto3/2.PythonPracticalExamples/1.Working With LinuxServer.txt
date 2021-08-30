@@ -1,0 +1,97 @@
+Python Practical Examples ::
+Make sure that you are installing below packages before starting the class in the server.
+
+yum install python2-pip.noarch -y
+pip install ipython
+pip install paramiko -U
+pip install netmiko -U
+
+
+
+1. Working with linux operating system using python
+
+os.system() ::
+
+Example 1:
+
+import os
+os.system("date")
+
+Example 2:
+
+In [17]: os.system("ls -l /tmp;echo '\nsystem date is';uptime")
+total 100
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 1
+-rw-r--r-- 1 root   root    144 Dec 16 14:11 ex1.py
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 fn1.py
+
+system date is
+ 01:02:14 up 23:24,  3 users,  load average: 0.00, 0.03, 0.00
+
+os.popen()
+
+Example 1:
+
+import os
+os.popen("date")
+data=os.popen("date")
+data.read()
+
+Example 2:
+
+In [14]: print os.popen("ls -l /tmp;uptime").read()
+total 100
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 1
+-rw-r--r-- 1 root   root    144 Dec 16 14:11 ex1.py
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 fn1.py
+-rw-r--r-- 1 root   root    105 Dec 16 13:55 fn2.py
+-rw-r--r-- 1 root   root    129 Dec 16 14:01 fn3.py
+-rw-r--r-- 1 root   root    123 Dec 16 14:02 fn4.p
+-rw-r--r-- 1 root   root    162 Dec 16 14:05 fn5.py
+drwxrwxr-x 4 hadoop hadoop 4096 Dec 16 07:17 hadoop-hadoop
+
+ 00:59:41 up 23:21,  3 users,  load average: 0.04, 0.05, 0.02
+
+
+
+subprocess
+
+import subprocess
+subprocess.call("command1")
+subprocess.call(["command1", "arg1", "arg2"])
+
+Example1:
+In [21]: subprocess.call(["ls","-l","/tmp/"])
+total 100
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 1
+-rw-r--r-- 1 root   root    144 Dec 16 14:11 ex1.py
+-rw-r--r-- 1 root   root    138 Dec 16 13:50 fn1.py
+-rw-r--r-- 1 root   root    105 Dec 16 13:55 fn2.py
+-rw-r--r-- 1 root   root    129 Dec 16 14:01 fn3.py
+-rw-r--r-- 1 root   root    123 Dec 16 14:02 fn4.p
+-rw-r--r-- 1 root   root    162 Dec 16 14:05 fn5.py
+
+It displays output on the screen, if you want to store the output to a variable you can use below
+
+val=subprocess.Popen("ls -l /tmp;uptime", stdout=subprocess.PIPE, shell=True)
+
+(output,error)=val.communicate()
+
+print "your output is",output
+
+Using Variables for performing the command Execution:
+
+cmd="ls -l /tmp"
+val=subprocess.Popen(cmd,stdout=subprocess.PIPE,shell=True)
+(output,err)=val.communicate()
+output
+print output
+
+user Id Creation:
+
+lis=['ramesh', 'bhimesh', 'suresh', 'rajesh', 'somesh']
+
+for user in lis:
+    subprocess.Popen("useradd"+' '+user,stdout=subprocess.PIPE,shell=True)
+
+os.system("cat /etc/passwd")

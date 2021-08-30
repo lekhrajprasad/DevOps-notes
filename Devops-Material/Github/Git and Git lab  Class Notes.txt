@@ -1,0 +1,113 @@
+Git and Git Hub Learning:
+
+We had many version control softwares in market. They are as follows
+
+1. CVS
+2. PVCS
+3. Subversion(svn)
+4. Perforce
+5. Microsoft Visual Sourcesafe
+6. Mercurial
+7. Teamsite
+8. vault
+9. Bitkeeper - Used to manage the linux kernel before
+10. Git - Created by Linus author of linux 
+
+
+Initialization:
+
+	creating the empty repository for use
+	
+Clone:
+	Making a local full copy on your workstation
+	
+Checking out:
+	Locking a copy of one or more files for exclusive use
+
+Branching:
+	Allowing a set of files to be developed concurently and at different speeds for different reasons
+	
+Merging:
+	Taking different branches or sets of changes and integrating into one set or branch
+	
+
+Resolving:
+	Taking conflicting changes from multiple people on the same file and manually addressing
+	
+	
+Commit:
+
+	Taking changes from the local system and commiting them to the branch
+	
+Push/Pull:
+
+	Taking changes locally or remotely and merging into one or more branches
+	
+Installation:
+
+yum install git -y
+
+[root@node2 ~]# git --version
+git version 2.7.5
+
+
+Configuring User and email:
+
+~/.gitconfig
+
+
+Basic Configuration:
+
+/etc/gitconfig
+
+
+We have three things to be considered here
+
+--local :-> Deals with the local repository
+--global:-> Deals with the global repository
+--system :-> Deals with the system respository
+
+configure the editor for our git
+
+
+Git Basics :
+
+Empty Repositories:
+
+Create a directory and show the .git files
+
+Performing Operations:
+
+test.txt 
+
+Git Ignore:
+
+Cloning: Local Repositories:
+
+Normal copy operation
+
+
+Cloning: Remote Repositories:
+
+Local Clone from other server
+
+Branching, Merging and Tagging
+
+Tags:
+
+Tags helps us to save the state of the previous things, before it created.
+Master branch is the default branch which will gets initialized when you defaulty created the repository and initialize it. 
+
+Branches:
+
+Merging:
+
+Git Log:
+
+git log --pretty=oneline
+
+
+Working with Github :
+
+
+

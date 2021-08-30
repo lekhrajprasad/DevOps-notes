@@ -1,0 +1,143 @@
+Packer Student Notes::
+
+Introduction ::
+
+Packer plays an important role in customizing the images as per our requirement it supports multiple 
+platforms like aws,vmware,docker & etc
+for detailed list of information you can check it on "https://packer.io/docs/builders/"
+https://www.packer.io/docs/builders/amazon/ebs/
+
+Structure::
+
+It is having three sections variables,builders,providers
+
+variables --> you can declare the variables you want to use for the image
+builders --> Aws,Azure,Google,hyper-v etc ..
+provisioners --> Ansible,powershell,shell & etc ..
+
+Installation ::
+rm -f /usr/sbin/packer
+sudo curl -O https://releases.hashicorp.com/packer/1.6.4/packer_1.6.4_linux_amd64.zip
+sudo yum install -y unzip
+sudo unzip packer_1.6.4_linux_amd64.zip -d /usr/local/bin/
+
+
+Understanding Packer ::
+
+
+Installing and configuring jenkins image .
+
+1. Configure Aws Cli using below
+[root@terraform basics]# aws configure
+AWS Access Key ID [None]: AKIAVEWARMEZ4JG77O25
+AWS Secret Access Key [None]: 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
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+export AWS_DEFAULT_REGION="us-east-1"
+
+2. Now grab the information what ever you want from the above output such as 
+owner,virtualizationtype,aminame etc ..
+
+3. Now lets start creating our Package image ..
+
+section1: variables
+
+"variables": {
+        "region": "",
+        "ami_final_image_name": "",
+        "base_image": ""
+},
+  
+section2: builders
+
+"builders": [
+        {
+        "type": "amazon-ebs",
+        "profile": "default",
+        "region": "{{ user `region`}}",
+        "source_ami": "{{ user `base_image`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "ec2-user",
+        "ami_name": "{{ user `ami_final_image_name`}}"
+
+}
+]
+
+section3: provisioners
+"provisioners": [
+ {
+      "type": "shell",
+      "script": "./setup.sh",
+      "execute_command": "sudo -E -S sh '{{ .Path }}'"
+    }
+]
+Combining all the above our final code looks like below.
+
+[root@master jenkins]# cat setup.sh
+#!/bin/bash
+yum install java-1.8.0-openjdk-devel -y
+wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum install jenkins* -y
+yum-config-manager --disable jenkins
+systemctl enable jenkins
+systemctl restart jenkins
+[root@master jenkins]#
+
+
+[root@master jenkins]# cat ami.json
+{
+
+"variables": {
+        "region": "",
+        "ami_final_image_name": "",
+        "base_image": ""
+},
+
+
+"builders": [
+        {
+        "type": "amazon-ebs",
+        "profile": "default",
+        "region": "{{ user `region`}}",
+        "source_ami": "{{ user `base_image`}}",
+        "instance_type": "t2.micro",
+        "ssh_username": "ec2-user",
+        "ami_name": "{{ user `ami_final_image_name`}}"
+
+}
+],
+
+"provisioners": [{
+        "type": "shell",
+        "script": "./setup.sh",
+        "execute_command": "sudo -E -S sh '{{ .Path }}'"
+
+}]
+
+}
+
+[root@ ~]# cat variables.json
+
+{
+"region": "us-east-1",
+"ami_final_image_name": "dvsbatch2-jenkins",
+"base_image": "ami-0323c3dd2da7fb37d"
+}
+
+[root@ ~]# cat setup.sh
+#!/bin/bash
+yum install java-1.8.0-openjdk-devel -y
+wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import http://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum install jenkins* -y
+yum-config-manager --disable jenkins
+systemctl enable jenkins
+systemctl restart jenkins
+
+Final Code Execution::
+
+packer build ami.json
+packer build -var myregion="us-east-2" ami.json
+packer build -var-file=myvars.json ami.json

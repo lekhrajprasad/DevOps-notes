@@ -1,0 +1,8 @@
+---
+- name: workig with command module
+  hosts: mytest
+  tasks:
+    - name: printing uptime
+      command: uptime
+
+  

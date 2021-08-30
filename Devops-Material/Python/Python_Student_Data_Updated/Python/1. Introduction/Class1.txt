@@ -1,0 +1,83 @@
+Python Class_Demo:
+
+Installation:
+
+rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+yum install -y ipython
+
+
+What is python
+OOPS:
+object,class,abstraction,encapsulation,inheritance,polymorphism
+python version
+2.X,3.X
+
+Python usages:
+https://wiki.python.org/moin/OrganizationsUsingPython
+
+GUI Based desktop applications
+web frame & web applications
+operating systems
+Yahoo Maps
+Yahoo Groups
+Google
+Ultraseek
+redhat
+Multiplayer
+Music players
+Walt Disney Feature Animation
+
+Python Installation:
+2 ways
+IDE(Integrated Development Environment)
+Linux
+# wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
+# tar xJf Python-3.6.0.tar.xz
+# cd Python-3.6.0
+# ./configure
+# make
+# make install
+
+yum install python-tools   [On CentOS]
+
+Simple Script:
+
+Comments:
+# --> Single line comments
+''' --> Multiline comments
+
+Block:
+
+while(i<=10):
+    print i
+    i+=1
+	
+
+Single, Double,&Triple Quotes:
+
+Variable:
+Simple assignement
+multi assignement
+a,b=10,20
+a=b=20
+
+Naming Rules:
+Should not start with Numbers
+Keywords:
+while,for,do,else,and,or etc ...
+
+Print Command
+In [33]: age=60
+
+In [34]: print "the age of shahan is",age
+the age of shahan is 60
+
+In [35]: str="shahan"
+
+In [36]: print "the age of",str,"is",age
+the age of shahan is 60
+
+
+
+
+

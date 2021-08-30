@@ -1,0 +1,72 @@
+Boto3:
+
+pip install awscli boto3 -U --ignore-installed six
+
+Once done with the above you can configure aws or in AWS instance by default you will be having aws cli configured 
+
+you can add the below to the users aws configuration file (or) issue command "#aws configure"
+
+vim ~/.aws/credentials
+[default]
+aws_access_key_id = AKIAIHPYCZL5QXMTOJJQ
+aws_secret_access_key = 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
+
+[default]
+region=us-west-2
+
+[default]
+output=json
+
+
+LIST INSTANCES ::
+
+#!/usr/bin/env python
+import boto3
+ec2 = boto3.resource('ec2')
+for instance in ec2.instances.all():
+    print instance.id, instance.state
+
+Or::
+for i in ec2.instances.all():
+    print i.id, i.state['Name']
+	
+	
+	
+CREATE AN INSTANCE ::
+
+In order to create the Amazon ec2 you need to have the AMI ID which will be avaialble when you launched the instance under the OS image selection you can find it.
+
+Note: AMI ID differes from one region to other so select it from the site based on the requirement 
+
+In our case we are using "ami-5ffee63b"
+
+
+[root@linux python]# cat create_ec2.py
+#!/usr/bin/env python
+import boto3
+ec2 = boto3.resource('ec2')
+instance = ec2.create_instances(
+    ImageId='ami-5ffee63b',
+    MinCount=1,
+    MaxCount=1,
+    InstanceType='t2.micro')
+print instance[0].id
+
+
+TERMINATE AN INSTANCE ::
+
+Please provide the the argument i.e your instance id which need to be removed as per your input. If you want to get the instances details you can use the "list instances" script mentioned
+above.
+
+cat terminate_instances
+#!/usr/bin/env python
+import sys
+import boto3
+ec2 = boto3.resource('ec2')
+for instance_id in sys.argv[1:]:
+    instance = ec2.Instance(instance_id)
+    response = instance.terminate()
+    print response
+	
+	
+Execution: ./terminate_instances.py i-0c34e5ec790618146

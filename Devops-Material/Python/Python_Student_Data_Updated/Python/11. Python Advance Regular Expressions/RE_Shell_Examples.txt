@@ -1,0 +1,221 @@
+RegularExpressions:
+
+Python:
+
+. $ [] * ? + {} ^ [^] 
+
+Repeted chars or patterns:
+
+? :-> 0 or 1 time
++ :-> 0 or more times
+* :-> 1 or more times
+{#} :-> # of times
+{#, } :-> # or more times
+( ,#} :-> 0 to # times
+{#,#} :-> # to # times
+
+
+Specific Possible Chars:
+
+[xyz] :-> either x,y or z
+[^xyz] :-> any charecter besides x,y.z
+
+[a-zA-z] :-> ranges of charecters
+
+Location of charecters:
+$ :-> end of the line
+\A :-> begining of a string
+\z :-> end of the string
+
+
+Dot:
+
+input=['cat', 'bat', 'fun', 'fin', 'fan']
+
+for i in input:
+    mat=re.search(r'f.n',i)
+    if mat:
+        print mat.group()
+
+OUTPUT:
+
+fun
+fin
+fan
+over
+
+
+Start of line:
+
+input=['This', 'That', 'There', 'Their', 'these']
+
+for i in input:
+    mat=re.search(r'^The',i,re.I)
+    if mat:
+        print mat.group()
+    else:
+        print "Match Not found"
+print "over"
+
+OUTPUT:
+Match Not found
+Match Not found
+The
+The
+the
+over
+
+
+End of line:
+
+input=['knife', 'know', 'fun', 'fin', 'fan', 'nine']
+
+for i in input:
+    mat=re.search(r'n$',i,re.I)
+    if mat:
+        print mat.group()
+    else:
+        print "Match not found"
+print "over"
+
+
+Match character set:
+
+input=['Call', 'Tall', 'Ball']
+
+for i in input:
+    mat=re.search(r'[CT]all',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+		
+OUTPUT:
+Call
+Tall
+match not found
+
+
+Exclusive set: It omits the content mentioned in [].
+
+input=['Call', 'Tall', 'Ball']
+
+for i in input:
+    mat=re.search(r'[^CT]all',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+		
+OUTPUT:
+
+match not found
+match not found
+Ball
+
+
+Alteration:
+
+input=['Call', 'Tall', 'Ball', 'Small', 'Shall']
+
+for i in input:
+    mat=re.search(r'Call|Ball',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+
+OUTPUT:
+Call
+match not found
+Ball
+match not found
+match not found
+		
+
+Zero or One Occurrence:
+
+input=['Colour','Color']
+
+for i in input:
+    mat=re.search(r'Colou?r',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+		
+OUTPUT:
+
+Colour
+Color
+
+
+One or More Occurrence:
+
+matches one or more occurrences of the 2.
+
+input=['111', '22', '123', '234', '456', '222', '2']
+
+for i in input:
+    mat=re.search(r'2+',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+		
+OUTPUT:
+
+match not found
+22
+2
+2
+match not found
+222
+2
+
+
+Grouping:
+
+the following regular expression matches the lines containing either Apple Juice or Apple Cake
+
+input=['Apple Juice', 'Apple Pie', 'Apple Tart', 'Apple Cake']
+
+
+for i in input:
+    mat=re.search(r'Apple (Juice|Cake)',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+		
+OUTPUT:
+
+Apple Juice
+match not found
+match not found
+Apple Cake
+
+
+
+{}:
+
+input=['111', '22', '123', '234', '456', '222', '2']
+
+for i in input:
+    mat=re.search(r'2{2}',i)
+    if mat:
+        print mat.group()
+    else:
+        print "match not found"
+
+		
+OUTPUT:
+match not found
+22
+match not found
+match not found
+match not found
+22
+match not found
+ 
+

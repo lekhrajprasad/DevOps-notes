@@ -1,0 +1,25 @@
+---
+ - name: ip
+   command: curl http://169.254.169.254/latest/meta-data/public-ipv4
+   register: output
+ - set_fact: ipaddress="{{output.stdout}}"
+
+ - name: Installing Apache
+   #command: yum install httpd -y 
+   yum: name=httpd state=present
+   notify: httpd restart
+
+
+ - name: Enabling httpd @ runlevel
+   command: chkconfig httpd on
+
+ - name: Modifying httpd.conf file
+   replace:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: '^#ServerName www.example.com'
+      replace: 'ServerName {{ipaddress}}'
+   notify: httpd restart
+ 
+ - name: Copying the index.html file
+   template: src=index.html dest=/var/www/html/index.html
+   notify: httpd restart

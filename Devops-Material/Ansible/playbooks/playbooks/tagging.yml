@@ -1,0 +1,11 @@
+---
+- name: working with tags
+  hosts: all
+  tasks:
+   - name: First execution
+     command: echo "I am first"
+     tags: first
+   - name: Second execution
+     command: echo "I am second"
+     tags: second
+

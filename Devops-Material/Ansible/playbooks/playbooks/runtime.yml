@@ -1,0 +1,10 @@
+---
+ - name: runtime variable
+   hosts: prod
+   vars:
+     hostname: "server.example.com"
+   tasks:
+     - name: runtime variables
+       command: echo "{{item}}"
+       with_items:
+         - "{{groups['mytest']}}"

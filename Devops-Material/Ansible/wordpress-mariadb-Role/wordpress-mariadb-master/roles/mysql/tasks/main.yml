@@ -1,0 +1,25 @@
+---
+- name: Installing mariadb on server
+  yum: name="{{item}}" state=present
+  with_items:
+    - MySQL-python
+    - mariadb-server
+
+- name: Enabling mariadb during runtime
+  systemd:
+    name: mariadb
+    enabled: yes
+    state: restarted
+
+- name: Creating the User admin
+  mysql_user:
+    name: "{{DB_USER}}"
+    password: "{{DB_PASSWORD}}"
+    priv: '*.*:ALL'
+    state: present
+    host: '%'
+
+- name: Creating the database 
+  mysql_db:
+    name: "{{DB_NAME}}"
+    state: present
