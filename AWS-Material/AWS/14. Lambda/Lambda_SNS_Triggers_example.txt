@@ -1,0 +1,90 @@
+Using AWS LAMBDA Services !!
+
+Use Case::
+
+Need to tigger the mails to the customers when any instance state is stopped !!
+
+In order to full fill this requirement we are gonna choose our LAMBDA functionality !!
+
+Requirements:
+
+1. Ec2 Instances
+2. Cloudwatch Logs
+3. SNS topics
+4. LAMBDA
+
+
+Procedure !!
+
+1. Creating the Policy & Role :
+	These play an important role while we are using the lambda services as part of the course !!!
+	
+	Creating Policy :
+	
+	IAM -> policies -> Create Policy -> Visual editor -> services (select SNS) -> Actions (select Publish) ->Resources (all resources) -> 
+	add additional permissions -> services (cloudwatch logs) -> actions (all cloudwatch logs) ->Resources (all resources) -> Review policy 
+	-> Name "Detecting_Instance_State" -> Description (Detecting_Instance_State) -> Create Policy
+	
+	Creating Role:
+	
+	Create Role -> Aws service -> Choose for whoom you are gonna use this role (LAMBDA) -> Next Permission -> Role Name "Detecting_Instance_State" -> Create it !! 
+	Note: Don't forget to attach the policy !!
+	
+2. Creating SNS topic :
+
+	SNS -> Create new topic -> Name "Checkingserverstatus" -> Display name "Ec2Stopped" -> click on topic -> actions ->create subscription -> protocol -> Email -> your maild ->
+	Create subscription -> go to email id -> Confirm the subscription
+	
+3. Now lets create our own function in lambda, for this we are gonna use your Python along with boto3 SDK
+
+	LAMBDA -> Functions -> create function -> Author from scratch ->Name "CheckingServerStatus" -> Runtime "python 2.7" -> Role "Choose an existing role" ->
+	Existing role "Detecting_Instance_State" -> Create function -> Soon after you go to the next page you could see that your lambda is connected with cloudwatchlogs & sns
+	
+	
+		Now go to the code part and start writing the below code.
+	
+	import boto3
+	client = boto3.client('sns')
+
+	def lambda_handler(event, context):
+		# TODO implement
+		instance_id = event['detail']['instance-id']
+		client.publish(
+		TopicArn='arn:aws:sns:eu-west-2:664115339192:Checkingserverstatus',
+		Message='your instance with id'+instance_id+'got stopped please check it ')
+		
+		
+	Now lets create the triggering of the events between these actions !!
+	
+	Designers -> add the Cloudwatch events -> Configure triggers -> Rule -> New rule -> Rule Name "CheckingServerStatus" -> Event Pattern -> EC2 -> Ec2 instance state-change notification
+	-> Details -> State -> Stopped --> Note "here if you want you can even select the instances too, just copy paste the instance id -> Enable Trigger -> Add
+	
+	Finally save the entire confiruation !!!
+
+
+4. Testing !!!
+
+	Now create a instance and stop it 
+	
+	Now keep an eye on the cloudwatch logs !!
+	
+	
+	CloudWatchLog Groups/aws/lambda/CheckingServerStatus2018/03/11/[$LATEST]5c689447810c4708b0e72dacb44427bb
+	
+	Mail which I recived !!
+	
+	EC2Stopped no-reply@sns.amazonaws.com via amazonses.com 
+	12:42 AM (0 minutes ago)
+	to me 
+	your instance with idi-020307830168a8711got stopped please check it
+
+	--
+	If you wish to stop receiving notifications from this topic, please click or visit the link below to unsubscribe:
+	https://sns.eu-west-2.amazonaws.com/unsubscribe.html?SubscriptionArn=arn:aws:sns:eu-west-2:664115339192:Checkingserverstatus:03b45a57-4add-4e4f-b8c2-e42d10f00cb0&Endpoint=shahan.aix@gmail.com
+	
+	
+5. So Finally we are done with the LAMBDA !!!! 	
+	
+	
+	
+

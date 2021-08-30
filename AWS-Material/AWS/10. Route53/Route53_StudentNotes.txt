@@ -1,0 +1,190 @@
+Route 53 Student Notes ::
+
+1. Explain them in details about the website & how they are resolving the names in "www"
+2. Teach them about the DNS servers & domain service providers
+3. Explain them about the records A,AAAA,CNAME,NS,Alias,TXT etc .. 
+4. Register the domain in the route53, show them new domain registration 
+5. Explain about the private hosted zone with server example
+Note: Make sure you are enabling enableDnsSupport & enableDnsHostnames Other wise dns will not work
+
+commandline ::
+Get Details ::
+
+root@DESKTOP-IOC981H:~# aws ec2 describe-vpc-attribute --vpc-id vpc-02a7a3de132789ab5 --attribute enableDnsSupport
+{
+    "VpcId": "vpc-02a7a3de132789ab5",
+    "EnableDnsSupport": {
+        "Value": true
+    }
+}
+root@DESKTOP-IOC981H:~# aws ec2 describe-vpc-attribute --vpc-id vpc-02a7a3de132789ab5 --attribute enableDnsHostnames
+{
+    "VpcId": "vpc-02a7a3de132789ab5",
+    "EnableDnsHostnames": {
+        "Value": true
+    }
+}
+
+enable ::
+
+aws ec2 modify-vpc-attribute --vpc-id vpc-02a7a3de132789ab5 --enable-dns-hostnames "{\"Value\":true}"
+aws ec2 modify-vpc-attribute --vpc-id vpc-02a7a3de132789ab5 --enable-dns-support "{\"Value\":true}"
+
+6. Explain in detail about public hosted zone with apache configuration.
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from N.Virginia" > /var/www/html/index.html
+systemctl restart httpd
+
+7. Explain about Health check configuration with index.html
+Note: Make sure you are configuring the health check for "*.shaans.in" site & show them the
+use case of it. 
+
+8. S3 Static webhosting using proper domain 
+
+{
+  "Id": "Policy1580494004110",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1580494002926",
+      "Action": [
+        "s3:*Object"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::failover.devopsarmy.com/*",
+      "Principal": "*"
+    }
+  ]
+}
+Note: Make sure that you are creating the bucketname with the same name as your domain address 
+ex: mys3sitedvs.shaans.in
+
+9. Explain about the Policies
+
+1. Simple :
+
+Routing policies within Route 53 define how the product handles incoming queries. The default type is simple, 
+which allows the creation of a single record with a given name (e.g., www). For this record, one or more values 
+can be provided — in the case of an A record, one or more IPv4 addresses.
+
+Example ::
+
+take 3 servers & show the configuration with public zone & Hostinger configuration (add multiple entries for same name)
+bringdown one server & show them the difference.
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+sed -i "88s/Test Page/$(ec2-metadata -p|awk '{print $2}')/" /usr/share/httpd/noindex/index.html
+systemctl restart httpd
+
+
+2. Routing Policy: Failover
+
+Failover routing policies are used in conjunction with Route 53 health checks to provide failover between a primary 
+record and a secondary record.
+
+N.Virginia Server ::
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from N.Virginia" > /var/www/html/index.html
+systemctl restart httpd
+
+Ohio Server :
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from Ohio" > /var/www/html/index.html
+systemctl restart httpd
+
+
+3. Routing Policy: Weighted
+
+Weighted routing policies allow granular control over queries, allowing a certain percentage of queries to reach specific 
+records. 
+your individual weight / (sum of all the other weights) 
+
+Exp:
+1. Create two/three servers with apache configured
+2. Create the weighted record set with  35,60,80 and show them the difference
+3. Increase the weight for the least one & show the result.
+Note: Keep ttl less for better results
+
+N.Virginia Server ::
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from N.Virginia" > /var/www/html/index.html
+systemctl restart httpd
+
+Ohio Server :
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from Ohio" > /var/www/html/index.html
+systemctl restart httpd
+
+
+
+4. Routing Policy: Latency
+Takes the best available location servers so that it will serve faster to the end customer. It entirely depends
+on the bandwidth of your ISP
+
+N.Virginia Server ::
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from N.Virginia" > /var/www/html/index.html
+systemctl restart httpd
+
+Ohio Server :
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from Ohio" > /var/www/html/index.html
+systemctl restart httpd
+
+London Server : OR (Bahrain Server My Case :)
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from Bahrain" > /var/www/html/index.html
+systemctl restart httpd
+
+Note: Try to use the site below for checking the current latency.
+https://cloudpingtest.com/aws
+
+5. Routing Policy: GeoLocation
+This helps in definig the network based on the location. If the records are created based on the region
+if the hit comes from that particular region then it will pass other wise it will not return anything. This is the
+reason you have to pass default as part of the router. 
+
+Bahrain Server :
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from Bahrain" > /var/www/html/index.html
+systemctl restart httpd
+
+N.Virginia Server :
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am from N.Virginia" > /var/www/html/index.html
+systemctl restart httpd
+
+
+Note: The nearest location will get resolved in this type of routing. 
+Make sure you are NOT selecting sublocation under (US).

@@ -1,0 +1,60 @@
+VPC ::
+
+1. Explain about ipaddress & use of ipaddress & types of ip ranges (ipv4/6)
+
+2. Explain about the ipv4 with diff classes & in detail ipaddress classification properly
+
+	0.0.0.0 to 255.255.255.255
+	Class	1st Octet Decimal Range	1st Octet High Order Bits	Network/Host ID (N=Network, H=Host)	
+	Default Subnet Mask	Number of Networks	Hosts per Network (Usable Addresses)
+
+	A		1 – 126*	0	N.H.H.H	255.0.0.0	126 (27 – 2)	16,777,214 (224 – 2)
+	B		128 – 191	10	N.N.H.H	255.255.0.0	16,382 (214 – 2)	65,534 (216 – 2)
+	C		192 – 223	110	N.N.N.H	255.255.255.0	2,097,150 (221 – 2)	254 (28 – 2)
+	D		224 – 239	1110	Reserved for Multicasting
+	E		240 – 254	1111	Experimental; used for research
+
+3. Teach them about the CIDR(Classless Inter-Domain Routing) blocks & how to get no of ipaddress.
+
+	2^(32-subnet) = No.Of ips
+
+
+4. Explain about the home internet & then inter relate with VPC 
+
+5. Create one normal VPC with default subnet,routes,IGW,etc .. 
+
+tell them about the magic of 5 ips in the subnet ex (10.0.0.0/24)
+10.0.0.0: Network address.
+
+10.0.0.1: Reserved by AWS for the VPC router.
+
+10.0.0.2: Reserved by AWS for mapping to the Amazon-provided DNS.
+
+10.0.0.3: Reserved by AWS for future use.
+
+10.0.0.255: Network broadcast address. We do not support broadcast in a VPC, therefore we reserve this address."
+
+Explain about the usecase of bastion server
+
+6. Add bit more complexity with private zone
+
+7. Difference between NACL & Security Groups
+
+diff b/w Security Group & NACL
+
+SG are stateful sets,NACL are stateless 
+
+	--> ACL's can work only on subnet ranges but not on individual resources like EC2
+	--> ACL's can ALLOW/DENY the entire network range where you can't do with security group
+	--> ACL's work at Layer 4
+	--> In security group if you allow in bound then you no need to give outbound
+
+8. Add bit more with vpc peering in the region 
+
+9. Add bit more on VPC peering across the region
+
+10. Explain in detail about the endpoints & use case of gateway endpoints 
+Note: Explain them with s3 & ec2 server
+
+
+

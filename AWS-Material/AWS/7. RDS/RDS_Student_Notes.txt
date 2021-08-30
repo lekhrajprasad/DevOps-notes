@@ -1,0 +1,52 @@
+RDS Student Notes:
+
+1. Explain them what is the use case of having databases & type of databases
+	sql(rds/mysql) & nosql db's (dynamodb)
+	
+2. Explain about the structured & un structured data.
+3. Start explaining about mysql with the private & public subnetc along with vpc
+	1. Create a vpc with pub & private subnets along with routes 
+	2. Explain them the architecture of db along with ec2
+	
+	Commands:
+	mysql -u admin -p -P 3306 -h mysingledb.cwqhpz3cgn8j.us-east-1.rds.amazonaws.com
+	show databases;
+	create database devops;
+	use devops;
+	create table studentslist(name VARCHAR(30), mobno VARCHAR(20));
+	insert into studentslist values("shahan", 7795540416);
+	select * from studentslist;
+
+4. Explain in detail about the use of multi AZ & teach them about the vpc with multi private subnets 
+	explain about the subnet groups .. 
+	
+Installing wordpress application 
+
+	sudo yum update -y
+	sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+	sudo yum install -y httpd
+	sudo systemctl start httpd
+	sudo systemctl enable httpd
+	wget https://wordpress.org/latest.tar.gz
+	tar -xzf latest.tar.gz
+	sudo cp -r wordpress/* /var/www/html/
+	cd /var/www/html/
+	sudo cp wp-config-sample.php wp-config.php
+
+	Post db installation do the below.
+
+	sudo vi wp-config.php --> add the database details to this file
+	sudo chown -R apache /var/www
+	sudo chgrp -R apache /var/www
+	sudo chmod 775 /var/www
+	sudo find /var/www -type d -exec sudo chmod 2775 {} \;
+	sudo find /var/www -type f -exec sudo chmod 0664 {} \;
+	sudo systemctl restart httpd
+
+Teach them the configuration with the created db bring down the db & show them the use case of AZ 
+Note: you while loop for host command .. 
+
+5. Take the snapshot of the existing db & bring a db out of it. 
+6. Now modify your application & show them the importance of snapshot
+
+

@@ -1,0 +1,36 @@
+Account Creationg & Biling Alert Setup ::
+
+This lesson steps through:-
+
+Creating an AWS Account
+Setting up a billing alarm
+Adding Multi-factor Authentication (MFA) to the account root user
+
+
+Lesson Links
+http://aws.amazon.com
+https://aws.amazon.com/free/ (some services are always free, some have a free 12 month allocation)
+
+Multi-Factor Authentication Applications
+https://aws.amazon.com/iam/details/mfa/
+
+https://itunes.apple.com/au/app/google-authenticator/id388497605?mt=8
+https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_AU
+https://1password.com/
+https://authy.com/
+
+Setting Up Billing Alarm ::
+
+services --> cloudwatch --> alarms --> create alarm --> select metric --> search for billing (now select Total Estimated Charge)
+--> select USD --> select metric --> go down and give 10 (it means if bill is coming more than 10$'s you should get alert)
+--> "in alarm" --> Create a new topic --> Topic Name (BillingAlarm) --> give your email id (shahan.aix@gmail.com)
+--> you will get a mail from AWS billing make sure that you are subscribing to it --> create topic --> next -->
+give BillingAlarm --> BillingAlarm again --> next --> check for all the things once done click on create alarm
+
+Checking out Billing dash board ::
+
+click on username --> click on billing dashboard --> click on cost explorer --> enable cost explorer 
+this helps you to explore how much you have consumed aws resources in 24 hours 
+
+on the left hand side you have bills section it will tell you how much is your billing for this month. 
+

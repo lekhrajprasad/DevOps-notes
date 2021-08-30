@@ -1,0 +1,169 @@
+S3 Bucket Student Notes ::
+
+https://aws.amazon.com/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/
+
+Explain about the type of data 
+1. Explain them about the use case & importance of S3 bucket & compare it with Google Drive
+like: scope of bucket (global), storage 
+
+2. Tell them about the objects which we can store in s3 bucket 
+
+3. Types of data we use in our day to day life 
+ex: mobile contacts,laptop data & etc .. 
+
+	1. Standard 
+
+	2. Standard Infrequent Access:
+	Minimum file size is 128KB & you have to keep your data for a min of 1 month & you have to pay for the data retrival.
+
+	3. One Zone IA :
+	In this type, you are not going to get the high availability it means your data is going to get stored in only one AZ
+
+	4 &5 .Glacier & Glacier Deep Dive:
+	In this you are going to store the cold storage data. Which means it will take more time to retrieve the data. 
+	In glacier it will take minutes to retrieve/upload the data but in glacier deep dive it will take hours to retrieve/upload
+	the data.
+	
+4. Try to create one bucket & explain them about the objects
+
+5. Teach them about the versioning by uploading same file twice (update the info)
+
+	Versioning is enabled based on the bucket
+	You have to pay for Each and every version you hold inside the bucket
+	You can’t disable the versioning once it’s enabled only you can suspend it
+
+6. Teach them about the s3 bucket policy 
+https://aws.amazon.com/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/
+https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html
+https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html
+	Explain about the difference between IAM policy, ACL's & s3 bucket policy (principal)
+	
+			Example ::
+			
+			Sample S3 Bucket Policy
+			
+			This S3 bucket policy enables the root account 111122223333 and the IAM user Alice under 
+			that account to perform any S3 operation on the bucket named “my_bucket”, as well as that bucket’s contents.
+			{
+			  "Version": "2012-10-17",
+			  "Statement": [
+				{
+				  "Effect": "Allow",
+				  "Principal": {
+					"AWS": ["arn:aws:iam::111122223333:user/Alice",
+							"arn:aws:iam::111122223333:root"]
+				  },
+				  "Action": "s3:*",
+				  "Resource": ["arn:aws:s3:::my_bucket/sridhardata/mydata/*",
+							   "arn:aws:s3:::my_bucket/*"]
+				},
+				
+			  ]
+			}
+
+			Sample IAM Policy
+			
+			This IAM policy grants the IAM entity (user, group, or role) it is attached to permission to perform 
+			any S3 operation on the bucket named my_bucket, as well as that bucket’s contents.
+			.
+			{
+			  "Version": "2012-10-17",
+			  "Statement":[{
+				"Effect": "Allow",
+				"Action": "s3:*",
+				"Resource": ["arn:aws:s3:::my_bucket",
+							 "arn:aws:s3:::my_bucket/*"]
+				}
+			  ]
+			}
+
+	When to use IAM policies vs. S3 policies
+		ex : 
+		•	If you’re more interested in "What can this user do in AWS?"
+		•	If you’re more interested in "Who can access this S3 bucket?"
+	
+Example:
+Explain in detail about s3 managed policy.
+1. Create one user and give him the read access for S3 (Default read policy)
+2. Try to create the s3 managed policy and try to delete the content of the bucket. Use the below code
+Code:
+{
+    "Id": "Policy1587179782506",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1587179780475",
+            "Action": [
+                "s3:DeleteObject"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::mydvss3-10/*",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::813531627736:user/ramesh"
+                ]
+            }
+        }
+    ]
+}
+
+7. Explain them in detail about the encryption & types of encryption what S3 supports 
+	1. Client side encryption
+	2. Server side encryption with customer managed keys
+	3. Server side encryption with s3 managed keys (SSE-S3)
+	4. Server side encryption with AWS KMS - Managed keys (SSE -KMS)
+	
+8. Explain them about the static webhosting using S3 bucket.
+
+	Index.html :
+	<html>
+	<h1>Welcome To Dvs</h1>
+	</html>
+	
+	error.html:
+	<html>
+	<h1>This is error message</h1>
+	</html>
+
+	Policy:
+	
+	{
+	  "Version":"2012-10-17",
+	  "Statement":[{
+		"Sid":"PublicReadGetObject",
+			"Effect":"Allow",
+		  "Principal": "*",
+		  "Action":["s3:GetObject"],
+		  "Resource":["arn:aws:s3:::dvs-mywebsite/*"
+		  ]
+		}
+	  ]
+	}
+
+Note: 
+Hosting S3 based static webpage using our Owndomain
+Explain in detail about the domain based webpage hosting in Route53 class 
+
+9. Object Lifecycle process in S3 
+    30 days(standard) --> 60(IA) days --> 90 days (onezoneIA)--> 1 year (glacier)
+	
+10. Cross Regional Replication 
+
+	Cross-region replication is a S3 feature where a source and destination buckets in different regions. 
+	Replication happens to objects uploaded/modified after the configuration is enabled. CRR allows for 
+	modification of the storage class or permissions on the destination object and can support objects 
+	encrypted with SSE-S3 by default or SSE-KMS with additional configuration.
+	1.	It works only in one way it’s not bi-directional 
+	2.	Objects placed before the replication policy will not reflect post replication policy. 
+	Which means whatever the data you are placing post replication is going to get replicated to the destination bucket. 
+	3.	Objects with SSE-KMS are not supported by CRR by default. Only the objects which got encrypted by S3 
+	which means SSE-S3 encrypted objects can be cross replicated.
+	4.	But if you want to change the encryption for the objects to SSE-KMS then you can do it by explicitly 
+	clicking on the edit & selecting the KMS option & finally select the key with which you want to encrypt the data.
+
+
+
+
+	
+	
+

@@ -1,0 +1,56 @@
+1. Create two users server1,server2
+2. Create two servers server1,server2
+3. Create two policies server1Policy,server2Policy and copy the content as below.
+
+server1Policy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DescribeEc2Instances",
+            "Effect": "Allow",
+            "Action": ["ec2:Describe*"],
+            "Resource": "*"
+        },
+		{
+            "Sid": "ec2AccessForParticularServer",
+            "Effect": "Allow",
+            "Action": ["ec2:RunInstances",
+			"ec2:StopInstances",
+            "ec2:StartInstances"
+			],
+            "Resource": [
+                "arn:aws:ec2:us-east-1:353664852275:instance/i-09e1769ee3681c523"]
+        }
+	]
+}
+
+server2Policy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DescribeEc2Instances",
+            "Effect": "Allow",
+            "Action": ["ec2:Describe*"],
+            "Resource": "*"
+        },
+		{
+            "Sid": "ec2AccessForParticularServer",
+            "Effect": "Allow",
+            "Action": ["ec2:RunInstances",
+			"ec2:StopInstances",
+            "ec2:StartInstances"
+			],
+            "Resource": [
+                "arn:aws:ec2:us-east-1:353664852275:instance/i-0a40b1aaf739c3d4b"]
+        }
+	]
+}
+
+4. Once done attach the server1Policy to server1 user similarly
+attach server2Policy to server2 user 
+5. Now try to login to the console via server1 user and try to delete server2 (it should not work)
+and now try vice-versa .. 

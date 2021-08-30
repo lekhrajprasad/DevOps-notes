@@ -1,0 +1,21 @@
+import json
+import boto3
+import os
+import tempfile
+
+
+def lambda_handler(event, context):
+    # TODO implement
+
+    s3 = boto3.client('s3')
+
+    for record in event["Records"]:
+        bucket_name = record['s3']['bucket']['name']
+        print("bucket name is "+bucket_name)
+        key = record['s3']['object']['key']
+        print("objectname is "+key)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            download_path = os.path.join(tmpdir, key)
+            upload_path = os.path.join(tmpdir, key)
+            s3.download_file(bucket_name, key, download_path)
+            s3.upload_file(upload_path, "dvs-dest", key)

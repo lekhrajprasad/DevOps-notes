@@ -1,0 +1,30 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+      "Sid": "BucketListing",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListAllMyBuckets"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "ListObjectsInBucket",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:s3:::blr",
+        "arn:aws:s3:::hyd"
+      ]
+    },
+    {
+      "Sid": "AllObjectActions",
+      "Action": "s3:*Object",
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::blr/*"
+    }
+  ]
+}

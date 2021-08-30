@@ -1,0 +1,72 @@
+Elastic Load Balancer ::
+
+Load balancing is an essential architecture to understand, as it allows systems to scale and tolerate individual 
+instance failure
+
+1. Explain in detail about the old infrastructure, teach them what will happen if server goes down
+2. Teach them the use case of loadbalencers
+3. Start the network fundamentals "Seven-Layer OSI Model"
+In order to remember the layers you can keep it as "Please Do Not Throw Sausae Piza Away"
+4. Start the different Loadbalencers in AWS
+	Classic
+	Application
+	Network
+	
+5. Explain in detail about classic loadbalencer & draw backs in using it.
+
+Create 2/3 servers with below userdata in each server 
+
+server1:
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am server1" > /var/www/html/index.html
+systemctl restart httpd
+
+server2:
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am server2" > /var/www/html/index.html
+systemctl restart httpd
+
+server3:
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Hi I am server3" > /var/www/html/index.html
+systemctl restart httpd
+
+6. Explain in detail about the application loadbalencer and use case of having it 
+	1. Create two servers cars & bikes
+	
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Welcome To Cars page" > /var/www/html/index.html
+systemctl restart httpd
+mkdir /var/www/html/cars/
+
+#!/bin/bash
+yum install httpd -y
+systemctl enable httpd
+echo "Welcome To Bikes page" > /var/www/html/index.html
+systemctl restart httpd
+mkdir /var/www/html/bikes/
+
+	2. Download the cars & bikes images to the respective servers
+
+	Two Wheelers Bikes::
+	wget -O /var/www/html/bikes/bike1 https://img.etimg.com/thumb/width-640,height-480,imgsize-83658,resizemode-1,msid-72037164/suzuki-motor-wants-a-repeat-of-maruti-from-india-in-two-wheelers.jpg
+	wget -O /var/www/html/bikes/bike2 https://i.ndtvimg.com/i/2017-09/top-two-wheelers-to-buy-in-the-festive-season_827x510_41505137327.jpg
+
+	Four Wheelers Cars::
+	wget -O /var/www/html/cars/car1 https://www.telegraph.co.uk/content/dam/news/2017/11/11/Lam1_trans_NvBQzQNjv4BqnAdySV0BR-4fDN_-_p756cVfcy8zLGPV4EhRkjQy7tg.jpg?imwidth=450
+	wget -O /var/www/html/cars/car2 https://www.motoringresearch.com/wp-content/uploads/2019/09/01-fastest-cars.jpg
+
+
+	3. Create target groups (cars & bikes)
+	4.Configure the listeners accordingly & show them the ALB usecases
+
+7. Explain in detail about the network loadbalencer & use of it .	
+

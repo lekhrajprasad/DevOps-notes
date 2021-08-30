@@ -1,0 +1,103 @@
+Ec2 Student Notes ::
+
+1. Explain about the laptop and its components
+2. Explain about the server and neccesity of using it
+Difference between hostbased disk & external hard disk
+Internal::
+https://www.amazon.in/Dell-T30-Hard-Drive-400-ALEI/dp/B07VG7VW84/ref=sr_1_5?crid=1ZSD4XO8BZWM4&dchild=1&keywords=1tb+internal+hard+disk+for+laptop&qid=1592157815&sprefix=1tb+internal%2Caps%2C271&sr=8-5
+External::
+https://www.amazon.in/Lenovo-F309-USB3-0-External-Hard/dp/B00UJCZ9K0/ref=sr_1_4?crid=23WAUDAVW9BIF&dchild=1&keywords=1tb+external+hard+disk&qid=1592157850&sprefix=1tb+external+hards%2Caps%2C288&sr=8-4
+
+3. Types of Instances 
+	reserved
+	spot
+	on demand
+	dedicated
+4. Explain about the Availability zones 
+5. Start Creating Ec2 & explain in detail about every stage
+	Type of instances (slide)
+	https://aws.amazon.com/ec2/instance-types/
+	Root Volume/disk details
+	https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html
+	Ebs Volume types 
+	https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+	Default Users:
+	https://alestic.com/2014/01/ec2-ssh-username/
+Note: Explain about securitygroup
+
+Once instance launched go through the USERDATA(BootStrap) Part & accidental termination options
+
+6. what is EBS & use of EBS & volume-types
+
+Create one volume & attach the volume to one server & other server too ...
+Increase the size of the volume & show the increased size 
+Example:
+create two servers in 2 AZ's, create one EBS & show them the difference & drawback
+
+7. EBS snapshots & importance of snapshot & moving disk across AZ's
+explain about throughput & Iops
+
+Throughput:
+Amount of data can be process per second ie., it might be 30Mbps per GB
+IOPS:
+Its basically i/p & o/p per second. How many times the spindle can rotate for reading the data from the disk.
+
+(New Topic)
+8. Migrating EBS across regions
+
+9. Explain about security group,inbound & outbound rules & importance of security group
+
+Security groups are stateful: This means any changes applied to an incoming rule will be automatically 
+applied to the outgoing rule. e.g. If you allow an incoming port 80, the outgoing port 80 will be automatically opened.
+
+10. Instance metadata
+
+curl http://169.254.169.254/latest/meta-data
+curl http://169.254.169.254/latest/meta-data/public-ipv4
+
+11. AMI & its usage 
+explain about software installation for 100+ servers
+
+(New Topic)
+12. Moving AMI's across regions
+
+Move it to Linux ::
+
+13. Explain about the private interfaces & attaching new interfaces to the instance
+similary tell them about the Eip (elastic ipaddress) allocation & deallocation 
+
+14. Instance Roles
+Explain about Aws Cli by configuring programatic access
+Use the roles to list the s3 buckets
+
+15. Console logs & explanation
+
+Commands ::
+
+commands to mount a new disk::
+
+lsblk --> Lists all the disks
+mkfs.ext4 /dev/xvdf --> helps to format the disk
+mkdir /myapp
+mount -t ext4 /dev/xvdf /myapp
+df -hT /myapp
+
+commands to unmount a disk 
+
+cd
+umount /myapp
+
+commands to mount and existing disk 
+
+mkdir -p /myapp
+mount -t ext4 /dev/xvdf /myapp
+
+
+
+
+
+
+
+
+
+
